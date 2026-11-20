@@ -7,7 +7,7 @@ that decides them (1.1 and 1.5), so nothing here is a placeholder guess.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 # --- Paths -------------------------------------------------------------------
@@ -30,6 +30,11 @@ GAF_MONTREAL_PARQUET = INTERIM_DIR / "gaf_montreal.parquet"  # cache of the 299 
 SAMPLE_POINTS_PARQUET = INTERIM_DIR / "sample_points.parquet"
 SAMPLE_POINTS_GEOJSON = INTERIM_DIR / "sample_points.geojson"  # debug / visual check
 SAMPLE_POINTS_SUMMARY_CSV = INTERIM_DIR / "sample_points_by_quartier.csv"
+GTFS_FEEDS = {
+    "stm": GTFS_DIR / "stm.zip",
+    "rem": GTFS_DIR / "rem.zip",
+    "exo_trains": GTFS_DIR / "exo_trains.zip",
+}
 OSM_CLIPPED_PBF = INTERIM_DIR / "montreal.osm.pbf"
 OSM_CLIPPED_META = INTERIM_DIR / "montreal.osm.json"  # source hash, bbox, OSM timestamp
 
@@ -140,3 +145,13 @@ JVM_MAX_MEMORY = "6G"  # machine has 16 GB
 WALK_SPEED_KMH = 4.8  # close to Google Maps so step 1.9 compares like with like (r5py default 3.6)
 DEPARTURE_START_HHMM = (7, 30)
 DEPARTURE_WINDOW = timedelta(minutes=60)  # 7:30-8:30, approximates "arrive around 8:30"
+
+# Analysis date (step 1.5, `python -m mtlhousing gtfs-check`): a Tuesday with normal
+# weekday service in all three feeds (STM 26N to 2027-01-03, REM to 2026-12-31, exo to
+# 2027-01-03), during the fall class term, before the STM change of 2027-01-05.
+ANALYSIS_DATE = date(2026, 12, 1)
+
+
+def analysis_departure() -> datetime:
+    hour, minute = DEPARTURE_START_HHMM
+    return datetime(ANALYSIS_DATE.year, ANALYSIS_DATE.month, ANALYSIS_DATE.day, hour, minute)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import timedelta
 
 
 def step_boundaries() -> None:
@@ -48,10 +49,30 @@ def step_osm_clip() -> None:
     )
 
 
+def step_gtfs_check() -> None:
+    from mtlhousing import config, gtfs_check
+
+    feeds = [gtfs_check.load_feed(p, name) for name, p in config.GTFS_FEEDS.items()]
+    for f in feeds:
+        start, end = gtfs_check.service_range(f)
+        version = (f.feed_info or {}).get("feed_version") or "-"
+        print(f"{f.name:11} service {start} .. {end}  feed_version {version}")
+    report = gtfs_check.candidate_report(feeds)
+    upcoming = report[report["date"] >= config.ANALYSIS_DATE - timedelta(days=14)]
+    print("\nTue/Wed in all feeds (trips per day):")
+    print(upcoming.to_string(index=False))
+    problems = gtfs_check.check_date(feeds, config.ANALYSIS_DATE)
+    verdict = "OK" if not problems else "NOT OK: " + "; ".join(problems)
+    print(f"\nconfig.ANALYSIS_DATE = {config.ANALYSIS_DATE} ({config.ANALYSIS_DATE:%A}): {verdict}")
+    if problems:
+        raise SystemExit(1)
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
     "osm-clip": step_osm_clip,
+    "gtfs-check": step_gtfs_check,
 }
 
 

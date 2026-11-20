@@ -60,6 +60,7 @@ Pipeline steps (run in order, from the repo root, inside the env). Each step cac
 python -m mtlhousing boundaries      :: quartiers -> data/interim/quartiers.parquet
 python -m mtlhousing sample-points   :: StatCan DAs -> residential sample points (first run ~10 s)
 python -m mtlhousing osm-clip        :: Québec PBF -> Montréal PBF (~45 s, skipped if unchanged)
+python -m mtlhousing gtfs-check      :: feed periods + validates config.ANALYSIS_DATE (exit 1 if not OK)
 ```
 
 ### Web
