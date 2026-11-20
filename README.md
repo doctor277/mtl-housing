@@ -54,7 +54,13 @@ To update the environment after `environment.yml` changes:
 mamba env update -f pipeline\environment.yml --prune
 ```
 
-Pipeline steps (`python -m mtlhousing <step>`) are added in Phase 1.
+Pipeline steps (run in order, from the repo root, inside the env). Each step caches its output in `data/interim/` and is safe to re-run:
+
+```bat
+python -m mtlhousing boundaries      :: quartiers -> data/interim/quartiers.parquet
+python -m mtlhousing sample-points   :: StatCan DAs -> residential sample points (first run ~10 s)
+python -m mtlhousing osm-clip        :: Québec PBF -> Montréal PBF (~45 s, skipped if unchanged)
+```
 
 ### Web
 

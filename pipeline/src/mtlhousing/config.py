@@ -30,6 +30,8 @@ GAF_MONTREAL_PARQUET = INTERIM_DIR / "gaf_montreal.parquet"  # cache of the 299 
 SAMPLE_POINTS_PARQUET = INTERIM_DIR / "sample_points.parquet"
 SAMPLE_POINTS_GEOJSON = INTERIM_DIR / "sample_points.geojson"  # debug / visual check
 SAMPLE_POINTS_SUMMARY_CSV = INTERIM_DIR / "sample_points_by_quartier.csv"
+OSM_CLIPPED_PBF = INTERIM_DIR / "montreal.osm.pbf"
+OSM_CLIPPED_META = INTERIM_DIR / "montreal.osm.json"  # source hash, bbox, OSM timestamp
 
 # Census division 2466 = Montréal = the island (the agglomeration's 16 municipalities).
 MONTREAL_CDUID = "2466"

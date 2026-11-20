@@ -36,7 +36,23 @@ def step_sample_points() -> None:
     )
 
 
-STEPS = {"boundaries": step_boundaries, "sample-points": step_sample_points}
+def step_osm_clip() -> None:
+    from mtlhousing import config, osm_clip
+
+    meta = osm_clip.clip_osm()
+    src_mb = config.OSM_PBF.stat().st_size / 1e6
+    print(
+        f"{meta['source']} ({src_mb:,.0f} MB) -> {meta['output']} "
+        f"({meta['output_bytes'] / 1e6:,.0f} MB), bbox {meta['bbox']}, "
+        f"OSM data as of {meta['osm_timestamp']}"
+    )
+
+
+STEPS = {
+    "boundaries": step_boundaries,
+    "sample-points": step_sample_points,
+    "osm-clip": step_osm_clip,
+}
 
 
 def main() -> None:
