@@ -134,7 +134,7 @@ def build_commute(
             "minutes": int(config.DEPARTURE_WINDOW.total_seconds() // 60),
         },
         "percentile_over_window": any_meta["percentile"],
-        "walk_speed_kmh": config.WALK_SPEED_KMH,
+        "walk_speed_kmh": any_meta["speed_walking_kmh"],
         "transport_modes": any_meta["transport_modes"],
         "max_trip_min": config.MAX_TRIP_MIN,
         "units": "minutes",
@@ -255,6 +255,7 @@ def run(campus_ids: list[str]) -> dict:
         stats_path = config.INTERIM_DIR / f"commute_{c}_by_quartier.parquet"
         stats_by_campus[c] = pd.read_parquet(stats_path)
         meta_by_campus[c] = json.loads(config.travel_times_meta(c).read_text(encoding="utf-8"))
+        config.check_routing_speed(meta_by_campus[c], c)
 
     commute = build_commute(stats_by_campus, meta_by_campus, sorted(quartiers["id"]))
     write_json(commute, COMMUTE_JSON)

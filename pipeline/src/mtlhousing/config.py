@@ -166,18 +166,37 @@ def all_destinations() -> list[tuple[str, Destination]]:
 
 # --- Routing (r5py) ------------------------------------------------------------
 JVM_MAX_MEMORY = "6G"  # machine has 16 GB
-WALK_SPEED_KMH = 4.8  # close to Google Maps so step 1.9 compares like with like (r5py default 3.6)
+# Walking speed for every walk leg (to the stop, transfers, to the door). r5py default 3.6.
+# Set to 4.0 at step 1.9: Google Maps' walk legs on the validation routes imply 3.75-4.3 km/h
+# (900 m / 14 min, 1.0 km / 16 min, 500-650 m / 7-9 min), the analysis date is in winter,
+# and at 4.8 km/h R5 came out faster than Google on 5 of 7 routes. See VALIDATION.md.
+WALK_SPEED_KMH = 4.0
 DEPARTURE_START_HHMM = (7, 30)
 DEPARTURE_WINDOW = timedelta(minutes=60)  # 7:30-8:30, approximates "arrive around 8:30"
 
 MAX_TRIP_MIN = 120  # r5py default max_time; no result means "more than this"
 
 # Calibrated access penalties (minutes added to every trip ending at a destination).
-# udem_roger_gaudry: R5 walks UdeM metro platform -> Roger-Gaudry in ~4.8 min (357-395 m,
-# flat speed; no elevation model). A UdeM student (author) walks it in ~7 min, matching
-# Google Maps (~7 min / 400 m). Penalty = 7 - 4.8 = 2.2 min for the uphill climb.
-# Re-checked by validation route 6 (step 1.9). See docs/methodology.md.
-ACCESS_PENALTY_MIN = {"udem_roger_gaudry": 2.2}
+# udem_roger_gaudry: R5 walks the UdeM metro platform stops (STM 53877 / 53878) ->
+# Roger-Gaudry, 357-395 m at flat speed (no elevation model): 4.85 min on average at
+# 4.8 km/h (validation route 6), so 4.85 x 4.8 / 4.0 = 5.8 min at 4.0 km/h (walk time
+# scales with 1 / speed). A UdeM student (author) walks it in ~7 min, matching Google
+# Maps (~7 min / 400 m). Penalty = 7 - 5.8 = 1.2 min for the uphill climb.
+# The penalty depends on WALK_SPEED_KMH: re-check it with validation route 6 (step 1.9)
+# after any speed change. See docs/methodology.md.
+ACCESS_PENALTY_MIN = {"udem_roger_gaudry": 1.2}
+
+
+def check_routing_speed(routing_meta: dict, campus_id: str) -> None:
+    """Saved travel times must have been routed at the current WALK_SPEED_KMH, because
+    ACCESS_PENALTY_MIN is calibrated for that speed."""
+    speed = routing_meta.get("speed_walking_kmh")
+    if speed != WALK_SPEED_KMH:
+        raise ValueError(
+            f"{campus_id}: saved travel times were routed at {speed} km/h, but "
+            f"WALK_SPEED_KMH is {WALK_SPEED_KMH}. Re-run "
+            f"`python -m mtlhousing travel-times --campus {campus_id}` (not --repair-only)."
+        )
 
 # Commute reliability: flag a quartier when more than this share of its dwellings
 # cannot reach the campus within MAX_TRIP_MIN.

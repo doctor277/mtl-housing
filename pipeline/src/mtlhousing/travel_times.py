@@ -113,6 +113,7 @@ def run_campus(campus_id: str, repair_only: bool = False) -> tuple[pd.DataFrame,
     if repair_only:
         times = pd.read_parquet(config.travel_times_parquet(campus_id))
         meta = json.loads(config.travel_times_meta(campus_id).read_text(encoding="utf-8"))
+        config.check_routing_speed(meta, campus_id)
         # Drop origins that are no longer routed (e.g. newly marked out of scope).
         times = times[times["point_id"].isin(origins["id"])].reset_index(drop=True)
         meta["n_origins"] = len(origins)

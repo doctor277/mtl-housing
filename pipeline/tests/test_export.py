@@ -44,6 +44,7 @@ ROUTING_META = {
     "n_origins": 2,
     "computed_at": "2026-11-20T01:56:11",
     "percentile": 50,
+    "speed_walking_kmh": config.WALK_SPEED_KMH,
     "transport_modes": ["TRANSIT", "WALK"],
     "gtfs_feeds": [{"name": "stm", "version": "x", "start": "2026-08-24", "end": "2027-01-03"}],
     "osm_timestamp": "2026-11-19T21:22:20Z",
@@ -85,7 +86,9 @@ def test_meta_records_method_and_penalties():
     assert m["departure_window"] == {"start": "07:30", "minutes": 60}
     assert m["max_trip_min"] == config.MAX_TRIP_MIN
     dests = {d["id"]: d for d in m["campuses"]["udem"]["destinations"]}
-    assert dests[RG]["access_penalty_min"] == 2.2 and dests[JB]["access_penalty_min"] == 0.0
+    assert dests[RG]["access_penalty_min"] == config.ACCESS_PENALTY_MIN[RG]
+    assert dests[JB]["access_penalty_min"] == 0.0
+    assert m["walk_speed_kmh"] == config.WALK_SPEED_KMH
     assert m["out_of_scope"][0]["area"] == "L'Île-Dorval"
 
 

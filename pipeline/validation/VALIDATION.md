@@ -1,5 +1,7 @@
 # Validation: R5 vs Google Maps, UdeM (step 1.9)
 
+> **Update (2026-11-20): this page describes the first run, at 4.8 km/h.** Google's route 5 details time the REM → blue line transfer at Édouard-Montpetit at about 1 min (REM arrives 8:03, "about 1 min" walk, blue line at 8:10, 1 stop, walk 6 min / 280 m, arrive 8:18). So the deep-transfer hypothesis in finding 1 is dropped: in route 4, Google skipped the blue line because of the blue-line wait, not the transfer. The systematic bias is walking speed. Walking speed is now **4.0 km/h** and the Roger-Gaudry penalty **1.2 min** (`config.py`); the re-run and re-validation are pending, and this page will be rewritten with their results.
+
 **Result: 7 of 8 comparisons pass. Route 4 passes only against Google's like-for-like trip (green + REM, 52 min), at the limit of the tolerance; it fails against Google's first suggestion (60 min).** Its leg-by-leg comparison shows two R5 biases: deep-station transfers and walking speed (finding 1). Phase 1 stays open until we decide what to do about them.
 
 - Inputs: [`udem_routes.csv`](udem_routes.csv)

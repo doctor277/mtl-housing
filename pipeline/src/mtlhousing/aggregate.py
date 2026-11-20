@@ -124,8 +124,12 @@ def quartier_stats(
 
 
 def run_campus(campus_id: str) -> pd.DataFrame:
+    import json
+
     import geopandas as gpd
 
+    meta = json.loads(config.travel_times_meta(campus_id).read_text(encoding="utf-8"))
+    config.check_routing_speed(meta, campus_id)
     times = pd.read_parquet(config.travel_times_parquet(campus_id))
     sample = gpd.read_parquet(config.SAMPLE_POINTS_PARQUET)
     stats = quartier_stats(times, sample, campus_id)

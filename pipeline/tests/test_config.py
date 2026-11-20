@@ -1,3 +1,5 @@
+import pytest
+
 from mtlhousing import config
 
 
@@ -69,3 +71,11 @@ def test_departure_window_is_morning_peak():
 
 def test_jvm_memory_format():
     assert config.JVM_MAX_MEMORY[:-1].isdigit() and config.JVM_MAX_MEMORY[-1] in "GM"
+
+
+def test_saved_times_must_match_walk_speed():
+    config.check_routing_speed({"speed_walking_kmh": config.WALK_SPEED_KMH}, "udem")
+    with pytest.raises(ValueError, match="travel-times"):
+        config.check_routing_speed({"speed_walking_kmh": config.WALK_SPEED_KMH + 0.8}, "udem")
+    with pytest.raises(ValueError):
+        config.check_routing_speed({}, "udem")
