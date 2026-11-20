@@ -18,14 +18,28 @@ def test_campuses_are_the_three_supported():
     assert set(config.CAMPUSES) == {"udem", "mcgill", "concordia_sgw"}
     for key, campus in config.CAMPUSES.items():
         assert campus.id == key
-        assert campus.osm_ref.split("/")[0] in {"node", "way"}
+        assert len(campus.destinations) >= 1
 
 
-def test_campuses_are_inside_bbox():
+def test_destination_ids_are_unique_and_prefixed_by_campus():
+    pairs = config.all_destinations()
+    ids = [d.id for _, d in pairs]
+    assert len(ids) == len(set(ids))
+    for campus_id, d in pairs:
+        assert d.id.startswith(campus_id + "_"), d.id
+        assert d.osm_ref.split("/")[0] in {"node", "way"}
+
+
+def test_udem_has_both_buildings():
+    ids = [d.id for d in config.CAMPUSES["udem"].destinations]
+    assert ids == ["udem_roger_gaudry", "udem_jean_brillant"]
+
+
+def test_destinations_are_inside_bbox():
     min_lon, min_lat, max_lon, max_lat = config.BBOX
-    for campus in config.CAMPUSES.values():
-        assert min_lon < campus.lon < max_lon, campus.id
-        assert min_lat < campus.lat < max_lat, campus.id
+    for _, d in config.all_destinations():
+        assert min_lon < d.lon < max_lon, d.id
+        assert min_lat < d.lat < max_lat, d.id
 
 
 def _km(a, b):
@@ -37,12 +51,14 @@ def _km(a, b):
     return 6371 * math.hypot(x, y)
 
 
-def test_campus_points_are_plausibly_placed():
-    c = config.CAMPUSES
+def test_destinations_are_plausibly_placed():
+    d = {dest.id: dest for _, dest in config.all_destinations()}
     # McGill and Concordia SGW are both downtown, about 1 km apart.
-    assert 0.5 < _km(c["mcgill"], c["concordia_sgw"]) < 1.5
+    assert 0.5 < _km(d["mcgill_roddick_gates"], d["concordia_sgw_hall"]) < 1.5
     # UdeM is on the other side of Mount Royal, about 3-4 km from downtown.
-    assert 2.5 < _km(c["udem"], c["mcgill"]) < 4.5
+    assert 2.5 < _km(d["udem_roger_gaudry"], d["mcgill_roddick_gates"]) < 4.5
+    # The two UdeM buildings are about 500 m apart on the same hillside.
+    assert 0.3 < _km(d["udem_roger_gaudry"], d["udem_jean_brillant"]) < 0.8
 
 
 def test_departure_window_is_morning_peak():

@@ -37,19 +37,28 @@ CRS_METRIC = "EPSG:32188"  # NAD83 / MTM zone 8: metric work in Montréal
 BBOX = (-74.10, 45.35, -73.35, 45.80)
 
 # --- Campuses ------------------------------------------------------------------
-# One routing destination per campus. Coordinates come from OpenStreetMap
-# (extract of 2026-11-19, see data/manifest.csv), preferring the node tagged
-# entrance=main so the trip ends at the door people actually use.
+# A campus has one or more destination BUILDINGS. r5py routes to each building and
+# picks the station itself; the campus value for a home is the fastest of its
+# destinations ("fastest building"), and each destination's time is kept too.
+# Coordinates come from OpenStreetMap (extract of 2026-11-19, see data/manifest.csv),
+# preferring the node tagged entrance=main so the trip ends at a real door.
+
+
+@dataclass(frozen=True)
+class Destination:
+    id: str  # unique across all campuses, prefixed with the campus id
+    name: str
+    lat: float
+    lon: float
+    osm_ref: str  # where the point comes from, for traceability
+    note: str
 
 
 @dataclass(frozen=True)
 class Campus:
     id: str
     name: str
-    lat: float
-    lon: float
-    osm_ref: str  # where the point comes from, for traceability
-    note: str
+    destinations: tuple[Destination, ...]
 
 
 CAMPUSES: dict[str, Campus] = {
@@ -58,29 +67,63 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="udem",
             name="Université de Montréal (campus principal)",
-            lat=45.5027705,
-            lon=-73.6150484,
-            osm_ref="node/2573744215",
-            note="Pavillon Roger-Gaudry main entrance L-4, 2900 boul. Édouard-Montpetit",
+            destinations=(
+                Destination(
+                    id="udem_roger_gaudry",
+                    name="Pavillon Roger-Gaudry",
+                    lat=45.5027705,
+                    lon=-73.6150484,
+                    osm_ref="node/2573744215",
+                    note="Main entrance L-4 (entrance=main), 2900 boul. Édouard-Montpetit. "
+                    "Nearest metro: Université-de-Montréal via the Tunnel de la Montagne.",
+                ),
+                Destination(
+                    id="udem_jean_brillant",
+                    name="Pavillon Jean-Brillant",
+                    lat=45.4986715,
+                    lon=-73.6181739,
+                    osm_ref="node/6783857247",
+                    note="3200 rue Jean-Brillant; the only entrance mapped on the building "
+                    "(entrance=yes, way/27334101). Nearest metro: Côte-des-Neiges.",
+                ),
+            ),
         ),
         Campus(
             id="mcgill",
             name="McGill University (downtown campus)",
-            lat=45.503849,
-            lon=-73.574925,
-            osm_ref="way/143798969",
-            note="Roddick Gates, rue Sherbrooke Ouest at avenue McGill College",
+            destinations=(
+                Destination(
+                    id="mcgill_roddick_gates",
+                    name="Roddick Gates",
+                    lat=45.503849,
+                    lon=-73.574925,
+                    osm_ref="way/143798969",
+                    note="Rue Sherbrooke Ouest at avenue McGill College.",
+                ),
+            ),
         ),
         Campus(
             id="concordia_sgw",
             name="Concordia University (Sir George Williams campus)",
-            lat=45.4970373,
-            lon=-73.5786245,
-            osm_ref="node/4035248248",
-            note="Henry F. Hall Building main entrance, 1455 boul. De Maisonneuve Ouest",
+            destinations=(
+                Destination(
+                    id="concordia_sgw_hall",
+                    name="Henry F. Hall Building",
+                    lat=45.4970373,
+                    lon=-73.5786245,
+                    osm_ref="node/4035248248",
+                    note="Main entrance (entrance=main), 1455 boul. De Maisonneuve Ouest.",
+                ),
+            ),
         ),
     )
 }
+
+
+def all_destinations() -> list[tuple[str, Destination]]:
+    """(campus_id, destination) for every destination, in config order."""
+    return [(c.id, d) for c in CAMPUSES.values() for d in c.destinations]
+
 
 # --- Routing (r5py) ------------------------------------------------------------
 JVM_MAX_MEMORY = "6G"  # machine has 16 GB
