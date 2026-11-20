@@ -1,0 +1,46 @@
+# --- Data (downloaded or derived; never committed) ---
+data/raw/
+data/interim/
+*.pbf
+*.zip
+*.parquet
+
+# Pipeline outputs that the website reads ARE committed:
+#   web/public/data/*.json, web/public/data/*.geojson
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- r5py / Java ---
+# r5py caches built transport networks in the user cache dir, not here,
+# but keep any local cache or JVM crash logs out of git.
+.r5py_cache/
+hs_err_pid*.log
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+.vercel/
+next-env.d.ts
+*.tsbuildinfo
+
+# --- Secrets / local config ---
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
