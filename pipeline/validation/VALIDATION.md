@@ -3,6 +3,7 @@
 **Result (second run, 2026-11-20, walking at 4.0 km/h): 8 of 9 comparisons pass.**
 - **Route 4 fails** against Google's first suggestion (60 min), a different, slower trip. Against Google's like-for-like trip (green line + REM, 52 min) it passes with room to spare: −5.1 min against a 7.8-min tolerance. At 4.8 km/h it passed only at the limit.
 - **On average R5 now matches Google:** the mean difference is +0.0 min without route 4, against −1.5 min at 4.8 km/h.
+- **This is an in-sample result.** The walking speed and both access adjustments were tuned on these same routes (see [In-sample, not independent](#in-sample-not-independent)). Before launch, 3–4 out-of-sample routes will be added and checked with the settings frozen.
 
 | File | Purpose |
 |---|---|
@@ -159,9 +160,19 @@ The "fastest building" time is robust, because it is the minimum of two near-equ
 
 The adjustments are defined so that these two walks come out at exactly 7.0 min. Routes 1–5 and 7 are the independent tests.
 
+## In-sample, not independent
+
+Every setting that changed after the first run was tuned on these routes:
+- **Walking speed (4.0 km/h)** was chosen from Google's walk legs on routes 1–5 and 7, and from R5's bias on those same routes at 4.8 km/h.
+- **The access adjustments (+1.9 / −2.4)** were set so that routes 6 and 6b come out at exactly 7.0 min.
+
+So the +0.0 min mean difference shows that the settings fit these routes. It does not show how well they predict other trips. The pass count is likely optimistic.
+
+**Before launch:** add 3–4 out-of-sample routes, chosen and collected from Google before R5 is run on them, and check them with the settings frozen (no re-tuning on the result). They should cover areas the current set misses, for example the West Island, the far east (Rivière-des-Prairies / Pointe-aux-Trembles), a REM-only trip and a bus-only trip. If they fail, the failure is reported, not tuned away.
+
 ## Status
 
-**Validation passes for Phase 1.** Every first-suggestion comparison passes except route 4. Route 4 passes against Google's like-for-like trip and is explained (finding 2).
+**Phase 1 validation is closed (2026-11-20), in-sample.** Every first-suggestion comparison passes except route 4. Route 4 passes against Google's like-for-like trip and is explained (finding 2). The out-of-sample check above is still to do before launch.
 
 Known limits, documented in `docs/methodology.md`:
 - **Flat walking.** There is no elevation model. Constant per-building adjustments stand in for the climb at UdeM.

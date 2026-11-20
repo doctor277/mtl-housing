@@ -164,6 +164,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **Transfers.** The feeds have no pathway or transfer times, so R5 treats a transfer as a flat street walk between stop coordinates. At Édouard-Montpetit (REM → blue line) that gives about 1 min, which agrees with Google's route 5 trip ("about 1 min").
 - **The building split is a near-tie.** Google and R5 disagree on the faster building for route 7 by about 1 min.
 - Routes 6 and 6b (platform → building walks) are the calibration of the access adjustments, not independent evidence.
+- **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._

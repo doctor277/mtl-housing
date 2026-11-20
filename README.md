@@ -87,11 +87,12 @@ UdeM commute (fastest building), click for details. Basemap: OpenFreeMap (no API
 ## Status
 
 - [x] Phase 0: repo skeleton
-- [ ] Phase 1: UdeM commute pipeline + manual validation
+- [x] Phase 1: UdeM commute pipeline + manual validation (in-sample; see `pipeline/validation/VALIDATION.md`)
 - [x] Phase 1.5: ugly map
 - [ ] Phase 2: other campuses, rent data, crosswalk, estimates
 - [ ] Phase 3: web UI (form, map, shortlist, detail panel)
 - [ ] Phase 4: FR/EN, sources page, shareable URLs, deploy
+  - [ ] before launch: 3–4 out-of-sample validation routes, settings frozen
 
 ## Credits
 
