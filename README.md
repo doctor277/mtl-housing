@@ -70,13 +70,23 @@ python -m mtlhousing export --campus udem         :: web/public/data/*.json(geoj
 
 ### Web
 
-Added in Phase 1.5.
+Requires Node 20+. From the repo root:
+
+```bat
+cd web
+npm install
+npm run dev        :: http://localhost:3000
+```
+
+The page reads `web/public/data/neighbourhoods.geojson` and `commute.json` (written by the
+pipeline's `export` step and committed). Phase 1.5 is a bare map: quartiers coloured by median
+UdeM commute (fastest building), click for details. Basemap: OpenFreeMap (no API key).
 
 ## Status
 
 - [x] Phase 0: repo skeleton
 - [ ] Phase 1: UdeM commute pipeline + manual validation
-- [ ] Phase 1.5: ugly map
+- [x] Phase 1.5: ugly map
 - [ ] Phase 2: other campuses, rent data, crosswalk, estimates
 - [ ] Phase 3: web UI (form, map, shortlist, detail panel)
 - [ ] Phase 4: FR/EN, sources page, shareable URLs, deploy
