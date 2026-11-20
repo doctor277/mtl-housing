@@ -57,6 +57,15 @@ TUNNEL_ESCALATOR_MIDPOINT = (45.503315, -73.61672)  # (lat, lon) of way/72326009
 MONTREAL_CDUID = "2466"
 MIN_POINTS_PER_QUARTIER = 3  # fewer -> quartier flagged low_sample
 
+# Census subdivisions whose homes are kept in the sample (for transparency) but excluded
+# from commute statistics, with the reason shown in outputs and methodology.md.
+OUT_OF_SCOPE_CSDS = {
+    "L'Île-Dorval": (
+        "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; "
+        "not reachable by public transit, so excluded from Dorval's commute statistics."
+    ),
+}
+
 # --- Coordinate reference systems -------------------------------------------
 CRS_WGS84 = "EPSG:4326"  # storage / web output
 CRS_METRIC = "EPSG:32188"  # NAD83 / MTM zone 8: metric work in Montréal

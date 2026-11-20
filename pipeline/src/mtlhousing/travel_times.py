@@ -42,8 +42,11 @@ def destinations_gdf(campus_id: str) -> gpd.GeoDataFrame:
 
 
 def origins_gdf(sample_points: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Routing origins: in-scope sample points only (see config.OUT_OF_SCOPE_CSDS)."""
     if not sample_points["point_id"].is_unique:
         raise ValueError("sample point ids must be unique")
+    if "in_scope" in sample_points:
+        sample_points = sample_points[sample_points["in_scope"].astype(bool)]
     return gpd.GeoDataFrame(
         {"id": sample_points["point_id"].values},
         geometry=sample_points.geometry.values,
@@ -103,6 +106,9 @@ def run_campus(campus_id: str, repair_only: bool = False) -> tuple[pd.DataFrame,
     if repair_only:
         times = pd.read_parquet(config.travel_times_parquet(campus_id))
         meta = json.loads(config.travel_times_meta(campus_id).read_text(encoding="utf-8"))
+        # Drop origins that are no longer routed (e.g. newly marked out of scope).
+        times = times[times["point_id"].isin(origins["id"])].reset_index(drop=True)
+        meta["n_origins"] = len(origins)
     else:
         times = compute_travel_times(network, r5py, origins, destinations)
         times["origin_moved_m"] = float("nan")
@@ -111,7 +117,15 @@ def run_campus(campus_id: str, repair_only: bool = False) -> tuple[pd.DataFrame,
         meta["seconds_routing"] = round(time.time() - t0 - t_net)
 
     times, repaired = repair_unreachable(times, origins, destinations, network, r5py)
-    meta["relocated_origins"] = meta.get("relocated_origins", []) + repaired
+    meta["relocated_origins"] = [
+        r
+        for r in meta.get("relocated_origins", []) + repaired
+        if r["point_id"] in set(origins["id"])
+    ]
+    out = sample[~sample["point_id"].isin(origins["id"])]
+    meta["excluded_out_of_scope"] = [
+        {"point_id": r.point_id, "reason": r.scope_note} for r in out.itertuples()
+    ]
     meta["n_pairs"] = len(times)
     meta["n_unreachable_pairs"] = int(times["travel_time_min"].isna().sum())
 

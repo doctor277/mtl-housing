@@ -4,7 +4,7 @@ This file is filled in as each phase lands. It becomes the site's "Sources & lim
 
 ## Geography
 - Unit of analysis: the Ville de Montréal **quartiers de référence en habitation** (91 areas). The layer also covers the villes liées (Westmount, Mont-Royal, Côte-Saint-Luc, …), so the whole island is included.
-- 91 quartiers across 15 municipalities, with 1,011,945 dwellings in total (city CSV). **L'Île-Dorval**, a tiny seasonal island municipality with no transit, is not a separate quartier. Its single census point falls inside the Dorval polygon and is reported as unreachable by transit.
+- 91 quartiers across 15 municipalities, with 1,011,945 dwellings in total (city CSV). **L'Île-Dorval**, a tiny island municipality with no bridge and only a seasonal ferry, is not a separate quartier. Its single census point (25 occupied dwellings) falls inside the Dorval polygon. It is **out of scope**: kept in the sample with `in_scope = false` and a reason, but not routed and **excluded from Dorval's commute statistics** (`config.OUT_OF_SCOPE_CSDS`).
 - Six source polygons have small self-intersections. They are repaired automatically, and the area of each changes by less than 30 m². Neighbouring polygons overlap by up to a few hundred m² from how the borders were drawn, which is negligible.
 
 ## Commute (Phase 1)
@@ -60,10 +60,28 @@ A walk-only route from the Université-de-Montréal metro entrance (2810 Édouar
 - 3,220 homes × 2 buildings, 22 min of routing. The median trip to the fastest UdeM building is 45 min, with a range of 4 to 117 min.
 - **Jean-Brillant is the faster building for only about 2% of homes.** Most of the city reaches Université-de-Montréal station (Roger-Gaudry side) at least as fast as Côte-des-Neiges, and the optimistic 3.5-min tunnel walk adds to that. This is revisited after validation.
 - **Homes stuck on private paths.** A census point inside a private complex (for example condo grounds on Île-des-Soeurs mapped with `access=private` footways) gets snapped onto the private path, and R5 then cannot walk out. **Only for homes that reach no building at all**, the start is moved to the nearest public walkable OSM way within 300 m and re-routed. The distance moved is stored (`origin_moved_m`). This fixed the Île-des-Soeurs DA (897 homes, moved 92 m, now 35 min).
-- **Still unreachable, correctly:**
-  - **L'Île-Dorval** (25 homes): an island with no bridge and only a seasonal ferry. Its census point falls inside the city's Dorval quartier polygon, so it appears there as unreachable.
-  - **The western tip of Île-Bizard:** beyond R5's 2-hour limit. Neighbouring homes already take up to 117 min.
+- **Excluded, not unreachable:** L'Île-Dorval (see Geography). It is not routed and not counted.
+- **Still unreachable, correctly:** the western tip of Île-Bizard, beyond R5's 2-hour limit (neighbouring homes already take up to 117 min).
 - Unreachable means **"more than 2 h"**. It is never treated as missing data or as 0 when quartiers are summarised.
+
+### Why Jean-Brillant rarely comes out faster (diagnosis, 2026-11-20)
+Without any adjustment, Jean-Brillant is the faster building for only **2.2% of homes**. That contradicts how students actually get there: anyone coming from the west on the blue line (Snowdon) reaches Côte-des-Neiges station first.
+
+- **The Jean-Brillant side is modelled correctly.** R5 walks Côte-des-Neiges metro → Jean-Brillant entrance in **6.8–7.3 min (533–576 m)**, matching Google (about 7 min / 500 m). The entrance used is node/6783857247, about 430 m in a straight line from both CDN entrances.
+- **The Roger-Gaudry side is too fast.** R5 walks Université-de-Montréal metro → Roger-Gaudry in **3.5 min (271 m)** through the tunnel, against about 7 min / 400 m in reality. The climb isn't modelled.
+- **Both trips are identical until the last station.** They differ only in the stop where you get off and the walk to the door. At the median home, Roger-Gaudry minus Jean-Brillant is exactly −4 min, and the gap never goes beyond −5 min. Sample homes, median over 7:30–8:30:
+
+| Home (DA) | Roger-Gaudry | Jean-Brillant | Route at 08:00 |
+|---|---|---|---|
+| Snowdon (da:24663199) | 14 | 16 | blue line from Snowdon. RG: ride to Université-de-Montréal + 4-min walk. JB: get off at Côte-des-Neiges + 8-min walk. |
+| Édouard-Montpetit / Côte-des-Neiges (da:24660699) | 12 | 4 | JB: walk 5 min. RG: one metro stop + 4-min walk. |
+| NDG east, Côte-Saint-Antoine (da:24660761) | 26 | 28 | 103 bus → orange → blue, same split at Côte-des-Neiges / Université-de-Montréal |
+| NDG west, Loyola (da:24660865) | 33 | 34 | 51 bus → blue, same split |
+
+- With a realistic walk to Roger-Gaudry (about 3.5 min more), the Snowdon and NDG homes flip to Jean-Brillant. Homes reached from the east (blue line from Saint-Michel or Jean-Talon) still favour Roger-Gaudry by about 1–2 min.
+- **The "fastest building" share is very sensitive** to this one walk. It is 2% at +0 min, 16% at +2, 31% at +3, 46% at +3.5 to +4, and 100% at +5. R5 reports whole minutes, so the shares jump in steps. Both buildings' times are therefore always published alongside the minimum.
+
+**Proposed correction (pending decision, not applied):** a fixed access penalty of **+p minutes on every trip to Roger-Gaudry**, with p calibrated from validation route 6 (Google time minus R5 time, currently about 3.5 min). Alternative: an elevation model in r5py (`TransportNetwork(elevation_model=..., elevation_cost_function=TOBLER)`), which needs a DEM download, a network rebuild and a full re-run.
 
 _Still to be written: per-quartier aggregation, validation results._
 

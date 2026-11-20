@@ -32,6 +32,8 @@ def step_sample_points() -> None:
         f"points per quartier: min {summary['n_points'].min()}, "
         f"median {summary['n_points'].median():.0f}, max {summary['n_points'].max()}\n"
         f"low_sample: {summary.loc[summary['low_sample'], 'name'].tolist()}\n"
+        f"out of scope (kept, not routed): "
+        f"{sample.loc[~sample['in_scope'], ['point_id', 'csd_name']].values.tolist()}\n"
         f"StatCan 2021 / city dwellings: median {r.median():.3f}, "
         f"range {r.min():.3f}-{r.max():.3f}"
     )

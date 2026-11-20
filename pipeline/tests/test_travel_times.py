@@ -23,6 +23,15 @@ def test_origins_require_unique_ids():
         travel_times.origins_gdf(pts)
 
 
+def test_origins_exclude_out_of_scope_points():
+    pts = gpd.GeoDataFrame(
+        {"point_id": ["da:1", "da:2"], "in_scope": [True, False]},
+        geometry=[Point(0, 0), Point(1, 1)],
+        crs=4326,
+    )
+    assert travel_times.origins_gdf(pts)["id"].tolist() == ["da:1"]
+
+
 def test_complete_matrix_fills_dropped_pairs_with_nan():
     ttm = pd.DataFrame(
         {"from_id": ["a", "a", "b"], "to_id": ["x", "y", "x"], "travel_time": [10, np.nan, 20]}
@@ -117,7 +126,10 @@ def test_real_udem_output_is_complete_and_plausible():
     meta = json.loads(config.travel_times_meta("udem").read_text(encoding="utf-8"))
     sample = gpd.read_parquet(config.SAMPLE_POINTS_PARQUET)
 
-    assert len(times) == len(sample) * 2 == meta["n_pairs"]
+    in_scope = sample[sample["in_scope"]]
+    assert len(times) == len(in_scope) * 2 == meta["n_pairs"]
+    assert set(times["point_id"]) == set(in_scope["point_id"])
+    assert [e["point_id"] for e in meta["excluded_out_of_scope"]] == ["da:24663396"]
     assert set(times["destination_id"]) == {"udem_roger_gaudry", "udem_jean_brillant"}
     t = times["travel_time_min"]
     assert t.isna().mean() < 0.02  # almost every home on the island reaches UdeM in 2 h

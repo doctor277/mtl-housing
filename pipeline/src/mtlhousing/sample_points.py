@@ -40,7 +40,17 @@ GAF_COLUMNS = {
 GAF_ENCODING = "cp1252"
 NUMERIC = ["da_lat", "da_lon", "population", "total_dwellings", "occupied_dwellings"]
 
-POINT_COLUMNS = ["point_id", "quartier_id", "source", "weight", "total_dwellings", "geometry"]
+POINT_COLUMNS = [
+    "point_id",
+    "quartier_id",
+    "source",
+    "weight",
+    "total_dwellings",
+    "csd_name",
+    "in_scope",
+    "scope_note",
+    "geometry",
+]
 
 
 def sha256(path: Path) -> str:
@@ -98,6 +108,7 @@ def da_points(gaf: pd.DataFrame) -> gpd.GeoDataFrame:
         lon=("da_lon", "first"),
         occupied_dwellings=("occupied_dwellings", "sum"),
         total_dwellings=("total_dwellings", "sum"),
+        **({"csd_name": ("csd_name", "first")} if "csd_name" in gaf else {}),
     ).reset_index()
     da = da[da["occupied_dwellings"] > 0]
     return gpd.GeoDataFrame(
@@ -106,6 +117,7 @@ def da_points(gaf: pd.DataFrame) -> gpd.GeoDataFrame:
             "source": "statcan_da",
             "weight": da["occupied_dwellings"].astype(float),
             "total_dwellings": da["total_dwellings"],
+            "csd_name": da["csd_name"] if "csd_name" in da else None,
         },
         geometry=gpd.points_from_xy(da["lon"], da["lat"]),
         crs=config.CRS_WGS84,
@@ -116,9 +128,12 @@ def build_sample_points(
     points: gpd.GeoDataFrame,
     quartiers: gpd.GeoDataFrame,
     min_points: int = config.MIN_POINTS_PER_QUARTIER,
+    out_of_scope: dict[str, str] = config.OUT_OF_SCOPE_CSDS,
 ) -> tuple[gpd.GeoDataFrame, pd.DataFrame]:
     """Assign points to quartiers. Returns (sample points, per-quartier summary).
 
+    - A point in an out-of-scope census subdivision is kept but marked in_scope=False
+      with a scope_note; it is not routed and not counted in the quartier's statistics.
     - A point outside every quartier is dropped and counted in the summary's attrs.
     - A quartier with no point gets its polygon's representative point (source
       "polygon_fallback"), so every quartier can be routed; it is flagged.
@@ -127,9 +142,12 @@ def build_sample_points(
         points, quartiers[["id", "geometry"]], how="left", predicate="within"
     ).rename(columns={"id": "quartier_id"})
     outside = int(joined["quartier_id"].isna().sum())
-    assigned = joined[joined["quartier_id"].notna()]
+    assigned = joined[joined["quartier_id"].notna()].copy()
+    assigned["scope_note"] = assigned["csd_name"].map(out_of_scope)
+    assigned["in_scope"] = assigned["scope_note"].isna()
 
-    empty = quartiers[~quartiers["id"].isin(assigned["quartier_id"])]
+    in_scope = assigned[assigned["in_scope"]]
+    empty = quartiers[~quartiers["id"].isin(in_scope["quartier_id"])]
     fallback = gpd.GeoDataFrame(
         {
             "point_id": "fallback:" + empty["id"],
@@ -137,6 +155,9 @@ def build_sample_points(
             "source": "polygon_fallback",
             "weight": 1.0,
             "total_dwellings": 0,
+            "csd_name": None,
+            "in_scope": True,
+            "scope_note": None,
         },
         geometry=empty.geometry.representative_point(),
         crs=config.CRS_WGS84,
@@ -145,7 +166,8 @@ def build_sample_points(
     sample = gpd.GeoDataFrame(sample, geometry="geometry", crs=config.CRS_WGS84)
     sample = sample.sort_values(["quartier_id", "point_id"], ignore_index=True)
 
-    real = sample[sample["source"] == "statcan_da"]
+    real = sample[(sample["source"] == "statcan_da") & sample["in_scope"]]
+    excluded = sample[~sample["in_scope"]].groupby("quartier_id").size()
     summary = (
         quartiers.set_index("id")[["name", "dwellings"]]
         .rename(columns={"dwellings": "city_dwellings"})
@@ -159,6 +181,7 @@ def build_sample_points(
         .fillna({"n_points": 0, "statcan_total_dwellings": 0, "statcan_occupied_dwellings": 0})
     )
     summary["n_points"] = summary["n_points"].astype(int)
+    summary["n_out_of_scope"] = excluded.reindex(summary.index).fillna(0).astype(int)
     summary["dwelling_ratio"] = summary["statcan_total_dwellings"] / summary["city_dwellings"]
     summary["fallback"] = summary.index.isin(empty["id"])
     summary["low_sample"] = summary["n_points"] < min_points

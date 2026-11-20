@@ -95,13 +95,14 @@ def _quartiers():
     )
 
 
-def _points(xy_weights):
+def _points(xy_weights, csd_names=None):
     return gpd.GeoDataFrame(
         {
             "point_id": [f"da:{i}" for i in range(len(xy_weights))],
             "source": "statcan_da",
             "weight": [w for _, _, w in xy_weights],
             "total_dwellings": [w for _, _, w in xy_weights],
+            "csd_name": csd_names or ["Montréal"] * len(xy_weights),
         },
         geometry=gpd.points_from_xy([x for x, _, _ in xy_weights], [y for _, y, _ in xy_weights]),
         crs=config.CRS_WGS84,
@@ -133,6 +134,24 @@ def test_quartier_with_few_points_is_low_sample_without_fallback():
     assert (sample["source"] == "statcan_da").all()
 
 
+def test_out_of_scope_point_is_kept_marked_and_not_counted():
+    pts = _points(
+        [(0.2, 0.2, 10), (0.5, 0.5, 10), (0.8, 0.8, 10), (2.5, 0.5, 25)],
+        csd_names=["Montréal", "Montréal", "Montréal", "Island"],
+    )
+    sample, summary = sample_points.build_sample_points(
+        pts, _quartiers(), min_points=3, out_of_scope={"Island": "no transit"}
+    )
+    island = sample[sample["point_id"] == "da:3"].iloc[0]
+    assert not island["in_scope"] and island["scope_note"] == "no transit"
+    assert sample.loc[sample["point_id"] != "da:3", "in_scope"].all()
+    s = summary.set_index("quartier_id")
+    # B's only census point is out of scope: 0 counted points, a fallback point, flagged.
+    assert s.loc["B", "n_points"] == 0 and s.loc["B", "n_out_of_scope"] == 1
+    assert s.loc["B", "fallback"]
+    assert s.loc["A", "n_out_of_scope"] == 0
+
+
 # --- Integration on the real files ---------------------------------------------
 
 real = pytest.mark.skipif(
@@ -158,6 +177,17 @@ def test_real_every_quartier_has_census_points(real_result):
     assert not summary["fallback"].any()
     assert summary.attrs["points_outside_quartiers"] == 0
     assert 3000 < len(sample) < 3500
+
+
+@real
+def test_real_ile_dorval_is_out_of_scope_in_dorval(real_result):
+    quartiers, sample, summary = real_result
+    out = sample[~sample["in_scope"]]
+    assert out["csd_name"].tolist() == ["L'Île-Dorval"]
+    dorval = quartiers.loc[quartiers["name"] == "Dorval", "id"].iloc[0]
+    assert out["quartier_id"].tolist() == [dorval]
+    assert "seasonal ferry" in out["scope_note"].iloc[0]
+    assert summary.set_index("quartier_id").loc[dorval, "n_out_of_scope"] == 1
 
 
 @real
