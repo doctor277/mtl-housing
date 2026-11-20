@@ -3,7 +3,9 @@
 web/public/data/neighbourhoods.geojson
     One feature per quartier: id, name, borough, municipality, dwellings. Geometry is
     simplified as a coverage (shared edges stay shared, no gaps or slivers) and rounded
-    to 5 decimals (~1 m).
+    to 5 decimals (~1 m). Polygon parts where nobody lives (config.NO_RESIDENT_AREAS)
+    are cut out of their quartier and written as separate features with
+    no_residents=true, part_of=<quartier id>; they have no commute results.
 
 web/public/data/commute.json
     {"meta": {...how, when, from what...}, "results": {quartier_id: {campus_id: {...}}}}
@@ -22,6 +24,7 @@ from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
+from shapely.geometry import MultiPolygon, Point
 
 from mtlhousing import aggregate, config
 
@@ -106,7 +109,7 @@ def campus_meta(campus_id: str, routing_meta: dict) -> dict:
                 "lat": d.lat,
                 "lon": d.lon,
                 "osm_ref": d.osm_ref,
-                "access_penalty_min": config.ACCESS_PENALTY_MIN.get(d.id, 0.0),
+                "access_adjustment_min": config.ACCESS_ADJUSTMENT_MIN.get(d.id, 0.0),
             }
             for d in campus.destinations
         ],
@@ -187,10 +190,56 @@ def simplify_quartiers(quartiers: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     return metric.to_crs(config.CRS_WGS84)
 
 
-def write_neighbourhoods(quartiers: gpd.GeoDataFrame, path: Path) -> Path:
+def split_no_resident_areas(
+    gdf: gpd.GeoDataFrame,
+    homes: gpd.GeoDataFrame,
+    areas=config.NO_RESIDENT_AREAS,
+) -> gpd.GeoDataFrame:
+    """Cut each no-resident area's polygon parts out of its quartier (EPSG:4326) and
+    append them as separate features. Raises if a part can't be found, would leave the
+    quartier empty, or contains a home (in-scope sample point)."""
+    gdf = gdf.assign(no_residents=False, part_of=None).reset_index(drop=True)
+    extra = []
+    for a in areas:
+        i = gdf.index[gdf["id"] == a.quartier_id]
+        if len(i) != 1:
+            raise ValueError(f"{a.id}: quartier {a.quartier_id} not found")
+        i = i[0]
+        parts = list(getattr(gdf.at[i, "geometry"], "geoms", [gdf.at[i, "geometry"]]))
+        picks = [Point(lon, lat) for lat, lon in a.points]
+        out = [k for k, p in enumerate(parts) if any(p.contains(pt) for pt in picks)]
+        if len(out) != len(picks) or len(out) == len(parts):
+            raise ValueError(f"{a.id}: expected {len(picks)} separate parts, found {len(out)}")
+        removed = MultiPolygon([parts[k] for k in out])
+        inside = homes[homes.within(removed)]
+        if not inside.empty:
+            raise ValueError(f"{a.id}: census homes inside: {inside['point_id'].tolist()}")
+        keep = [p for k, p in enumerate(parts) if k not in out]
+        gdf.at[i, "geometry"] = keep[0] if len(keep) == 1 else MultiPolygon(keep)
+        q = gdf.loc[i]
+        extra.append(
+            {
+                "id": a.id, "name": a.name, "borough": q["borough"],
+                "municipality": q["municipality"], "dwellings": 0, "no_residents": True,
+                "part_of": a.quartier_id, "geometry": removed,
+            }
+        )  # fmt: skip
+    if extra:
+        gdf = pd.concat([gdf, gpd.GeoDataFrame(extra, crs=gdf.crs)], ignore_index=True)
+    return gdf
+
+
+def write_neighbourhoods(
+    quartiers: gpd.GeoDataFrame,
+    path: Path,
+    homes: gpd.GeoDataFrame | None = None,
+    areas=config.NO_RESIDENT_AREAS,
+) -> Path:
     gdf = simplify_quartiers(quartiers)[
         ["id", "name", "borough", "municipality", "dwellings", "geometry"]
     ]
+    if homes is not None:
+        gdf = split_no_resident_areas(gdf, homes, areas)
     gdf = gdf.assign(dwellings=gdf["dwellings"].astype(int)).sort_values("id")
     gj = json.loads(gdf.to_json(drop_id=True, to_wgs84=False))
     for feat in gj["features"]:
@@ -259,7 +308,9 @@ def run(campus_ids: list[str]) -> dict:
 
     commute = build_commute(stats_by_campus, meta_by_campus, sorted(quartiers["id"]))
     write_json(commute, COMMUTE_JSON)
-    write_neighbourhoods(quartiers, NEIGHBOURHOODS_GEOJSON)
+    sample = gpd.read_parquet(config.SAMPLE_POINTS_PARQUET)
+    homes = sample[sample["in_scope"].astype(bool)].to_crs(config.CRS_WGS84)
+    write_neighbourhoods(quartiers, NEIGHBOURHOODS_GEOJSON, homes)
     maps = [
         write_explore_map(quartiers, stats_by_campus[c], c, explore_html(c)) for c in campus_ids
     ]

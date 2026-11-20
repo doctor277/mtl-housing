@@ -66,6 +66,34 @@ OUT_OF_SCOPE_CSDS = {
     ),
 }
 
+
+@dataclass(frozen=True)
+class NoResidentArea:
+    """A polygon part of a quartier where nobody lives. The site shows it as "no
+    residents" (no commute time) instead of painting it with the quartier's statistics.
+    Each part is picked by a point inside it; export refuses if a census home lies in it."""
+
+    id: str
+    quartier_id: str
+    name: str
+    points: tuple[tuple[float, float], ...]  # (lat, lon), one inside each polygon part
+    note: str
+
+
+NO_RESIDENT_AREAS = (
+    NoResidentArea(
+        id="37-parc-jean-drapeau",
+        quartier_id="37",  # Vieux-Montréal
+        name="Parc Jean-Drapeau (Île Sainte-Hélène, Île Notre-Dame)",
+        points=((45.5145, -73.5335), (45.5055, -73.5260)),
+        note=(
+            "Park islands with no permanent residents. The city's reference quartiers "
+            "include them in Vieux-Montréal as two separate polygon parts; no census "
+            "home in the sample lies on them."
+        ),
+    ),
+)
+
 # --- Coordinate reference systems -------------------------------------------
 CRS_WGS84 = "EPSG:4326"  # storage / web output
 CRS_METRIC = "EPSG:32188"  # NAD83 / MTM zone 8: metric work in Montréal
@@ -176,20 +204,25 @@ DEPARTURE_WINDOW = timedelta(minutes=60)  # 7:30-8:30, approximates "arrive arou
 
 MAX_TRIP_MIN = 120  # r5py default max_time; no result means "more than this"
 
-# Calibrated access penalties (minutes added to every trip ending at a destination).
-# udem_roger_gaudry: R5 walks the UdeM metro platform stops (STM 53877 / 53878) ->
-# Roger-Gaudry, 357-395 m at flat speed (no elevation model): 4.85 min on average at
-# 4.8 km/h (validation route 6), so 4.85 x 4.8 / 4.0 = 5.8 min at 4.0 km/h (walk time
-# scales with 1 / speed). A UdeM student (author) walks it in ~7 min, matching Google
-# Maps (~7 min / 400 m). Penalty = 7 - 5.8 = 1.2 min for the uphill climb.
-# The penalty depends on WALK_SPEED_KMH: re-check it with validation route 6 (step 1.9)
-# after any speed change. See docs/methodology.md.
-ACCESS_PENALTY_MIN = {"udem_roger_gaudry": 1.2}
+# Calibrated access adjustments (minutes added to every trip ending at a destination;
+# negative = R5's last walk is slower than reality). Both UdeM buildings are calibrated
+# the same way: adjustment = real walk from the metro platform where R5's trips end, minus
+# R5's walk-only time from that platform stop at WALK_SPEED_KMH. R5 times come from
+# `python -m mtlhousing access-check` (validation walk routes 6 and 6b).
+# - udem_roger_gaudry: target 7 min from the Universite-de-Montreal platform (STM stop 56):
+#   the author (UdeM student) and Google Maps (~7 min / 400 m). R5 walks 332 m in
+#   5.08 min at 4.0 km/h and misses the uphill climb: 7 - 5.08 = +1.9.
+# - udem_jean_brillant: target 7 min from the Cote-des-Neiges platform (STM stop 55):
+#   Google Maps (~7 min / 500 m). R5 walks 613 m in 9.40 min at 4.0 km/h (its path starts
+#   at the platform coordinate, 459 m from the door in a straight line): 7 - 9.40 = -2.4.
+# The adjustments depend on WALK_SPEED_KMH: re-run access-check after any speed change.
+# See docs/methodology.md.
+ACCESS_ADJUSTMENT_MIN = {"udem_roger_gaudry": 1.9, "udem_jean_brillant": -2.4}
 
 
 def check_routing_speed(routing_meta: dict, campus_id: str) -> None:
     """Saved travel times must have been routed at the current WALK_SPEED_KMH, because
-    ACCESS_PENALTY_MIN is calibrated for that speed."""
+    ACCESS_ADJUSTMENT_MIN is calibrated for that speed."""
     speed = routing_meta.get("speed_walking_kmh")
     if speed != WALK_SPEED_KMH:
         raise ValueError(
@@ -197,6 +230,7 @@ def check_routing_speed(routing_meta: dict, campus_id: str) -> None:
             f"WALK_SPEED_KMH is {WALK_SPEED_KMH}. Re-run "
             f"`python -m mtlhousing travel-times --campus {campus_id}` (not --repair-only)."
         )
+
 
 # Commute reliability: flag a quartier when more than this share of its dwellings
 # cannot reach the campus within MAX_TRIP_MIN.

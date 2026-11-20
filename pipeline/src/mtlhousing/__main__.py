@@ -116,7 +116,7 @@ def step_aggregate(campus: str) -> None:
     names = boundaries.load_quartiers().set_index("id")["name"]
     fastest = stats[stats["target"] == aggregate.FASTEST].set_index("quartier_id")
     fastest = fastest.join(names)
-    print(f"{campus}: {fastest.shape[0]} quartiers, penalties {config.ACCESS_PENALTY_MIN}")
+    print(f"{campus}: {fastest.shape[0]} quartiers, adjustments {config.ACCESS_ADJUSTMENT_MIN}")
     print(f"median of quartier medians: {fastest['median'].median():.1f} min")
     print("flagged:", {q: f for q, f in zip(fastest["name"], fastest["flags"], strict=True) if f})
     over = fastest[~np.isfinite(fastest["p90"])]["name"].tolist()
@@ -165,6 +165,16 @@ def step_validate(campus: str) -> None:
     print(f"\n{n_pass}/{len(res)} pass -> {validation.results_csv(campus)}")
 
 
+def step_access_check(campus: str) -> None:
+    import pandas as pd
+
+    from mtlhousing import validation
+
+    res = validation.access_check(campus)
+    with pd.option_context("display.width", 200, "display.max_colwidth", 80):
+        print(res.to_string(index=False))
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -175,6 +185,7 @@ STEPS = {
     "aggregate": step_aggregate,
     "export": step_export,
     "validate": step_validate,
+    "access-check": step_access_check,
 }
 
 
@@ -192,7 +203,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
-    elif args.step in ("aggregate", "export", "validate"):
+    elif args.step in ("aggregate", "export", "validate", "access-check"):
         STEPS[args.step](args.campus)
     else:
         STEPS[args.step]()

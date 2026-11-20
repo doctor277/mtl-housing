@@ -1,5 +1,5 @@
 // Phase 1.5 "ugly map": data on screen, nothing else.
-import { BINS, NO_DATA_COLOUR, OVER_MAX_COLOUR } from "@/lib/legend";
+import { BINS, NO_DATA_COLOUR, NO_RESIDENTS_COLOUR, OVER_MAX_COLOUR } from "@/lib/legend";
 import CommuteMap from "./CommuteMap";
 
 export default function Home() {
@@ -38,6 +38,17 @@ export default function Home() {
             style={{ background: NO_DATA_COLOUR, display: "inline-block", width: 14, height: 10 }}
           />{" "}
           no data
+        </div>
+        <div>
+          <span
+            style={{
+              background: NO_RESIDENTS_COLOUR,
+              display: "inline-block",
+              width: 14,
+              height: 10,
+            }}
+          />{" "}
+          no residents (park)
         </div>
         <div style={{ marginTop: 4, fontSize: 11 }}>
           Click a quartier for details. Quartiers: Ville de Montréal (CC BY 4.0). Schedules: STM,

@@ -4,6 +4,7 @@ route,kind,origin,lat,lon,coord_source,gtfs_stop_ids,destination_id,google_min,g
 3,transit,1500 Rue Fleury Est,45.5626456,-73.6562057,author (Google Maps pin),,udem_roger_gaudry,50,42,fastest trip listed,first suggested trip
 4,transit,3800 Rue Ontario Est,45.5475014,-73.5429487,author (Google Maps pin),,udem_roger_gaudry,60,52,via green + REM,first suggested trip
 5,transit,Fairview-Pointe-Claire REM station,45.459943,-73.835339,REM GTFS stop ST_PTC_1 (parent station),,udem_roger_gaudry,41,,,REM -> blue
-6,walk,Université-de-Montréal metro platform,,,STM GTFS platform stops where R5's metro trips end,stm:53877|stm:53878,udem_roger_gaudry,7,,,walk through the Tunnel de la Montagne
+6,walk,Université-de-Montréal metro platform,,,STM GTFS metro stop 56 (where R5's blue-line trips end),stm:56,udem_roger_gaudry,7,,,walk through the Tunnel de la Montagne (author + Google)
+6b,walk,Côte-des-Neiges metro platform,,,STM GTFS metro stop 55 (where R5's blue-line trips end),stm:55,udem_jean_brillant,7,,,Google ~7 min / 500 m
 7,transit,5800 Rue Sherbrooke Ouest,45.4696973,-73.6171523,author (Google Maps pin),,udem_jean_brillant,36,,,
 7,transit,5800 Rue Sherbrooke Ouest,45.4696973,-73.6171523,author (Google Maps pin),,udem_roger_gaudry,35,,,

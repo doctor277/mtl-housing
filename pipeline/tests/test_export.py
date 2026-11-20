@@ -4,7 +4,7 @@ import math
 import geopandas as gpd
 import pandas as pd
 import pytest
-from shapely.geometry import box
+from shapely.geometry import MultiPolygon, Point, box
 
 from mtlhousing import aggregate, config, export
 
@@ -80,14 +80,14 @@ def test_build_commute_shape_and_values():
     assert far["by_destination"][JB]["over_max"] == ["p90"]
 
 
-def test_meta_records_method_and_penalties():
+def test_meta_records_method_and_adjustments():
     m = _commute()["meta"]
     assert m["analysis_date"] == config.ANALYSIS_DATE.isoformat()
     assert m["departure_window"] == {"start": "07:30", "minutes": 60}
     assert m["max_trip_min"] == config.MAX_TRIP_MIN
     dests = {d["id"]: d for d in m["campuses"]["udem"]["destinations"]}
-    assert dests[RG]["access_penalty_min"] == config.ACCESS_PENALTY_MIN[RG]
-    assert dests[JB]["access_penalty_min"] == 0.0
+    assert dests[RG]["access_adjustment_min"] == config.ACCESS_ADJUSTMENT_MIN[RG]
+    assert dests[JB]["access_adjustment_min"] == config.ACCESS_ADJUSTMENT_MIN[JB]
     assert m["walk_speed_kmh"] == config.WALK_SPEED_KMH
     assert m["out_of_scope"][0]["area"] == "L'Île-Dorval"
 
@@ -125,6 +125,52 @@ def test_neighbourhoods_geojson_keeps_shared_edges(tmp_path):
     assert back.union_all().area == pytest.approx(back.area.sum(), rel=1e-6)
 
 
+def _islands():
+    """Quartier '01' = mainland square + one island; '02' = adjacent square (WGS84)."""
+    sq = box(-73.60, 45.50, -73.59, 45.51)
+    island = box(-73.57, 45.50, -73.565, 45.505)
+    return gpd.GeoDataFrame(
+        {"id": ["01", "02"], "name": ["A", "B"], "borough": ["X", "X"],
+         "municipality": ["M", "M"], "dwellings": [10, 20]},
+        geometry=[MultiPolygon([sq, island]), box(-73.59, 45.50, -73.58, 45.51)],
+        crs=config.CRS_WGS84,
+    )  # fmt: skip
+
+
+AREA = config.NoResidentArea(
+    id="01-park", quartier_id="01", name="Park", points=((45.502, -73.567),), note=""
+)
+
+
+def _homes(*lonlat):
+    return gpd.GeoDataFrame(
+        {"point_id": [f"h{i}" for i in range(len(lonlat))]},
+        geometry=[Point(x, y) for x, y in lonlat],
+        crs=config.CRS_WGS84,
+    )
+
+
+def test_no_resident_part_is_cut_out_of_its_quartier():
+    out = export.split_no_resident_areas(_islands(), _homes((-73.595, 45.505)), [AREA])
+    by_id = out.set_index("id")
+    assert list(out["id"]) == ["01", "02", "01-park"]
+    assert by_id.loc["01", "geometry"].geom_type == "Polygon"
+    park = by_id.loc["01-park"]
+    assert bool(park["no_residents"]) and park["part_of"] == "01" and park["dwellings"] == 0
+    assert park["geometry"].contains(Point(-73.567, 45.502))
+    assert not bool(by_id.loc["01", "no_residents"])
+
+
+def test_no_resident_part_refuses_homes_or_missing_part():
+    with pytest.raises(ValueError, match="homes inside"):
+        export.split_no_resident_areas(_islands(), _homes((-73.567, 45.502)), [AREA])
+    lost = config.NoResidentArea(
+        id="x", quartier_id="01", name="x", points=((45.0, -73.0),), note=""
+    )
+    with pytest.raises(ValueError, match="separate parts"):
+        export.split_no_resident_areas(_islands(), _homes(), [lost])
+
+
 # --- the real exported files ------------------------------------------------------------
 
 real = pytest.mark.skipif(not export.COMMUTE_JSON.exists(), reason="run export first")
@@ -134,8 +180,14 @@ real = pytest.mark.skipif(not export.COMMUTE_JSON.exists(), reason="run export f
 def test_real_files_match_and_are_small():
     c = json.loads(export.COMMUTE_JSON.read_text(encoding="utf-8"))
     gj = json.loads(export.NEIGHBOURHOODS_GEOJSON.read_text(encoding="utf-8"))
-    ids = {f["properties"]["id"] for f in gj["features"]}
+    feats = gj["features"]
+    ids = {f["properties"]["id"] for f in feats if not f["properties"]["no_residents"]}
     assert ids == set(c["results"]) and len(ids) == 91
+    no_res = {
+        f["properties"]["id"]: f["properties"] for f in feats if f["properties"]["no_residents"]
+    }
+    assert set(no_res) == {a.id for a in config.NO_RESIDENT_AREAS}
+    assert all(p["dwellings"] == 0 and p["part_of"] in ids for p in no_res.values())
     assert export.NEIGHBOURHOODS_GEOJSON.stat().st_size < 1_000_000
     for qid, r in c["results"].items():
         u = r["udem"]

@@ -1,14 +1,14 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-20T11:21:05",
+  "generated_at": "2026-11-20T16:43:25",
   "analysis_date": "2026-12-01",
   "departure_window": {
    "start": "07:30",
    "minutes": 60
   },
   "percentile_over_window": 50,
-  "walk_speed_kmh": 4.8,
+  "walk_speed_kmh": 4.0,
   "transport_modes": [
    "TRANSIT",
    "WALK"
@@ -63,7 +63,7 @@
       "lat": 45.5027705,
       "lon": -73.6150484,
       "osm_ref": "node/2573744215",
-      "access_penalty_min": 2.2
+      "access_adjustment_min": 1.9
      },
      {
       "id": "udem_jean_brillant",
@@ -71,15 +71,30 @@
       "lat": 45.4986715,
       "lon": -73.6181739,
       "osm_ref": "node/6783857247",
-      "access_penalty_min": 0.0
+      "access_adjustment_min": -2.4
      }
     ],
     "n_sample_points": 3219,
-    "computed_at": "2026-11-20T01:56:11",
+    "computed_at": "2026-11-20T16:41:47",
     "relocated_origins": [
      {
       "point_id": "da:24663067",
       "moved_m": 8.1,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663069",
+      "moved_m": 10.7,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663075",
+      "moved_m": 11.9,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663076",
+      "moved_m": 39.5,
       "reachable_after": false
      },
      {
@@ -100,9 +115,9 @@
  "results": {
   "01": {
    "udem": {
-    "median": 44.2,
-    "p10": 36.2,
-    "p90": 54.2,
+    "median": 47.6,
+    "p10": 38.9,
+    "p90": 57.6,
     "over_max": [],
     "n_points": 41,
     "n_unreachable": 0,
@@ -111,29 +126,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 44.2,
-      "p10": 36.2,
-      "p90": 54.2,
+      "median": 47.9,
+      "p10": 38.9,
+      "p90": 57.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.254
      },
      "udem_jean_brillant": {
-      "median": 45.0,
-      "p10": 38.0,
-      "p90": 56.0,
+      "median": 47.6,
+      "p10": 39.6,
+      "p90": 57.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.746
      }
     }
    }
   },
   "02": {
    "udem": {
-    "median": 42.2,
-    "p10": 39.2,
-    "p90": 53.2,
+    "median": 45.6,
+    "p10": 41.6,
+    "p90": 56.6,
     "over_max": [],
     "n_points": 45,
     "n_unreachable": 0,
@@ -142,29 +157,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 42.2,
-      "p10": 39.2,
-      "p90": 53.2,
+      "median": 45.9,
+      "p10": 41.9,
+      "p90": 56.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.228
      },
      "udem_jean_brillant": {
-      "median": 44.0,
-      "p10": 41.0,
-      "p90": 55.0,
+      "median": 45.6,
+      "p10": 41.6,
+      "p90": 56.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.772
      }
     }
    }
   },
   "03": {
    "udem": {
-    "median": 40.2,
-    "p10": 38.2,
-    "p90": 43.2,
+    "median": 42.9,
+    "p10": 40.9,
+    "p90": 45.6,
     "over_max": [],
     "n_points": 34,
     "n_unreachable": 0,
@@ -173,29 +188,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 40.2,
-      "p10": 38.2,
-      "p90": 43.2,
+      "median": 42.9,
+      "p10": 40.9,
+      "p90": 45.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.704
      },
      "udem_jean_brillant": {
-      "median": 42.0,
-      "p10": 40.0,
-      "p90": 45.0,
+      "median": 43.6,
+      "p10": 41.6,
+      "p90": 45.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.296
      }
     }
    }
   },
   "04": {
    "udem": {
-    "median": 41.2,
-    "p10": 34.2,
-    "p90": 47.2,
+    "median": 43.9,
+    "p10": 35.9,
+    "p90": 49.9,
     "over_max": [],
     "n_points": 43,
     "n_unreachable": 0,
@@ -204,17 +219,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 41.2,
-      "p10": 34.2,
-      "p90": 47.2,
+      "median": 43.9,
+      "p10": 35.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 43.0,
-      "p10": 36.0,
-      "p90": 49.0,
+      "median": 44.6,
+      "p10": 36.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -224,9 +239,9 @@
   },
   "05": {
    "udem": {
-    "median": 39.2,
-    "p10": 34.2,
-    "p90": 45.2,
+    "median": 40.9,
+    "p10": 35.9,
+    "p90": 48.9,
     "over_max": [],
     "n_points": 31,
     "n_unreachable": 0,
@@ -235,17 +250,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 39.2,
-      "p10": 34.2,
-      "p90": 45.2,
+      "median": 40.9,
+      "p10": 35.9,
+      "p90": 48.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 41.0,
-      "p10": 36.0,
-      "p90": 47.0,
+      "median": 41.6,
+      "p10": 36.6,
+      "p90": 49.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -255,9 +270,9 @@
   },
   "06": {
    "udem": {
-    "median": 51.2,
-    "p10": 47.2,
-    "p90": 55.2,
+    "median": 52.9,
+    "p10": 49.9,
+    "p90": 56.9,
     "over_max": [],
     "n_points": 30,
     "n_unreachable": 0,
@@ -266,17 +281,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 51.2,
-      "p10": 47.2,
-      "p90": 55.2,
+      "median": 52.9,
+      "p10": 49.9,
+      "p90": 56.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 53.0,
-      "p10": 49.0,
-      "p90": 57.0,
+      "median": 53.6,
+      "p10": 50.6,
+      "p90": 57.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -286,9 +301,9 @@
   },
   "07": {
    "udem": {
-    "median": 45.2,
-    "p10": 39.2,
-    "p90": 50.2,
+    "median": 45.9,
+    "p10": 39.9,
+    "p90": 51.9,
     "over_max": [],
     "n_points": 40,
     "n_unreachable": 0,
@@ -297,17 +312,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 45.2,
-      "p10": 39.2,
-      "p90": 50.2,
+      "median": 45.9,
+      "p10": 39.9,
+      "p90": 51.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 47.0,
-      "p10": 41.0,
-      "p90": 52.0,
+      "median": 46.6,
+      "p10": 40.6,
+      "p90": 52.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -317,9 +332,9 @@
   },
   "08": {
    "udem": {
-    "median": 49.2,
-    "p10": 45.2,
-    "p90": 52.2,
+    "median": 50.9,
+    "p10": 46.9,
+    "p90": 54.9,
     "over_max": [],
     "n_points": 19,
     "n_unreachable": 0,
@@ -328,17 +343,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 49.2,
-      "p10": 45.2,
-      "p90": 52.2,
+      "median": 50.9,
+      "p10": 46.9,
+      "p90": 54.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 51.0,
-      "p10": 47.0,
-      "p90": 54.0,
+      "median": 51.6,
+      "p10": 47.6,
+      "p90": 55.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -348,9 +363,9 @@
   },
   "09": {
    "udem": {
-    "median": 28.2,
-    "p10": 24.2,
-    "p90": 35.2,
+    "median": 30.9,
+    "p10": 24.9,
+    "p90": 37.9,
     "over_max": [],
     "n_points": 37,
     "n_unreachable": 0,
@@ -359,17 +374,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 28.2,
-      "p10": 24.2,
-      "p90": 35.2,
+      "median": 30.9,
+      "p10": 24.9,
+      "p90": 37.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 30.0,
-      "p10": 26.0,
-      "p90": 37.0,
+      "median": 31.6,
+      "p10": 25.6,
+      "p90": 38.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -379,9 +394,9 @@
   },
   "10": {
    "udem": {
-    "median": 33.2,
-    "p10": 28.2,
-    "p90": 37.2,
+    "median": 35.9,
+    "p10": 30.9,
+    "p90": 39.9,
     "over_max": [],
     "n_points": 24,
     "n_unreachable": 0,
@@ -390,17 +405,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 33.2,
-      "p10": 28.2,
-      "p90": 37.2,
+      "median": 35.9,
+      "p10": 30.9,
+      "p90": 39.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 35.0,
-      "p10": 30.0,
-      "p90": 39.0,
+      "median": 36.6,
+      "p10": 31.6,
+      "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -410,9 +425,9 @@
   },
   "11": {
    "udem": {
-    "median": 24.2,
-    "p10": 18.2,
-    "p90": 35.2,
+    "median": 26.9,
+    "p10": 19.9,
+    "p90": 36.9,
     "over_max": [],
     "n_points": 51,
     "n_unreachable": 0,
@@ -421,17 +436,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 24.2,
-      "p10": 18.2,
-      "p90": 35.2,
+      "median": 26.9,
+      "p10": 19.9,
+      "p90": 36.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 26.0,
-      "p10": 20.0,
-      "p90": 37.0,
+      "median": 27.6,
+      "p10": 20.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -441,9 +456,9 @@
   },
   "12": {
    "udem": {
-    "median": 28.2,
-    "p10": 19.2,
-    "p90": 34.2,
+    "median": 30.9,
+    "p10": 20.9,
+    "p90": 36.9,
     "over_max": [],
     "n_points": 27,
     "n_unreachable": 0,
@@ -452,17 +467,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 28.2,
-      "p10": 19.2,
-      "p90": 34.2,
+      "median": 30.9,
+      "p10": 20.9,
+      "p90": 36.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 30.0,
-      "p10": 21.0,
-      "p90": 36.0,
+      "median": 31.6,
+      "p10": 21.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -472,9 +487,9 @@
   },
   "13": {
    "udem": {
-    "median": 30.2,
-    "p10": 24.2,
-    "p90": 36.2,
+    "median": 32.9,
+    "p10": 25.9,
+    "p90": 38.9,
     "over_max": [],
     "n_points": 56,
     "n_unreachable": 0,
@@ -483,17 +498,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 30.2,
-      "p10": 24.2,
-      "p90": 36.2,
+      "median": 32.9,
+      "p10": 25.9,
+      "p90": 38.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 32.0,
-      "p10": 26.0,
-      "p90": 38.0,
+      "median": 33.6,
+      "p10": 26.6,
+      "p90": 39.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -503,9 +518,9 @@
   },
   "14": {
    "udem": {
-    "median": 27.2,
-    "p10": 22.2,
-    "p90": 30.2,
+    "median": 28.9,
+    "p10": 23.9,
+    "p90": 32.9,
     "over_max": [],
     "n_points": 29,
     "n_unreachable": 0,
@@ -514,17 +529,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 27.2,
-      "p10": 22.2,
-      "p90": 30.2,
+      "median": 28.9,
+      "p10": 23.9,
+      "p90": 32.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 29.0,
-      "p10": 24.0,
-      "p90": 32.0,
+      "median": 29.6,
+      "p10": 24.6,
+      "p90": 33.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -534,9 +549,9 @@
   },
   "15": {
    "udem": {
-    "median": 31.2,
-    "p10": 25.2,
-    "p90": 35.2,
+    "median": 33.9,
+    "p10": 26.9,
+    "p90": 36.9,
     "over_max": [],
     "n_points": 37,
     "n_unreachable": 0,
@@ -545,17 +560,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 31.2,
-      "p10": 25.2,
-      "p90": 35.2,
+      "median": 33.9,
+      "p10": 26.9,
+      "p90": 36.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 33.0,
-      "p10": 27.0,
-      "p90": 37.0,
+      "median": 34.6,
+      "p10": 27.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -565,9 +580,9 @@
   },
   "16": {
    "udem": {
-    "median": 37.2,
-    "p10": 29.2,
-    "p90": 40.2,
+    "median": 38.9,
+    "p10": 31.9,
+    "p90": 42.9,
     "over_max": [],
     "n_points": 28,
     "n_unreachable": 0,
@@ -576,17 +591,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 37.2,
-      "p10": 29.2,
-      "p90": 40.2,
+      "median": 38.9,
+      "p10": 31.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 39.0,
-      "p10": 31.0,
-      "p90": 42.0,
+      "median": 39.6,
+      "p10": 32.6,
+      "p90": 43.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -596,9 +611,9 @@
   },
   "17": {
    "udem": {
-    "median": 38.2,
-    "p10": 32.2,
-    "p90": 44.2,
+    "median": 39.9,
+    "p10": 34.9,
+    "p90": 45.9,
     "over_max": [],
     "n_points": 28,
     "n_unreachable": 0,
@@ -607,29 +622,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 38.2,
-      "p10": 32.2,
-      "p90": 44.2,
+      "median": 39.9,
+      "p10": 34.9,
+      "p90": 45.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.938
      },
      "udem_jean_brillant": {
-      "median": 40.0,
-      "p10": 34.0,
-      "p90": 46.0,
+      "median": 40.6,
+      "p10": 35.6,
+      "p90": 46.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.062
      }
     }
    }
   },
   "18": {
    "udem": {
-    "median": 45.2,
-    "p10": 42.2,
-    "p90": 48.2,
+    "median": 46.9,
+    "p10": 42.9,
+    "p90": 49.9,
     "over_max": [],
     "n_points": 50,
     "n_unreachable": 0,
@@ -638,29 +653,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 45.2,
-      "p10": 42.2,
-      "p90": 48.2,
+      "median": 46.9,
+      "p10": 42.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.826
      },
      "udem_jean_brillant": {
-      "median": 47.0,
-      "p10": 44.0,
-      "p90": 50.0,
+      "median": 47.6,
+      "p10": 43.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.174
      }
     }
    }
   },
   "19": {
    "udem": {
-    "median": 44.2,
-    "p10": 39.2,
-    "p90": 48.2,
+    "median": 46.6,
+    "p10": 40.6,
+    "p90": 49.9,
     "over_max": [],
     "n_points": 24,
     "n_unreachable": 0,
@@ -669,29 +684,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 44.2,
-      "p10": 39.2,
-      "p90": 48.2,
+      "median": 46.9,
+      "p10": 40.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.217
      },
      "udem_jean_brillant": {
-      "median": 46.0,
-      "p10": 40.0,
-      "p90": 50.0,
+      "median": 46.6,
+      "p10": 40.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.783
      }
     }
    }
   },
   "20": {
    "udem": {
-    "median": 47.2,
-    "p10": 43.2,
-    "p90": 53.2,
+    "median": 49.6,
+    "p10": 44.9,
+    "p90": 54.9,
     "over_max": [],
     "n_points": 44,
     "n_unreachable": 0,
@@ -700,29 +715,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 47.2,
-      "p10": 43.2,
-      "p90": 53.2,
+      "median": 49.9,
+      "p10": 44.9,
+      "p90": 54.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.686
      },
      "udem_jean_brillant": {
-      "median": 49.0,
-      "p10": 45.0,
-      "p90": 55.0,
+      "median": 49.6,
+      "p10": 45.6,
+      "p90": 55.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.314
      }
     }
    }
   },
   "21": {
    "udem": {
-    "median": 51.2,
-    "p10": 43.2,
-    "p90": 57.2,
+    "median": 53.9,
+    "p10": 46.6,
+    "p90": 58.6,
     "over_max": [],
     "n_points": 37,
     "n_unreachable": 0,
@@ -731,29 +746,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 51.2,
-      "p10": 43.2,
-      "p90": 57.2,
+      "median": 53.9,
+      "p10": 46.9,
+      "p90": 58.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.309
      },
      "udem_jean_brillant": {
-      "median": 53.0,
-      "p10": 45.0,
-      "p90": 59.0,
+      "median": 54.6,
+      "p10": 46.6,
+      "p90": 58.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.691
      }
     }
    }
   },
   "22": {
    "udem": {
-    "median": 57.2,
-    "p10": 48.2,
-    "p90": 62.2,
+    "median": 59.6,
+    "p10": 51.6,
+    "p90": 64.6,
     "over_max": [],
     "n_points": 17,
     "n_unreachable": 0,
@@ -762,29 +777,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 57.2,
-      "p10": 48.2,
-      "p90": 62.2,
+      "median": 59.9,
+      "p10": 51.9,
+      "p90": 64.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.087
      },
      "udem_jean_brillant": {
-      "median": 59.0,
-      "p10": 50.0,
-      "p90": 64.0,
+      "median": 59.6,
+      "p10": 51.6,
+      "p90": 64.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.913
      }
     }
    }
   },
   "23": {
    "udem": {
-    "median": 56.2,
-    "p10": 50.2,
-    "p90": 61.2,
+    "median": 57.9,
+    "p10": 53.6,
+    "p90": 62.6,
     "over_max": [],
     "n_points": 34,
     "n_unreachable": 0,
@@ -793,29 +808,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 56.2,
-      "p10": 50.2,
-      "p90": 61.2,
+      "median": 57.9,
+      "p10": 53.9,
+      "p90": 62.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.409
      },
      "udem_jean_brillant": {
-      "median": 58.0,
-      "p10": 52.0,
-      "p90": 62.0,
+      "median": 58.6,
+      "p10": 53.6,
+      "p90": 62.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.591
      }
     }
    }
   },
   "24": {
    "udem": {
-    "median": 61.2,
-    "p10": 58.2,
-    "p90": 64.2,
+    "median": 63.9,
+    "p10": 60.9,
+    "p90": 66.6,
     "over_max": [],
     "n_points": 25,
     "n_unreachable": 0,
@@ -824,29 +839,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 61.2,
-      "p10": 58.2,
-      "p90": 64.2,
+      "median": 63.9,
+      "p10": 60.9,
+      "p90": 66.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.441
      },
      "udem_jean_brillant": {
-      "median": 63.0,
-      "p10": 60.0,
-      "p90": 66.0,
+      "median": 64.6,
+      "p10": 61.6,
+      "p90": 66.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.559
      }
     }
    }
   },
   "25": {
    "udem": {
-    "median": 56.2,
-    "p10": 55.2,
-    "p90": 59.2,
+    "median": 57.6,
+    "p10": 57.6,
+    "p90": 60.6,
     "over_max": [],
     "n_points": 6,
     "n_unreachable": 0,
@@ -855,29 +870,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 56.2,
-      "p10": 55.2,
-      "p90": 59.2,
+      "median": 57.9,
+      "p10": 57.9,
+      "p90": 60.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.126
      },
      "udem_jean_brillant": {
-      "median": 57.0,
-      "p10": 56.0,
-      "p90": 61.0,
+      "median": 57.6,
+      "p10": 57.6,
+      "p90": 60.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.874
      }
     }
    }
   },
   "26": {
    "udem": {
-    "median": 48.2,
-    "p10": 41.2,
-    "p90": 52.2,
+    "median": 50.6,
+    "p10": 43.6,
+    "p90": 55.6,
     "over_max": [],
     "n_points": 32,
     "n_unreachable": 0,
@@ -886,29 +901,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 48.2,
-      "p10": 41.2,
-      "p90": 52.2,
+      "median": 50.9,
+      "p10": 43.9,
+      "p90": 55.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.021
      },
      "udem_jean_brillant": {
-      "median": 50.0,
-      "p10": 43.0,
-      "p90": 53.0,
+      "median": 50.6,
+      "p10": 43.6,
+      "p90": 55.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.979
      }
     }
    }
   },
   "27": {
    "udem": {
-    "median": 46.2,
-    "p10": 43.2,
-    "p90": 50.2,
+    "median": 49.6,
+    "p10": 45.6,
+    "p90": 53.6,
     "over_max": [],
     "n_points": 19,
     "n_unreachable": 0,
@@ -917,29 +932,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 46.2,
-      "p10": 43.2,
-      "p90": 50.2,
+      "median": 49.9,
+      "p10": 45.9,
+      "p90": 53.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.049
      },
      "udem_jean_brillant": {
-      "median": 48.0,
-      "p10": 44.0,
-      "p90": 52.0,
+      "median": 49.6,
+      "p10": 45.6,
+      "p90": 53.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.951
      }
     }
    }
   },
   "28": {
    "udem": {
-    "median": 48.2,
-    "p10": 40.2,
-    "p90": 52.2,
+    "median": 51.6,
+    "p10": 41.6,
+    "p90": 55.6,
     "over_max": [],
     "n_points": 33,
     "n_unreachable": 0,
@@ -948,29 +963,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 48.2,
-      "p10": 40.2,
-      "p90": 52.2,
+      "median": 51.9,
+      "p10": 41.9,
+      "p90": 55.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.212
      },
      "udem_jean_brillant": {
-      "median": 50.0,
-      "p10": 41.0,
-      "p90": 54.0,
+      "median": 51.6,
+      "p10": 41.6,
+      "p90": 55.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.788
      }
     }
    }
   },
   "29": {
    "udem": {
-    "median": 38.2,
-    "p10": 35.2,
-    "p90": 42.2,
+    "median": 39.6,
+    "p10": 36.6,
+    "p90": 43.6,
     "over_max": [],
     "n_points": 29,
     "n_unreachable": 0,
@@ -979,29 +994,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 38.2,
-      "p10": 35.2,
-      "p90": 42.2,
-      "over_max": [],
-      "n_unreachable": 0,
-      "fastest_share": 1.0
-     },
-     "udem_jean_brillant": {
-      "median": 39.0,
-      "p10": 36.0,
-      "p90": 43.0,
+      "median": 39.9,
+      "p10": 37.9,
+      "p90": 43.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 39.6,
+      "p10": 36.6,
+      "p90": 43.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
   },
   "30": {
    "udem": {
-    "median": 35.2,
-    "p10": 31.2,
-    "p90": 41.2,
+    "median": 37.6,
+    "p10": 32.6,
+    "p90": 43.6,
     "over_max": [],
     "n_points": 52,
     "n_unreachable": 0,
@@ -1010,29 +1025,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 35.2,
-      "p10": 31.2,
-      "p90": 41.2,
-      "over_max": [],
-      "n_unreachable": 0,
-      "fastest_share": 1.0
-     },
-     "udem_jean_brillant": {
-      "median": 37.0,
-      "p10": 32.0,
-      "p90": 43.0,
+      "median": 37.9,
+      "p10": 32.9,
+      "p90": 43.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 37.6,
+      "p10": 32.6,
+      "p90": 43.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
   },
   "31": {
    "udem": {
-    "median": 44.2,
-    "p10": 41.2,
-    "p90": 47.2,
+    "median": 46.9,
+    "p10": 43.6,
+    "p90": 49.6,
     "over_max": [],
     "n_points": 36,
     "n_unreachable": 0,
@@ -1041,29 +1056,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 44.2,
-      "p10": 41.2,
-      "p90": 47.2,
+      "median": 46.9,
+      "p10": 43.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.375
      },
      "udem_jean_brillant": {
-      "median": 46.0,
-      "p10": 43.0,
-      "p90": 49.0,
+      "median": 47.6,
+      "p10": 43.6,
+      "p90": 49.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.625
      }
     }
    }
   },
   "32": {
    "udem": {
-    "median": 37.2,
-    "p10": 32.2,
-    "p90": 43.2,
+    "median": 39.6,
+    "p10": 33.6,
+    "p90": 45.6,
     "over_max": [],
     "n_points": 29,
     "n_unreachable": 0,
@@ -1072,29 +1087,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 37.2,
-      "p10": 32.2,
-      "p90": 43.2,
+      "median": 39.9,
+      "p10": 33.9,
+      "p90": 45.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.577
      },
      "udem_jean_brillant": {
-      "median": 39.0,
-      "p10": 34.0,
-      "p90": 45.0,
+      "median": 39.6,
+      "p10": 33.6,
+      "p90": 45.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.423
      }
     }
    }
   },
   "33": {
    "udem": {
-    "median": 36.2,
-    "p10": 31.2,
-    "p90": 42.2,
+    "median": 38.9,
+    "p10": 31.6,
+    "p90": 45.9,
     "over_max": [],
     "n_points": 30,
     "n_unreachable": 0,
@@ -1103,29 +1118,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 36.2,
-      "p10": 31.2,
-      "p90": 42.2,
+      "median": 38.9,
+      "p10": 31.9,
+      "p90": 45.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.851
      },
      "udem_jean_brillant": {
-      "median": 38.0,
-      "p10": 33.0,
-      "p90": 44.0,
+      "median": 39.6,
+      "p10": 31.6,
+      "p90": 46.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.149
      }
     }
    }
   },
   "34": {
    "udem": {
-    "median": 32.2,
-    "p10": 23.2,
-    "p90": 34.2,
+    "median": 32.6,
+    "p10": 24.9,
+    "p90": 34.9,
     "over_max": [],
     "n_points": 44,
     "n_unreachable": 0,
@@ -1134,29 +1149,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 32.2,
-      "p10": 23.2,
-      "p90": 34.2,
+      "median": 34.9,
+      "p10": 24.9,
+      "p90": 36.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.714
+      "fastest_share": 0.328
      },
      "udem_jean_brillant": {
-      "median": 33.0,
-      "p10": 25.0,
-      "p90": 35.0,
+      "median": 32.6,
+      "p10": 25.6,
+      "p90": 35.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.286
+      "fastest_share": 0.672
      }
     }
    }
   },
   "35": {
    "udem": {
-    "median": 37.2,
-    "p10": 32.2,
-    "p90": 40.2,
+    "median": 37.9,
+    "p10": 34.9,
+    "p90": 40.6,
     "over_max": [],
     "n_points": 27,
     "n_unreachable": 0,
@@ -1165,29 +1180,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 37.2,
-      "p10": 32.2,
-      "p90": 40.2,
+      "median": 39.9,
+      "p10": 34.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.821
+      "fastest_share": 0.238
      },
      "udem_jean_brillant": {
-      "median": 38.0,
-      "p10": 34.0,
-      "p90": 41.0,
+      "median": 38.6,
+      "p10": 35.6,
+      "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.179
+      "fastest_share": 0.762
      }
     }
    }
   },
   "36": {
    "udem": {
-    "median": 29.2,
-    "p10": 27.2,
-    "p90": 33.2,
+    "median": 31.6,
+    "p10": 28.6,
+    "p90": 36.6,
     "over_max": [],
     "n_points": 19,
     "n_unreachable": 0,
@@ -1196,29 +1211,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 29.2,
-      "p10": 27.2,
-      "p90": 33.2,
-      "over_max": [],
-      "n_unreachable": 0,
-      "fastest_share": 1.0
-     },
-     "udem_jean_brillant": {
-      "median": 31.0,
-      "p10": 28.0,
-      "p90": 35.0,
+      "median": 32.9,
+      "p10": 29.9,
+      "p90": 36.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 31.6,
+      "p10": 28.6,
+      "p90": 36.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
   },
   "37": {
    "udem": {
-    "median": 34.2,
-    "p10": 31.2,
-    "p90": 39.2,
+    "median": 35.6,
+    "p10": 32.6,
+    "p90": 42.6,
     "over_max": [],
     "n_points": 13,
     "n_unreachable": 0,
@@ -1227,29 +1242,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 34.2,
-      "p10": 31.2,
-      "p90": 39.2,
+      "median": 36.9,
+      "p10": 33.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.877
+      "fastest_share": 0.035
      },
      "udem_jean_brillant": {
-      "median": 35.0,
-      "p10": 32.0,
-      "p90": 40.0,
+      "median": 35.6,
+      "p10": 32.6,
+      "p90": 42.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.123
+      "fastest_share": 0.965
      }
     }
    }
   },
   "38": {
    "udem": {
-    "median": 28.0,
-    "p10": 25.2,
-    "p90": 32.2,
+    "median": 28.6,
+    "p10": 26.6,
+    "p90": 34.6,
     "over_max": [],
     "n_points": 26,
     "n_unreachable": 0,
@@ -1258,29 +1273,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 28.2,
-      "p10": 25.2,
-      "p90": 32.2,
+      "median": 29.9,
+      "p10": 26.9,
+      "p90": 35.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.773
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 28.0,
-      "p10": 26.0,
-      "p90": 33.0,
+      "median": 28.6,
+      "p10": 26.6,
+      "p90": 34.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.227
+      "fastest_share": 1.0
      }
     }
    }
   },
   "39": {
    "udem": {
-    "median": 29.2,
-    "p10": 26.0,
-    "p90": 32.2,
+    "median": 29.6,
+    "p10": 24.6,
+    "p90": 32.6,
     "over_max": [],
     "n_points": 32,
     "n_unreachable": 0,
@@ -1289,29 +1304,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 30.2,
-      "p10": 27.2,
-      "p90": 33.2,
+      "median": 32.9,
+      "p10": 28.9,
+      "p90": 35.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.317
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 30.0,
-      "p10": 26.0,
-      "p90": 33.0,
+      "median": 29.6,
+      "p10": 24.6,
+      "p90": 32.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.683
+      "fastest_share": 1.0
      }
     }
    }
   },
   "40": {
    "udem": {
-    "median": 21.0,
-    "p10": 16.0,
-    "p90": 29.0,
+    "median": 21.6,
+    "p10": 15.6,
+    "p90": 30.6,
     "over_max": [],
     "n_points": 39,
     "n_unreachable": 0,
@@ -1320,17 +1335,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 22.2,
-      "p10": 16.2,
-      "p90": 30.2,
+      "median": 24.9,
+      "p10": 17.9,
+      "p90": 32.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 21.0,
-      "p10": 16.0,
-      "p90": 29.0,
+      "median": 21.6,
+      "p10": 15.6,
+      "p90": 30.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1340,9 +1355,9 @@
   },
   "41": {
    "udem": {
-    "median": 11.0,
-    "p10": 5.0,
-    "p90": 18.0,
+    "median": 10.9,
+    "p10": 4.6,
+    "p90": 18.6,
     "over_max": [],
     "n_points": 32,
     "n_unreachable": 0,
@@ -1351,29 +1366,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 17.2,
-      "p10": 10.2,
-      "p90": 24.2,
+      "median": 19.9,
+      "p10": 11.9,
+      "p90": 25.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.088
+      "fastest_share": 0.034
      },
      "udem_jean_brillant": {
-      "median": 11.0,
-      "p10": 5.0,
-      "p90": 18.0,
+      "median": 11.6,
+      "p10": 4.6,
+      "p90": 18.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.912
+      "fastest_share": 0.966
      }
     }
    }
   },
   "42": {
    "udem": {
-    "median": 22.0,
-    "p10": 14.0,
-    "p90": 25.0,
+    "median": 22.6,
+    "p10": 14.6,
+    "p90": 27.6,
     "over_max": [],
     "n_points": 45,
     "n_unreachable": 0,
@@ -1382,29 +1397,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 22.2,
-      "p10": 18.2,
-      "p90": 26.2,
+      "median": 25.9,
+      "p10": 20.9,
+      "p90": 28.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.376
+      "fastest_share": 0.035
      },
      "udem_jean_brillant": {
-      "median": 22.0,
-      "p10": 14.0,
-      "p90": 25.0,
+      "median": 22.6,
+      "p10": 14.6,
+      "p90": 27.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.624
+      "fastest_share": 0.965
      }
     }
    }
   },
   "43": {
    "udem": {
-    "median": 24.0,
-    "p10": 20.0,
-    "p90": 30.0,
+    "median": 24.6,
+    "p10": 20.6,
+    "p90": 30.6,
     "over_max": [],
     "n_points": 49,
     "n_unreachable": 0,
@@ -1413,17 +1428,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 25.2,
-      "p10": 21.2,
-      "p90": 30.2,
+      "median": 26.9,
+      "p10": 22.9,
+      "p90": 32.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 24.0,
-      "p10": 20.0,
-      "p90": 30.0,
+      "median": 24.6,
+      "p10": 20.6,
+      "p90": 30.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1433,9 +1448,9 @@
   },
   "44": {
    "udem": {
-    "median": 36.0,
-    "p10": 26.0,
-    "p90": 40.0,
+    "median": 36.6,
+    "p10": 26.6,
+    "p90": 40.6,
     "over_max": [],
     "n_points": 32,
     "n_unreachable": 0,
@@ -1444,17 +1459,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 36.2,
-      "p10": 26.2,
-      "p90": 41.2,
+      "median": 37.9,
+      "p10": 27.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 36.0,
-      "p10": 26.0,
-      "p90": 40.0,
+      "median": 36.6,
+      "p10": 26.6,
+      "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1464,9 +1479,9 @@
   },
   "45": {
    "udem": {
-    "median": 37.0,
-    "p10": 32.0,
-    "p90": 41.0,
+    "median": 36.6,
+    "p10": 31.6,
+    "p90": 40.6,
     "over_max": [],
     "n_points": 41,
     "n_unreachable": 0,
@@ -1475,17 +1490,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 37.2,
-      "p10": 33.2,
-      "p90": 41.2,
+      "median": 38.9,
+      "p10": 33.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 37.0,
-      "p10": 32.0,
-      "p90": 41.0,
+      "median": 36.6,
+      "p10": 31.6,
+      "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1495,9 +1510,9 @@
   },
   "46": {
    "udem": {
-    "median": 28.0,
-    "p10": 23.0,
-    "p90": 33.0,
+    "median": 28.6,
+    "p10": 23.6,
+    "p90": 33.6,
     "over_max": [],
     "n_points": 35,
     "n_unreachable": 0,
@@ -1506,17 +1521,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 28.2,
-      "p10": 23.2,
-      "p90": 34.2,
+      "median": 30.9,
+      "p10": 24.9,
+      "p90": 35.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 28.0,
-      "p10": 23.0,
-      "p90": 33.0,
+      "median": 28.6,
+      "p10": 23.6,
+      "p90": 33.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1526,9 +1541,9 @@
   },
   "47": {
    "udem": {
-    "median": 37.0,
-    "p10": 31.0,
-    "p90": 45.0,
+    "median": 38.6,
+    "p10": 31.6,
+    "p90": 45.6,
     "over_max": [],
     "n_points": 25,
     "n_unreachable": 0,
@@ -1537,29 +1552,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 38.2,
-      "p10": 32.2,
-      "p90": 45.2,
+      "median": 40.9,
+      "p10": 33.9,
+      "p90": 47.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.089
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 37.0,
-      "p10": 31.0,
-      "p90": 45.0,
+      "median": 38.6,
+      "p10": 31.6,
+      "p90": 45.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.911
+      "fastest_share": 1.0
      }
     }
    }
   },
   "48": {
    "udem": {
-    "median": 43.0,
-    "p10": 38.0,
-    "p90": 46.0,
+    "median": 44.6,
+    "p10": 38.6,
+    "p90": 46.6,
     "over_max": [],
     "n_points": 30,
     "n_unreachable": 0,
@@ -1568,29 +1583,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 43.2,
-      "p10": 39.2,
-      "p90": 46.2,
+      "median": 45.9,
+      "p10": 40.9,
+      "p90": 47.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.024
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 43.0,
-      "p10": 38.0,
-      "p90": 46.0,
+      "median": 44.6,
+      "p10": 38.6,
+      "p90": 46.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.976
+      "fastest_share": 1.0
      }
     }
    }
   },
   "49": {
    "udem": {
-    "median": 44.0,
-    "p10": 39.0,
-    "p90": 49.0,
+    "median": 44.6,
+    "p10": 39.6,
+    "p90": 50.6,
     "over_max": [],
     "n_points": 25,
     "n_unreachable": 0,
@@ -1599,17 +1614,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 44.2,
-      "p10": 40.2,
-      "p90": 50.2,
+      "median": 46.9,
+      "p10": 41.9,
+      "p90": 52.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 44.0,
-      "p10": 39.0,
-      "p90": 49.0,
+      "median": 44.6,
+      "p10": 39.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1619,9 +1634,9 @@
   },
   "50": {
    "udem": {
-    "median": 29.0,
-    "p10": 26.0,
-    "p90": 37.0,
+    "median": 29.6,
+    "p10": 26.6,
+    "p90": 37.6,
     "over_max": [],
     "n_points": 26,
     "n_unreachable": 0,
@@ -1630,17 +1645,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 29.2,
-      "p10": 26.2,
-      "p90": 38.2,
+      "median": 30.9,
+      "p10": 27.9,
+      "p90": 39.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 29.0,
-      "p10": 26.0,
-      "p90": 37.0,
+      "median": 29.6,
+      "p10": 26.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1650,9 +1665,9 @@
   },
   "51": {
    "udem": {
-    "median": 35.2,
-    "p10": 28.0,
-    "p90": 38.2,
+    "median": 37.6,
+    "p10": 28.6,
+    "p90": 40.6,
     "over_max": [],
     "n_points": 21,
     "n_unreachable": 0,
@@ -1661,29 +1676,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 35.2,
-      "p10": 28.2,
-      "p90": 38.2,
+      "median": 38.9,
+      "p10": 29.9,
+      "p90": 41.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.524
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 36.0,
-      "p10": 28.0,
-      "p90": 39.0,
+      "median": 37.6,
+      "p10": 28.6,
+      "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.476
+      "fastest_share": 1.0
      }
     }
    }
   },
   "52": {
    "udem": {
-    "median": 80.2,
-    "p10": 76.2,
-    "p90": 85.2,
+    "median": 81.6,
+    "p10": 77.6,
+    "p90": 86.6,
     "over_max": [],
     "n_points": 66,
     "n_unreachable": 0,
@@ -1692,29 +1707,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 80.2,
-      "p10": 76.2,
-      "p90": 85.2,
+      "median": 81.9,
+      "p10": 77.9,
+      "p90": 86.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.245
      },
      "udem_jean_brillant": {
-      "median": 81.0,
-      "p10": 77.0,
-      "p90": 86.0,
+      "median": 81.6,
+      "p10": 77.6,
+      "p90": 86.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.755
      }
     }
    }
   },
   "53": {
    "udem": {
-    "median": 89.0,
-    "p10": 84.2,
-    "p90": 98.0,
+    "median": 91.6,
+    "p10": 86.6,
+    "p90": 100.6,
     "over_max": [],
     "n_points": 28,
     "n_unreachable": 0,
@@ -1723,29 +1738,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 89.2,
-      "p10": 84.2,
-      "p90": 98.2,
+      "median": 91.9,
+      "p10": 86.9,
+      "p90": 101.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.79
+      "fastest_share": 0.025
      },
      "udem_jean_brillant": {
-      "median": 89.0,
-      "p10": 86.0,
-      "p90": 98.0,
+      "median": 91.6,
+      "p10": 86.6,
+      "p90": 100.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.21
+      "fastest_share": 0.975
      }
     }
    }
   },
   "54": {
    "udem": {
-    "median": 78.2,
-    "p10": 70.2,
-    "p90": 85.0,
+    "median": 78.6,
+    "p10": 70.6,
+    "p90": 87.6,
     "over_max": [],
     "n_points": 91,
     "n_unreachable": 0,
@@ -1754,29 +1769,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 78.2,
-      "p10": 70.2,
-      "p90": 85.2,
+      "median": 79.9,
+      "p10": 71.9,
+      "p90": 87.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.973
+      "fastest_share": 0.01
      },
      "udem_jean_brillant": {
-      "median": 79.0,
-      "p10": 71.0,
-      "p90": 86.0,
+      "median": 78.6,
+      "p10": 70.6,
+      "p90": 87.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.027
+      "fastest_share": 0.99
      }
     }
    }
   },
   "55": {
    "udem": {
-    "median": 33.2,
-    "p10": 27.2,
-    "p90": 39.2,
+    "median": 35.6,
+    "p10": 28.6,
+    "p90": 41.6,
     "over_max": [],
     "n_points": 21,
     "n_unreachable": 0,
@@ -1785,29 +1800,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 33.2,
-      "p10": 27.2,
-      "p90": 39.2,
+      "median": 35.9,
+      "p10": 28.9,
+      "p90": 41.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.969
+      "fastest_share": 0.236
      },
      "udem_jean_brillant": {
-      "median": 35.0,
-      "p10": 29.0,
-      "p90": 41.0,
+      "median": 35.6,
+      "p10": 28.6,
+      "p90": 41.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.031
+      "fastest_share": 0.764
      }
     }
    }
   },
   "56": {
    "udem": {
-    "median": 37.0,
-    "p10": 31.0,
-    "p90": 40.0,
+    "median": 38.6,
+    "p10": 31.6,
+    "p90": 41.6,
     "over_max": [],
     "n_points": 19,
     "n_unreachable": 0,
@@ -1816,29 +1831,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 37.2,
-      "p10": 32.2,
-      "p90": 40.2,
+      "median": 39.9,
+      "p10": 33.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.33
+      "fastest_share": 0.044
      },
      "udem_jean_brillant": {
-      "median": 38.0,
-      "p10": 31.0,
-      "p90": 40.0,
+      "median": 38.6,
+      "p10": 31.6,
+      "p90": 41.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.67
+      "fastest_share": 0.956
      }
     }
    }
   },
   "57": {
    "udem": {
-    "median": 34.2,
-    "p10": 32.2,
-    "p90": 40.2,
+    "median": 36.9,
+    "p10": 33.9,
+    "p90": 42.6,
     "over_max": [],
     "n_points": 17,
     "n_unreachable": 0,
@@ -1847,29 +1862,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 34.2,
-      "p10": 32.2,
-      "p90": 40.2,
+      "median": 36.9,
+      "p10": 33.9,
+      "p90": 43.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.74
+      "fastest_share": 0.213
      },
      "udem_jean_brillant": {
-      "median": 36.0,
-      "p10": 34.0,
-      "p90": 42.0,
+      "median": 37.6,
+      "p10": 34.6,
+      "p90": 42.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.26
+      "fastest_share": 0.787
      }
     }
    }
   },
   "58": {
    "udem": {
-    "median": 44.2,
-    "p10": 41.0,
-    "p90": 54.2,
+    "median": 47.6,
+    "p10": 41.6,
+    "p90": 58.6,
     "over_max": [],
     "n_points": 40,
     "n_unreachable": 0,
@@ -1878,29 +1893,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 45.2,
-      "p10": 42.2,
-      "p90": 54.2,
+      "median": 47.9,
+      "p10": 43.9,
+      "p90": 58.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.642
+      "fastest_share": 0.098
      },
      "udem_jean_brillant": {
-      "median": 45.0,
-      "p10": 41.0,
-      "p90": 56.0,
+      "median": 47.6,
+      "p10": 41.6,
+      "p90": 58.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.358
+      "fastest_share": 0.902
      }
     }
    }
   },
   "59": {
    "udem": {
-    "median": 36.0,
-    "p10": 28.0,
-    "p90": 45.0,
+    "median": 37.6,
+    "p10": 28.6,
+    "p90": 47.6,
     "over_max": [],
     "n_points": 38,
     "n_unreachable": 0,
@@ -1909,29 +1924,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 36.2,
-      "p10": 28.2,
-      "p90": 46.2,
+      "median": 39.9,
+      "p10": 29.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.065
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 36.0,
-      "p10": 28.0,
-      "p90": 45.0,
+      "median": 37.6,
+      "p10": 28.6,
+      "p90": 47.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.935
+      "fastest_share": 1.0
      }
     }
    }
   },
   "60A": {
    "udem": {
-    "median": 56.2,
-    "p10": 51.2,
-    "p90": 59.2,
+    "median": 58.9,
+    "p10": 52.9,
+    "p90": 62.9,
     "over_max": [],
     "n_points": 38,
     "n_unreachable": 0,
@@ -1940,17 +1955,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 56.2,
-      "p10": 51.2,
-      "p90": 59.2,
+      "median": 58.9,
+      "p10": 52.9,
+      "p90": 62.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 58.0,
-      "p10": 53.0,
-      "p90": 61.0,
+      "median": 59.6,
+      "p10": 53.6,
+      "p90": 63.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -1960,9 +1975,9 @@
   },
   "60B": {
    "udem": {
-    "median": 64.2,
-    "p10": 59.2,
-    "p90": 68.2,
+    "median": 66.9,
+    "p10": 62.9,
+    "p90": 70.9,
     "over_max": [],
     "n_points": 23,
     "n_unreachable": 0,
@@ -1971,17 +1986,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 64.2,
-      "p10": 59.2,
-      "p90": 68.2,
+      "median": 66.9,
+      "p10": 62.9,
+      "p90": 70.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 66.0,
-      "p10": 61.0,
-      "p90": 70.0,
+      "median": 67.6,
+      "p10": 63.6,
+      "p90": 71.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -1991,9 +2006,9 @@
   },
   "60C": {
    "udem": {
-    "median": 62.2,
-    "p10": 57.2,
-    "p90": 67.2,
+    "median": 64.9,
+    "p10": 59.9,
+    "p90": 69.9,
     "over_max": [],
     "n_points": 33,
     "n_unreachable": 0,
@@ -2002,17 +2017,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 62.2,
-      "p10": 57.2,
-      "p90": 67.2,
+      "median": 64.9,
+      "p10": 59.9,
+      "p90": 69.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 64.0,
-      "p10": 59.0,
-      "p90": 69.0,
+      "median": 65.6,
+      "p10": 60.6,
+      "p90": 70.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -2022,9 +2037,9 @@
   },
   "61": {
    "udem": {
-    "median": 71.2,
-    "p10": 68.2,
-    "p90": 74.2,
+    "median": 73.9,
+    "p10": 70.9,
+    "p90": 76.9,
     "over_max": [],
     "n_points": 51,
     "n_unreachable": 0,
@@ -2033,17 +2048,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 71.2,
-      "p10": 68.2,
-      "p90": 74.2,
+      "median": 73.9,
+      "p10": 70.9,
+      "p90": 76.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 73.0,
-      "p10": 70.0,
-      "p90": 76.0,
+      "median": 74.6,
+      "p10": 71.6,
+      "p90": 77.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -2053,9 +2068,9 @@
   },
   "62": {
    "udem": {
-    "median": 53.2,
-    "p10": 44.2,
-    "p90": 62.2,
+    "median": 55.9,
+    "p10": 45.9,
+    "p90": 64.9,
     "over_max": [],
     "n_points": 78,
     "n_unreachable": 0,
@@ -2064,17 +2079,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 53.2,
-      "p10": 44.2,
-      "p90": 62.2,
+      "median": 55.9,
+      "p10": 45.9,
+      "p90": 64.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
      },
      "udem_jean_brillant": {
-      "median": 55.0,
-      "p10": 46.0,
-      "p90": 64.0,
+      "median": 56.6,
+      "p10": 46.6,
+      "p90": 65.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
@@ -2084,9 +2099,9 @@
   },
   "63": {
    "udem": {
-    "median": 60.2,
-    "p10": 53.2,
-    "p90": 68.2,
+    "median": 61.9,
+    "p10": 54.9,
+    "p90": 70.9,
     "over_max": [],
     "n_points": 55,
     "n_unreachable": 0,
@@ -2095,29 +2110,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 60.2,
-      "p10": 53.2,
-      "p90": 68.2,
+      "median": 61.9,
+      "p10": 54.9,
+      "p90": 70.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.912
      },
      "udem_jean_brillant": {
-      "median": 62.0,
-      "p10": 55.0,
-      "p90": 70.0,
+      "median": 62.6,
+      "p10": 55.6,
+      "p90": 71.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.088
      }
     }
    }
   },
   "64": {
    "udem": {
-    "median": 38.0,
-    "p10": 34.0,
-    "p90": 42.0,
+    "median": 38.6,
+    "p10": 34.6,
+    "p90": 43.6,
     "over_max": [],
     "n_points": 54,
     "n_unreachable": 0,
@@ -2126,29 +2141,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 39.2,
-      "p10": 34.2,
-      "p90": 42.2,
+      "median": 40.9,
+      "p10": 35.9,
+      "p90": 44.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.018
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 38.0,
-      "p10": 34.0,
-      "p90": 42.0,
+      "median": 38.6,
+      "p10": 34.6,
+      "p90": 43.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.982
+      "fastest_share": 1.0
      }
     }
    }
   },
   "65": {
    "udem": {
-    "median": 42.2,
-    "p10": 29.2,
-    "p90": 47.2,
+    "median": 44.6,
+    "p10": 29.6,
+    "p90": 49.9,
     "over_max": [],
     "n_points": 17,
     "n_unreachable": 0,
@@ -2157,29 +2172,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 42.2,
-      "p10": 29.2,
-      "p90": 47.2,
+      "median": 44.9,
+      "p10": 29.9,
+      "p90": 49.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.229
      },
      "udem_jean_brillant": {
-      "median": 44.0,
-      "p10": 30.0,
-      "p90": 49.0,
+      "median": 44.6,
+      "p10": 29.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.771
      }
     }
    }
   },
   "66": {
    "udem": {
-    "median": 46.0,
-    "p10": 42.0,
-    "p90": 50.0,
+    "median": 46.6,
+    "p10": 43.6,
+    "p90": 50.6,
     "over_max": [],
     "n_points": 35,
     "n_unreachable": 0,
@@ -2188,29 +2203,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 46.2,
-      "p10": 42.2,
-      "p90": 51.2,
+      "median": 48.9,
+      "p10": 44.9,
+      "p90": 52.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.028
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 46.0,
-      "p10": 42.0,
-      "p90": 50.0,
+      "median": 46.6,
+      "p10": 43.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.972
+      "fastest_share": 1.0
      }
     }
    }
   },
   "67": {
    "udem": {
-    "median": 61.0,
-    "p10": 57.2,
-    "p90": 64.0,
+    "median": 61.6,
+    "p10": 58.6,
+    "p90": 65.6,
     "over_max": [],
     "n_points": 62,
     "n_unreachable": 0,
@@ -2219,29 +2234,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 61.2,
-      "p10": 57.2,
-      "p90": 64.2,
+      "median": 63.9,
+      "p10": 59.9,
+      "p90": 66.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.149
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 61.0,
-      "p10": 58.0,
-      "p90": 64.0,
+      "median": 61.6,
+      "p10": 58.6,
+      "p90": 65.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.851
+      "fastest_share": 1.0
      }
     }
    }
   },
   "68": {
    "udem": {
-    "median": 58.2,
-    "p10": 47.0,
-    "p90": 68.0,
+    "median": 59.6,
+    "p10": 48.6,
+    "p90": 69.6,
     "over_max": [],
     "n_points": 80,
     "n_unreachable": 0,
@@ -2250,29 +2265,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 59.2,
-      "p10": 47.2,
-      "p90": 68.2,
+      "median": 60.9,
+      "p10": 50.9,
+      "p90": 70.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.053
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 59.0,
-      "p10": 47.0,
-      "p90": 68.0,
+      "median": 59.6,
+      "p10": 48.6,
+      "p90": 69.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.947
+      "fastest_share": 1.0
      }
     }
    }
   },
   "69": {
    "udem": {
-    "median": 59.0,
-    "p10": 55.0,
-    "p90": 62.0,
+    "median": 60.6,
+    "p10": 55.6,
+    "p90": 64.6,
     "over_max": [],
     "n_points": 24,
     "n_unreachable": 0,
@@ -2281,17 +2296,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 59.2,
-      "p10": 55.2,
-      "p90": 63.2,
+      "median": 62.9,
+      "p10": 57.9,
+      "p90": 66.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 59.0,
-      "p10": 55.0,
-      "p90": 62.0,
+      "median": 60.6,
+      "p10": 55.6,
+      "p90": 64.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2301,9 +2316,9 @@
   },
   "70": {
    "udem": {
-    "median": 52.0,
-    "p10": 47.0,
-    "p90": 60.0,
+    "median": 52.6,
+    "p10": 47.6,
+    "p90": 62.6,
     "over_max": [],
     "n_points": 48,
     "n_unreachable": 0,
@@ -2312,17 +2327,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 53.2,
-      "p10": 48.2,
-      "p90": 61.2,
+      "median": 54.9,
+      "p10": 49.9,
+      "p90": 63.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 52.0,
-      "p10": 47.0,
-      "p90": 60.0,
+      "median": 52.6,
+      "p10": 47.6,
+      "p90": 62.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2332,9 +2347,9 @@
   },
   "71": {
    "udem": {
-    "median": 73.2,
-    "p10": 62.2,
-    "p90": 84.2,
+    "median": 75.6,
+    "p10": 62.9,
+    "p90": 86.6,
     "over_max": [],
     "n_points": 49,
     "n_unreachable": 0,
@@ -2343,29 +2358,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 73.2,
-      "p10": 62.2,
-      "p90": 84.2,
+      "median": 75.9,
+      "p10": 62.9,
+      "p90": 87.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.18
      },
      "udem_jean_brillant": {
-      "median": 74.0,
-      "p10": 64.0,
-      "p90": 86.0,
+      "median": 75.6,
+      "p10": 63.6,
+      "p90": 86.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.82
      }
     }
    }
   },
   "72": {
    "udem": {
-    "median": 54.2,
-    "p10": 43.2,
-    "p90": 64.2,
+    "median": 55.6,
+    "p10": 45.9,
+    "p90": 68.9,
     "over_max": [],
     "n_points": 61,
     "n_unreachable": 0,
@@ -2374,29 +2389,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 54.2,
-      "p10": 43.2,
-      "p90": 64.2,
+      "median": 55.9,
+      "p10": 45.9,
+      "p90": 68.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.498
      },
      "udem_jean_brillant": {
-      "median": 56.0,
-      "p10": 45.0,
-      "p90": 66.0,
+      "median": 55.6,
+      "p10": 46.6,
+      "p90": 69.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.502
      }
     }
    }
   },
   "73": {
    "udem": {
-    "median": 63.2,
-    "p10": 56.2,
-    "p90": 70.2,
+    "median": 65.6,
+    "p10": 59.6,
+    "p90": 72.6,
     "over_max": [],
     "n_points": 66,
     "n_unreachable": 0,
@@ -2405,29 +2420,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 63.2,
-      "p10": 56.2,
-      "p90": 70.2,
+      "median": 65.9,
+      "p10": 59.9,
+      "p90": 72.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 1.0
+      "fastest_share": 0.431
      },
      "udem_jean_brillant": {
-      "median": 65.0,
-      "p10": 58.0,
-      "p90": 71.0,
+      "median": 65.6,
+      "p10": 59.6,
+      "p90": 72.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.0
+      "fastest_share": 0.569
      }
     }
    }
   },
   "74": {
    "udem": {
-    "median": 20.2,
-    "p10": 15.2,
-    "p90": 29.2,
+    "median": 21.9,
+    "p10": 15.9,
+    "p90": 29.6,
     "over_max": [],
     "n_points": 43,
     "n_unreachable": 0,
@@ -2436,60 +2451,68 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 20.2,
-      "p10": 15.2,
-      "p90": 29.2,
+      "median": 22.9,
+      "p10": 15.9,
+      "p90": 31.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.913
+      "fastest_share": 0.51
      },
      "udem_jean_brillant": {
-      "median": 22.0,
-      "p10": 17.0,
-      "p90": 30.0,
+      "median": 22.6,
+      "p10": 16.6,
+      "p90": 29.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.087
+      "fastest_share": 0.49
      }
     }
    }
   },
   "75": {
    "udem": {
-    "median": 83.2,
-    "p10": 67.2,
-    "p90": 114.2,
-    "over_max": [],
+    "median": 87.6,
+    "p10": 69.6,
+    "p90": null,
+    "over_max": [
+     "p90"
+    ],
     "n_points": 29,
-    "n_unreachable": 1,
-    "unreachable_share": 0.034,
-    "flags": [],
+    "n_unreachable": 4,
+    "unreachable_share": 0.149,
+    "flags": [
+     "many_unreachable"
+    ],
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 83.2,
-      "p10": 67.2,
-      "p90": 114.2,
-      "over_max": [],
-      "n_unreachable": 1,
-      "fastest_share": 0.966
+      "median": 87.9,
+      "p10": 69.9,
+      "p90": null,
+      "over_max": [
+       "p90"
+      ],
+      "n_unreachable": 4,
+      "fastest_share": 0.112
      },
      "udem_jean_brillant": {
-      "median": 84.0,
-      "p10": 69.0,
-      "p90": 116.0,
-      "over_max": [],
-      "n_unreachable": 2,
-      "fastest_share": 0.0
+      "median": 87.6,
+      "p10": 69.6,
+      "p90": null,
+      "over_max": [
+       "p90"
+      ],
+      "n_unreachable": 5,
+      "fastest_share": 0.74
      }
     }
    }
   },
   "80": {
    "udem": {
-    "median": 69.2,
-    "p10": 65.2,
-    "p90": 71.2,
+    "median": 70.6,
+    "p10": 67.6,
+    "p90": 72.6,
     "over_max": [],
     "n_points": 7,
     "n_unreachable": 0,
@@ -2498,29 +2521,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 69.2,
-      "p10": 65.2,
-      "p90": 71.2,
-      "over_max": [],
-      "n_unreachable": 0,
-      "fastest_share": 1.0
-     },
-     "udem_jean_brillant": {
-      "median": 70.0,
-      "p10": 67.0,
-      "p90": 72.0,
+      "median": 70.9,
+      "p10": 67.9,
+      "p90": 72.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 70.6,
+      "p10": 67.6,
+      "p90": 72.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
   },
   "81": {
    "udem": {
-    "median": 32.2,
-    "p10": 26.0,
-    "p90": 37.0,
+    "median": 33.6,
+    "p10": 27.6,
+    "p90": 37.6,
     "over_max": [],
     "n_points": 34,
     "n_unreachable": 0,
@@ -2529,29 +2552,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 34.2,
-      "p10": 29.2,
-      "p90": 37.2,
+      "median": 35.9,
+      "p10": 30.9,
+      "p90": 39.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.159
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 33.0,
-      "p10": 26.0,
-      "p90": 37.0,
+      "median": 33.6,
+      "p10": 27.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.841
+      "fastest_share": 1.0
      }
     }
    }
   },
   "82": {
    "udem": {
-    "median": 32.0,
-    "p10": 24.0,
-    "p90": 39.0,
+    "median": 33.6,
+    "p10": 24.6,
+    "p90": 39.6,
     "over_max": [],
     "n_points": 13,
     "n_unreachable": 0,
@@ -2560,17 +2583,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 34.2,
-      "p10": 25.2,
-      "p90": 41.2,
+      "median": 35.9,
+      "p10": 26.9,
+      "p90": 42.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 32.0,
-      "p10": 24.0,
-      "p90": 39.0,
+      "median": 33.6,
+      "p10": 24.6,
+      "p90": 39.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2580,9 +2603,9 @@
   },
   "83": {
    "udem": {
-    "median": 44.0,
-    "p10": 36.0,
-    "p90": 50.0,
+    "median": 43.6,
+    "p10": 35.6,
+    "p90": 50.6,
     "over_max": [],
     "n_points": 49,
     "n_unreachable": 0,
@@ -2591,17 +2614,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 45.2,
-      "p10": 37.2,
-      "p90": 51.2,
+      "median": 46.9,
+      "p10": 37.9,
+      "p90": 52.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 44.0,
-      "p10": 36.0,
-      "p90": 50.0,
+      "median": 43.6,
+      "p10": 35.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2611,9 +2634,9 @@
   },
   "84": {
    "udem": {
-    "median": 42.0,
-    "p10": 37.0,
-    "p90": 47.0,
+    "median": 43.6,
+    "p10": 38.6,
+    "p90": 48.6,
     "over_max": [],
     "n_points": 9,
     "n_unreachable": 0,
@@ -2622,17 +2645,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 43.2,
-      "p10": 38.2,
-      "p90": 48.2,
+      "median": 45.9,
+      "p10": 39.9,
+      "p90": 51.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 42.0,
-      "p10": 37.0,
-      "p90": 47.0,
+      "median": 43.6,
+      "p10": 38.6,
+      "p90": 48.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2642,9 +2665,9 @@
   },
   "85": {
    "udem": {
-    "median": 63.0,
-    "p10": 58.0,
-    "p90": 67.0,
+    "median": 65.6,
+    "p10": 59.6,
+    "p90": 69.6,
     "over_max": [],
     "n_points": 33,
     "n_unreachable": 0,
@@ -2653,17 +2676,17 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 64.2,
-      "p10": 59.2,
-      "p90": 68.2,
+      "median": 67.9,
+      "p10": 61.9,
+      "p90": 70.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 63.0,
-      "p10": 58.0,
-      "p90": 67.0,
+      "median": 65.6,
+      "p10": 59.6,
+      "p90": 69.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2673,9 +2696,9 @@
   },
   "86": {
    "udem": {
-    "median": 67.0,
-    "p10": 61.0,
-    "p90": 71.2,
+    "median": 69.6,
+    "p10": 62.6,
+    "p90": 74.6,
     "over_max": [],
     "n_points": 50,
     "n_unreachable": 0,
@@ -2684,29 +2707,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 67.2,
-      "p10": 62.2,
-      "p90": 71.2,
+      "median": 70.9,
+      "p10": 63.9,
+      "p90": 75.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.409
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 67.0,
-      "p10": 61.0,
-      "p90": 72.0,
+      "median": 69.6,
+      "p10": 62.6,
+      "p90": 74.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.591
+      "fastest_share": 1.0
      }
     }
    }
   },
   "87": {
    "udem": {
-    "median": 73.0,
-    "p10": 68.0,
-    "p90": 80.0,
+    "median": 75.6,
+    "p10": 70.6,
+    "p90": 84.6,
     "over_max": [],
     "n_points": 37,
     "n_unreachable": 0,
@@ -2715,29 +2738,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 73.2,
-      "p10": 68.2,
-      "p90": 81.2,
+      "median": 75.9,
+      "p10": 71.9,
+      "p90": 85.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.202
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 73.0,
-      "p10": 68.0,
-      "p90": 80.0,
+      "median": 75.6,
+      "p10": 70.6,
+      "p90": 84.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.798
+      "fastest_share": 1.0
      }
     }
    }
   },
   "88": {
    "udem": {
-    "median": 83.0,
-    "p10": 73.0,
-    "p90": 87.0,
+    "median": 86.6,
+    "p10": 74.6,
+    "p90": 92.6,
     "over_max": [],
     "n_points": 7,
     "n_unreachable": 0,
@@ -2746,29 +2769,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 83.2,
-      "p10": 73.2,
-      "p90": 87.2,
+      "median": 87.9,
+      "p10": 76.9,
+      "p90": 93.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.242
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 83.0,
-      "p10": 73.0,
-      "p90": 87.0,
+      "median": 86.6,
+      "p10": 74.6,
+      "p90": 92.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.758
+      "fastest_share": 1.0
      }
     }
    }
   },
   "89": {
    "udem": {
-    "median": 61.2,
-    "p10": 48.2,
-    "p90": 70.2,
+    "median": 65.6,
+    "p10": 51.9,
+    "p90": 73.6,
     "over_max": [],
     "n_points": 77,
     "n_unreachable": 0,
@@ -2777,29 +2800,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 61.2,
-      "p10": 48.2,
-      "p90": 70.2,
+      "median": 65.9,
+      "p10": 51.9,
+      "p90": 73.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.947
+      "fastest_share": 0.226
      },
      "udem_jean_brillant": {
-      "median": 62.0,
-      "p10": 50.0,
-      "p90": 72.0,
+      "median": 65.6,
+      "p10": 52.6,
+      "p90": 73.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.053
+      "fastest_share": 0.774
      }
     }
    }
   },
   "90": {
    "udem": {
-    "median": 71.0,
-    "p10": 64.2,
-    "p90": 75.2,
+    "median": 72.6,
+    "p10": 65.6,
+    "p90": 78.6,
     "over_max": [],
     "n_points": 34,
     "n_unreachable": 0,
@@ -2808,29 +2831,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 71.2,
-      "p10": 64.2,
-      "p90": 75.2,
+      "median": 72.9,
+      "p10": 66.9,
+      "p90": 79.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.858
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 71.0,
-      "p10": 65.0,
-      "p90": 76.0,
+      "median": 72.6,
+      "p10": 65.6,
+      "p90": 78.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.142
+      "fastest_share": 1.0
      }
     }
    }
   },
   "91": {
    "udem": {
-    "median": 75.0,
-    "p10": 71.2,
-    "p90": 78.2,
+    "median": 77.6,
+    "p10": 74.6,
+    "p90": 83.6,
     "over_max": [],
     "n_points": 8,
     "n_unreachable": 0,
@@ -2839,29 +2862,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 75.2,
-      "p10": 71.2,
-      "p90": 78.2,
+      "median": 77.9,
+      "p10": 74.9,
+      "p90": 84.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.355
+      "fastest_share": 0.0
      },
      "udem_jean_brillant": {
-      "median": 75.0,
-      "p10": 72.0,
-      "p90": 79.0,
+      "median": 77.6,
+      "p10": 74.6,
+      "p90": 83.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.645
+      "fastest_share": 1.0
      }
     }
    }
   },
   "92": {
    "udem": {
-    "median": 101.2,
-    "p10": 83.2,
-    "p90": 101.2,
+    "median": 106.6,
+    "p10": 88.6,
+    "p90": 106.6,
     "over_max": [],
     "n_points": 2,
     "n_unreachable": 0,
@@ -2872,29 +2895,29 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 101.2,
-      "p10": 83.2,
-      "p90": 101.2,
-      "over_max": [],
-      "n_unreachable": 0,
-      "fastest_share": 1.0
-     },
-     "udem_jean_brillant": {
-      "median": 102.0,
-      "p10": 84.0,
-      "p90": 102.0,
+      "median": 107.9,
+      "p10": 89.9,
+      "p90": 107.9,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 106.6,
+      "p10": 88.6,
+      "p90": 106.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
   },
   "93": {
    "udem": {
-    "median": 28.2,
-    "p10": 23.2,
-    "p90": 34.2,
+    "median": 29.6,
+    "p10": 24.6,
+    "p90": 37.9,
     "over_max": [],
     "n_points": 35,
     "n_unreachable": 0,
@@ -2903,20 +2926,20 @@
     "rule": "fastest_destination",
     "by_destination": {
      "udem_roger_gaudry": {
-      "median": 28.2,
-      "p10": 23.2,
-      "p90": 35.2,
+      "median": 30.9,
+      "p10": 24.9,
+      "p90": 38.9,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.76
+      "fastest_share": 0.384
      },
      "udem_jean_brillant": {
-      "median": 29.0,
-      "p10": 25.0,
-      "p90": 36.0,
+      "median": 29.6,
+      "p10": 24.6,
+      "p90": 38.6,
       "over_max": [],
       "n_unreachable": 0,
-      "fastest_share": 0.24
+      "fastest_share": 0.616
      }
     }
    }

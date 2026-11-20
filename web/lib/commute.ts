@@ -32,7 +32,7 @@ export interface CampusMeta {
     name: string;
     lat: number;
     lon: number;
-    access_penalty_min: number;
+    access_adjustment_min: number;
   }[];
 }
 

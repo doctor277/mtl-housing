@@ -46,16 +46,23 @@ def test_weighted_quantile_is_scale_invariant_and_monotone():
         assert qs == [aggregate.weighted_quantile(v, w * 7.5, q) for q in (0.1, 0.5, 0.9)]
 
 
-# --- penalties and per-home fastest ------------------------------------------------
+# --- adjustments and per-home fastest ----------------------------------------------
 
 
 def _times(rows):
     return pd.DataFrame(rows, columns=["point_id", "destination_id", "travel_time_min"])
 
 
-def test_penalty_applies_to_one_destination_and_keeps_nan():
+def test_negative_adjustment_never_goes_below_zero():
+    t = _times([("a", "x", 10.0), ("b", "x", 1.0), ("c", "x", np.nan)])
+    out = aggregate.apply_access_adjustments(t, {"x": -1.5})
+    assert out["travel_time_min"].tolist()[:2] == [8.5, 0.0]
+    assert np.isnan(out["travel_time_min"].iloc[2])
+
+
+def test_adjustment_applies_to_one_destination_and_keeps_nan():
     t = _times([("a", "x", 10.0), ("a", "y", 10.0), ("b", "x", np.nan)])
-    out = aggregate.apply_access_penalties(t, {"x": 2.2})
+    out = aggregate.apply_access_adjustments(t, {"x": 2.2})
     assert out["travel_time_min"].tolist()[:2] == [12.2, 10.0]
     assert np.isnan(out["travel_time_min"].iloc[2])
     assert out["travel_time_raw_min"].tolist()[:2] == [10.0, 10.0]
@@ -89,7 +96,7 @@ def test_quartier_stats_end_to_end_on_udem_ids():
     rg, jb = "udem_roger_gaudry", "udem_jean_brillant"
     times = _times(
         [
-            ("p1", rg, 20.0), ("p1", jb, 21.0),  # RG faster before penalty, JB after (+2.2)
+            ("p1", rg, 20.0), ("p1", jb, 21.0),  # RG faster before adjustment, JB after (+2.2)
             ("p2", rg, 30.0), ("p2", jb, 40.0),
             ("p3", rg, 50.0), ("p3", jb, np.nan),
             ("p4", rg, np.nan), ("p4", jb, np.nan),  # unreachable
@@ -105,7 +112,7 @@ def test_quartier_stats_end_to_end_on_udem_ids():
             ("out", "Q", 1000, False),
         ]
     )
-    stats = aggregate.quartier_stats(times, sample, "udem", penalties={rg: 2.2})
+    stats = aggregate.quartier_stats(times, sample, "udem", adjustments={rg: 2.2})
     s = stats.set_index("target")
 
     f = s.loc["fastest"]

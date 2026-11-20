@@ -12,6 +12,17 @@ def test_tolerance_is_max_of_5_min_and_15_percent(google, tol):
     assert validation.tolerance_min(google) == pytest.approx(tol)
 
 
+def test_implied_adjustment():
+    assert validation.implied_adjustment(7, 5.84) == 1.2
+    assert validation.implied_adjustment(7, 8.5) == -1.5
+
+
+def test_walk_routes_calibrate_every_adjusted_building():
+    routes = validation.load_routes(validation.routes_csv("udem"))
+    walk_dests = set(routes.loc[routes["kind"] == "walk", "destination_id"])
+    assert walk_dests == set(config.ACCESS_ADJUSTMENT_MIN)
+
+
 def test_verdict_edges():
     assert validation.verdict(36.0, 31) == "pass"  # exactly +5
     assert validation.verdict(36.1, 31) == "fail"

@@ -13,3 +13,4 @@ export const BINS: [label: string, colour: string][] = [
 ];
 export const OVER_MAX_COLOUR = "#7f0000";
 export const NO_DATA_COLOUR = "#999999";
+export const NO_RESIDENTS_COLOUR = "#d4d4d4"; // lighter than no data: nobody lives here

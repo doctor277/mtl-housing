@@ -5,6 +5,7 @@ This file is filled in as each phase lands. It becomes the site's "Sources & lim
 ## Geography
 - Unit of analysis: the Ville de Montréal **quartiers de référence en habitation** (91 areas). The layer also covers the villes liées (Westmount, Mont-Royal, Côte-Saint-Luc, …), so the whole island is included.
 - 91 quartiers across 15 municipalities, with 1,011,945 dwellings in total (city CSV). **L'Île-Dorval**, a tiny island municipality with no bridge and only a seasonal ferry, is not a separate quartier. Its single census point (25 occupied dwellings) falls inside the Dorval polygon. It is **out of scope**: kept in the sample with `in_scope = false` and a reason, but not routed and **excluded from Dorval's commute statistics** (`config.OUT_OF_SCOPE_CSDS`).
+- **Parc Jean-Drapeau has no quartier of its own.** Île Sainte-Hélène and Île Notre-Dame are two separate polygon parts of the **Vieux-Montréal** quartier (about 1.3 km² each, against 2.8 km² for the mainland part). None of Vieux-Montréal's 13 census points lies on them; they are park islands with no permanent residents. Without a fix, the map would paint them with Vieux-Montréal's commute time. The export cuts them out as a separate **"no residents"** area (`config.NO_RESIDENT_AREAS`): grey on the map, no commute time, and its popup says it belongs to Vieux-Montréal in the city's data. Vieux-Montréal's statistics are unchanged, because they only ever came from its homes. The export refuses to run if a census home ever falls inside a no-residents area.
 - Six source polygons have small self-intersections. They are repaired automatically, and the area of each changes by less than 30 m². Neighbouring polygons overlap by up to a few hundred m² from how the borders were drawn, which is negligible.
 
 ## Commute (Phase 1)
@@ -55,17 +56,19 @@ A quartier's commute is not measured from its centre. It is measured from many p
 - **STM licence:** the metro schedules are used only to compute trip durations, never displayed. See DATA_SOURCES.md.
 
 ### Tunnel check (UdeM)
-A walk-only route from the Université-de-Montréal metro entrance (2810 Édouard-Montpetit) to the Roger-Gaudry main entrance **does use the Tunnel de la Montagne escalator**. R5 gives **3.5 min for 271 m**. Students' experience (Google Maps) is about **7 min for about 400 m**. R5 ignores the climb, because no elevation model is loaded, walks the escalator at flat speed, and may take a shorter door-to-door path. **Commutes to Roger-Gaudry are therefore likely about 3 min optimistic.** This is measured in validation route 6, and the methodology will state the final correction or caveat.
+A walk-only route from the Université-de-Montréal metro entrance (2810 Édouard-Montpetit) to the Roger-Gaudry main entrance **does use the Tunnel de la Montagne escalator**. R5 gives **3.5 min for 271 m**. Students' experience (Google Maps) is about **7 min for about 400 m**. R5 ignores the climb, because no elevation model is loaded, walks the escalator at flat speed, and may take a shorter door-to-door path. **Commutes to Roger-Gaudry are therefore likely about 3 min optimistic.** This is corrected by the access adjustments below.
 
-### UdeM run (2026-11-20)
-- 3,220 homes × 2 buildings, 22 min of routing. The median trip to the fastest UdeM building is 45 min, with a range of 4 to 117 min.
-- **Jean-Brillant is the faster building for only about 2% of homes.** Most of the city reaches Université-de-Montréal station (Roger-Gaudry side) at least as fast as Côte-des-Neiges, and the optimistic 3.5-min tunnel walk adds to that. This is revisited after validation.
+### UdeM runs (2026-11-20)
+- **Current run (walking at 4.0 km/h):** 3,219 homes × 2 buildings, 29 min of routing. Raw R5 times, before access adjustments and pooled over both buildings, have a median of 48 min and range from 5 to 117 min.
+- **First run (walking at 4.8 km/h, superseded):** 3,220 homes, 22 min of routing, raw median 45 min. In it, **Jean-Brillant was the faster building for only about 2% of homes** before any adjustment; the diagnosis below explains why.
 - **Homes stuck on private paths.** A census point inside a private complex (for example condo grounds on Île-des-Soeurs mapped with `access=private` footways) gets snapped onto the private path, and R5 then cannot walk out. **Only for homes that reach no building at all**, the start is moved to the nearest public walkable OSM way within 300 m and re-routed. The distance moved is stored (`origin_moved_m`). This fixed the Île-des-Soeurs DA (897 homes, moved 92 m, now 35 min).
 - **Excluded, not unreachable:** L'Île-Dorval (see Geography). It is not routed and not counted.
-- **Still unreachable, correctly:** the western tip of Île-Bizard, beyond R5's 2-hour limit (neighbouring homes already take up to 117 min).
+- **Still unreachable, correctly:** the western tip of Île-Bizard, beyond R5's 2-hour limit. At 4.0 km/h this is 4 census points (1,045 dwellings, 15% of the quartier), so L'Île-Bizard–Sainte-Geneviève is flagged `many_unreachable` and its p90 is "more than 2 h". Moving these starts to the nearest public path (see above) doesn't help: they are simply too far.
 - Unreachable means **"more than 2 h"**. It is never treated as missing data or as 0 when quartiers are summarised.
 
-### Why Jean-Brillant rarely comes out faster (diagnosis, 2026-11-20)
+### Why Jean-Brillant rarely came out faster (diagnosis of the first run, 4.8 km/h, 2026-11-20)
+This diagnosis led to the access adjustments below. Its numbers are from the first run.
+
 Without any adjustment, Jean-Brillant is the faster building for only **2.2% of homes**. That contradicts how students actually get there: anyone coming from the west on the blue line (Snowdon) reaches Côte-des-Neiges station first.
 
 - **The Jean-Brillant side is modelled correctly.** R5 walks Côte-des-Neiges metro → Jean-Brillant entrance in **6.8–7.3 min (533–576 m)**, matching Google (about 7 min / 500 m). The entrance used is node/6783857247, about 430 m in a straight line from both CDN entrances.
@@ -82,14 +85,26 @@ Without any adjustment, Jean-Brillant is the faster building for only **2.2% of 
 - With a realistic walk to Roger-Gaudry (about 3.5 min more), the Snowdon and NDG homes flip to Jean-Brillant. Homes reached from the east (blue line from Saint-Michel or Jean-Talon) still favour Roger-Gaudry by about 1–2 min.
 - **The "fastest building" share is very sensitive** to this one walk. It is 2% at +0 min, 16% at +2, 31% at +3, 46% at +3.5 to +4, and 100% at +5. R5 reports whole minutes, so the shares jump in steps. Both buildings' times are therefore always published alongside the minimum.
 
-**Correction applied: calibrated access penalty for Roger-Gaudry (+1.2 min at 4.0 km/h; it was +2.2 at 4.8 km/h).**
-- Transit trips end at the Université-de-Montréal **platform stops** (STM 53877 / 53878). From there R5 walks **357–395 m** to Roger-Gaudry at flat speed: 4.6–5.1 min (mean 4.85) at 4.8 km/h, so about **5.8 min at 4.0 km/h** (walk time scales with 1 / speed). The distance matches Google's ~400 m. What R5 misses is the uphill pace.
-- The project author, a UdeM student, walks platform → Roger-Gaudry / André-Aisenstadt in **about 7 min**, matching Google Maps (~7 min).
-- Penalty **p = 7 − 5.8 = 1.2 min** (first run: 7 − 4.8 = 2.2 min at 4.8 km/h), added to **every** trip ending at Roger-Gaudry (`config.ACCESS_PENALTY_MIN`). It is applied after routing, on the saved results. This is exact for a fixed destination penalty: every route to that door gets the same extra minutes, so R5's route choice and the median over departure minutes both shift by exactly p. The router's own value is kept as `travel_time_raw_min`.
-- Effect (first run, 4.8 km/h; to be re-measured after the 4.0 km/h re-run): Jean-Brillant becomes the faster building for **about 32% of homes**, up from 2%. Mostly these are homes reached from the west and south (Snowdon, NDG, Côte-des-Neiges).
-- Caveats: the penalty also applies to trips that reach Roger-Gaudry from the Édouard-Montpetit side, where the climb may differ. And trips just over 120 min before the penalty were never computed. **Validation route 6 (step 1.9) re-checks p.**
+**Correction applied: calibrated access adjustments for both buildings.**
 
-**Future work (Option B): elevation model.** r5py supports `TransportNetwork(elevation_model=<DEM GeoTIFF>, elevation_cost_function=TOBLER or MINETTI)`. It slows every uphill walk citywide (Mont-Royal, Westmount), which is more realistic than a single penalty. It needs:
+Both UdeM buildings are calibrated the same way, so neither side of the building split is favoured. The **target** is the real walk from the metro platform where R5's blue-line trips end to the building's door. The **adjustment** is the target minus R5's walk-only time from that platform stop, at the configured 4.0 km/h. It can be negative.
+
+| Building | Platform (STM GTFS stop) | Target, source | R5 walk at 4.0 km/h | Adjustment |
+|---|---|---|---|---|
+| Roger-Gaudry | Université-de-Montréal (`56`) | 7 min: the author (a UdeM student) and Google Maps (~7 min / 400 m) | 5.08 min / 332 m | **+1.9 min** |
+| Jean-Brillant | Côte-des-Neiges (`55`) | 7 min: Google Maps (~7 min / 500 m) | 9.40 min / 613 m | **−2.4 min** |
+
+- **Why the adjustments differ in sign.** R5 walks at flat speed with no elevation model. On the Roger-Gaudry side it misses the climb through the Tunnel de la Montagne. On the Jean-Brillant side R5's path is longer than Google's: it starts at the platform coordinate and walks 613 m for a door 459 m away in a straight line, while Google gives ~500 m.
+- **How it's applied.** The adjustment is added to **every** trip ending at that building (`config.ACCESS_ADJUSTMENT_MIN`), after routing, on the saved results; times never go below 0. This is exact for a fixed per-destination adjustment: every route to that door shifts by the same minutes, so R5's route choice and the median over departure minutes shift by exactly that amount. The router's own value is kept as `travel_time_raw_min`.
+- **Reproducible.** `python -m mtlhousing access-check` routes the platform walks (validation routes 6 and 6b) and prints the R5 walk, the target and the implied adjustment. The adjustments depend on the walking speed and must be re-derived after any speed change; the pipeline refuses saved travel times routed at a different speed.
+- **Correction (2026-11-20).** The first calibration, at 4.8 km/h, used STM stops 53877 / 53878. These are **bus stops** named "Station Université-de-Montréal" (lines 51, 155, 368), not the metro platform. Metro trips end at stop `56`. That first run had only a Roger-Gaudry penalty (+2.2 min) and no Jean-Brillant adjustment.
+- **Caveats.**
+  - The adjustment also applies to trips that reach a building without the metro, for example walking from a nearby home or arriving by bus. For a walk from a home near Jean-Brillant, the −2.4 min can overstate the saving.
+  - Trips just over 120 min before the adjustment were never computed.
+  - Routes 6 and 6b in validation check the adjustments by construction; they are not independent evidence.
+- **Effect on the building split.** Jean-Brillant is the faster building for **66% of dwellings** (32% in the first run, which had no Jean-Brillant adjustment). The two buildings are close for most homes: the median Roger-Gaudry − Jean-Brillant gap is +0.3 min, and for **58% of dwellings they are within 1 min**. The fastest-building time is robust; which building wins for a given home is not, so the site must not present it as clear-cut.
+
+**Future work (Option B): elevation model.** r5py supports `TransportNetwork(elevation_model=<DEM GeoTIFF>, elevation_cost_function=TOBLER or MINETTI)`. It slows every uphill walk citywide (Mont-Royal, Westmount), which is more realistic than fixed per-building adjustments. It needs:
 - a DEM download (an elevation file for Montréal);
 - a network rebuild and a full re-run (about 25 min);
 - a check of how R5 treats tunnels and escalators, which would get surface elevations.
@@ -98,7 +113,7 @@ Not done for v1.
 
 ### Per-quartier commute statistics (step 1.7)
 For each home (in-scope census point) and each campus:
-1. Apply the access penalties above.
+1. Apply the access adjustments above.
 2. **Campus time = fastest of the campus's buildings for that home** ("fastest UdeM building"). Both buildings' times are always kept and published next to it.
 3. Per quartier, for the fastest time and for each building's time:
    - **Dwelling-weighted median, p10 and p90.** Quantiles use the weighted inverse CDF without interpolation: the smallest time *t* such that at least that share of the quartier's occupied dwellings has a time ≤ *t*.
@@ -107,11 +122,14 @@ For each home (in-scope census point) and each campus:
 4. **Unreachable = more than 120 min.** It ranks above every real time, so it pushes the median and percentiles up. If a quantile lands on it, the value is reported as "more than 2 h". It is never dropped and never counted as 0.
 5. **Flags:** `low_sample` (fewer than 3 points) and `many_unreachable` (more than 10% of dwellings unreachable).
 
-UdeM result:
-- The median of quartier medians is **44 min**.
-- Nearest: Édouard-Montpetit (11), Outremont (20), Snowdon (21), Parc-Kent (22), Savane (24).
-- Farthest: Senneville (101, `low_sample`), Rivière-des-Prairies (89), L'Île-Bizard–Sainte-Geneviève (83), Baie-D'Urfé (83).
-- No quartier has more than 10% of dwellings unreachable, and no p90 exceeds 2 h.
+UdeM result (4.0 km/h, adjustments +1.9 / −2.4):
+- The median of quartier medians is **44.6 min**.
+- Nearest: Édouard-Montpetit (10.9), Snowdon (21.6), Outremont (21.9), Parc-Kent (22.6), Savane (24.6).
+- Farthest: Senneville (106.6, `low_sample`), Rivière-des-Prairies (91.6), L'Île-Bizard–Sainte-Geneviève (87.6, `many_unreachable`, p90 > 2 h), Baie-D'Urfé (86.6), Marc-Aurèle-Fortin (81.6).
+- **Against the first run (4.8 km/h):**
+  - Quartier medians rose by 1.9 min on average, ranging from −0.4 to +5.4.
+  - The largest rises are far from campus, where walks to and between stops are long: Senneville +5.4, Dollard-Des Ormeaux and L'Île-Bizard +4.4, Baie-D'Urfé +3.6, Maisonneuve and Nouveau-Bordeaux +3.4.
+  - Near Côte-des-Neiges, the Jean-Brillant adjustment offsets the slower walk: Loyola and Côte-Saint-Luc −0.4, Édouard-Montpetit −0.1.
 
 ### Web export (step 1.8)
 `python -m mtlhousing export --campus udem` writes two files to `web/public/data/` (committed, so the site never runs Python):
@@ -123,7 +141,7 @@ UdeM result:
   - analysis date and departure window;
   - walk speed and the 120-min limit;
   - GTFS feed versions and OSM date;
-  - each campus's buildings with their access penalties;
+  - each campus's buildings with their access adjustments (`access_adjustment_min`);
   - out-of-scope areas, relocated origins and source credits.
 
   `results[quartier_id][campus_id]` holds:
@@ -134,16 +152,18 @@ UdeM result:
 - **Missing values are JSON `null`, never `NaN`.** The writer refuses NaN/Infinity.
   - A time over 120 min is `null` **and** its name is listed in `over_max`, so the site shows "more than 2 h".
   - A `null` not listed in `over_max` means no data.
-  - For UdeM, no quartier currently has any stat over the limit.
+  - For UdeM, only L'Île-Bizard–Sainte-Geneviève has a stat over the limit (its p90).
+- **No-residents areas** (Parc Jean-Drapeau, see Geography) are separate features with `no_residents: true`, `part_of` and `dwellings: 0`. They have no entry in `commute.json`.
 - A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
 
 ### Validation against Google Maps (step 1.9)
-Seven hand-picked routes were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). **7 of 8 comparisons pass. Route 4 (Hochelaga → Roger-Gaudry via green line + REM) fails against Google's first suggestion and only just passes against its like-for-like 52-min trip (R5 44.2).** Its leg-by-leg comparison shows R5 walked faster than Google (4.8 vs ~3.9 km/h). Google's own route 5 trip times the REM → blue line transfer at Édouard-Montpetit at about 1 min, so that transfer is not a problem; in route 4 Google skipped the blue line because of the wait for it. **Walking speed was therefore lowered to 4.0 km/h; the re-run and re-validation are pending.** Details, R5 itineraries and the open diagnosis are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
+Seven hand-picked routes plus two platform walks were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). Details, R5 itineraries and the first run are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
 
-Findings that affect how numbers are presented:
-- **At 4.8 km/h, R5 was optimistic, not conservative.** Medians (which include waiting) were on average 1.5 min below Google's well-timed trip, excluding route 4. The main cause was walking speed (see above). The feeds have no pathway or transfer times, so R5 treats a transfer as a flat street walk between stop coordinates; at Édouard-Montpetit that is 0.4 min, against Google's ~1 min, which is small.
-- **The building split is a near-tie in NDG.** Google and R5 disagree on the faster building by ≤ 1 min. The "fastest building" value is robust; which building wins for a given home is not.
-- Route 6 (platform → Roger-Gaudry walk) only confirms the calibrated penalty is applied; it is not independent evidence.
+- **8 of 9 comparisons pass.** Route 4 (Hochelaga → Roger-Gaudry) fails against Google's first suggestion (60 min), a slower trip. Against Google's like-for-like green line + REM trip (52 min), R5 gives 46.9 and passes.
+- **Walking speed was the systematic bias.** At 4.8 km/h, R5's medians (which include waiting) were 1.5 min below Google's well-timed trip on average, excluding route 4. At 4.0 km/h they are +0.0 min on average. That is why walking speed is 4.0 km/h.
+- **Transfers.** The feeds have no pathway or transfer times, so R5 treats a transfer as a flat street walk between stop coordinates. At Édouard-Montpetit (REM → blue line) that gives about 1 min, which agrees with Google's route 5 trip ("about 1 min").
+- **The building split is a near-tie.** Google and R5 disagree on the faster building for route 7 by about 1 min.
+- Routes 6 and 6b (platform → building walks) are the calibration of the access adjustments, not independent evidence.
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._

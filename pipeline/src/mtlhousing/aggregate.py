@@ -1,6 +1,6 @@
 """Per-quartier commute statistics from per-home travel times.
 
-1. Apply calibrated access penalties per destination (config.ACCESS_PENALTY_MIN).
+1. Apply calibrated access adjustments per destination (config.ACCESS_ADJUSTMENT_MIN).
 2. Per home, campus time = fastest of the campus's destinations ("fastest building").
 3. Per quartier, for the campus time and for each destination's time: dwelling-weighted
    median, p10 and p90, plus counts, unreachable share and reliability flags.
@@ -43,13 +43,14 @@ def weighted_quantile(values, weights, q: float) -> float:
     return float(np.quantile(v, q, weights=w, method="inverted_cdf"))
 
 
-def apply_access_penalties(times: pd.DataFrame, penalties: dict[str, float]) -> pd.DataFrame:
-    """Add a fixed number of minutes to every trip ending at a penalised destination.
-    Unreachable (NaN) stays NaN. Keeps the router's value in travel_time_raw_min."""
+def apply_access_adjustments(times: pd.DataFrame, adjustments: dict[str, float]) -> pd.DataFrame:
+    """Add a fixed number of minutes (possibly negative) to every trip ending at an
+    adjusted destination, never going below 0. Unreachable (NaN) stays NaN. Keeps the
+    router's value in travel_time_raw_min."""
     out = times.copy()
     out["travel_time_raw_min"] = out["travel_time_min"]
-    extra = out["destination_id"].map(penalties).fillna(0.0)
-    out["travel_time_min"] = out["travel_time_min"] + extra
+    extra = out["destination_id"].map(adjustments).fillna(0.0)
+    out["travel_time_min"] = (out["travel_time_min"] + extra).clip(lower=0.0)
     return out
 
 
@@ -81,13 +82,13 @@ def quartier_stats(
     times: pd.DataFrame,
     sample: pd.DataFrame,
     campus_id: str,
-    penalties: dict[str, float] | None = None,
+    adjustments: dict[str, float] | None = None,
 ) -> pd.DataFrame:
     """Long table (STAT_COLUMNS): one row per quartier x target, for one campus."""
     destination_ids = [d.id for d in config.CAMPUSES[campus_id].destinations]
-    penalties = config.ACCESS_PENALTY_MIN if penalties is None else penalties
+    adjustments = config.ACCESS_ADJUSTMENT_MIN if adjustments is None else adjustments
     times = times[times["destination_id"].isin(destination_ids)]
-    adjusted = apply_access_penalties(times, penalties)
+    adjusted = apply_access_adjustments(times, adjustments)
 
     homes = sample.loc[sample["in_scope"].astype(bool), ["point_id", "quartier_id", "weight"]]
     wide = per_home(adjusted, destination_ids).join(homes.set_index("point_id"), how="inner")

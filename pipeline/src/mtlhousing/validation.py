@@ -6,7 +6,7 @@ Output: pipeline/validation/<campus>_results.csv
 
 Each transit origin is routed with exactly the main run's R5 settings
 (travel_times.routing_kwargs) to every building of the campus, and the calibrated
-access penalties are added (config.ACCESS_PENALTY_MIN), as in the published numbers.
+access adjustments are added (config.ACCESS_ADJUSTMENT_MIN), as in the published numbers.
 
 Pass rule (plan): |R5 median - Google| <= max(5 min, 15% of Google).
 Google's trip time starts when you leave home for a well-timed trip (no initial
@@ -15,7 +15,8 @@ first stop, so R5 is expected to be a few minutes higher. The R5 p10 is reported
 as a "well-timed departure" reference, but the verdict uses the median.
 
 A "walk" row checks the access walk from the metro platform stops to a building
-(R5 walk-only time + that building's access penalty).
+(R5 walk-only time + that building's access adjustment). The same rows calibrate
+the adjustments (access_check).
 """
 
 from __future__ import annotations
@@ -127,7 +128,7 @@ def _points(rows: pd.DataFrame) -> gpd.GeoDataFrame:
 
 
 def route_transit(network, r5py, origins: gpd.GeoDataFrame, campus_id: str) -> pd.DataFrame:
-    """Median and p10 (minutes, penalties added) for each origin x campus building."""
+    """Median and p10 (minutes, access adjustments added) for each origin x campus building."""
     from mtlhousing import travel_times
 
     dests = travel_times.destinations_gdf(campus_id)
@@ -140,15 +141,15 @@ def route_transit(network, r5py, origins: gpd.GeoDataFrame, campus_id: str) -> p
             **travel_times.routing_kwargs(r5py),
         )
     ).rename(columns={"from_id": "origin_id", "to_id": "destination_id"})
-    penalty = ttm["destination_id"].map(config.ACCESS_PENALTY_MIN).fillna(0.0)
+    adj = ttm["destination_id"].map(config.ACCESS_ADJUSTMENT_MIN).fillna(0.0)
     return pd.DataFrame(
         {
             "origin_id": ttm["origin_id"],
             "destination_id": ttm["destination_id"],
             "r5_raw_median_min": ttm["travel_time_p50"].astype(float),
-            "r5_median_min": ttm["travel_time_p50"].astype(float) + penalty,
-            "r5_p10_min": ttm["travel_time_p10"].astype(float) + penalty,
-            "penalty_min": penalty,
+            "r5_median_min": (ttm["travel_time_p50"].astype(float) + adj).clip(lower=0.0),
+            "r5_p10_min": (ttm["travel_time_p10"].astype(float) + adj).clip(lower=0.0),
+            "adjustment_min": adj,
         }
     )
 
@@ -189,7 +190,7 @@ def travel_times_kwargs_single(r5py) -> dict:
 
 
 def platform_walk(network, r5py, stop_ids: str, names, destination_id: str) -> dict:
-    """Mean R5 walk time from the given GTFS stops to a destination, plus its penalty."""
+    """Mean R5 walk time from the given GTFS stops to a destination, plus its adjustment."""
     from mtlhousing import travel_times
 
     dest = {d.id: d for _, d in config.all_destinations()}[destination_id]
@@ -199,12 +200,47 @@ def platform_walk(network, r5py, stop_ids: str, names, destination_id: str) -> d
         _, lat, lon = names[feed][1][sid]
         walks.append(travel_times.walk_check(network, r5py, (lat, lon), (dest.lat, dest.lon)))
     raw = sum(w["minutes"] for w in walks) / len(walks)
-    penalty = config.ACCESS_PENALTY_MIN.get(destination_id, 0.0)
+    adj = config.ACCESS_ADJUSTMENT_MIN.get(destination_id, 0.0)
     detail = ", ".join(
         f"{ref}: {w['minutes']:.1f} min / {w['metres']:.0f} m"
         for ref, w in zip(stop_ids.split("|"), walks, strict=True)
     )
-    return {"raw": raw, "median": raw + penalty, "penalty": penalty, "detail": detail}
+    return {"raw": raw, "median": raw + adj, "adjustment": adj, "detail": detail}
+
+
+def implied_adjustment(target_min: float, r5_walk_min: float) -> float:
+    """Access adjustment that makes R5's platform walk equal the real one."""
+    return round(target_min - r5_walk_min, 1)
+
+
+def access_check(campus_id: str) -> pd.DataFrame:
+    """Calibration of the access adjustments: for each walk route (platform -> building),
+    R5's walk-only time at the current WALK_SPEED_KMH, the real target (google_min) and
+    the adjustment it implies, next to the configured one."""
+    from mtlhousing import travel_times
+    from mtlhousing.r5py_setup import import_r5py
+
+    routes = load_routes(routes_csv(campus_id))
+    walks = routes[routes["kind"] == "walk"]
+    r5py = import_r5py()
+    network = travel_times.build_network(r5py)
+    names = gtfs_names()
+    rows = []
+    for r in walks.itertuples():
+        w = platform_walk(network, r5py, r.gtfs_stop_ids, names, r.destination_id)
+        rows.append(
+            {
+                "route": r.route,
+                "destination_id": r.destination_id,
+                "walk_speed_kmh": config.WALK_SPEED_KMH,
+                "r5_walk_min": round(w["raw"], 2),
+                "target_min": r.google_min,
+                "implied_adjustment_min": implied_adjustment(r.google_min, w["raw"]),
+                "configured_adjustment_min": w["adjustment"],
+                "detail": w["detail"],
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def quartier_of(points: gpd.GeoDataFrame) -> pd.Series:
@@ -253,7 +289,7 @@ def run(campus_id: str) -> pd.DataFrame:
             out |= {
                 "r5_median_min": round(w["median"], 1),
                 "r5_raw_median_min": round(w["raw"], 1),
-                "penalty_min": w["penalty"],
+                "adjustment_min": w["adjustment"],
                 "r5_route_0745": f"walk only; {w['detail']}",
             }
         else:
@@ -264,7 +300,7 @@ def run(campus_id: str) -> pd.DataFrame:
                 "quartier": origins.set_index("id").loc[oid, "quartier"],
                 "r5_median_min": t["r5_median_min"],
                 "r5_raw_median_min": t["r5_raw_median_min"],
-                "penalty_min": t["penalty_min"],
+                "adjustment_min": t["adjustment_min"],
                 "r5_p10_min": t["r5_p10_min"],
                 "other_buildings": "; ".join(
                     f"{d}: {times.loc[(oid, d), 'r5_median_min']:.1f}" for d in others
@@ -284,7 +320,7 @@ def run(campus_id: str) -> pd.DataFrame:
 
     columns = [
         "route", "kind", "origin", "quartier", "destination_id", "google_min",
-        "r5_median_min", "r5_raw_median_min", "penalty_min", "r5_p10_min", "diff_min",
+        "r5_median_min", "r5_raw_median_min", "adjustment_min", "r5_p10_min", "diff_min",
         "tolerance_min", "verdict", "google_alt_min", "google_alt_note", "alt_diff_min",
         "alt_verdict", "other_buildings", "r5_route_0745",
     ]  # fmt: skip
