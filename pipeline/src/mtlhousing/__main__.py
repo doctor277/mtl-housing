@@ -129,6 +129,18 @@ def step_aggregate(campus: str) -> None:
     print("\nfarthest 5:\n" + fastest.nlargest(5, "median")[cols].to_string())
 
 
+def step_export(campus: str) -> None:
+    from mtlhousing import export
+
+    out = export.run([campus])
+    results = out["commute"]["results"]
+    n = sum(1 for r in results.values() if campus in r)
+    over = [q for q, r in results.items() if campus in r and r[campus]["over_max"]]
+    for path in (export.COMMUTE_JSON, export.NEIGHBOURHOODS_GEOJSON, *out["maps"]):
+        print(f"{path.stat().st_size / 1e3:7.0f} kB  {path}")
+    print(f"{campus}: {n}/{len(results)} quartiers with results; stats over max: {over}")
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -137,13 +149,16 @@ STEPS = {
     "tunnel-check": step_tunnel_check,
     "travel-times": step_travel_times,
     "aggregate": step_aggregate,
+    "export": step_export,
 }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="python -m mtlhousing")
     parser.add_argument("step", choices=sorted(STEPS))
-    parser.add_argument("--campus", default="udem", help="campus id (travel-times step)")
+    parser.add_argument(
+        "--campus", default="udem", help="campus id (travel-times, aggregate, export)"
+    )
     parser.add_argument(
         "--repair-only",
         action="store_true",
@@ -152,7 +167,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
-    elif args.step == "aggregate":
+    elif args.step in ("aggregate", "export"):
         STEPS[args.step](args.campus)
     else:
         STEPS[args.step]()

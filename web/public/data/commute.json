@@ -1,0 +1,2925 @@
+{
+ "meta": {
+  "method_version": "1.0",
+  "generated_at": "2026-11-20T11:21:05",
+  "analysis_date": "2026-12-01",
+  "departure_window": {
+   "start": "07:30",
+   "minutes": 60
+  },
+  "percentile_over_window": 50,
+  "walk_speed_kmh": 4.8,
+  "transport_modes": [
+   "TRANSIT",
+   "WALK"
+  ],
+  "max_trip_min": 120,
+  "units": "minutes",
+  "quantiles": "median, p10 and p90 over the quartier's homes (2021 Census dissemination-area points), weighted by occupied dwellings, inverse CDF without interpolation",
+  "null_meaning": "A null time listed in over_max means more than max_trip_min (no trip found within the limit). Any other null means no data.",
+  "gtfs_feeds": [
+   {
+    "name": "stm",
+    "version": "20261029135439_26N",
+    "start": "2026-08-24",
+    "end": "2027-01-03"
+   },
+   {
+    "name": "rem",
+    "version": "20260520",
+    "start": "2026-05-19",
+    "end": "2026-12-31"
+   },
+   {
+    "name": "exo_trains",
+    "version": null,
+    "start": "2026-10-19",
+    "end": "2027-01-03"
+   }
+  ],
+  "osm_date": "2026-11-19T21:22:20Z",
+  "router": "r5py 1.1.7",
+  "out_of_scope": [
+   {
+    "area": "L'Île-Dorval",
+    "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
+   }
+  ],
+  "sources": [
+   "© OpenStreetMap contributors (ODbL)",
+   "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, CC BY 4.0. Travel times are derived from these schedules.",
+   "Contains data from the Ville de Montréal open data portal, CC BY 4.0.",
+   "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product."
+  ],
+  "campuses": {
+   "udem": {
+    "name": "Université de Montréal (campus principal)",
+    "rule": "fastest_destination",
+    "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
+    "destinations": [
+     {
+      "id": "udem_roger_gaudry",
+      "name": "Pavillon Roger-Gaudry",
+      "lat": 45.5027705,
+      "lon": -73.6150484,
+      "osm_ref": "node/2573744215",
+      "access_penalty_min": 2.2
+     },
+     {
+      "id": "udem_jean_brillant",
+      "name": "Pavillon Jean-Brillant",
+      "lat": 45.4986715,
+      "lon": -73.6181739,
+      "osm_ref": "node/6783857247",
+      "access_penalty_min": 0.0
+     }
+    ],
+    "n_sample_points": 3219,
+    "computed_at": "2026-11-20T01:56:11",
+    "relocated_origins": [
+     {
+      "point_id": "da:24663067",
+      "moved_m": 8.1,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663254",
+      "moved_m": 92.2,
+      "reachable_after": true
+     }
+    ],
+    "excluded_out_of_scope": [
+     {
+      "point_id": "da:24663396",
+      "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
+     }
+    ]
+   }
+  }
+ },
+ "results": {
+  "01": {
+   "udem": {
+    "median": 44.2,
+    "p10": 36.2,
+    "p90": 54.2,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 44.2,
+      "p10": 36.2,
+      "p90": 54.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 45.0,
+      "p10": 38.0,
+      "p90": 56.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "02": {
+   "udem": {
+    "median": 42.2,
+    "p10": 39.2,
+    "p90": 53.2,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 42.2,
+      "p10": 39.2,
+      "p90": 53.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 44.0,
+      "p10": 41.0,
+      "p90": 55.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "03": {
+   "udem": {
+    "median": 40.2,
+    "p10": 38.2,
+    "p90": 43.2,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 40.2,
+      "p10": 38.2,
+      "p90": 43.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 42.0,
+      "p10": 40.0,
+      "p90": 45.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "04": {
+   "udem": {
+    "median": 41.2,
+    "p10": 34.2,
+    "p90": 47.2,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 41.2,
+      "p10": 34.2,
+      "p90": 47.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 43.0,
+      "p10": 36.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "05": {
+   "udem": {
+    "median": 39.2,
+    "p10": 34.2,
+    "p90": 45.2,
+    "over_max": [],
+    "n_points": 31,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 39.2,
+      "p10": 34.2,
+      "p90": 45.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 41.0,
+      "p10": 36.0,
+      "p90": 47.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "06": {
+   "udem": {
+    "median": 51.2,
+    "p10": 47.2,
+    "p90": 55.2,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 51.2,
+      "p10": 47.2,
+      "p90": 55.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 53.0,
+      "p10": 49.0,
+      "p90": 57.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "07": {
+   "udem": {
+    "median": 45.2,
+    "p10": 39.2,
+    "p90": 50.2,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 45.2,
+      "p10": 39.2,
+      "p90": 50.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 47.0,
+      "p10": 41.0,
+      "p90": 52.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "08": {
+   "udem": {
+    "median": 49.2,
+    "p10": 45.2,
+    "p90": 52.2,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 49.2,
+      "p10": 45.2,
+      "p90": 52.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 51.0,
+      "p10": 47.0,
+      "p90": 54.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "09": {
+   "udem": {
+    "median": 28.2,
+    "p10": 24.2,
+    "p90": 35.2,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 28.2,
+      "p10": 24.2,
+      "p90": 35.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 30.0,
+      "p10": 26.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "10": {
+   "udem": {
+    "median": 33.2,
+    "p10": 28.2,
+    "p90": 37.2,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 33.2,
+      "p10": 28.2,
+      "p90": 37.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 35.0,
+      "p10": 30.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "11": {
+   "udem": {
+    "median": 24.2,
+    "p10": 18.2,
+    "p90": 35.2,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 24.2,
+      "p10": 18.2,
+      "p90": 35.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 26.0,
+      "p10": 20.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "12": {
+   "udem": {
+    "median": 28.2,
+    "p10": 19.2,
+    "p90": 34.2,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 28.2,
+      "p10": 19.2,
+      "p90": 34.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 30.0,
+      "p10": 21.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "13": {
+   "udem": {
+    "median": 30.2,
+    "p10": 24.2,
+    "p90": 36.2,
+    "over_max": [],
+    "n_points": 56,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 30.2,
+      "p10": 24.2,
+      "p90": 36.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 32.0,
+      "p10": 26.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "14": {
+   "udem": {
+    "median": 27.2,
+    "p10": 22.2,
+    "p90": 30.2,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 27.2,
+      "p10": 22.2,
+      "p90": 30.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 29.0,
+      "p10": 24.0,
+      "p90": 32.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "15": {
+   "udem": {
+    "median": 31.2,
+    "p10": 25.2,
+    "p90": 35.2,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 31.2,
+      "p10": 25.2,
+      "p90": 35.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 33.0,
+      "p10": 27.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "16": {
+   "udem": {
+    "median": 37.2,
+    "p10": 29.2,
+    "p90": 40.2,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 37.2,
+      "p10": 29.2,
+      "p90": 40.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 39.0,
+      "p10": 31.0,
+      "p90": 42.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "17": {
+   "udem": {
+    "median": 38.2,
+    "p10": 32.2,
+    "p90": 44.2,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 38.2,
+      "p10": 32.2,
+      "p90": 44.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 40.0,
+      "p10": 34.0,
+      "p90": 46.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "18": {
+   "udem": {
+    "median": 45.2,
+    "p10": 42.2,
+    "p90": 48.2,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 45.2,
+      "p10": 42.2,
+      "p90": 48.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 47.0,
+      "p10": 44.0,
+      "p90": 50.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "19": {
+   "udem": {
+    "median": 44.2,
+    "p10": 39.2,
+    "p90": 48.2,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 44.2,
+      "p10": 39.2,
+      "p90": 48.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 46.0,
+      "p10": 40.0,
+      "p90": 50.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "20": {
+   "udem": {
+    "median": 47.2,
+    "p10": 43.2,
+    "p90": 53.2,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 47.2,
+      "p10": 43.2,
+      "p90": 53.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 49.0,
+      "p10": 45.0,
+      "p90": 55.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "21": {
+   "udem": {
+    "median": 51.2,
+    "p10": 43.2,
+    "p90": 57.2,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 51.2,
+      "p10": 43.2,
+      "p90": 57.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 53.0,
+      "p10": 45.0,
+      "p90": 59.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "22": {
+   "udem": {
+    "median": 57.2,
+    "p10": 48.2,
+    "p90": 62.2,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 57.2,
+      "p10": 48.2,
+      "p90": 62.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 59.0,
+      "p10": 50.0,
+      "p90": 64.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "23": {
+   "udem": {
+    "median": 56.2,
+    "p10": 50.2,
+    "p90": 61.2,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 56.2,
+      "p10": 50.2,
+      "p90": 61.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 58.0,
+      "p10": 52.0,
+      "p90": 62.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "24": {
+   "udem": {
+    "median": 61.2,
+    "p10": 58.2,
+    "p90": 64.2,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 61.2,
+      "p10": 58.2,
+      "p90": 64.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 63.0,
+      "p10": 60.0,
+      "p90": 66.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "25": {
+   "udem": {
+    "median": 56.2,
+    "p10": 55.2,
+    "p90": 59.2,
+    "over_max": [],
+    "n_points": 6,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 56.2,
+      "p10": 55.2,
+      "p90": 59.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 57.0,
+      "p10": 56.0,
+      "p90": 61.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "26": {
+   "udem": {
+    "median": 48.2,
+    "p10": 41.2,
+    "p90": 52.2,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 48.2,
+      "p10": 41.2,
+      "p90": 52.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 50.0,
+      "p10": 43.0,
+      "p90": 53.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "27": {
+   "udem": {
+    "median": 46.2,
+    "p10": 43.2,
+    "p90": 50.2,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 46.2,
+      "p10": 43.2,
+      "p90": 50.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 48.0,
+      "p10": 44.0,
+      "p90": 52.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "28": {
+   "udem": {
+    "median": 48.2,
+    "p10": 40.2,
+    "p90": 52.2,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 48.2,
+      "p10": 40.2,
+      "p90": 52.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 50.0,
+      "p10": 41.0,
+      "p90": 54.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "29": {
+   "udem": {
+    "median": 38.2,
+    "p10": 35.2,
+    "p90": 42.2,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 38.2,
+      "p10": 35.2,
+      "p90": 42.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 39.0,
+      "p10": 36.0,
+      "p90": 43.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "30": {
+   "udem": {
+    "median": 35.2,
+    "p10": 31.2,
+    "p90": 41.2,
+    "over_max": [],
+    "n_points": 52,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 35.2,
+      "p10": 31.2,
+      "p90": 41.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 37.0,
+      "p10": 32.0,
+      "p90": 43.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "31": {
+   "udem": {
+    "median": 44.2,
+    "p10": 41.2,
+    "p90": 47.2,
+    "over_max": [],
+    "n_points": 36,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 44.2,
+      "p10": 41.2,
+      "p90": 47.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 46.0,
+      "p10": 43.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "32": {
+   "udem": {
+    "median": 37.2,
+    "p10": 32.2,
+    "p90": 43.2,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 37.2,
+      "p10": 32.2,
+      "p90": 43.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 39.0,
+      "p10": 34.0,
+      "p90": 45.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "33": {
+   "udem": {
+    "median": 36.2,
+    "p10": 31.2,
+    "p90": 42.2,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 36.2,
+      "p10": 31.2,
+      "p90": 42.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 38.0,
+      "p10": 33.0,
+      "p90": 44.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "34": {
+   "udem": {
+    "median": 32.2,
+    "p10": 23.2,
+    "p90": 34.2,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 32.2,
+      "p10": 23.2,
+      "p90": 34.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.714
+     },
+     "udem_jean_brillant": {
+      "median": 33.0,
+      "p10": 25.0,
+      "p90": 35.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.286
+     }
+    }
+   }
+  },
+  "35": {
+   "udem": {
+    "median": 37.2,
+    "p10": 32.2,
+    "p90": 40.2,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 37.2,
+      "p10": 32.2,
+      "p90": 40.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.821
+     },
+     "udem_jean_brillant": {
+      "median": 38.0,
+      "p10": 34.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.179
+     }
+    }
+   }
+  },
+  "36": {
+   "udem": {
+    "median": 29.2,
+    "p10": 27.2,
+    "p90": 33.2,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 29.2,
+      "p10": 27.2,
+      "p90": 33.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 31.0,
+      "p10": 28.0,
+      "p90": 35.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "37": {
+   "udem": {
+    "median": 34.2,
+    "p10": 31.2,
+    "p90": 39.2,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 34.2,
+      "p10": 31.2,
+      "p90": 39.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.877
+     },
+     "udem_jean_brillant": {
+      "median": 35.0,
+      "p10": 32.0,
+      "p90": 40.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.123
+     }
+    }
+   }
+  },
+  "38": {
+   "udem": {
+    "median": 28.0,
+    "p10": 25.2,
+    "p90": 32.2,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 28.2,
+      "p10": 25.2,
+      "p90": 32.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.773
+     },
+     "udem_jean_brillant": {
+      "median": 28.0,
+      "p10": 26.0,
+      "p90": 33.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.227
+     }
+    }
+   }
+  },
+  "39": {
+   "udem": {
+    "median": 29.2,
+    "p10": 26.0,
+    "p90": 32.2,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 30.2,
+      "p10": 27.2,
+      "p90": 33.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.317
+     },
+     "udem_jean_brillant": {
+      "median": 30.0,
+      "p10": 26.0,
+      "p90": 33.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.683
+     }
+    }
+   }
+  },
+  "40": {
+   "udem": {
+    "median": 21.0,
+    "p10": 16.0,
+    "p90": 29.0,
+    "over_max": [],
+    "n_points": 39,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 22.2,
+      "p10": 16.2,
+      "p90": 30.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 21.0,
+      "p10": 16.0,
+      "p90": 29.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "41": {
+   "udem": {
+    "median": 11.0,
+    "p10": 5.0,
+    "p90": 18.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 17.2,
+      "p10": 10.2,
+      "p90": 24.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.088
+     },
+     "udem_jean_brillant": {
+      "median": 11.0,
+      "p10": 5.0,
+      "p90": 18.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.912
+     }
+    }
+   }
+  },
+  "42": {
+   "udem": {
+    "median": 22.0,
+    "p10": 14.0,
+    "p90": 25.0,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 22.2,
+      "p10": 18.2,
+      "p90": 26.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.376
+     },
+     "udem_jean_brillant": {
+      "median": 22.0,
+      "p10": 14.0,
+      "p90": 25.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.624
+     }
+    }
+   }
+  },
+  "43": {
+   "udem": {
+    "median": 24.0,
+    "p10": 20.0,
+    "p90": 30.0,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 25.2,
+      "p10": 21.2,
+      "p90": 30.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 24.0,
+      "p10": 20.0,
+      "p90": 30.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "44": {
+   "udem": {
+    "median": 36.0,
+    "p10": 26.0,
+    "p90": 40.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 36.2,
+      "p10": 26.2,
+      "p90": 41.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 36.0,
+      "p10": 26.0,
+      "p90": 40.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "45": {
+   "udem": {
+    "median": 37.0,
+    "p10": 32.0,
+    "p90": 41.0,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 37.2,
+      "p10": 33.2,
+      "p90": 41.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 37.0,
+      "p10": 32.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "46": {
+   "udem": {
+    "median": 28.0,
+    "p10": 23.0,
+    "p90": 33.0,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 28.2,
+      "p10": 23.2,
+      "p90": 34.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 28.0,
+      "p10": 23.0,
+      "p90": 33.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "47": {
+   "udem": {
+    "median": 37.0,
+    "p10": 31.0,
+    "p90": 45.0,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 38.2,
+      "p10": 32.2,
+      "p90": 45.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.089
+     },
+     "udem_jean_brillant": {
+      "median": 37.0,
+      "p10": 31.0,
+      "p90": 45.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.911
+     }
+    }
+   }
+  },
+  "48": {
+   "udem": {
+    "median": 43.0,
+    "p10": 38.0,
+    "p90": 46.0,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 43.2,
+      "p10": 39.2,
+      "p90": 46.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.024
+     },
+     "udem_jean_brillant": {
+      "median": 43.0,
+      "p10": 38.0,
+      "p90": 46.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.976
+     }
+    }
+   }
+  },
+  "49": {
+   "udem": {
+    "median": 44.0,
+    "p10": 39.0,
+    "p90": 49.0,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 44.2,
+      "p10": 40.2,
+      "p90": 50.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 44.0,
+      "p10": 39.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "50": {
+   "udem": {
+    "median": 29.0,
+    "p10": 26.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 29.2,
+      "p10": 26.2,
+      "p90": 38.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 29.0,
+      "p10": 26.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "51": {
+   "udem": {
+    "median": 35.2,
+    "p10": 28.0,
+    "p90": 38.2,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 35.2,
+      "p10": 28.2,
+      "p90": 38.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.524
+     },
+     "udem_jean_brillant": {
+      "median": 36.0,
+      "p10": 28.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.476
+     }
+    }
+   }
+  },
+  "52": {
+   "udem": {
+    "median": 80.2,
+    "p10": 76.2,
+    "p90": 85.2,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 80.2,
+      "p10": 76.2,
+      "p90": 85.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 81.0,
+      "p10": 77.0,
+      "p90": 86.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "53": {
+   "udem": {
+    "median": 89.0,
+    "p10": 84.2,
+    "p90": 98.0,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 89.2,
+      "p10": 84.2,
+      "p90": 98.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.79
+     },
+     "udem_jean_brillant": {
+      "median": 89.0,
+      "p10": 86.0,
+      "p90": 98.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.21
+     }
+    }
+   }
+  },
+  "54": {
+   "udem": {
+    "median": 78.2,
+    "p10": 70.2,
+    "p90": 85.0,
+    "over_max": [],
+    "n_points": 91,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 78.2,
+      "p10": 70.2,
+      "p90": 85.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.973
+     },
+     "udem_jean_brillant": {
+      "median": 79.0,
+      "p10": 71.0,
+      "p90": 86.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.027
+     }
+    }
+   }
+  },
+  "55": {
+   "udem": {
+    "median": 33.2,
+    "p10": 27.2,
+    "p90": 39.2,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 33.2,
+      "p10": 27.2,
+      "p90": 39.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.969
+     },
+     "udem_jean_brillant": {
+      "median": 35.0,
+      "p10": 29.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.031
+     }
+    }
+   }
+  },
+  "56": {
+   "udem": {
+    "median": 37.0,
+    "p10": 31.0,
+    "p90": 40.0,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 37.2,
+      "p10": 32.2,
+      "p90": 40.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.33
+     },
+     "udem_jean_brillant": {
+      "median": 38.0,
+      "p10": 31.0,
+      "p90": 40.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.67
+     }
+    }
+   }
+  },
+  "57": {
+   "udem": {
+    "median": 34.2,
+    "p10": 32.2,
+    "p90": 40.2,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 34.2,
+      "p10": 32.2,
+      "p90": 40.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.74
+     },
+     "udem_jean_brillant": {
+      "median": 36.0,
+      "p10": 34.0,
+      "p90": 42.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.26
+     }
+    }
+   }
+  },
+  "58": {
+   "udem": {
+    "median": 44.2,
+    "p10": 41.0,
+    "p90": 54.2,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 45.2,
+      "p10": 42.2,
+      "p90": 54.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.642
+     },
+     "udem_jean_brillant": {
+      "median": 45.0,
+      "p10": 41.0,
+      "p90": 56.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.358
+     }
+    }
+   }
+  },
+  "59": {
+   "udem": {
+    "median": 36.0,
+    "p10": 28.0,
+    "p90": 45.0,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 36.2,
+      "p10": 28.2,
+      "p90": 46.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.065
+     },
+     "udem_jean_brillant": {
+      "median": 36.0,
+      "p10": 28.0,
+      "p90": 45.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.935
+     }
+    }
+   }
+  },
+  "60A": {
+   "udem": {
+    "median": 56.2,
+    "p10": 51.2,
+    "p90": 59.2,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 56.2,
+      "p10": 51.2,
+      "p90": 59.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 58.0,
+      "p10": 53.0,
+      "p90": 61.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "60B": {
+   "udem": {
+    "median": 64.2,
+    "p10": 59.2,
+    "p90": 68.2,
+    "over_max": [],
+    "n_points": 23,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 64.2,
+      "p10": 59.2,
+      "p90": 68.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 66.0,
+      "p10": 61.0,
+      "p90": 70.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "60C": {
+   "udem": {
+    "median": 62.2,
+    "p10": 57.2,
+    "p90": 67.2,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 62.2,
+      "p10": 57.2,
+      "p90": 67.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 64.0,
+      "p10": 59.0,
+      "p90": 69.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "61": {
+   "udem": {
+    "median": 71.2,
+    "p10": 68.2,
+    "p90": 74.2,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 71.2,
+      "p10": 68.2,
+      "p90": 74.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 73.0,
+      "p10": 70.0,
+      "p90": 76.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "62": {
+   "udem": {
+    "median": 53.2,
+    "p10": 44.2,
+    "p90": 62.2,
+    "over_max": [],
+    "n_points": 78,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 53.2,
+      "p10": 44.2,
+      "p90": 62.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 55.0,
+      "p10": 46.0,
+      "p90": 64.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "63": {
+   "udem": {
+    "median": 60.2,
+    "p10": 53.2,
+    "p90": 68.2,
+    "over_max": [],
+    "n_points": 55,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 60.2,
+      "p10": 53.2,
+      "p90": 68.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 62.0,
+      "p10": 55.0,
+      "p90": 70.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "64": {
+   "udem": {
+    "median": 38.0,
+    "p10": 34.0,
+    "p90": 42.0,
+    "over_max": [],
+    "n_points": 54,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 39.2,
+      "p10": 34.2,
+      "p90": 42.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.018
+     },
+     "udem_jean_brillant": {
+      "median": 38.0,
+      "p10": 34.0,
+      "p90": 42.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.982
+     }
+    }
+   }
+  },
+  "65": {
+   "udem": {
+    "median": 42.2,
+    "p10": 29.2,
+    "p90": 47.2,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 42.2,
+      "p10": 29.2,
+      "p90": 47.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 44.0,
+      "p10": 30.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "66": {
+   "udem": {
+    "median": 46.0,
+    "p10": 42.0,
+    "p90": 50.0,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 46.2,
+      "p10": 42.2,
+      "p90": 51.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.028
+     },
+     "udem_jean_brillant": {
+      "median": 46.0,
+      "p10": 42.0,
+      "p90": 50.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.972
+     }
+    }
+   }
+  },
+  "67": {
+   "udem": {
+    "median": 61.0,
+    "p10": 57.2,
+    "p90": 64.0,
+    "over_max": [],
+    "n_points": 62,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 61.2,
+      "p10": 57.2,
+      "p90": 64.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.149
+     },
+     "udem_jean_brillant": {
+      "median": 61.0,
+      "p10": 58.0,
+      "p90": 64.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.851
+     }
+    }
+   }
+  },
+  "68": {
+   "udem": {
+    "median": 58.2,
+    "p10": 47.0,
+    "p90": 68.0,
+    "over_max": [],
+    "n_points": 80,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 59.2,
+      "p10": 47.2,
+      "p90": 68.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.053
+     },
+     "udem_jean_brillant": {
+      "median": 59.0,
+      "p10": 47.0,
+      "p90": 68.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.947
+     }
+    }
+   }
+  },
+  "69": {
+   "udem": {
+    "median": 59.0,
+    "p10": 55.0,
+    "p90": 62.0,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 59.2,
+      "p10": 55.2,
+      "p90": 63.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 59.0,
+      "p10": 55.0,
+      "p90": 62.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "70": {
+   "udem": {
+    "median": 52.0,
+    "p10": 47.0,
+    "p90": 60.0,
+    "over_max": [],
+    "n_points": 48,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 53.2,
+      "p10": 48.2,
+      "p90": 61.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 52.0,
+      "p10": 47.0,
+      "p90": 60.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "71": {
+   "udem": {
+    "median": 73.2,
+    "p10": 62.2,
+    "p90": 84.2,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 73.2,
+      "p10": 62.2,
+      "p90": 84.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 74.0,
+      "p10": 64.0,
+      "p90": 86.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "72": {
+   "udem": {
+    "median": 54.2,
+    "p10": 43.2,
+    "p90": 64.2,
+    "over_max": [],
+    "n_points": 61,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 54.2,
+      "p10": 43.2,
+      "p90": 64.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 56.0,
+      "p10": 45.0,
+      "p90": 66.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "73": {
+   "udem": {
+    "median": 63.2,
+    "p10": 56.2,
+    "p90": 70.2,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 63.2,
+      "p10": 56.2,
+      "p90": 70.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 65.0,
+      "p10": 58.0,
+      "p90": 71.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "74": {
+   "udem": {
+    "median": 20.2,
+    "p10": 15.2,
+    "p90": 29.2,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 20.2,
+      "p10": 15.2,
+      "p90": 29.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.913
+     },
+     "udem_jean_brillant": {
+      "median": 22.0,
+      "p10": 17.0,
+      "p90": 30.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.087
+     }
+    }
+   }
+  },
+  "75": {
+   "udem": {
+    "median": 83.2,
+    "p10": 67.2,
+    "p90": 114.2,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 1,
+    "unreachable_share": 0.034,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 83.2,
+      "p10": 67.2,
+      "p90": 114.2,
+      "over_max": [],
+      "n_unreachable": 1,
+      "fastest_share": 0.966
+     },
+     "udem_jean_brillant": {
+      "median": 84.0,
+      "p10": 69.0,
+      "p90": 116.0,
+      "over_max": [],
+      "n_unreachable": 2,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "80": {
+   "udem": {
+    "median": 69.2,
+    "p10": 65.2,
+    "p90": 71.2,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 69.2,
+      "p10": 65.2,
+      "p90": 71.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 70.0,
+      "p10": 67.0,
+      "p90": 72.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "81": {
+   "udem": {
+    "median": 32.2,
+    "p10": 26.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 34.2,
+      "p10": 29.2,
+      "p90": 37.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.159
+     },
+     "udem_jean_brillant": {
+      "median": 33.0,
+      "p10": 26.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.841
+     }
+    }
+   }
+  },
+  "82": {
+   "udem": {
+    "median": 32.0,
+    "p10": 24.0,
+    "p90": 39.0,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 34.2,
+      "p10": 25.2,
+      "p90": 41.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 32.0,
+      "p10": 24.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "83": {
+   "udem": {
+    "median": 44.0,
+    "p10": 36.0,
+    "p90": 50.0,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 45.2,
+      "p10": 37.2,
+      "p90": 51.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 44.0,
+      "p10": 36.0,
+      "p90": 50.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "84": {
+   "udem": {
+    "median": 42.0,
+    "p10": 37.0,
+    "p90": 47.0,
+    "over_max": [],
+    "n_points": 9,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 43.2,
+      "p10": 38.2,
+      "p90": 48.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 42.0,
+      "p10": 37.0,
+      "p90": 47.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "85": {
+   "udem": {
+    "median": 63.0,
+    "p10": 58.0,
+    "p90": 67.0,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 64.2,
+      "p10": 59.2,
+      "p90": 68.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     },
+     "udem_jean_brillant": {
+      "median": 63.0,
+      "p10": 58.0,
+      "p90": 67.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   }
+  },
+  "86": {
+   "udem": {
+    "median": 67.0,
+    "p10": 61.0,
+    "p90": 71.2,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 67.2,
+      "p10": 62.2,
+      "p90": 71.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.409
+     },
+     "udem_jean_brillant": {
+      "median": 67.0,
+      "p10": 61.0,
+      "p90": 72.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.591
+     }
+    }
+   }
+  },
+  "87": {
+   "udem": {
+    "median": 73.0,
+    "p10": 68.0,
+    "p90": 80.0,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 73.2,
+      "p10": 68.2,
+      "p90": 81.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.202
+     },
+     "udem_jean_brillant": {
+      "median": 73.0,
+      "p10": 68.0,
+      "p90": 80.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.798
+     }
+    }
+   }
+  },
+  "88": {
+   "udem": {
+    "median": 83.0,
+    "p10": 73.0,
+    "p90": 87.0,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 83.2,
+      "p10": 73.2,
+      "p90": 87.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.242
+     },
+     "udem_jean_brillant": {
+      "median": 83.0,
+      "p10": 73.0,
+      "p90": 87.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.758
+     }
+    }
+   }
+  },
+  "89": {
+   "udem": {
+    "median": 61.2,
+    "p10": 48.2,
+    "p90": 70.2,
+    "over_max": [],
+    "n_points": 77,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 61.2,
+      "p10": 48.2,
+      "p90": 70.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.947
+     },
+     "udem_jean_brillant": {
+      "median": 62.0,
+      "p10": 50.0,
+      "p90": 72.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.053
+     }
+    }
+   }
+  },
+  "90": {
+   "udem": {
+    "median": 71.0,
+    "p10": 64.2,
+    "p90": 75.2,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 71.2,
+      "p10": 64.2,
+      "p90": 75.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.858
+     },
+     "udem_jean_brillant": {
+      "median": 71.0,
+      "p10": 65.0,
+      "p90": 76.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.142
+     }
+    }
+   }
+  },
+  "91": {
+   "udem": {
+    "median": 75.0,
+    "p10": 71.2,
+    "p90": 78.2,
+    "over_max": [],
+    "n_points": 8,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 75.2,
+      "p10": 71.2,
+      "p90": 78.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.355
+     },
+     "udem_jean_brillant": {
+      "median": 75.0,
+      "p10": 72.0,
+      "p90": 79.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.645
+     }
+    }
+   }
+  },
+  "92": {
+   "udem": {
+    "median": 101.2,
+    "p10": 83.2,
+    "p90": 101.2,
+    "over_max": [],
+    "n_points": 2,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [
+     "low_sample"
+    ],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 101.2,
+      "p10": 83.2,
+      "p90": 101.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     },
+     "udem_jean_brillant": {
+      "median": 102.0,
+      "p10": 84.0,
+      "p90": 102.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.0
+     }
+    }
+   }
+  },
+  "93": {
+   "udem": {
+    "median": 28.2,
+    "p10": 23.2,
+    "p90": 34.2,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "udem_roger_gaudry": {
+      "median": 28.2,
+      "p10": 23.2,
+      "p90": 35.2,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.76
+     },
+     "udem_jean_brillant": {
+      "median": 29.0,
+      "p10": 25.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 0.24
+     }
+    }
+   }
+  }
+ }
+}

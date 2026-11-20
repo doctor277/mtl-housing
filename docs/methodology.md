@@ -112,7 +112,31 @@ UdeM result:
 - Farthest: Senneville (101, `low_sample`), Rivière-des-Prairies (89), L'Île-Bizard–Sainte-Geneviève (83), Baie-D'Urfé (83).
 - No quartier has more than 10% of dwellings unreachable, and no p90 exceeds 2 h.
 
-_Still to be written: export format, validation results._
+### Web export (step 1.8)
+`python -m mtlhousing export --campus udem` writes two files to `web/public/data/` (committed, so the site never runs Python):
+
+- **`neighbourhoods.geojson`** (~290 kB): one feature per quartier with `id`, `name`, `borough`, `municipality` and `dwellings`.
+  - Boundaries are simplified as a coverage (5 m tolerance in MTM 8), so neighbouring quartiers still share their edges with no gaps or overlaps.
+  - Coordinates are rounded to 5 decimals (about 1 m).
+- **`commute.json`** (~60 kB): `meta` records how, when and from what the numbers were made:
+  - analysis date and departure window;
+  - walk speed and the 120-min limit;
+  - GTFS feed versions and OSM date;
+  - each campus's buildings with their access penalties;
+  - out-of-scope areas, relocated origins and source credits.
+
+  `results[quartier_id][campus_id]` holds:
+  - the fastest-building `median`, `p10` and `p90`;
+  - `n_points`, `n_unreachable`, `unreachable_share` and `flags`;
+  - `rule: "fastest_destination"`;
+  - `by_destination`: each building's own `median`, `p10` and `p90`, `n_unreachable` and `fastest_share`.
+- **Missing values are JSON `null`, never `NaN`.** The writer refuses NaN/Infinity.
+  - A time over 120 min is `null` **and** its name is listed in `over_max`, so the site shows "more than 2 h".
+  - A `null` not listed in `over_max` means no data.
+  - For UdeM, no quartier currently has any stat over the limit.
+- A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
+
+_Still to be written: validation results._
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._
