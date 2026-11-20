@@ -64,6 +64,7 @@ python -m mtlhousing gtfs-check      :: feed periods + validates config.ANALYSIS
 python -m mtlhousing tunnel-check    :: walk-only check: UdeM metro -> Roger-Gaudry through the tunnel
 python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped at 6 GB
 python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
+python -m mtlhousing aggregate --campus udem      :: per-quartier median/p10/p90, penalties, flags
 ```
 
 ### Web

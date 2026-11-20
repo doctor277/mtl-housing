@@ -170,6 +170,19 @@ WALK_SPEED_KMH = 4.8  # close to Google Maps so step 1.9 compares like with like
 DEPARTURE_START_HHMM = (7, 30)
 DEPARTURE_WINDOW = timedelta(minutes=60)  # 7:30-8:30, approximates "arrive around 8:30"
 
+MAX_TRIP_MIN = 120  # r5py default max_time; no result means "more than this"
+
+# Calibrated access penalties (minutes added to every trip ending at a destination).
+# udem_roger_gaudry: R5 walks UdeM metro platform -> Roger-Gaudry in ~4.8 min (357-395 m,
+# flat speed; no elevation model). A UdeM student (author) walks it in ~7 min, matching
+# Google Maps (~7 min / 400 m). Penalty = 7 - 4.8 = 2.2 min for the uphill climb.
+# Re-checked by validation route 6 (step 1.9). See docs/methodology.md.
+ACCESS_PENALTY_MIN = {"udem_roger_gaudry": 2.2}
+
+# Commute reliability: flag a quartier when more than this share of its dwellings
+# cannot reach the campus within MAX_TRIP_MIN.
+UNREACHABLE_FLAG_SHARE = 0.10
+
 # Analysis date (step 1.5, `python -m mtlhousing gtfs-check`): a Tuesday with normal
 # weekday service in all three feeds (STM 26N to 2027-01-03, REM to 2026-12-31, exo to
 # 2027-01-03), during the fall class term, before the STM change of 2027-01-05.

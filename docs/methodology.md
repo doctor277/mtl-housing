@@ -81,9 +81,38 @@ Without any adjustment, Jean-Brillant is the faster building for only **2.2% of 
 - With a realistic walk to Roger-Gaudry (about 3.5 min more), the Snowdon and NDG homes flip to Jean-Brillant. Homes reached from the east (blue line from Saint-Michel or Jean-Talon) still favour Roger-Gaudry by about 1–2 min.
 - **The "fastest building" share is very sensitive** to this one walk. It is 2% at +0 min, 16% at +2, 31% at +3, 46% at +3.5 to +4, and 100% at +5. R5 reports whole minutes, so the shares jump in steps. Both buildings' times are therefore always published alongside the minimum.
 
-**Proposed correction (pending decision, not applied):** a fixed access penalty of **+p minutes on every trip to Roger-Gaudry**, with p calibrated from validation route 6 (Google time minus R5 time, currently about 3.5 min). Alternative: an elevation model in r5py (`TransportNetwork(elevation_model=..., elevation_cost_function=TOBLER)`), which needs a DEM download, a network rebuild and a full re-run.
+**Correction applied: calibrated access penalty for Roger-Gaudry (+2.2 min).**
+- Transit trips end at the Université-de-Montréal **platform stops** (STM 53877 / 53878). From there R5 walks to Roger-Gaudry in **4.6–5.1 min (357–395 m)**, at flat speed. The distance matches Google's ~400 m. What R5 misses is the uphill pace.
+- The project author, a UdeM student, walks platform → Roger-Gaudry / André-Aisenstadt in **about 7 min**, matching Google Maps (~7 min).
+- Penalty **p = 7 − 4.8 = 2.2 min**, added to **every** trip ending at Roger-Gaudry (`config.ACCESS_PENALTY_MIN`). It is applied after routing, on the saved results. This is exact for a fixed destination penalty: every route to that door gets the same extra minutes, so R5's route choice and the median over departure minutes both shift by exactly p. The router's own value is kept as `travel_time_raw_min`.
+- Effect: Jean-Brillant becomes the faster building for **about 32% of homes**, up from 2%. Mostly these are homes reached from the west and south (Snowdon, NDG, Côte-des-Neiges).
+- Caveats: the penalty also applies to trips that reach Roger-Gaudry from the Édouard-Montpetit side, where the climb may differ. And trips just over 120 min before the penalty were never computed. **Validation route 6 (step 1.9) re-checks p.**
 
-_Still to be written: per-quartier aggregation, validation results._
+**Future work (Option B): elevation model.** r5py supports `TransportNetwork(elevation_model=<DEM GeoTIFF>, elevation_cost_function=TOBLER or MINETTI)`. It slows every uphill walk citywide (Mont-Royal, Westmount), which is more realistic than a single penalty. It needs:
+- a DEM download (an elevation file for Montréal);
+- a network rebuild and a full re-run (about 25 min);
+- a check of how R5 treats tunnels and escalators, which would get surface elevations.
+
+Not done for v1.
+
+### Per-quartier commute statistics (step 1.7)
+For each home (in-scope census point) and each campus:
+1. Apply the access penalties above.
+2. **Campus time = fastest of the campus's buildings for that home** ("fastest UdeM building"). Both buildings' times are always kept and published next to it.
+3. Per quartier, for the fastest time and for each building's time:
+   - **Dwelling-weighted median, p10 and p90.** Quantiles use the weighted inverse CDF without interpolation: the smallest time *t* such that at least that share of the quartier's occupied dwellings has a time ≤ *t*.
+   - `n_points`, `n_unreachable` and `unreachable_share` (dwelling-weighted).
+   - For each building, `fastest_share`: the share of dwellings for which it is the faster building.
+4. **Unreachable = more than 120 min.** It ranks above every real time, so it pushes the median and percentiles up. If a quantile lands on it, the value is reported as "more than 2 h". It is never dropped and never counted as 0.
+5. **Flags:** `low_sample` (fewer than 3 points) and `many_unreachable` (more than 10% of dwellings unreachable).
+
+UdeM result:
+- The median of quartier medians is **44 min**.
+- Nearest: Édouard-Montpetit (11), Outremont (20), Snowdon (21), Parc-Kent (22), Savane (24).
+- Farthest: Senneville (101, `low_sample`), Rivière-des-Prairies (89), L'Île-Bizard–Sainte-Geneviève (83), Baie-D'Urfé (83).
+- No quartier has more than 10% of dwellings unreachable, and no p90 exceeds 2 h.
+
+_Still to be written: export format, validation results._
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._

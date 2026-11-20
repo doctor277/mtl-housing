@@ -107,6 +107,28 @@ def step_travel_times(campus: str, repair_only: bool = False) -> None:
     )
 
 
+def step_aggregate(campus: str) -> None:
+    import numpy as np
+
+    from mtlhousing import aggregate, boundaries, config
+
+    stats = aggregate.run_campus(campus)
+    names = boundaries.load_quartiers().set_index("id")["name"]
+    fastest = stats[stats["target"] == aggregate.FASTEST].set_index("quartier_id")
+    fastest = fastest.join(names)
+    print(f"{campus}: {fastest.shape[0]} quartiers, penalties {config.ACCESS_PENALTY_MIN}")
+    print(f"median of quartier medians: {fastest['median'].median():.1f} min")
+    print("flagged:", {q: f for q, f in zip(fastest["name"], fastest["flags"], strict=True) if f})
+    over = fastest[~np.isfinite(fastest["p90"])]["name"].tolist()
+    print(f"p90 over {config.MAX_TRIP_MIN} min: {over}")
+    shares = stats[stats["target"] != aggregate.FASTEST].groupby("target")["fastest_share"]
+    print("mean share of homes per fastest building (unweighted across quartiers):")
+    print(shares.mean().round(3).to_string())
+    cols = ["name", "median", "p10", "p90", "n_points", "flags"]
+    print("\nnearest 5:\n" + fastest.nsmallest(5, "median")[cols].to_string())
+    print("\nfarthest 5:\n" + fastest.nlargest(5, "median")[cols].to_string())
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -114,6 +136,7 @@ STEPS = {
     "gtfs-check": step_gtfs_check,
     "tunnel-check": step_tunnel_check,
     "travel-times": step_travel_times,
+    "aggregate": step_aggregate,
 }
 
 
@@ -129,6 +152,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
+    elif args.step == "aggregate":
+        STEPS[args.step](args.campus)
     else:
         STEPS[args.step]()
 
