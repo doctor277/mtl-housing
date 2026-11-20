@@ -68,18 +68,67 @@ def step_gtfs_check() -> None:
         raise SystemExit(1)
 
 
+def step_tunnel_check() -> None:
+    from mtlhousing import config, travel_times
+    from mtlhousing.r5py_setup import import_r5py
+
+    r5py = import_r5py()
+    network = travel_times.build_network(r5py)
+    rg = config.CAMPUSES["udem"].destinations[0]
+    res = travel_times.walk_check(network, r5py, config.UDEM_METRO_ENTRANCE, (rg.lat, rg.lon))
+    lat, lon = config.TUNNEL_ESCALATOR_MIDPOINT
+    via_tunnel = travel_times.passes_near(res["route"], lat, lon, metres=15)
+    out = config.INTERIM_DIR / "tunnel_check_route.geojson"
+    travel_times.write_route_geojson(res["route"], out)
+    print(
+        f"Walk Université-de-Montréal metro -> {rg.name}: {res['minutes']:.1f} min, "
+        f"{res['metres']:.0f} m at {config.WALK_SPEED_KMH} km/h; "
+        f"uses Tunnel de la Montagne escalator: {via_tunnel}\nroute -> {out}"
+    )
+
+
+def step_travel_times(campus: str, repair_only: bool = False) -> None:
+    from mtlhousing import travel_times
+
+    times, meta = travel_times.run_campus(campus, repair_only=repair_only)
+    t = times["travel_time_min"]
+    print(
+        f"{campus}: {meta['n_origins']:,} points x {len(meta['destinations'])} destinations, "
+        f"network {meta['seconds_network']} s, routing {meta['seconds_routing']} s\n"
+        f"relocated origins: {meta['relocated_origins']}\n"
+        f"unreachable pairs: {meta['n_unreachable_pairs']}\n"
+        + times.groupby("destination_id")["travel_time_min"]
+        .describe(percentiles=[0.1, 0.5, 0.9])
+        .round(1)
+        .to_string()
+        + f"\nall: min {t.min():.0f}, median {t.median():.0f}, max {t.max():.0f} min"
+    )
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
     "osm-clip": step_osm_clip,
     "gtfs-check": step_gtfs_check,
+    "tunnel-check": step_tunnel_check,
+    "travel-times": step_travel_times,
 }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="python -m mtlhousing")
     parser.add_argument("step", choices=sorted(STEPS))
-    STEPS[parser.parse_args().step]()
+    parser.add_argument("--campus", default="udem", help="campus id (travel-times step)")
+    parser.add_argument(
+        "--repair-only",
+        action="store_true",
+        help="travel-times: reuse saved results, only re-route origins that reached nothing",
+    )
+    args = parser.parse_args()
+    if args.step == "travel-times":
+        STEPS[args.step](args.campus, args.repair_only)
+    else:
+        STEPS[args.step]()
 
 
 if __name__ == "__main__":

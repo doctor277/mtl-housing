@@ -61,6 +61,9 @@ python -m mtlhousing boundaries      :: quartiers -> data/interim/quartiers.parq
 python -m mtlhousing sample-points   :: StatCan DAs -> residential sample points (first run ~10 s)
 python -m mtlhousing osm-clip        :: Québec PBF -> Montréal PBF (~45 s, skipped if unchanged)
 python -m mtlhousing gtfs-check      :: feed periods + validates config.ANALYSIS_DATE (exit 1 if not OK)
+python -m mtlhousing tunnel-check    :: walk-only check: UdeM metro -> Roger-Gaudry through the tunnel
+python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped at 6 GB
+python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
 ```
 
 ### Web

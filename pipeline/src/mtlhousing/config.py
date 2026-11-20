@@ -38,6 +38,21 @@ GTFS_FEEDS = {
 OSM_CLIPPED_PBF = INTERIM_DIR / "montreal.osm.pbf"
 OSM_CLIPPED_META = INTERIM_DIR / "montreal.osm.json"  # source hash, bbox, OSM timestamp
 
+
+def travel_times_parquet(campus_id: str) -> Path:
+    return INTERIM_DIR / f"travel_times_{campus_id}.parquet"
+
+
+def travel_times_meta(campus_id: str) -> Path:
+    return INTERIM_DIR / f"travel_times_{campus_id}.json"
+
+
+# Tunnel check (step 1.6): Université-de-Montréal metro entrance at 2810 boul.
+# Édouard-Montpetit (OSM node/289402455), next to the "Tunnel de la Montagne" corridor
+# (way/723259189) whose escalator (way/723260098) climbs toward Roger-Gaudry.
+UDEM_METRO_ENTRANCE = (45.503511, -73.617252)  # (lat, lon)
+TUNNEL_ESCALATOR_MIDPOINT = (45.503315, -73.61672)  # (lat, lon) of way/723260098
+
 # Census division 2466 = Montréal = the island (the agglomeration's 16 municipalities).
 MONTREAL_CDUID = "2466"
 MIN_POINTS_PER_QUARTIER = 3  # fewer -> quartier flagged low_sample
