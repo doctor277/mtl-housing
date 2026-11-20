@@ -6,6 +6,7 @@ that decides them (1.1 and 1.5), so nothing here is a placeholder guess.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import timedelta
 from pathlib import Path
 
@@ -32,6 +33,52 @@ CRS_METRIC = "EPSG:32188"  # NAD83 / MTM zone 8: metric work in Montréal
 # Island of Montréal plus a buffer so routes through Laval and the South Shore
 # (e.g. yellow line to Longueuil) stay in the network. (min_lon, min_lat, max_lon, max_lat)
 BBOX = (-74.10, 45.35, -73.35, 45.80)
+
+# --- Campuses ------------------------------------------------------------------
+# One routing destination per campus. Coordinates come from OpenStreetMap
+# (extract of 2026-11-19, see data/manifest.csv), preferring the node tagged
+# entrance=main so the trip ends at the door people actually use.
+
+
+@dataclass(frozen=True)
+class Campus:
+    id: str
+    name: str
+    lat: float
+    lon: float
+    osm_ref: str  # where the point comes from, for traceability
+    note: str
+
+
+CAMPUSES: dict[str, Campus] = {
+    c.id: c
+    for c in (
+        Campus(
+            id="udem",
+            name="Université de Montréal (campus principal)",
+            lat=45.5027705,
+            lon=-73.6150484,
+            osm_ref="node/2573744215",
+            note="Pavillon Roger-Gaudry main entrance L-4, 2900 boul. Édouard-Montpetit",
+        ),
+        Campus(
+            id="mcgill",
+            name="McGill University (downtown campus)",
+            lat=45.503849,
+            lon=-73.574925,
+            osm_ref="way/143798969",
+            note="Roddick Gates, rue Sherbrooke Ouest at avenue McGill College",
+        ),
+        Campus(
+            id="concordia_sgw",
+            name="Concordia University (Sir George Williams campus)",
+            lat=45.4970373,
+            lon=-73.5786245,
+            osm_ref="node/4035248248",
+            note="Henry F. Hall Building main entrance, 1455 boul. De Maisonneuve Ouest",
+        ),
+    )
+}
 
 # --- Routing (r5py) ------------------------------------------------------------
 JVM_MAX_MEMORY = "6G"  # machine has 16 GB
