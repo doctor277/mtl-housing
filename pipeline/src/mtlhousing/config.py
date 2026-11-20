@@ -25,6 +25,8 @@ STATCAN_GAF_ZIP = RAW_DIR / "statcan" / "2021_92-151_X.zip"
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 
+QUARTIERS_PARQUET = INTERIM_DIR / "quartiers.parquet"
+
 # --- Coordinate reference systems -------------------------------------------
 CRS_WGS84 = "EPSG:4326"  # storage / web output
 CRS_METRIC = "EPSG:32188"  # NAD83 / MTM zone 8: metric work in Montréal

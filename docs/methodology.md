@@ -4,6 +4,8 @@ This file is filled in as each phase lands. It becomes the site's "Sources & lim
 
 ## Geography
 - Unit of analysis: the Ville de Montréal **quartiers de référence en habitation** (91 areas). The layer also covers the villes liées (Westmount, Mont-Royal, Côte-Saint-Luc, …), so the whole island is included.
+- 91 quartiers across 15 municipalities, with 1,011,945 dwellings in total (city CSV). **L'Île-Dorval**, a tiny seasonal island municipality with no transit, is not in the city's layer and is not covered.
+- Six source polygons have small self-intersections. They are repaired automatically, and the area of each changes by less than 30 m². Neighbouring polygons overlap by up to a few hundred m² from how the borders were drawn, which is negligible.
 
 ## Commute (Phase 1)
 
