@@ -76,17 +76,24 @@ def build_network(r5py):
     return r5py.TransportNetwork(str(config.OSM_CLIPPED_PBF), gtfs)
 
 
+def routing_kwargs(r5py) -> dict:
+    """The R5 settings of the main run. Shared with validation so both route alike."""
+    return {
+        "departure": config.analysis_departure(),
+        "departure_time_window": config.DEPARTURE_WINDOW,
+        "transport_modes": [r5py.TransportMode.TRANSIT, r5py.TransportMode.WALK],
+        "speed_walking": config.WALK_SPEED_KMH,
+        "snap_to_network": True,
+    }
+
+
 def compute_travel_times(network, r5py, origins, destinations) -> pd.DataFrame:
     ttm = r5py.TravelTimeMatrix(
         network,
         origins=origins,
         destinations=destinations,
-        departure=config.analysis_departure(),
-        departure_time_window=config.DEPARTURE_WINDOW,
         percentiles=[50],
-        transport_modes=[r5py.TransportMode.TRANSIT, r5py.TransportMode.WALK],
-        speed_walking=config.WALK_SPEED_KMH,
-        snap_to_network=True,
+        **routing_kwargs(r5py),
     )
     return complete_matrix(pd.DataFrame(ttm), origins["id"], destinations["id"])
 

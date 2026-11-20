@@ -136,7 +136,13 @@ UdeM result:
   - For UdeM, no quartier currently has any stat over the limit.
 - A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
 
-_Still to be written: validation results._
+### Validation against Google Maps (step 1.9)
+Seven hand-picked routes were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). **7 of 8 comparisons pass; route 4 (Hochelaga → Roger-Gaudry via green line + REM) fails, R5 being 9–17 min faster.** Details, R5 itineraries and the open diagnosis are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
+
+Findings that affect how numbers are presented:
+- **R5 is optimistic, not conservative.** Medians (which include waiting) are on average 1.5 min below Google's well-timed trip, excluding route 4. A likely cause is transfers: the feeds have no pathway or transfer times, so R5 treats a transfer as a flat street walk between stop coordinates. At deep stations such as the REM's Édouard-Montpetit, the change takes 0.4 min in R5.
+- **The building split is a near-tie in NDG.** Google and R5 disagree on the faster building by ≤ 1 min. The "fastest building" value is robust; which building wins for a given home is not.
+- Route 6 (platform → Roger-Gaudry walk) only confirms the calibrated penalty is applied; it is not independent evidence.
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._

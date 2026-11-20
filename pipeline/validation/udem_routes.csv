@@ -1,0 +1,9 @@
+route,kind,origin,lat,lon,coord_source,gtfs_stop_ids,destination_id,google_min,google_alt_min,google_alt_note,google_route
+1,transit,4500 Rue Saint-Denis,45.523861,-73.583154,author (Google Maps pin),,udem_roger_gaudry,31,,,orange -> blue
+2,transit,"4000 Rue Wellington, Verdun",45.4637752,-73.566789,OSM node/4907803398 (addr tags),,udem_roger_gaudry,39,,,green -> orange -> blue
+3,transit,1500 Rue Fleury Est,45.5626456,-73.6562057,author (Google Maps pin),,udem_roger_gaudry,50,42,fastest trip listed,first suggested trip
+4,transit,3800 Rue Ontario Est,45.5473239,-73.5430141,OSM way/224941530 (addr tags),,udem_roger_gaudry,60,52,via green + REM,first suggested trip
+5,transit,Fairview-Pointe-Claire REM station,45.459943,-73.835339,REM GTFS stop ST_PTC_1 (parent station),,udem_roger_gaudry,41,,,REM -> blue
+6,walk,Université-de-Montréal metro platform,,,STM GTFS platform stops where R5's metro trips end,stm:53877|stm:53878,udem_roger_gaudry,7,,,walk through the Tunnel de la Montagne
+7,transit,5800 Rue Sherbrooke Ouest,45.4696973,-73.6171523,author (Google Maps pin),,udem_jean_brillant,36,,,
+7,transit,5800 Rue Sherbrooke Ouest,45.4696973,-73.6171523,author (Google Maps pin),,udem_roger_gaudry,35,,,

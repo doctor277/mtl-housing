@@ -66,6 +66,7 @@ python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped a
 python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
 python -m mtlhousing aggregate --campus udem      :: per-quartier median/p10/p90, penalties, flags
 python -m mtlhousing export --campus udem         :: web/public/data/*.json(geojson) + data/interim check map
+python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipeline/validation/udem_results.csv
 ```
 
 ### Web

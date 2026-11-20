@@ -141,6 +141,30 @@ def step_export(campus: str) -> None:
     print(f"{campus}: {n}/{len(results)} quartiers with results; stats over max: {over}")
 
 
+def step_validate(campus: str) -> None:
+    import pandas as pd
+
+    from mtlhousing import validation
+
+    res = validation.run(campus)
+    cols = [
+        "route",
+        "destination_id",
+        "google_min",
+        "r5_median_min",
+        "r5_p10_min",
+        "diff_min",
+        "tolerance_min",
+        "verdict",
+        "google_alt_min",
+        "alt_verdict",
+    ]
+    with pd.option_context("display.width", 200):
+        print(res[cols].to_string(index=False))
+    n_pass = (res["verdict"] == "pass").sum()
+    print(f"\n{n_pass}/{len(res)} pass -> {validation.results_csv(campus)}")
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -150,6 +174,7 @@ STEPS = {
     "travel-times": step_travel_times,
     "aggregate": step_aggregate,
     "export": step_export,
+    "validate": step_validate,
 }
 
 
@@ -167,7 +192,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
-    elif args.step in ("aggregate", "export"):
+    elif args.step in ("aggregate", "export", "validate"):
         STEPS[args.step](args.campus)
     else:
         STEPS[args.step]()
