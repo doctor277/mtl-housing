@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mtlhousing"
+version = "0.1.0"
+description = "Offline data pipeline for the Montréal where-should-I-live tool"
+requires-python = ">=3.12"
+# Dependencies are managed by conda (environment.yml); install this package with --no-deps.
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+# The JVM (r5py) raises and handles access violations itself on Windows; pytest's
+# faulthandler would print each one as a scary "fatal exception" traceback.
+addopts = "-ra -p no:faulthandler"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

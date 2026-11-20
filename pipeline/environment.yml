@@ -1,0 +1,22 @@
+# Pipeline environment. Everything from conda-forge so geospatial libs and the JDK match on Windows.
+#   mamba env create -f pipeline/environment.yml
+#   mamba activate mtlhousing
+#   pip install -e pipeline --no-deps
+name: mtlhousing
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - openjdk=21          # r5py needs JDK 21+; system Java (17) is not used
+  - r5py
+  - geopandas
+  - pandas
+  - pyarrow
+  - shapely
+  - pyogrio
+  - osmium-tool         # `osmium extract` to clip the Québec PBF (step 1.4)
+  - folium              # geopandas .explore() sanity maps (step 1.8)
+  - mapclassify
+  - pytest
+  - ruff
+  - pip
