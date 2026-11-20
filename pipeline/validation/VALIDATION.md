@@ -1,6 +1,6 @@
 # Validation: R5 vs Google Maps, UdeM (step 1.9)
 
-**Result: 7 of 8 comparisons pass. Route 4 fails and is not explained yet, so Phase 1 stays open until it is.**
+**Result: 7 of 8 comparisons pass. Route 4 passes only against Google's like-for-like trip (green + REM, 52 min), at the limit of the tolerance; it fails against Google's first suggestion (60 min).** Its leg-by-leg comparison shows two R5 biases: deep-station transfers and walking speed (finding 1). Phase 1 stays open until we decide what to do about them.
 
 - Inputs: [`udem_routes.csv`](udem_routes.csv)
 - Outputs: [`udem_results.csv`](udem_results.csv)
@@ -27,9 +27,8 @@ R5's median includes waiting at the first stop. The R5 **p10** is shown as a ref
 
 | Routes | Source |
 |---|---|
-| 1, 3, 7 | Author's Google Maps pins |
+| 1, 3, 4, 7 | Author's Google Maps pins (route 4 was first routed from OSM way/224941530, 20 m away: 43.2 min) |
 | 2 | OSM address node/4907803398 |
-| 4 | OSM address way/224941530 |
 | 5 | REM GTFS parent station `ST_PTC_1` |
 | 6 | STM platform stops 53877 / 53878, where R5's metro trips end |
 
@@ -40,7 +39,7 @@ R5's median includes waiting at the first stop. The R5 **p10** is shown as a ref
 | 1 | 4500 Saint-Denis (Mile End) | Roger-Gaudry | 31 | 32.2 | 30.2 | +1.2 | 5.0 | pass |
 | 2 | 4000 Wellington (Verdun-Centre) | Roger-Gaudry | 39 | 36.2 | 34.2 | −2.8 | 5.8 | pass |
 | 3 | 1500 Fleury Est (Sault-au-Récollet) | Roger-Gaudry | 50 (fastest listed: 42) | 46.2 | 41.2 | −3.8 (+4.2) | 7.5 (6.3) | pass (pass) |
-| 4 | 3800 Ontario Est (Hochelaga) | Roger-Gaudry | 60 (green + REM: 52) | 43.2 | 40.2 | −16.8 (−8.8) | 9.0 (7.8) | **fail (fail)** |
+| 4 | 3800 Ontario Est (Hochelaga) | Roger-Gaudry | 60 (green + REM: 52) | 44.2 | 41.2 | −15.8 (−7.8) | 9.0 (7.8) | **fail** (pass, at the limit) |
 | 5 | Fairview–Pointe-Claire REM station | Roger-Gaudry | 41 | 44.2 | 38.2 | +3.2 | 6.1 | pass |
 | 6 | UdeM metro platform, walk only | Roger-Gaudry | 7 | 7.0 | — | 0.0 | 5.0 | pass (by construction) |
 | 7 | 5800 Sherbrooke Ouest (Upper Lachine) | Jean-Brillant | 36 | 32.0 | 29.0 | −4.0 | 5.4 | pass |
@@ -59,43 +58,39 @@ All times are in minutes. Roger-Gaudry times include the +2.2 min penalty; raw v
 
 ## Findings
 
-### 1. Route 4 fails: R5 is 9–17 min faster than Google on the same pattern
+### 1. Route 4: same pattern as Google, but R5 is faster on walks and at Édouard-Montpetit
 
-Even against Google's fastest listed trip (52 min, green + REM), R5's median is 8.8 min lower. R5's well-timed departure is 11.8 min lower.
+Google's 52-min trip and R5 leaving at the same minute (7:36) from Google's pin. R5 times are raw; the +2.2 Roger-Gaudry penalty is added at the end.
 
-R5's legs at a 7:40 departure (raw, no penalty, 41.0 min):
+| Leg | Google | R5 | Google − R5 |
+|---|---|---|---|
+| Walk to Joliette | 14 min, 900 m | 11.7 min, 902 m | +2.3 |
+| Wait + green line Joliette → McGill | 0 + 11 | 1.1 + 10.0 | −0.1 |
+| Walk to REM McGill | ~3 | 2.5, 199 m | +0.5 |
+| Wait for REM | 5 (arrives 8:04, train 8:09) | 2.5 | +2.5 |
+| REM McGill → Édouard-Montpetit | 3 ("Elevator out") | 2.8 | +0.2 |
+| Édouard-Montpetit → Roger-Gaudry | **walk 16 min, 1.0 km on the surface** | **transfer 0.4 + wait 4.8 + blue line 2.0 + walk 4.3 + penalty 2.2 = 13.7** | +2.3 |
+| **Total** | **52 (arrive 8:28)** | **44.3 (arrive 8:20)** | **+7.7** |
 
-| Leg | R5 |
-|---|---|
-| Walk to Joliette | 10.5 min, 814 m |
-| Green line Joliette → McGill | 10.0 min + 1.1 wait |
-| **Transfer McGill metro → REM McGill** | **2.5 min, 199 m, flat** (+1.0 wait) |
-| REM McGill → Édouard-Montpetit | 2.8 min + 1.5 wait |
-| **Transfer REM → blue line at Édouard-Montpetit** | **0.4 min, 36 m, flat** (+1.1 wait) |
-| Blue line, 1 stop | 2.0 min + 3.7 wait |
-| Walk to Roger-Gaudry | 4.3 min (+2.2 penalty) |
+**What the legs show:**
+- **Walking speed.** On the same 900 m, Google walks 14 min, about 3.9 km/h. R5 walks 11.7 min at the configured 4.8 km/h. Google's 1.0 km out of Édouard-Montpetit takes 16 min (3.75 km/h, including the elevator); R5's own surface walk on that route is 13.4 min for 1,045 m. Being slower, Google also reaches McGill later and misses a REM, which explains the extra REM wait. **About 5 of the 7.7 min trace back to walking speed.**
+- **The Édouard-Montpetit transfer.** Google does not take the blue line at Édouard-Montpetit; it prefers a 16-min surface walk. R5 times that transfer at 0.4 min / 36 m, because the REM platforms are about 20 m from the metro stop on a flat map. Neither feed has `pathways.txt`, `levels.txt` or `transfers.txt`. For Google to prefer the walk, the transfer path must cost more: transfer + blue-line wait + 1 stop (~2 min) + its 7-min platform → Roger-Gaudry walk ≥ 16, so **transfer + wait ≥ ~7 min**.
+- **The McGill transfer is fine:** Google ~3 min, R5 2.5 min.
 
-**Most likely cause: R5 does not see how deep the REM stations are.**
-- Neither the REM nor the STM feed has `pathways.txt`, `levels.txt` or `transfers.txt`.
-- R5 times a transfer as a street-network walk between the two stop coordinates.
-- At Édouard-Montpetit, the REM platforms are about 20 m from the metro stop on a flat map. The real station is very deep, so the transfer is by long escalators or elevators. R5 counts 0.4 min.
-- The McGill transfer between the green line and the REM's deep platforms is also timed as a flat 199 m walk.
+**Verdict.** Against Google's like-for-like trip (52), R5's median is 44.2 (−7.8, tolerance 7.8), so it passes, but only just. The 60-min first suggestion was a different, slower trip.
 
-**Other possible causes** (I can't confirm either without Google's trip details):
-- Google may place "3800 Rue Ontario Est" somewhere other than the OSM address. This is the only failing route whose origin came from OSM rather than from an author pin.
-- Google may add its own transfer buffers.
-
-**Needed to close this:** Google's leg-by-leg times for the 52-min trip (start walk, transfer minutes at McGill and at Édouard-Montpetit, final walk) and Google's pin coordinates for the origin.
-
-**Why it matters beyond one route.** Many homes' best R5 trips use REM → Édouard-Montpetit → blue line. In the itinerary samples from step 1.9 this included Mercier–Hochelaga, Milton-Parc, the West Island and Cartierville. If the REM transfers are underestimated, those quartiers' commutes are optimistic. Route 5 passes with the same 0.4-min Édouard-Montpetit transfer (R5 p10 38.2 vs Google 41). So the gap there is a few minutes, not 10.
+**Why it matters beyond one route.** Many homes' best R5 trips use REM → Édouard-Montpetit → blue line. In the itinerary samples from step 1.9 this included Mercier–Hochelaga, Milton-Parc, the West Island and Cartierville. Their medians are optimistic by roughly the missing transfer time. How much each quartier would change still needs to be measured.
 
 ### 2. R5 is optimistic overall, not pessimistic
 
 We expected R5 medians to come out above Google, because Google leaves out the initial wait. Instead:
-- **The median is below Google in 5 of 7 transit comparisons.** Mean difference: −1.5 min without route 4, −3.7 min with it.
-- **R5's well-timed departure (p10) is faster than Google in every comparison:** −0.8, −4.8, −8.8 (−0.8 against the fastest listed), −11.8 against the 52-min trip, −2.8, −7.0 and −4.8 min.
+- **The median is below Google in 5 of 7 transit comparisons.** Mean difference: −1.5 min without route 4, −3.5 min with it (against its first suggestion).
+- **R5's well-timed departure (p10) is faster than Google in every comparison:** −0.8, −4.8, −8.8 (−0.8 against the fastest listed), −10.8 against the 52-min trip, −2.8, −7.0 and −4.8 min.
 
-**Likely contributors**, in this order: flat transfers and no time for going down to deep platforms (finding 1); entrances not modelled, since R5 walks to the platform coordinate at street level; Google's own buffers.
+**Likely contributors** (from route 4's leg breakdown):
+- **Walking speed.** Google walks at about 3.8–3.9 km/h; we configured 4.8.
+- **Flat transfers at deep stations** such as Édouard-Montpetit.
+- **Station entrances not modelled.** R5 walks to the platform coordinate at street level.
 
 **Consequence for the site.** The published medians are closer to "Google trip time" than to "Google + wait". The methodology page must say so and must not describe them as conservative.
 
@@ -112,7 +107,7 @@ The penalty was calibrated from this same 7-min walk: 7 − 4.8 = 2.2. R5's walk
 
 ## Status
 
-**Open: route 4.** To resolve:
-1. Get Google's leg breakdown and origin pin.
-2. If the REM transfer is confirmed as the cause, decide on a documented correction. Options include a fixed transfer time for deep REM stations, or a patched REM feed with pathway times. Either way it gets re-run and re-validated.
+**Open: deep-station transfers and walking speed.** Both are decisions for the author:
+1. Choose a correction for the Édouard-Montpetit transfer, measure which quartiers change, apply it, re-run and re-validate.
+2. Decide whether to keep a walking speed of 4.8 km/h (and document it as optimistic) or move closer to Google's ~3.9 km/h.
 3. Write the systematic optimism (finding 2) into `docs/methodology.md` and the site's limitations.

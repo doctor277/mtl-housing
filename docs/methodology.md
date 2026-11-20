@@ -137,7 +137,7 @@ UdeM result:
 - A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
 
 ### Validation against Google Maps (step 1.9)
-Seven hand-picked routes were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). **7 of 8 comparisons pass; route 4 (Hochelaga → Roger-Gaudry via green line + REM) fails, R5 being 9–17 min faster.** Details, R5 itineraries and the open diagnosis are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
+Seven hand-picked routes were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). **7 of 8 comparisons pass. Route 4 (Hochelaga → Roger-Gaudry via green line + REM) fails against Google's first suggestion and only just passes against its like-for-like 52-min trip (R5 44.2).** Its leg-by-leg comparison shows R5 walks faster than Google (4.8 vs ~3.9 km/h) and treats the REM → blue line transfer at Édouard-Montpetit as a 0.4-min flat walk. Details, R5 itineraries and the open diagnosis are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
 
 Findings that affect how numbers are presented:
 - **R5 is optimistic, not conservative.** Medians (which include waiting) are on average 1.5 min below Google's well-timed trip, excluding route 4. A likely cause is transfers: the feeds have no pathway or transfer times, so R5 treats a transfer as a flat street walk between stop coordinates. At deep stations such as the REM's Édouard-Montpetit, the change takes 0.4 min in R5.
