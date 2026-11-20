@@ -44,3 +44,6 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Playwright MCP screenshots/snapshots (local checks)
+.playwright-mcp/
