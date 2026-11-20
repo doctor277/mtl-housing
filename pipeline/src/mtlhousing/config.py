@@ -26,6 +26,14 @@ OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 
 QUARTIERS_PARQUET = INTERIM_DIR / "quartiers.parquet"
+GAF_MONTREAL_PARQUET = INTERIM_DIR / "gaf_montreal.parquet"  # cache of the 299 MB Canada CSV
+SAMPLE_POINTS_PARQUET = INTERIM_DIR / "sample_points.parquet"
+SAMPLE_POINTS_GEOJSON = INTERIM_DIR / "sample_points.geojson"  # debug / visual check
+SAMPLE_POINTS_SUMMARY_CSV = INTERIM_DIR / "sample_points_by_quartier.csv"
+
+# Census division 2466 = Montréal = the island (the agglomeration's 16 municipalities).
+MONTREAL_CDUID = "2466"
+MIN_POINTS_PER_QUARTIER = 3  # fewer -> quartier flagged low_sample
 
 # --- Coordinate reference systems -------------------------------------------
 CRS_WGS84 = "EPSG:4326"  # storage / web output

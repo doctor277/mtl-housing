@@ -27,7 +27,17 @@ Each campus has one or more **destination buildings**. Trips are routed to the b
 
 Limitation: campuses are large. A class in a building other than the modelled ones can change the trip by 5–10 minutes.
 
-_Still to be written: sample points, r5py settings, departure window, validation results._
+### Where trips start: residential sample points
+A quartier's commute is not measured from its centre. It is measured from many points where people actually live, and the results are then summarised.
+
+- **Source:** Statistics Canada, 2021 Census Geographic Attribute File (92-151-X), census division 2466 (island of Montréal).
+- **One point per dissemination area (DA).** A DA is a small census area of about 400–700 residents. The point is StatCan's representative point for that DA. The file has no coordinates at the smaller block level, which is why DAs are used.
+- **Weight = dwellings occupied by usual residents** in the DA, from the 2021 census. A DA with no residents is not used.
+- This gives **3,220 points**: a median of 34 per quartier, minimum 2 and maximum 91. Every point falls inside a quartier.
+- **Reliability flag:** a quartier with fewer than 3 points is flagged `low_sample`. Today that is only **Senneville** (2 points). A quartier with no point at all would be routed from a point inside its polygon and flagged. None needs that today.
+- **Cross-check:** StatCan 2021 dwellings per quartier compared with the city's counts. The median ratio is 0.99, ranging 0.76–1.09. The lowest are René-Lévesque (0.76) and Vieux-Montréal (0.77), which is consistent with downtown condo construction since 2021. This confirms the points land in the right quartiers, and that 2021 census weights slightly under-represent the fastest-growing downtown areas.
+
+_Still to be written: r5py settings, departure window, validation results._
 
 ## Rent (Phase 2)
 _To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._

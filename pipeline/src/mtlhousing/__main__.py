@@ -16,7 +16,27 @@ def step_boundaries() -> None:
     )
 
 
-STEPS = {"boundaries": step_boundaries}
+def step_sample_points() -> None:
+    from mtlhousing import boundaries, sample_points
+
+    gaf = sample_points.extract_gaf()
+    pts = sample_points.da_points(gaf)
+    sample, summary = sample_points.build_sample_points(pts, boundaries.load_quartiers())
+    sample_points.write_outputs(sample, summary)
+    r = summary["dwelling_ratio"]
+    print(
+        f"{len(gaf):,} census blocks -> {len(pts):,} DA points -> {len(sample):,} sample points "
+        f"({summary.attrs['points_outside_quartiers']} outside quartiers, "
+        f"{int(summary['fallback'].sum())} fallback)\n"
+        f"points per quartier: min {summary['n_points'].min()}, "
+        f"median {summary['n_points'].median():.0f}, max {summary['n_points'].max()}\n"
+        f"low_sample: {summary.loc[summary['low_sample'], 'name'].tolist()}\n"
+        f"StatCan 2021 / city dwellings: median {r.median():.3f}, "
+        f"range {r.min():.3f}-{r.max():.3f}"
+    )
+
+
+STEPS = {"boundaries": step_boundaries, "sample-points": step_sample_points}
 
 
 def main() -> None:
