@@ -22,6 +22,12 @@ WEB_DATA_DIR = REPO_ROOT / "web" / "public" / "data"
 QUARTIERS_GEOJSON = RAW_DIR / "boundaries" / "quartierreferencehabitation.geojson"
 LOGEMENTS_CSV = RAW_DIR / "boundaries" / "nombrelogementsquartiersreference.csv"
 STATCAN_GAF_ZIP = RAW_DIR / "statcan" / "2021_92-151_X.zip"
+# Table 46-10-0092-01, asking and paid rent, quarterly (Phase 2)
+STATCAN_RENT_ZIP = RAW_DIR / "statcan" / "46100092-eng.zip"
+# Quarter of the citywide asking rent (REF_DATE = first month of the quarter).
+# 2025 Q4 contains October 2025, the reference month of the CMHC Rental Market
+# Survey whose relative neighbourhood levels it scales (plan, risk R2).
+STATCAN_RENT_QUARTER = "2025-10"
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 

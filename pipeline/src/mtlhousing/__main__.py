@@ -175,6 +175,21 @@ def step_access_check(campus: str) -> None:
         print(res.to_string(index=False))
 
 
+def step_statcan_rent() -> None:
+    from mtlhousing import config, statcan_rent
+
+    rents = statcan_rent.load_montreal_rents(config.STATCAN_RENT_ZIP)
+    latest = rents["ref_date"].max()
+    for ref in sorted({config.STATCAN_RENT_QUARTER, latest}):
+        tag = " (configured)" if ref == config.STATCAN_RENT_QUARTER else " (latest)"
+        q = rents[rents["ref_date"] == ref].pivot(
+            index="unit", columns="estimate", values=["value", "status"]
+        )
+        print(f"Montréal CMA, {statcan_rent.quarter_label(ref)}{tag}")
+        print(q.to_string())
+        print()
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -186,6 +201,7 @@ STEPS = {
     "export": step_export,
     "validate": step_validate,
     "access-check": step_access_check,
+    "statcan-rent": step_statcan_rent,
 }
 
 

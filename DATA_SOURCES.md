@@ -13,7 +13,7 @@ Raw files live in `data/raw/` (gitignored). Their exact versions are pinned in [
 | 6 | OpenStreetMap, Québec extract (`.osm.pbf`) | Geofabrik, download.geofabrik.de | Walking network for r5py | 1 | ODbL 1.0 | downloaded |
 | 7 | 2021 Census Geographic Attribute File (92-151-X) | Statistics Canada | Dissemination-block representative points + dwelling counts → residential sample points | 1 | Statistics Canada Open Licence | downloaded |
 | 8 | Rental Market Survey, average rent by bedroom type, Oct 2025, **Neighbourhood** level (+ **Zone** level for fallback) | CMHC Housing Market Information Portal | Relative rent level per area | 2 | CMHC terms (see attribution) | to do |
-| 9 | Table 46-10-0092-01, Quarterly rent statistics | Statistics Canada | Citywide asking rent, Montréal CMA | 2 | Statistics Canada Open Licence | to do |
+| 9 | Table 46-10-0092-01, Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), quarterly | Statistics Canada, [table page](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=4610009201) | Citywide asking rent, Montréal CMA | 2 | Statistics Canada Open Licence | downloaded |
 
 ## Attribution text to show on the site
 
