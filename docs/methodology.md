@@ -167,4 +167,17 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_To be written: CMHC neighbourhood level with zone fallback, ratio × StatCan asking rent, reliability rules._
+_In progress. Still to be written: CMHC neighbourhood level with zone fallback, crosswalk, reliability rules._
+
+### Two sources, two jobs
+- **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
+- **How high rents are now: Statistics Canada, 2026 Q2.** Table 46-10-0092-01 gives the average *asking* rent for the Montréal CMA by bedroom count. It sets the citywide level that the ratios scale.
+
+Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Montréal asking rent.
+
+**Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
+
+Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
+
+### Rooms
+StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".
