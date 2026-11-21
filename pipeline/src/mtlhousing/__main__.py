@@ -196,7 +196,7 @@ def step_cmhc_rent() -> None:
     tables = cmhc_rent.load(config.CMHC_RENT_CSV, config.CMHC_RMS_PERIOD)
     for level in cmhc_rent.LEVELS:
         print(f"{level}: {tables[level]['area'].nunique()} areas")
-    print("\nareas per reliability grade (** = suppressed; only a, b, c are usable)")
+    print("\nareas per reliability grade (** = suppressed, never used; d = last resort)")
     print(cmhc_rent.summary(tables).to_string())
     print(f"\nMontréal CMA, {config.CMHC_RMS_PERIOD}")
     print(tables["cma"].set_index("unit")[["rent", "grade"]].T.to_string())

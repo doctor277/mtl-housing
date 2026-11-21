@@ -167,7 +167,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_In progress. Still to be written: CMHC neighbourhood level with zone fallback, crosswalk, reliability rules._
+_In progress. Still to be written: crosswalk, split quartiers._
 
 ### Two sources, two jobs
 - **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
@@ -178,6 +178,23 @@ Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Mon
 **Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
 
 Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
+
+### Which CMHC value is used, and how it is labelled
+CMHC grades each average rent by reliability: a excellent, b very good, c good, d poor ("use with caution"). `**` means suppressed or not statistically reliable. A zone is a group of neighbourhoods.
+
+For each quartier and bedroom type, the first available value in this order is used (`rent.choose_source`):
+
+| Order | Value used | Label on the site |
+|---|---|---|
+| 1 | Neighbourhood, grade a, b or c | estimate (CMHC neighbourhood) |
+| 2 | Zone, grade a, b or c | zone estimate (CMHC zone) |
+| 3 | Neighbourhood, grade d | low reliability (CMHC grade d) |
+| 4 | Zone, grade d | low reliability (CMHC grade d), zone level |
+| 5 | none | not enough data |
+
+- A grade d value is used only when no a, b or c value exists at either level. That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
+- Between two grade d values, the neighbourhood comes first, because it's more local.
+- `**` is never used, at either level.
 
 ### Rooms
 StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".

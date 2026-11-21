@@ -13,8 +13,8 @@ Apartment". The export layout is:
 
 Rents are kept with CMHC's reliability grade: a excellent, b very good, c good,
 d poor (use with caution). "**" means suppressed or not statistically reliable.
-Only a, b and c are usable for estimates (plan, risk R3); d and ** are kept in the data
-so the fallback to the zone level can be explained.
+`usable` marks grades a, b and c. Grade d is kept and used only as a last resort,
+labelled low reliability; ** is never used (rule in rent.choose_source).
 
 Only the ratios to the CMA total are used downstream; see docs/methodology.md, Rent.
 """
