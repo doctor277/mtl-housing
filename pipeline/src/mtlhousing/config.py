@@ -31,6 +31,13 @@ STATCAN_RENT_ZIP = RAW_DIR / "statcan" / "46100092-eng.zip"
 # are experimental. To update: download the new table, add it to data/manifest.csv,
 # set this to the new quarter, re-run the pipeline.
 STATCAN_RENT_QUARTER = "2026-04"  # 2026 Q2, released 2026-09-09
+# CMHC Rental Market Survey, HMIP exports (Phase 2): average rent by bedroom type,
+# Row / Apartment, Montréal CMA. Only ratios to the CMA total are used.
+CMHC_RMS_PERIOD = "October 2025"
+CMHC_RENT_CSV = {
+    "neighbourhood": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_neighbourhood.csv",
+    "zone": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_zone.csv",
+}
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 

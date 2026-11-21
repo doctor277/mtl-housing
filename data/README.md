@@ -10,7 +10,7 @@ data/
 │  ├─ gtfs/              stm.zip, rem.zip, exo_<sector>.zip
 │  ├─ osm/               quebec-YYMMDD.osm.pbf (Geofabrik)
 │  ├─ statcan/           2021_92-151_X.zip (Geographic Attribute File), 46100092-eng.zip (rent table 46-10-0092-01)
-│  └─ cmhc/              Phase 2: HMIP exports (neighbourhood level + zone level)
+│  └─ cmhc/              HMIP exports, renamed: cmhc_rms_2025-10_avg_rent_by_neighbourhood.csv, cmhc_rms_2025-10_avg_rent_by_zone.csv
 └─ interim/              produced by the pipeline (clipped PBF, sample points, raw travel times)
 ```
 

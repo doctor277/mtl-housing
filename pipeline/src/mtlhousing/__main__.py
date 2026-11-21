@@ -190,6 +190,18 @@ def step_statcan_rent() -> None:
         print()
 
 
+def step_cmhc_rent() -> None:
+    from mtlhousing import cmhc_rent, config
+
+    tables = cmhc_rent.load(config.CMHC_RENT_CSV, config.CMHC_RMS_PERIOD)
+    for level in cmhc_rent.LEVELS:
+        print(f"{level}: {tables[level]['area'].nunique()} areas")
+    print("\nareas per reliability grade (** = suppressed; only a, b, c are usable)")
+    print(cmhc_rent.summary(tables).to_string())
+    print(f"\nMontréal CMA, {config.CMHC_RMS_PERIOD}")
+    print(tables["cma"].set_index("unit")[["rent", "grade"]].T.to_string())
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -202,6 +214,7 @@ STEPS = {
     "validate": step_validate,
     "access-check": step_access_check,
     "statcan-rent": step_statcan_rent,
+    "cmhc-rent": step_cmhc_rent,
 }
 
 
