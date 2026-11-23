@@ -15,6 +15,8 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
 - **Before starting a milestone**, list everything needed from the owner up front (manual
   downloads, decisions or reviews, long or heavy local runs such as `travel-times`) so they can
   do it before they leave. Then work without asking again unless blocked.
+- **Blocked on anything** (missing data, a broken tool, an undecided question, a failing test
+  outside the milestone): stop and tell the owner what's needed. Don't work around it.
 
 ## Never fake data
 
@@ -29,11 +31,12 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
 
 1. **All tests pass locally**, including the Java ones CI skips:
    ```
-   C:\Users\dahou\miniforge3\condabin\conda.bat run -n mtlhousing --cwd pipeline ruff check .
-   C:\Users\dahou\miniforge3\condabin\conda.bat run -n mtlhousing --cwd pipeline ruff format --check .
-   C:\Users\dahou\miniforge3\condabin\conda.bat run -n mtlhousing --cwd pipeline pytest
-   cd web && npm run build
+   C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline ruff check .
+   C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline ruff format --check .
+   C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline pytest
+   npm --prefix web run build
    ```
+   (Works as-is in both PowerShell and Git Bash, from the repo root.)
    (`mamba`/`conda` are not on PATH: call them by full path. If pytest fails with
    `PermissionError` on its temp dir under Claude's sandbox, add `--basetemp <scratchpad dir>`.)
    Tests that skip because local data is missing don't count as passing for a milestone that

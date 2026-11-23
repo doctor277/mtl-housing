@@ -8,8 +8,9 @@
 
 ```
 conda run -n mtlhousing --cwd pipeline ruff check .
+conda run -n mtlhousing --cwd pipeline ruff format --check .
 conda run -n mtlhousing --cwd pipeline pytest
-cd web && npm run build
+npm --prefix web run build
 ```
 
 ## Guesses I made
