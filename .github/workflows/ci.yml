@@ -50,10 +50,16 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
 
+      - name: Web install
+        working-directory: web
+        run: npm ci
+
+      - name: Web tests (Vitest)
+        working-directory: web
+        run: npm test
+
       - name: Web build
         working-directory: web
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-        run: |
-          npm ci
-          npm run build
+        run: npm run build

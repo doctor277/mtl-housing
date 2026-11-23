@@ -75,17 +75,19 @@ python -m mtlhousing rent-export      :: re-checks the crosswalk, rounds to $25 
 
 ### Web
 
-Requires Node 20+. From the repo root:
+Requires Node 22.12+ (Vitest 5; CI uses Node 22). From the repo root:
 
 ```bat
 cd web
-npm install
+npm ci
 npm run dev        :: http://localhost:3000
+npm test           :: Vitest: rent classes, labels and texts (web/lib/*.test.ts)
 ```
 
-The page reads `web/public/data/neighbourhoods.geojson` and `commute.json` (written by the
-pipeline's `export` step and committed). Phase 1.5 is a bare map: quartiers coloured by median
-UdeM commute (fastest building), click for details. Basemap: OpenFreeMap (no API key).
+The page reads `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json`
+(written by the pipeline's `export` and `rent-export` steps and committed). It is still a bare
+map: a Commute / Rent toggle; quartiers coloured by median UdeM commute (fastest building) or by
+the estimated rent for a studio, 3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
 
 ## Status
 
