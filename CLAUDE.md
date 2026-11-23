@@ -37,6 +37,7 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
    C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline ruff check .
    C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline ruff format --check .
    C:/Users/dahou/miniforge3/condabin/conda.bat run -n mtlhousing --cwd pipeline pytest
+   npm --prefix web test
    npm --prefix web run build
    ```
    (Works as-is in both PowerShell and Git Bash, from the repo root.)
@@ -55,8 +56,8 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
    - **Guesses I made** (every assumption the owner didn't confirm; "none" if none)
 4. Give the owner the PR link and stop.
 
-CI (`.github/workflows/ci.yml`, job `ci`) runs ruff, `pytest -m "not java"` and the web build
-on every PR. Tests that start the JVM carry `@pytest.mark.java`; mark any new ones the same way.
+CI (`.github/workflows/ci.yml`, job `ci`) runs ruff, `pytest -m "not java"`, the web tests
+(Vitest, `web/lib/*.test.ts`) and the web build on every PR. Tests that start the JVM carry `@pytest.mark.java`; mark any new ones the same way.
 
 ## Conventions
 

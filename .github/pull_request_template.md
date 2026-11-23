@@ -10,6 +10,7 @@
 conda run -n mtlhousing --cwd pipeline ruff check .
 conda run -n mtlhousing --cwd pipeline ruff format --check .
 conda run -n mtlhousing --cwd pipeline pytest
+npm --prefix web test
 npm --prefix web run build
 ```
 
