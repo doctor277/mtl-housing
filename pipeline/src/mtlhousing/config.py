@@ -259,9 +259,22 @@ MAX_TRIP_MIN = 120  # r5py default max_time; no result means "more than this"
 # - udem_jean_brillant: target 7 min from the Cote-des-Neiges platform (STM stop 55):
 #   Google Maps (~7 min / 500 m). R5 walks 613 m in 9.40 min at 4.0 km/h (its path starts
 #   at the platform coordinate, 459 m from the door in a straight line): 7 - 9.40 = -2.4.
+# - concordia_sgw_hall (M3): target 4.5 min from the Guy-Concordia platform (STM stop 34).
+#   Google Maps walk 3 min / 180 m, outdoors via De Maisonneuve, but from the station's
+#   STREET entrance (Google's geocode): a lower bound. Platform to street adds ~1-2 min
+#   (owner), so the real walk is 4-5 min; the midpoint 4.5 is used. R5 walks 184 m in
+#   2.87 min at 4.0 km/h: 4.5 - 2.87 = +1.6. (Google times collected 2026-11-23 in the
+#   owner's browser by Claude (chat) for the owner; validation route 6.)
+# - mcgill_roddick_gates: no adjustment. Google 4 min / 250 m from the McGill station's
+#   street entrance + 1-2 min = 5-6 min; R5 walks 357 m from STM stop 32 in 5.43 min,
+#   inside that range.
 # The adjustments depend on WALK_SPEED_KMH: re-run access-check after any speed change.
 # See docs/methodology.md.
-ACCESS_ADJUSTMENT_MIN = {"udem_roger_gaudry": 1.9, "udem_jean_brillant": -2.4}
+ACCESS_ADJUSTMENT_MIN = {
+    "udem_roger_gaudry": 1.9,
+    "udem_jean_brillant": -2.4,
+    "concordia_sgw_hall": 1.6,
+}
 
 
 def check_routing_speed(routing_meta: dict, campus_id: str) -> None:

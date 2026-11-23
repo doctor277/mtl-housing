@@ -1,0 +1,7 @@
+route,kind,origin,lat,lon,coord_source,gtfs_stop_ids,destination_id,google_min,google_alt_min,google_alt_note,google_route,walk_target_min
+1,transit,4500 Rue Saint-Denis,45.523861,-73.583154,author (Google Maps pin; same as udem route 1),,concordia_sgw_hall,22,,,orange -> green,
+2,transit,"4000 Rue Wellington, Verdun",45.4637752,-73.566789,OSM node/4907803398 (addr tags; same as udem route 2),,concordia_sgw_hall,17,,,green,
+3,transit,1500 Rue Fleury Est,45.5626456,-73.6562057,author (Google Maps pin; same as udem route 3),,concordia_sgw_hall,53,,,bus 13 -> orange -> green,
+4,transit,5800 Rue Sherbrooke Ouest,45.4696973,-73.6171523,author (Google Maps pin; same as udem route 7),,concordia_sgw_hall,34,,,bus 105 -> orange -> green,
+5,transit,Fairview-Pointe-Claire REM station,45.459943,-73.835339,REM GTFS stop ST_PTC_1 (parent station; same as udem route 5),,concordia_sgw_hall,42,,,"REM A3-A1, 13 min walking",
+6,walk,Guy-Concordia metro platform,,,STM GTFS metro stop 34 (green line; one stop for both directions),stm:34,concordia_sgw_hall,3,,"Google walk from the station's street entrance (geocode), outdoors via De Maisonneuve, 180 m, not the tunnel: a lower bound; platform to street adds ~1-2 min (owner)",walk,4.5

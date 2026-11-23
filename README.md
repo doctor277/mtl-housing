@@ -65,7 +65,7 @@ python -m mtlhousing tunnel-check    :: walk-only check: UdeM metro -> Roger-Gau
 python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped at 6 GB
 python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
 python -m mtlhousing aggregate --campus udem      :: per-quartier median/p10/p90, access adjustments, flags
-python -m mtlhousing export --campus udem         :: web/public/data/*.json(geojson) + data/interim check map
+python -m mtlhousing export                       :: web/public/data/*.json(geojson) for every campus with results + check maps
 python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipeline/validation/udem_results.csv
 python -m mtlhousing access-check --campus udem   :: R5 platform -> building walks and the access adjustments they imply
 python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone, checked against CMHC unit counts (exit 1 on a problem)
@@ -81,13 +81,14 @@ Requires Node 22.12+ (Vitest 5; CI uses Node 22). From the repo root:
 cd web
 npm ci
 npm run dev        :: http://localhost:3000
-npm test           :: Vitest: rent classes, labels and texts (web/lib/*.test.ts)
+npm test           :: Vitest: rent classes and texts, campus picker and commute texts (web/lib/*.test.ts)
 ```
 
 The page reads `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json`
 (written by the pipeline's `export` and `rent-export` steps and committed). It is still a bare
-map: a Commute / Rent toggle; quartiers coloured by median UdeM commute (fastest building) or by
-the estimated rent for a studio, 3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
+map: a Commute / Rent toggle; quartiers coloured by median transit commute to the chosen campus
+(UdeM, McGill or Concordia SGW, picked in Commute mode) or by the estimated rent for a studio,
+3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
 
 ## Status
 

@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-20T16:43:25",
+  "generated_at": "2026-11-23T13:50:06",
   "analysis_date": "2026-12-01",
   "departure_window": {
    "start": "07:30",
@@ -109,6 +109,96 @@
       "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
      }
     ]
+   },
+   "mcgill": {
+    "name": "McGill University (downtown campus)",
+    "rule": "fastest_destination",
+    "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
+    "destinations": [
+     {
+      "id": "mcgill_roddick_gates",
+      "name": "Roddick Gates",
+      "lat": 45.503849,
+      "lon": -73.574925,
+      "osm_ref": "way/143798969",
+      "access_adjustment_min": 0.0
+     }
+    ],
+    "n_sample_points": 3219,
+    "computed_at": "2026-11-23T12:51:24",
+    "relocated_origins": [
+     {
+      "point_id": "da:24663067",
+      "moved_m": 8.1,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663076",
+      "moved_m": 39.5,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663254",
+      "moved_m": 92.2,
+      "reachable_after": true
+     }
+    ],
+    "excluded_out_of_scope": [
+     {
+      "point_id": "da:24663396",
+      "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
+     }
+    ]
+   },
+   "concordia_sgw": {
+    "name": "Concordia University (Sir George Williams campus)",
+    "rule": "fastest_destination",
+    "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
+    "destinations": [
+     {
+      "id": "concordia_sgw_hall",
+      "name": "Henry F. Hall Building",
+      "lat": 45.4970373,
+      "lon": -73.5786245,
+      "osm_ref": "node/4035248248",
+      "access_adjustment_min": 1.6
+     }
+    ],
+    "n_sample_points": 3219,
+    "computed_at": "2026-11-23T13:21:48",
+    "relocated_origins": [
+     {
+      "point_id": "da:24663067",
+      "moved_m": 8.1,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663069",
+      "moved_m": 10.7,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663075",
+      "moved_m": 11.9,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663076",
+      "moved_m": 39.5,
+      "reachable_after": false
+     },
+     {
+      "point_id": "da:24663254",
+      "moved_m": 92.2,
+      "reachable_after": true
+     }
+    ],
+    "excluded_out_of_scope": [
+     {
+      "point_id": "da:24663396",
+      "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
+     }
+    ]
    }
   }
  },
@@ -142,6 +232,48 @@
       "fastest_share": 0.746
      }
     }
+   },
+   "mcgill": {
+    "median": 42.0,
+    "p10": 34.0,
+    "p90": 52.0,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 42.0,
+      "p10": 34.0,
+      "p90": 52.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 50.6,
+    "p10": 42.6,
+    "p90": 59.6,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 50.6,
+      "p10": 42.6,
+      "p90": 59.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "02": {
@@ -171,6 +303,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.772
+     }
+    }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 36.0,
+    "p90": 52.0,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 36.0,
+      "p90": 52.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 48.6,
+    "p10": 44.6,
+    "p90": 56.6,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 48.6,
+      "p10": 44.6,
+      "p90": 56.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -204,6 +378,48 @@
       "fastest_share": 0.296
      }
     }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 38.0,
+    "p90": 42.0,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 38.0,
+      "p90": 42.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 44.6,
+    "p10": 40.6,
+    "p90": 47.6,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 44.6,
+      "p10": 40.6,
+      "p90": 47.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "04": {
@@ -233,6 +449,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 42.0,
+    "p10": 34.0,
+    "p90": 49.0,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 42.0,
+      "p10": 34.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 43.6,
+    "p10": 35.6,
+    "p90": 49.6,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 43.6,
+      "p10": 35.6,
+      "p90": 49.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -266,6 +524,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 34.0,
+    "p90": 48.0,
+    "over_max": [],
+    "n_points": 31,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 34.0,
+      "p90": 48.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 34.6,
+    "p90": 50.6,
+    "over_max": [],
+    "n_points": 31,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 34.6,
+      "p90": 50.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "06": {
@@ -295,6 +595,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 52.0,
+    "p10": 48.0,
+    "p90": 56.0,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 52.0,
+      "p10": 48.0,
+      "p90": 56.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 54.6,
+    "p10": 49.6,
+    "p90": 57.6,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 54.6,
+      "p10": 49.6,
+      "p90": 57.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -328,6 +670,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 48.0,
+    "p10": 42.0,
+    "p90": 53.0,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 48.0,
+      "p10": 42.0,
+      "p90": 53.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 54.6,
+    "p10": 50.6,
+    "p90": 59.6,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 54.6,
+      "p10": 50.6,
+      "p90": 59.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "08": {
@@ -357,6 +741,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 47.0,
+    "p10": 43.0,
+    "p90": 50.0,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 47.0,
+      "p10": 43.0,
+      "p90": 50.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 47.6,
+    "p10": 43.6,
+    "p90": 50.6,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 47.6,
+      "p10": 43.6,
+      "p90": 50.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -390,6 +816,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 32.0,
+    "p10": 27.0,
+    "p90": 39.0,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 32.0,
+      "p10": 27.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 34.6,
+    "p90": 44.6,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 34.6,
+      "p90": 44.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "10": {
@@ -419,6 +887,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 36.0,
+    "p10": 32.0,
+    "p90": 41.0,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 36.0,
+      "p10": 32.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 42.6,
+    "p10": 38.6,
+    "p90": 45.6,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 42.6,
+      "p10": 38.6,
+      "p90": 45.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -452,6 +962,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 28.0,
+    "p10": 21.0,
+    "p90": 38.0,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 28.0,
+      "p10": 21.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 36.6,
+    "p10": 29.6,
+    "p90": 45.6,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 36.6,
+      "p10": 29.6,
+      "p90": 45.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "12": {
@@ -481,6 +1033,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 29.0,
+    "p10": 23.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 29.0,
+      "p10": 23.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 33.6,
+    "p10": 30.6,
+    "p90": 38.6,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 33.6,
+      "p10": 30.6,
+      "p90": 38.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -514,6 +1108,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 32.0,
+    "p10": 26.0,
+    "p90": 38.0,
+    "over_max": [],
+    "n_points": 56,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 32.0,
+      "p10": 26.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 35.6,
+    "p10": 29.6,
+    "p90": 42.6,
+    "over_max": [],
+    "n_points": 56,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 35.6,
+      "p10": 29.6,
+      "p90": 42.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "14": {
@@ -543,6 +1179,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 28.0,
+    "p10": 23.0,
+    "p90": 31.0,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 28.0,
+      "p10": 23.0,
+      "p90": 31.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 31.6,
+    "p10": 23.6,
+    "p90": 36.6,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 31.6,
+      "p10": 23.6,
+      "p90": 36.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -576,6 +1254,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 31.0,
+    "p10": 27.0,
+    "p90": 34.0,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 31.0,
+      "p10": 27.0,
+      "p90": 34.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 33.6,
+    "p10": 30.6,
+    "p90": 38.6,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 33.6,
+      "p10": 30.6,
+      "p90": 38.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "16": {
@@ -605,6 +1325,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 37.0,
+    "p10": 34.0,
+    "p90": 40.0,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 37.0,
+      "p10": 34.0,
+      "p90": 40.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 38.6,
+    "p10": 36.6,
+    "p90": 42.6,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 38.6,
+      "p10": 36.6,
+      "p90": 42.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -638,6 +1400,48 @@
       "fastest_share": 0.062
      }
     }
+   },
+   "mcgill": {
+    "median": 38.0,
+    "p10": 34.0,
+    "p90": 41.0,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 38.0,
+      "p10": 34.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 41.6,
+    "p10": 35.6,
+    "p90": 44.6,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 41.6,
+      "p10": 35.6,
+      "p90": 44.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "18": {
@@ -667,6 +1471,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.174
+     }
+    }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 34.0,
+    "p90": 43.0,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 34.0,
+      "p90": 43.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 34.6,
+    "p90": 43.6,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 34.6,
+      "p90": 43.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -700,6 +1546,48 @@
       "fastest_share": 0.783
      }
     }
+   },
+   "mcgill": {
+    "median": 31.0,
+    "p10": 25.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 31.0,
+      "p10": 25.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 32.6,
+    "p10": 26.6,
+    "p90": 38.6,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 32.6,
+      "p10": 26.6,
+      "p90": 38.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "20": {
@@ -729,6 +1617,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.314
+     }
+    }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 34.0,
+    "p90": 44.0,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 34.0,
+      "p90": 44.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 41.6,
+    "p10": 35.6,
+    "p90": 44.6,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 41.6,
+      "p10": 35.6,
+      "p90": 44.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -762,6 +1692,48 @@
       "fastest_share": 0.691
      }
     }
+   },
+   "mcgill": {
+    "median": 38.0,
+    "p10": 31.0,
+    "p90": 46.0,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 38.0,
+      "p10": 31.0,
+      "p90": 46.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 39.6,
+    "p10": 31.6,
+    "p90": 47.6,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 39.6,
+      "p10": 31.6,
+      "p90": 47.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "22": {
@@ -791,6 +1763,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.913
+     }
+    }
+   },
+   "mcgill": {
+    "median": 44.0,
+    "p10": 36.0,
+    "p90": 49.0,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 44.0,
+      "p10": 36.0,
+      "p90": 49.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 45.6,
+    "p10": 36.6,
+    "p90": 50.6,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 45.6,
+      "p10": 36.6,
+      "p90": 50.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -824,6 +1838,48 @@
       "fastest_share": 0.591
      }
     }
+   },
+   "mcgill": {
+    "median": 43.0,
+    "p10": 38.0,
+    "p90": 47.0,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 43.0,
+      "p10": 38.0,
+      "p90": 47.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 43.6,
+    "p10": 38.6,
+    "p90": 48.6,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 43.6,
+      "p10": 38.6,
+      "p90": 48.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "24": {
@@ -853,6 +1909,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.559
+     }
+    }
+   },
+   "mcgill": {
+    "median": 49.0,
+    "p10": 46.0,
+    "p90": 51.0,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 49.0,
+      "p10": 46.0,
+      "p90": 51.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 49.6,
+    "p10": 46.6,
+    "p90": 52.6,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 49.6,
+      "p10": 46.6,
+      "p90": 52.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -886,6 +1984,48 @@
       "fastest_share": 0.874
      }
     }
+   },
+   "mcgill": {
+    "median": 41.0,
+    "p10": 41.0,
+    "p90": 46.0,
+    "over_max": [],
+    "n_points": 6,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 41.0,
+      "p10": 41.0,
+      "p90": 46.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 41.6,
+    "p10": 41.6,
+    "p90": 46.6,
+    "over_max": [],
+    "n_points": 6,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 41.6,
+      "p10": 41.6,
+      "p90": 46.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "26": {
@@ -915,6 +2055,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.979
+     }
+    }
+   },
+   "mcgill": {
+    "median": 35.0,
+    "p10": 28.0,
+    "p90": 39.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 35.0,
+      "p10": 28.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 36.6,
+    "p10": 28.6,
+    "p90": 39.6,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 36.6,
+      "p10": 28.6,
+      "p90": 39.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -948,6 +2130,48 @@
       "fastest_share": 0.951
      }
     }
+   },
+   "mcgill": {
+    "median": 34.0,
+    "p10": 30.0,
+    "p90": 38.0,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 34.0,
+      "p10": 30.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 34.6,
+    "p10": 31.6,
+    "p90": 38.6,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 34.6,
+      "p10": 31.6,
+      "p90": 38.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "28": {
@@ -979,6 +2203,48 @@
       "fastest_share": 0.788
      }
     }
+   },
+   "mcgill": {
+    "median": 36.0,
+    "p10": 26.0,
+    "p90": 41.0,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 36.0,
+      "p10": 26.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 36.6,
+    "p10": 27.6,
+    "p90": 41.6,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 36.6,
+      "p10": 27.6,
+      "p90": 41.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "29": {
@@ -1005,6 +2271,48 @@
       "median": 39.6,
       "p10": 36.6,
       "p90": 43.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 24.0,
+    "p10": 21.0,
+    "p90": 28.0,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 24.0,
+      "p10": 21.0,
+      "p90": 28.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 25.6,
+    "p10": 22.6,
+    "p90": 29.6,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 25.6,
+      "p10": 22.6,
+      "p90": 29.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1041,6 +2349,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 22.0,
+    "p10": 17.0,
+    "p90": 27.0,
+    "over_max": [],
+    "n_points": 52,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 22.0,
+      "p10": 17.0,
+      "p90": 27.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 22.6,
+    "p10": 17.6,
+    "p90": 29.6,
+    "over_max": [],
+    "n_points": 52,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 22.6,
+      "p10": 17.6,
+      "p90": 29.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "31": {
@@ -1070,6 +2420,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.625
+     }
+    }
+   },
+   "mcgill": {
+    "median": 34.0,
+    "p10": 27.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 36,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 34.0,
+      "p10": 27.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 35.6,
+    "p10": 29.6,
+    "p90": 38.6,
+    "over_max": [],
+    "n_points": 36,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 35.6,
+      "p10": 29.6,
+      "p90": 38.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1103,6 +2495,48 @@
       "fastest_share": 0.423
      }
     }
+   },
+   "mcgill": {
+    "median": 25.0,
+    "p10": 18.0,
+    "p90": 31.0,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 25.0,
+      "p10": 18.0,
+      "p90": 31.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 26.6,
+    "p10": 20.6,
+    "p90": 32.6,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 26.6,
+      "p10": 20.6,
+      "p90": 32.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "33": {
@@ -1132,6 +2566,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.149
+     }
+    }
+   },
+   "mcgill": {
+    "median": 29.0,
+    "p10": 21.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 29.0,
+      "p10": 21.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 30.6,
+    "p10": 22.6,
+    "p90": 36.6,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 30.6,
+      "p10": 22.6,
+      "p90": 36.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1165,6 +2641,48 @@
       "fastest_share": 0.672
      }
     }
+   },
+   "mcgill": {
+    "median": 28.0,
+    "p10": 24.0,
+    "p90": 32.0,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 28.0,
+      "p10": 24.0,
+      "p90": 32.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 30.6,
+    "p10": 27.6,
+    "p90": 35.6,
+    "over_max": [],
+    "n_points": 44,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 30.6,
+      "p10": 27.6,
+      "p90": 35.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "35": {
@@ -1196,6 +2714,48 @@
       "fastest_share": 0.762
      }
     }
+   },
+   "mcgill": {
+    "median": 24.0,
+    "p10": 18.0,
+    "p90": 28.0,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 24.0,
+      "p10": 18.0,
+      "p90": 28.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 26.6,
+    "p10": 20.6,
+    "p90": 30.6,
+    "over_max": [],
+    "n_points": 27,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 26.6,
+      "p10": 20.6,
+      "p90": 30.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "36": {
@@ -1222,6 +2782,48 @@
       "median": 31.6,
       "p10": 28.6,
       "p90": 36.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 12.0,
+    "p10": 8.0,
+    "p90": 19.0,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 12.0,
+      "p10": 8.0,
+      "p90": 19.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 18.6,
+    "p10": 15.6,
+    "p90": 21.6,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 18.6,
+      "p10": 15.6,
+      "p90": 21.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1258,6 +2860,48 @@
       "fastest_share": 0.965
      }
     }
+   },
+   "mcgill": {
+    "median": 24.0,
+    "p10": 21.0,
+    "p90": 28.0,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 24.0,
+      "p10": 21.0,
+      "p90": 28.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 26.6,
+    "p10": 20.6,
+    "p90": 29.6,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 26.6,
+      "p10": 20.6,
+      "p90": 29.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "38": {
@@ -1284,6 +2928,48 @@
       "median": 28.6,
       "p10": 26.6,
       "p90": 34.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 17.0,
+    "p10": 11.0,
+    "p90": 19.0,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 17.0,
+      "p10": 11.0,
+      "p90": 19.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 16.6,
+    "p10": 10.6,
+    "p90": 20.6,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 16.6,
+      "p10": 10.6,
+      "p90": 20.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1320,6 +3006,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 16.0,
+    "p10": 11.0,
+    "p90": 22.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 16.0,
+      "p10": 11.0,
+      "p90": 22.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 11.6,
+    "p10": 7.6,
+    "p90": 16.6,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 11.6,
+      "p10": 7.6,
+      "p90": 16.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "40": {
@@ -1346,6 +3074,48 @@
       "median": 21.6,
       "p10": 15.6,
       "p90": 30.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 29.0,
+    "p10": 23.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 39,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 29.0,
+      "p10": 23.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 30.6,
+    "p10": 26.6,
+    "p90": 36.6,
+    "over_max": [],
+    "n_points": 39,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 30.6,
+      "p10": 26.6,
+      "p90": 36.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1382,6 +3152,48 @@
       "fastest_share": 0.966
      }
     }
+   },
+   "mcgill": {
+    "median": 25.0,
+    "p10": 19.0,
+    "p90": 29.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 25.0,
+      "p10": 19.0,
+      "p90": 29.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 28.6,
+    "p10": 23.6,
+    "p90": 31.6,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 28.6,
+      "p10": 23.6,
+      "p90": 31.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "42": {
@@ -1411,6 +3223,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.965
+     }
+    }
+   },
+   "mcgill": {
+    "median": 27.0,
+    "p10": 22.0,
+    "p90": 30.0,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 27.0,
+      "p10": 22.0,
+      "p90": 30.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 35.6,
+    "p10": 30.6,
+    "p90": 37.6,
+    "over_max": [],
+    "n_points": 45,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 35.6,
+      "p10": 30.6,
+      "p90": 37.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1444,6 +3298,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 31.0,
+    "p10": 27.0,
+    "p90": 37.0,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 31.0,
+      "p10": 27.0,
+      "p90": 37.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 32.6,
+    "p10": 26.6,
+    "p90": 37.6,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 32.6,
+      "p10": 26.6,
+      "p90": 37.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "44": {
@@ -1469,6 +3365,48 @@
      "udem_jean_brillant": {
       "median": 36.6,
       "p10": 26.6,
+      "p90": 40.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 38.0,
+    "p10": 28.0,
+    "p90": 44.0,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 38.0,
+      "p10": 28.0,
+      "p90": 44.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 34.6,
+    "p10": 24.6,
+    "p90": 40.6,
+    "over_max": [],
+    "n_points": 32,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 34.6,
+      "p10": 24.6,
       "p90": 40.6,
       "over_max": [],
       "n_unreachable": 0,
@@ -1506,6 +3444,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 43.0,
+    "p10": 38.0,
+    "p90": 46.0,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 43.0,
+      "p10": 38.0,
+      "p90": 46.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 42.6,
+    "p10": 38.6,
+    "p90": 47.6,
+    "over_max": [],
+    "n_points": 41,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 42.6,
+      "p10": 38.6,
+      "p90": 47.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "46": {
@@ -1532,6 +3512,48 @@
       "median": 28.6,
       "p10": 23.6,
       "p90": 33.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 34.0,
+    "p10": 29.0,
+    "p90": 38.0,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 34.0,
+      "p10": 29.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 31.6,
+    "p10": 25.6,
+    "p90": 37.6,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 31.6,
+      "p10": 25.6,
+      "p90": 37.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1568,6 +3590,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 27.0,
+    "p10": 20.0,
+    "p90": 35.0,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 27.0,
+      "p10": 20.0,
+      "p90": 35.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 23.6,
+    "p10": 16.6,
+    "p90": 30.6,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 23.6,
+      "p10": 16.6,
+      "p90": 30.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "48": {
@@ -1594,6 +3658,48 @@
       "median": 44.6,
       "p10": 38.6,
       "p90": 46.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 33.0,
+    "p10": 27.0,
+    "p90": 39.0,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 33.0,
+      "p10": 27.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 29.6,
+    "p10": 23.6,
+    "p90": 35.6,
+    "over_max": [],
+    "n_points": 30,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 29.6,
+      "p10": 23.6,
+      "p90": 35.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1630,6 +3736,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 33.0,
+    "p10": 28.0,
+    "p90": 41.0,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 33.0,
+      "p10": 28.0,
+      "p90": 41.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 29.6,
+    "p10": 24.6,
+    "p90": 36.6,
+    "over_max": [],
+    "n_points": 25,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 29.6,
+      "p10": 24.6,
+      "p90": 36.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "50": {
@@ -1656,6 +3804,48 @@
       "median": 29.6,
       "p10": 26.6,
       "p90": 37.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 27.0,
+    "p10": 21.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 27.0,
+      "p10": 21.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 22.6,
+    "p10": 17.6,
+    "p90": 32.6,
+    "over_max": [],
+    "n_points": 26,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 22.6,
+      "p10": 17.6,
+      "p90": 32.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1692,6 +3882,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 25.0,
+    "p10": 21.0,
+    "p90": 30.0,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 25.0,
+      "p10": 21.0,
+      "p90": 30.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 26.6,
+    "p10": 17.6,
+    "p90": 29.6,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 26.6,
+      "p10": 17.6,
+      "p90": 29.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "52": {
@@ -1721,6 +3953,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.755
+     }
+    }
+   },
+   "mcgill": {
+    "median": 70.0,
+    "p10": 63.0,
+    "p90": 76.0,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 70.0,
+      "p10": 63.0,
+      "p90": 76.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 70.6,
+    "p10": 63.6,
+    "p90": 76.6,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 70.6,
+      "p10": 63.6,
+      "p90": 76.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1754,6 +4028,48 @@
       "fastest_share": 0.975
      }
     }
+   },
+   "mcgill": {
+    "median": 78.0,
+    "p10": 73.0,
+    "p90": 87.0,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 78.0,
+      "p10": 73.0,
+      "p90": 87.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 78.6,
+    "p10": 73.6,
+    "p90": 88.6,
+    "over_max": [],
+    "n_points": 28,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 78.6,
+      "p10": 73.6,
+      "p90": 88.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "54": {
@@ -1783,6 +4099,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.99
+     }
+    }
+   },
+   "mcgill": {
+    "median": 64.0,
+    "p10": 56.0,
+    "p90": 72.0,
+    "over_max": [],
+    "n_points": 91,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 64.0,
+      "p10": 56.0,
+      "p90": 72.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 65.6,
+    "p10": 56.6,
+    "p90": 73.6,
+    "over_max": [],
+    "n_points": 91,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 65.6,
+      "p10": 56.6,
+      "p90": 73.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1816,6 +4174,48 @@
       "fastest_share": 0.764
      }
     }
+   },
+   "mcgill": {
+    "median": 30.0,
+    "p10": 23.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 30.0,
+      "p10": 23.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 38.6,
+    "p10": 31.6,
+    "p90": 45.6,
+    "over_max": [],
+    "n_points": 21,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 38.6,
+      "p10": 31.6,
+      "p90": 45.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "56": {
@@ -1845,6 +4245,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.956
+     }
+    }
+   },
+   "mcgill": {
+    "median": 39.0,
+    "p10": 32.0,
+    "p90": 44.0,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 39.0,
+      "p10": 32.0,
+      "p90": 44.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 42.6,
+    "p10": 37.6,
+    "p90": 46.6,
+    "over_max": [],
+    "n_points": 19,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 42.6,
+      "p10": 37.6,
+      "p90": 46.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -1878,6 +4320,48 @@
       "fastest_share": 0.787
      }
     }
+   },
+   "mcgill": {
+    "median": 35.0,
+    "p10": 29.0,
+    "p90": 39.0,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 35.0,
+      "p10": 29.0,
+      "p90": 39.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 36.6,
+    "p90": 46.6,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 36.6,
+      "p90": 46.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "58": {
@@ -1909,6 +4393,48 @@
       "fastest_share": 0.902
      }
     }
+   },
+   "mcgill": {
+    "median": 48.0,
+    "p10": 42.0,
+    "p90": 53.0,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 48.0,
+      "p10": 42.0,
+      "p90": 53.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 50.6,
+    "p10": 47.6,
+    "p90": 61.6,
+    "over_max": [],
+    "n_points": 40,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 50.6,
+      "p10": 47.6,
+      "p90": 61.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "59": {
@@ -1935,6 +4461,48 @@
       "median": 37.6,
       "p10": 28.6,
       "p90": 47.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 43.0,
+    "p10": 33.0,
+    "p90": 52.0,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 43.0,
+      "p10": 33.0,
+      "p90": 52.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 43.6,
+    "p10": 33.6,
+    "p90": 52.6,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 43.6,
+      "p10": 33.6,
+      "p90": 52.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -1971,6 +4539,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 56.0,
+    "p10": 52.0,
+    "p90": 60.0,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 56.0,
+      "p10": 52.0,
+      "p90": 60.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 58.6,
+    "p10": 54.6,
+    "p90": 61.6,
+    "over_max": [],
+    "n_points": 38,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 58.6,
+      "p10": 54.6,
+      "p90": 61.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "60B": {
@@ -2000,6 +4610,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 64.0,
+    "p10": 59.0,
+    "p90": 67.0,
+    "over_max": [],
+    "n_points": 23,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 64.0,
+      "p10": 59.0,
+      "p90": 67.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 64.6,
+    "p10": 59.6,
+    "p90": 67.6,
+    "over_max": [],
+    "n_points": 23,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 64.6,
+      "p10": 59.6,
+      "p90": 67.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -2033,6 +4685,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 61.0,
+    "p10": 54.0,
+    "p90": 66.0,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 61.0,
+      "p10": 54.0,
+      "p90": 66.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 62.6,
+    "p10": 55.6,
+    "p90": 66.6,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 62.6,
+      "p10": 55.6,
+      "p90": 66.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "61": {
@@ -2062,6 +4756,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 71.0,
+    "p10": 67.0,
+    "p90": 75.0,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 71.0,
+      "p10": 67.0,
+      "p90": 75.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 71.6,
+    "p10": 67.6,
+    "p90": 75.6,
+    "over_max": [],
+    "n_points": 51,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 71.6,
+      "p10": 67.6,
+      "p90": 75.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -2095,6 +4831,48 @@
       "fastest_share": 0.0
      }
     }
+   },
+   "mcgill": {
+    "median": 52.0,
+    "p10": 44.0,
+    "p90": 59.0,
+    "over_max": [],
+    "n_points": 78,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 52.0,
+      "p10": 44.0,
+      "p90": 59.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 52.6,
+    "p10": 45.6,
+    "p90": 59.6,
+    "over_max": [],
+    "n_points": 78,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 52.6,
+      "p10": 45.6,
+      "p90": 59.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "63": {
@@ -2126,6 +4904,48 @@
       "fastest_share": 0.088
      }
     }
+   },
+   "mcgill": {
+    "median": 50.0,
+    "p10": 44.0,
+    "p90": 59.0,
+    "over_max": [],
+    "n_points": 55,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 50.0,
+      "p10": 44.0,
+      "p90": 59.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 50.6,
+    "p10": 44.6,
+    "p90": 59.6,
+    "over_max": [],
+    "n_points": 55,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 50.6,
+      "p10": 44.6,
+      "p90": 59.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "64": {
@@ -2152,6 +4972,48 @@
       "median": 38.6,
       "p10": 34.6,
       "p90": 43.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 27.0,
+    "p10": 22.0,
+    "p90": 31.0,
+    "over_max": [],
+    "n_points": 54,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 27.0,
+      "p10": 22.0,
+      "p90": 31.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 23.6,
+    "p10": 18.6,
+    "p90": 27.6,
+    "over_max": [],
+    "n_points": 54,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 23.6,
+      "p10": 18.6,
+      "p90": 27.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2188,6 +5050,48 @@
       "fastest_share": 0.771
      }
     }
+   },
+   "mcgill": {
+    "median": 33.0,
+    "p10": 18.0,
+    "p90": 38.0,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 33.0,
+      "p10": 18.0,
+      "p90": 38.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 25.6,
+    "p90": 45.6,
+    "over_max": [],
+    "n_points": 17,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 25.6,
+      "p90": 45.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "66": {
@@ -2214,6 +5118,48 @@
       "median": 46.6,
       "p10": 43.6,
       "p90": 50.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 35.0,
+    "p10": 31.0,
+    "p90": 40.0,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 35.0,
+      "p10": 31.0,
+      "p90": 40.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 31.6,
+    "p10": 27.6,
+    "p90": 35.6,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 31.6,
+      "p10": 27.6,
+      "p90": 35.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2250,6 +5196,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 51.0,
+    "p10": 46.0,
+    "p90": 58.0,
+    "over_max": [],
+    "n_points": 62,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 51.0,
+      "p10": 46.0,
+      "p90": 58.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 47.6,
+    "p10": 42.6,
+    "p90": 53.6,
+    "over_max": [],
+    "n_points": 62,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 47.6,
+      "p10": 42.6,
+      "p90": 53.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "68": {
@@ -2276,6 +5264,48 @@
       "median": 59.6,
       "p10": 48.6,
       "p90": 69.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 49.0,
+    "p10": 37.0,
+    "p90": 58.0,
+    "over_max": [],
+    "n_points": 80,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 49.0,
+      "p10": 37.0,
+      "p90": 58.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 45.6,
+    "p10": 33.6,
+    "p90": 54.6,
+    "over_max": [],
+    "n_points": 80,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 45.6,
+      "p10": 33.6,
+      "p90": 54.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2312,6 +5342,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 55.0,
+    "p10": 49.0,
+    "p90": 58.0,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 55.0,
+      "p10": 49.0,
+      "p90": 58.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 51.6,
+    "p10": 44.6,
+    "p90": 53.6,
+    "over_max": [],
+    "n_points": 24,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 51.6,
+      "p10": 44.6,
+      "p90": 53.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "70": {
@@ -2338,6 +5410,48 @@
       "median": 52.6,
       "p10": 47.6,
       "p90": 62.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 48.0,
+    "p10": 42.0,
+    "p90": 54.0,
+    "over_max": [],
+    "n_points": 48,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 48.0,
+      "p10": 42.0,
+      "p90": 54.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 44.6,
+    "p10": 37.6,
+    "p90": 50.6,
+    "over_max": [],
+    "n_points": 48,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 44.6,
+      "p10": 37.6,
+      "p90": 50.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2374,6 +5488,48 @@
       "fastest_share": 0.82
      }
     }
+   },
+   "mcgill": {
+    "median": 70.0,
+    "p10": 57.0,
+    "p90": 82.0,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 70.0,
+      "p10": 57.0,
+      "p90": 82.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 79.6,
+    "p10": 67.6,
+    "p90": 91.6,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 79.6,
+      "p10": 67.6,
+      "p90": 91.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "72": {
@@ -2403,6 +5559,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.502
+     }
+    }
+   },
+   "mcgill": {
+    "median": 50.0,
+    "p10": 40.0,
+    "p90": 64.0,
+    "over_max": [],
+    "n_points": 61,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 50.0,
+      "p10": 40.0,
+      "p90": 64.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 59.6,
+    "p10": 49.6,
+    "p90": 73.6,
+    "over_max": [],
+    "n_points": 61,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 59.6,
+      "p10": 49.6,
+      "p90": 73.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -2436,6 +5634,48 @@
       "fastest_share": 0.569
      }
     }
+   },
+   "mcgill": {
+    "median": 51.0,
+    "p10": 44.0,
+    "p90": 57.0,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 51.0,
+      "p10": 44.0,
+      "p90": 57.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 51.6,
+    "p10": 45.6,
+    "p90": 57.6,
+    "over_max": [],
+    "n_points": 66,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 51.6,
+      "p10": 45.6,
+      "p90": 57.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "74": {
@@ -2465,6 +5705,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.49
+     }
+    }
+   },
+   "mcgill": {
+    "median": 24.0,
+    "p10": 17.0,
+    "p90": 29.0,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 24.0,
+      "p10": 17.0,
+      "p90": 29.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 30.6,
+    "p10": 25.6,
+    "p90": 35.6,
+    "over_max": [],
+    "n_points": 43,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 30.6,
+      "p10": 25.6,
+      "p90": 35.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }
@@ -2506,6 +5788,54 @@
       "fastest_share": 0.74
      }
     }
+   },
+   "mcgill": {
+    "median": 82.0,
+    "p10": 64.0,
+    "p90": 119.0,
+    "over_max": [],
+    "n_points": 29,
+    "n_unreachable": 2,
+    "unreachable_share": 0.064,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 82.0,
+      "p10": 64.0,
+      "p90": 119.0,
+      "over_max": [],
+      "n_unreachable": 2,
+      "fastest_share": 0.936
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 91.6,
+    "p10": 73.6,
+    "p90": null,
+    "over_max": [
+     "p90"
+    ],
+    "n_points": 29,
+    "n_unreachable": 4,
+    "unreachable_share": 0.149,
+    "flags": [
+     "many_unreachable"
+    ],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 91.6,
+      "p10": 73.6,
+      "p90": null,
+      "over_max": [
+       "p90"
+      ],
+      "n_unreachable": 4,
+      "fastest_share": 0.851
+     }
+    }
    }
   },
   "80": {
@@ -2532,6 +5862,48 @@
       "median": 70.6,
       "p10": 67.6,
       "p90": 72.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 55.0,
+    "p10": 52.0,
+    "p90": 57.0,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 55.0,
+      "p10": 52.0,
+      "p90": 57.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 55.6,
+    "p10": 53.6,
+    "p90": 58.6,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 55.6,
+      "p10": 53.6,
+      "p90": 58.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2568,6 +5940,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 26.0,
+    "p10": 19.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 26.0,
+      "p10": 19.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 22.6,
+    "p10": 15.6,
+    "p90": 31.6,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 22.6,
+      "p10": 15.6,
+      "p90": 31.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "82": {
@@ -2594,6 +6008,48 @@
       "median": 33.6,
       "p10": 24.6,
       "p90": 39.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 40.0,
+    "p10": 31.0,
+    "p90": 47.0,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 40.0,
+      "p10": 31.0,
+      "p90": 47.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 40.6,
+    "p10": 34.6,
+    "p90": 46.6,
+    "over_max": [],
+    "n_points": 13,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 40.6,
+      "p10": 34.6,
+      "p90": 46.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2630,6 +6086,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 51.0,
+    "p10": 43.0,
+    "p90": 57.0,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 51.0,
+      "p10": 43.0,
+      "p90": 57.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 50.6,
+    "p10": 43.6,
+    "p90": 56.6,
+    "over_max": [],
+    "n_points": 49,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 50.6,
+      "p10": 43.6,
+      "p90": 56.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "84": {
@@ -2656,6 +6154,48 @@
       "median": 43.6,
       "p10": 38.6,
       "p90": 48.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 46.0,
+    "p10": 40.0,
+    "p90": 53.0,
+    "over_max": [],
+    "n_points": 9,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 46.0,
+      "p10": 40.0,
+      "p90": 53.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 42.6,
+    "p10": 36.6,
+    "p90": 52.6,
+    "over_max": [],
+    "n_points": 9,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 42.6,
+      "p10": 36.6,
+      "p90": 52.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2692,6 +6232,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 62.0,
+    "p10": 57.0,
+    "p90": 68.0,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 62.0,
+      "p10": 57.0,
+      "p90": 68.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 58.6,
+    "p10": 52.6,
+    "p90": 64.6,
+    "over_max": [],
+    "n_points": 33,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 58.6,
+      "p10": 52.6,
+      "p90": 64.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "86": {
@@ -2718,6 +6300,48 @@
       "median": 69.6,
       "p10": 62.6,
       "p90": 74.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 67.0,
+    "p10": 61.0,
+    "p90": 72.0,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 67.0,
+      "p10": 61.0,
+      "p90": 72.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 68.6,
+    "p10": 59.6,
+    "p90": 73.6,
+    "over_max": [],
+    "n_points": 50,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 68.6,
+      "p10": 59.6,
+      "p90": 73.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2754,6 +6378,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 73.0,
+    "p10": 68.0,
+    "p90": 81.0,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 73.0,
+      "p10": 68.0,
+      "p90": 81.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 73.6,
+    "p10": 68.6,
+    "p90": 77.6,
+    "over_max": [],
+    "n_points": 37,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 73.6,
+      "p10": 68.6,
+      "p90": 77.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "88": {
@@ -2780,6 +6446,48 @@
       "median": 86.6,
       "p10": 74.6,
       "p90": 92.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 84.0,
+    "p10": 75.0,
+    "p90": 89.0,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 84.0,
+      "p10": 75.0,
+      "p90": 89.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 81.6,
+    "p10": 74.6,
+    "p90": 87.6,
+    "over_max": [],
+    "n_points": 7,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 81.6,
+      "p10": 74.6,
+      "p90": 87.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2816,6 +6524,48 @@
       "fastest_share": 0.774
      }
     }
+   },
+   "mcgill": {
+    "median": 61.0,
+    "p10": 46.0,
+    "p90": 68.0,
+    "over_max": [],
+    "n_points": 77,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 61.0,
+      "p10": 46.0,
+      "p90": 68.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 68.6,
+    "p10": 55.6,
+    "p90": 77.6,
+    "over_max": [],
+    "n_points": 77,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 68.6,
+      "p10": 55.6,
+      "p90": 77.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "90": {
@@ -2847,6 +6597,48 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 68.0,
+    "p10": 62.0,
+    "p90": 75.0,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 68.0,
+      "p10": 62.0,
+      "p90": 75.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 75.6,
+    "p10": 69.6,
+    "p90": 80.6,
+    "over_max": [],
+    "n_points": 34,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 75.6,
+      "p10": 69.6,
+      "p90": 80.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "91": {
@@ -2873,6 +6665,48 @@
       "median": 77.6,
       "p10": 74.6,
       "p90": 83.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "mcgill": {
+    "median": 77.0,
+    "p10": 70.0,
+    "p90": 79.0,
+    "over_max": [],
+    "n_points": 8,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 77.0,
+      "p10": 70.0,
+      "p90": 79.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 78.6,
+    "p10": 77.6,
+    "p90": 87.6,
+    "over_max": [],
+    "n_points": 8,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 78.6,
+      "p10": 77.6,
+      "p90": 87.6,
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 1.0
@@ -2911,6 +6745,52 @@
       "fastest_share": 1.0
      }
     }
+   },
+   "mcgill": {
+    "median": 102.0,
+    "p10": 85.0,
+    "p90": 102.0,
+    "over_max": [],
+    "n_points": 2,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [
+     "low_sample"
+    ],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 102.0,
+      "p10": 85.0,
+      "p90": 102.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 109.6,
+    "p10": 89.6,
+    "p90": 109.6,
+    "over_max": [],
+    "n_points": 2,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [
+     "low_sample"
+    ],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 109.6,
+      "p10": 89.6,
+      "p90": 109.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
    }
   },
   "93": {
@@ -2940,6 +6820,48 @@
       "over_max": [],
       "n_unreachable": 0,
       "fastest_share": 0.616
+     }
+    }
+   },
+   "mcgill": {
+    "median": 26.0,
+    "p10": 20.0,
+    "p90": 36.0,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "mcgill_roddick_gates": {
+      "median": 26.0,
+      "p10": 20.0,
+      "p90": 36.0,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
+     }
+    }
+   },
+   "concordia_sgw": {
+    "median": 34.6,
+    "p10": 27.6,
+    "p90": 42.6,
+    "over_max": [],
+    "n_points": 35,
+    "n_unreachable": 0,
+    "unreachable_share": 0.0,
+    "flags": [],
+    "rule": "fastest_destination",
+    "by_destination": {
+     "concordia_sgw_hall": {
+      "median": 34.6,
+      "p10": 27.6,
+      "p90": 42.6,
+      "over_max": [],
+      "n_unreachable": 0,
+      "fastest_share": 1.0
      }
     }
    }

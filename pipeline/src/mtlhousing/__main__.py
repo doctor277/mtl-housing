@@ -129,16 +129,20 @@ def step_aggregate(campus: str) -> None:
     print("\nfarthest 5:\n" + fastest.nlargest(5, "median")[cols].to_string())
 
 
-def step_export(campus: str) -> None:
+def step_export() -> None:
     from mtlhousing import export
 
-    out = export.run([campus])
+    campuses, missing = export.available_campuses()
+    if missing:
+        print(f"NOTE: no aggregated results yet for {missing}; they are left out of commute.json")
+    out = export.run(campuses)
     results = out["commute"]["results"]
-    n = sum(1 for r in results.values() if campus in r)
-    over = [q for q, r in results.items() if campus in r and r[campus]["over_max"]]
     for path in (export.COMMUTE_JSON, export.NEIGHBOURHOODS_GEOJSON, *out["maps"]):
         print(f"{path.stat().st_size / 1e3:7.0f} kB  {path}")
-    print(f"{campus}: {n}/{len(results)} quartiers with results; stats over max: {over}")
+    for campus in campuses:
+        n = sum(1 for r in results.values() if campus in r)
+        over = [q for q, r in results.items() if campus in r and r[campus]["over_max"]]
+        print(f"{campus}: {n}/{len(results)} quartiers with results; stats over max: {over}")
 
 
 def step_validate(campus: str) -> None:
@@ -346,7 +350,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(prog="python -m mtlhousing")
     parser.add_argument("step", choices=sorted(STEPS))
     parser.add_argument(
-        "--campus", default="udem", help="campus id (travel-times, aggregate, export)"
+        "--campus",
+        default="udem",
+        help="campus id (travel-times, aggregate, validate, access-check); export always "
+        "writes every campus that has results",
     )
     parser.add_argument(
         "--repair-only",
@@ -356,7 +363,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
-    elif args.step in ("aggregate", "export", "validate", "access-check"):
+    elif args.step in ("aggregate", "validate", "access-check"):
         STEPS[args.step](args.campus)
     else:
         STEPS[args.step]()

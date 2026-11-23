@@ -177,9 +177,14 @@ export function extraLines(e: RentEntry, meta: RentMeta): string[] {
   return lines;
 }
 
-/** The line under every estimate. */
-export function sourceLine(meta: RentMeta): string {
-  return `Estimated rent for a new lease, not a real listing. Based on CMHC (${meta.cmhc.period}) and Statistics Canada's experimental asking rents (${meta.statcan.quarter}).`;
+/** The line under every estimate (owner's wording, M3). */
+export function sourceLine(): string {
+  return "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants.";
+}
+
+/** The two data dates, shown once in the rent legend. */
+export function dataLine(meta: RentMeta): string {
+  return `Data: CMHC (${meta.cmhc.period}) and Statistics Canada's experimental asking rents (${meta.statcan.quarter}).`;
 }
 
 /** The room line (legend panel). */

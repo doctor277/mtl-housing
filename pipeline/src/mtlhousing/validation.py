@@ -208,6 +208,15 @@ def platform_walk(network, r5py, stop_ids: str, names, destination_id: str) -> d
     return {"raw": raw, "median": raw + adj, "adjustment": adj, "detail": detail}
 
 
+def walk_target(google_min: float, walk_target_min: float | None) -> float:
+    """The real platform -> entrance walk to calibrate against. `walk_target_min` is set
+    when Google's walk is only a lower bound (it starts at the station's street entrance:
+    McGill and Concordia, +1-2 min platform to street, midpoint); else Google's time."""
+    if walk_target_min is None or pd.isna(walk_target_min):
+        return float(google_min)
+    return float(walk_target_min)
+
+
 def implied_adjustment(target_min: float, r5_walk_min: float) -> float:
     """Access adjustment that makes R5's platform walk equal the real one."""
     return round(target_min - r5_walk_min, 1)
@@ -228,14 +237,16 @@ def access_check(campus_id: str) -> pd.DataFrame:
     rows = []
     for r in walks.itertuples():
         w = platform_walk(network, r5py, r.gtfs_stop_ids, names, r.destination_id)
+        target = walk_target(r.google_min, getattr(r, "walk_target_min", None))
         rows.append(
             {
                 "route": r.route,
                 "destination_id": r.destination_id,
                 "walk_speed_kmh": config.WALK_SPEED_KMH,
                 "r5_walk_min": round(w["raw"], 2),
-                "target_min": r.google_min,
-                "implied_adjustment_min": implied_adjustment(r.google_min, w["raw"]),
+                "google_min": r.google_min,
+                "target_min": target,
+                "implied_adjustment_min": implied_adjustment(target, w["raw"]),
                 "configured_adjustment_min": w["adjustment"],
                 "detail": w["detail"],
             }

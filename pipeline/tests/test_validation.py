@@ -18,9 +18,30 @@ def test_implied_adjustment():
 
 
 def test_walk_routes_calibrate_every_adjusted_building():
-    routes = validation.load_routes(validation.routes_csv("udem"))
-    walk_dests = set(routes.loc[routes["kind"] == "walk", "destination_id"])
-    assert walk_dests == set(config.ACCESS_ADJUSTMENT_MIN)
+    # Every access adjustment has a platform -> entrance walk route behind it (a walk route
+    # without an adjustment is fine: McGill's matched R5 within its range).
+    walk_dests = set()
+    for campus in config.CAMPUSES:
+        routes = validation.load_routes(validation.routes_csv(campus))
+        walk_dests |= set(routes.loc[routes["kind"] == "walk", "destination_id"])
+    assert set(config.ACCESS_ADJUSTMENT_MIN) <= walk_dests
+
+
+def test_walk_target_uses_the_platform_target_when_google_is_a_lower_bound():
+    assert validation.walk_target(7, float("nan")) == 7.0  # UdeM: Google's walk is the target
+    assert validation.walk_target(3, 4.5) == 4.5  # Concordia: street entrance + 1-2 min
+    # Concordia's configured adjustment follows from the target, not from Google's raw 3 min.
+    assert validation.implied_adjustment(validation.walk_target(3, 4.5), 2.87) == pytest.approx(
+        config.ACCESS_ADJUSTMENT_MIN["concordia_sgw_hall"], abs=0.05
+    )
+
+
+@pytest.mark.parametrize("campus", ["mcgill", "concordia_sgw"])
+def test_lower_bound_walks_carry_a_platform_target(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
+    walks = routes[routes["kind"] == "walk"]
+    assert walks["walk_target_min"].notna().all()
+    assert (walks["walk_target_min"] > walks["google_min"]).all()
 
 
 def test_verdict_edges():
@@ -32,17 +53,34 @@ def test_verdict_edges():
     assert validation.verdict(30.0, None) == ""
 
 
-def test_routes_csv_is_well_formed():
-    routes = validation.load_routes(validation.routes_csv("udem"))
+@pytest.mark.parametrize("campus", list(config.CAMPUSES))
+def test_routes_csv_is_well_formed(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
     assert set(routes["kind"]) <= {"transit", "walk"}
+    own = {d.id for d in config.CAMPUSES[campus].destinations}
+    assert set(routes["destination_id"]) <= own
     transit = routes[routes["kind"] == "transit"]
     assert transit[["lat", "lon"]].notna().all().all()
     lo_lon, lo_lat, hi_lon, hi_lat = config.BBOX
     assert transit["lat"].between(lo_lat, hi_lat).all()
     assert transit["lon"].between(lo_lon, hi_lon).all()
     walk = routes[routes["kind"] == "walk"]
-    assert walk["gtfs_stop_ids"].notna().all()
-    assert routes["google_min"].gt(0).all()
+    assert len(walk) >= 1 and walk["gtfs_stop_ids"].notna().all()
+    # Google times are collected by hand (VALIDATION.md); every route must have one.
+    assert routes["google_min"].notna().all() and routes["google_min"].gt(0).all()
+
+
+@pytest.mark.skipif(
+    not all(p.exists() for p in config.GTFS_FEEDS.values()), reason="GTFS feeds not downloaded"
+)
+@pytest.mark.parametrize("campus", list(config.CAMPUSES))
+def test_walk_routes_start_at_real_gtfs_stops(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
+    names = validation.gtfs_names()
+    for refs in routes.loc[routes["kind"] == "walk", "gtfs_stop_ids"]:
+        for ref in refs.split("|"):
+            feed, sid = ref.split(":", 1)
+            assert sid in names[feed][1], ref
 
 
 def test_load_routes_rejects_unknown_destination(tmp_path):
