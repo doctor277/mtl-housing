@@ -283,7 +283,9 @@ def step_rent() -> None:
     asking = statcan_rent.asking_rents(rents, config.STATCAN_RENT_QUARTER)
 
     est = rent.estimate_all(qm, zm, cmhc, asking)
-    est.to_csv(config.RENT_BY_QUARTIER_CSV, index=False, encoding="utf-8", lineterminator="\n")
+    est.drop(columns="cmhc_used").to_csv(
+        config.RENT_BY_QUARTIER_CSV, index=False, encoding="utf-8", lineterminator="\n"
+    )
     print(
         f"{est['quartier_id'].nunique()} quartiers x {len(rent.UNITS)} bedroom types -> "
         f"{config.RENT_BY_QUARTIER_CSV}\n"
@@ -296,6 +298,29 @@ def step_rent() -> None:
     print("\nsplit quartiers:")
     cols = ["quartier_name", "unit", "estimate", "label", "cmhc_areas"]
     print(split[cols].to_string(index=False, float_format=lambda x: f"{x:,.0f}"))
+
+
+def step_rent_export() -> None:
+    from collections import Counter
+
+    from mtlhousing import config, rent_export, statcan_rent
+
+    out, latest = rent_export.run()
+    if latest != config.STATCAN_RENT_QUARTER:
+        print(f"NOTE: StatCan has a newer quarter ({statcan_rent.quarter_label(latest)})")
+    m = out["meta"]
+    print(
+        f"{len(out['results'])} quartiers -> {rent_export.RENT_JSON} "
+        f"({rent_export.RENT_JSON.stat().st_size / 1e3:.0f} kB)\n"
+        f"CMHC {m['cmhc']['period']} x StatCan {m['statcan']['quarter']}, "
+        f"rounded to ${m['rounding']['step']}; room: ${m['room']['estimate']}"
+    )
+    for unit in m["bedroom_types"]:
+        c = Counter(r[unit]["label"] for r in out["results"].values())
+        print(f"  {unit:9s} {dict(sorted(c.items()))}")
+    print("crosswalk notes:")
+    for n in m["crosswalk_notes"]:
+        print(f"  [{n['kind']}] {n.get('quartier_name') or 'island'}: {n['text']}")
 
 
 STEPS = {
@@ -313,6 +338,7 @@ STEPS = {
     "cmhc-rent": step_cmhc_rent,
     "crosswalk-check": step_crosswalk_check,
     "rent": step_rent,
+    "rent-export": step_rent_export,
 }
 
 

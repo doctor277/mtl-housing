@@ -70,6 +70,7 @@ python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipe
 python -m mtlhousing access-check --campus udem   :: R5 platform -> building walks and the access adjustments they imply
 python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone, checked against CMHC unit counts (exit 1 on a problem)
 python -m mtlhousing rent             :: rent estimate per quartier and bedroom type -> data/interim/rent_by_quartier.csv
+python -m mtlhousing rent-export      :: re-checks the crosswalk, rounds to $25 -> web/public/data/rent.json (committed)
 ```
 
 ### Web

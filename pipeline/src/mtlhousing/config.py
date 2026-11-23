@@ -30,7 +30,8 @@ STATCAN_RENT_ZIP = RAW_DIR / "statcan" / "46100092-eng.zip"
 # stay internally consistent. The site labels both dates and says StatCan's figures
 # are experimental. To update: download the new table, add it to data/manifest.csv,
 # set this to the new quarter, re-run the pipeline.
-STATCAN_RENT_QUARTER = "2026-04"  # 2026 Q2, released 2026-09-09
+STATCAN_RENT_QUARTER = "2026-04"  # 2026 Q2
+STATCAN_RENT_RELEASED = "2026-09-09"  # StatCan release date of that quarter (manifest)
 # CMHC Rental Market Survey, HMIP exports (Phase 2): average rent by bedroom type,
 # Row / Apartment, Montréal CMA. Only ratios to the CMA total are used.
 CMHC_RMS_PERIOD = "October 2025"
@@ -61,6 +62,8 @@ CROSSWALK_MAX_UNALLOCATED = 0.001
 # when the parts with a qualifying value cover at least this share of its rental units
 # (re-weighted over them, labelled "covers X% of rental units"). Applies at every step.
 RENT_MIN_COVERAGE = 0.80
+# Rents on the site are rounded half up to the nearest this many dollars, in the export.
+RENT_ROUND_STEP = 25
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 

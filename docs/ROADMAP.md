@@ -8,13 +8,13 @@ them: heavy local runs, approvals, deploys.
 |---|---|---|
 | **M2.3** Crosswalk | Quartier → CMHC neighbourhood → zone, verified from CMHC unit counts | done (PR #3) |
 | **M2.4** Rent estimate per quartier | Ratio (CMHC neighbourhood ÷ CMA) × StatCan citywide level; split quartiers with the ≥ 80% re-weighting rule; fallbacks; grade labels | done (PR #5) |
-| **M2.5** Rent export | `rent.json` for the site + the Rent section of `docs/methodology.md` | next |
-| **M2.6** Rent on the map | A rent layer on the map | |
+| **M2.5** Rent export | `rent.json` for the site + the Rent section of `docs/methodology.md` | done (PR #6) |
+| **M2.6** Rent on the map | A rent layer on the map | next |
 | **M3** McGill + Concordia commutes | Travel times for the other two campuses. **Needs owner:** heavy local run, at home | |
-| **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first | |
+| **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first. Before starting, review garrytan/gstack's /design-review and /qa skills; copy useful parts into .claude/, don't install the whole toolkit. | |
 | **M5** Languages, sources, sharing | French/English, sources & limitations page, shareable URL holding the search settings | |
 | **M5.5** Auto-refresh | See below | |
-| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5; settings frozen; failures reported, not tuned); GTFS refresh before launch; deploy to Vercel. **Needs owner:** OK to deploy | |
+| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5; settings frozen; failures reported, not tuned); refresh before launch (GTFS, and check for a newer StatCan quarter); deploy to Vercel. **Needs owner:** OK to deploy | |
 
 ## M5.5 Auto-refresh
 
