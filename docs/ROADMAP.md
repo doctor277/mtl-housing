@@ -30,3 +30,16 @@ them: heavy local runs, approvals, deploys.
    numbers changed.
 
 Heavy routing stays a local run the owner triggers at home; CI never routes.
+
+## M4 decisions
+
+Decided by the owner (2026-11-23), on top of the M4 row above:
+
+1. **Shortlist order:** fastest commute first by default, with a "sort by cheapest" toggle.
+2. **Budget:** neighbourhoods up to ~10% over budget are shown under a "Slightly over budget"
+   heading, below the ones that fit. Above that, hidden.
+3. **Rent unknown:** neighbourhoods with no rent data are still shown, at the bottom, marked
+   "Rent unknown".
+4. **Max commute:** buttons 20 / 30 / 45 / 60 min (no slider).
+5. **Language:** English and French both at launch, with an FR/EN switch. M4 keeps every UI
+   string in one place (no hard-coded text in components) so M5 only adds the French file.
