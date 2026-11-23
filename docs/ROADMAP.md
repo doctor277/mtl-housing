@@ -7,7 +7,7 @@ them: heavy local runs, approvals, deploys.
 | Milestone | Scope | Status |
 |---|---|---|
 | **M2.3** Crosswalk | Quartier → CMHC neighbourhood → zone, verified from CMHC unit counts | done (PR #3) |
-| **M2.4** Rent estimate per quartier | Ratio (CMHC neighbourhood ÷ CMA) × StatCan citywide level; split quartiers with the ≥ 80% re-weighting rule; fallbacks; grade labels | done |
+| **M2.4** Rent estimate per quartier | Ratio (CMHC neighbourhood ÷ CMA) × StatCan citywide level; split quartiers with the ≥ 80% re-weighting rule; fallbacks; grade labels | done (PR #5) |
 | **M2.5** Rent export | `rent.json` for the site + the Rent section of `docs/methodology.md` | next |
 | **M2.6** Rent on the map | A rent layer on the map | |
 | **M3** McGill + Concordia commutes | Travel times for the other two campuses. **Needs owner:** heavy local run, at home | |
