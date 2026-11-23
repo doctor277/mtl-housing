@@ -167,7 +167,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_In progress. Still to come: the rent estimate per quartier (M2.4)._
+_In progress. The per-quartier estimate is computed (`python -m mtlhousing rent` → `data/interim/rent_by_quartier.csv`). Still to come: the site export (M2.5)._
 
 ### Two sources, two jobs
 - **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
@@ -226,17 +226,26 @@ For each quartier and bedroom type, the first available value in this order is u
 | 4 | Zone, grade d | low reliability (CMHC grade d), zone level |
 | 5 | none | not enough data |
 
-- A grade d value is used only when no a, b or c value exists at either level. That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
+- A grade d value is used only when no a, b or c value exists at either level. For a split quartier, that means no a/b/c values covering at least 80% of its rental units (see below). That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
 - Between two grade d values, the neighbourhood comes first, because it's more local.
 - `**` is never used, at either level.
 
 ### Quartiers split between neighbourhoods
-_Decided; applied with the per-quartier estimate (M2.4)._
+Applied by `rent.estimate_quartier`; the threshold is `config.RENT_MIN_COVERAGE`.
 
 For a quartier split between neighbourhoods (see the crosswalk), the rule above is applied once for the whole quartier, at one level at a time:
 - **Every part has a usable value at the same level:** the quartier's ratio is the share-weighted average of the parts' ratios (share = the part's share of the quartier's rental units). It is labelled with the **worst grade** among the parts.
-- **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover.
+- **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover, **rounded down** to a whole percent (86.6% → "86%").
 - **Below 80%:** fall back to the next step of the order above, as for any quartier.
+
+The rule applies at **every step**, grade d included, and the labels combine: for example "low reliability (CMHC grade d), covers 90% of rental units". "Usable" means a value that qualifies for that step: grade a, b or c at steps 1–2, and grade **d or better** (a, b, c or d) at steps 3–4. A c value is never ignored at a step that accepts d. For a quartier with one neighbourhood this changes nothing, since an a/b/c value is already used at step 1 or 2. For a split quartier, a part graded c and a part graded d can together reach the coverage a step needs. The label is then grade d, the worst grade used. In practice:
+- **Côte-Saint-Luc:** Hampstead/Côte-Saint-Luc is suppressed for every size. Côte-Saint-Luc/Montreal West covers 86.6%, so every size is labelled "covers 86% of rental units".
+- **Gabriel-Sagard, studio:** Villeray has a grade c value but covers only 53%, so the quartier uses the zone, which covers both halves.
+- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic (grade c) covers only 61.9%, so step 1 fails, and the zone has no a/b/c value, so step 2 fails. At step 3, Ahuntsic (c) and Cartierville (d) both count and cover 100%. The quartier gets a neighbourhood-level estimate labelled "low reliability (CMHC grade d)".
+- All four split quartiers have both parts in the same zone, so the zone steps give a single value.
+
+### What is computed
+Every quartier gets a row for each of the four bedroom types CMHC and StatCan share: studio, 1 bedroom (3½), 2 bedrooms (4½) and 3+ bedrooms. The row holds either an estimate or "not enough data". The site shows the first three types. With October 2025 data, "not enough data" covers 0 quartiers for studios, 6 for 1 bedroom, 6 for 2 bedrooms and 33 for 3+ bedrooms. The estimate is kept unrounded until the export. If the StatCan Montréal value for a bedroom type is missing, unusable, or flagged E ("use with caution") or worse, the step stops: how to label such a value isn't decided yet. 2026 Q2 has no flag on any apartment value.
 
 ### Rooms
 StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".

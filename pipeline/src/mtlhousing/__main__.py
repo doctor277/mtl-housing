@@ -266,6 +266,38 @@ def step_crosswalk_check() -> None:
     print("OK: every 'verified' row is confirmed by the unit counts")
 
 
+def step_rent() -> None:
+    from mtlhousing import cmhc_rent, config, crosswalk, export, rent, statcan_rent
+
+    qm = crosswalk.load_quartier_map(config.QUARTIER_TO_CMHC_CSV)
+    zm = crosswalk.load_zone_map(config.CMHC_NBHD_TO_ZONE_CSV)
+    cmhc = cmhc_rent.load(config.CMHC_RENT_CSV, config.CMHC_RMS_PERIOD)
+    crosswalk.check(qm, zm, crosswalk.quartier_table(export.NEIGHBOURHOODS_GEOJSON), cmhc)
+    rents = statcan_rent.load_montreal_rents(config.STATCAN_RENT_ZIP)
+    latest = rents["ref_date"].max()
+    if latest != config.STATCAN_RENT_QUARTER:
+        print(
+            f"NOTE: StatCan has a newer quarter ({statcan_rent.quarter_label(latest)}); "
+            f"using the configured {statcan_rent.quarter_label(config.STATCAN_RENT_QUARTER)}"
+        )
+    asking = statcan_rent.asking_rents(rents, config.STATCAN_RENT_QUARTER)
+
+    est = rent.estimate_all(qm, zm, cmhc, asking)
+    est.to_csv(config.RENT_BY_QUARTIER_CSV, index=False, encoding="utf-8", lineterminator="\n")
+    print(
+        f"{est['quartier_id'].nunique()} quartiers x {len(rent.UNITS)} bedroom types -> "
+        f"{config.RENT_BY_QUARTIER_CSV}\n"
+        f"CMHC {config.CMHC_RMS_PERIOD} ratios x StatCan "
+        f"{statcan_rent.quarter_label(config.STATCAN_RENT_QUARTER)} asking rents\n"
+    )
+    counts = est.pivot_table(index="label", columns="unit", values="quartier_id", aggfunc="count")
+    print(counts.reindex(columns=list(rent.UNITS)).fillna(0).astype(int).to_string())
+    split = est[est["n_parts"] > 1]
+    print("\nsplit quartiers:")
+    cols = ["quartier_name", "unit", "estimate", "label", "cmhc_areas"]
+    print(split[cols].to_string(index=False, float_format=lambda x: f"{x:,.0f}"))
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -280,6 +312,7 @@ STEPS = {
     "statcan-rent": step_statcan_rent,
     "cmhc-rent": step_cmhc_rent,
     "crosswalk-check": step_crosswalk_check,
+    "rent": step_rent,
 }
 
 

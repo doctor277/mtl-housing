@@ -57,6 +57,10 @@ CROSSWALK_FOLD_BELOW = 0.05
 # since) can't be given to any quartier. Above this share of all mapped units, the
 # crosswalk check fails instead of quietly dropping them.
 CROSSWALK_MAX_UNALLOCATED = 0.001
+# A quartier split between CMHC neighbourhoods gets a value at a step of the rent order
+# when the parts with a qualifying value cover at least this share of its rental units
+# (re-weighted over them, labelled "covers X% of rental units"). Applies at every step.
+RENT_MIN_COVERAGE = 0.80
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 
@@ -66,6 +70,7 @@ SAMPLE_POINTS_PARQUET = INTERIM_DIR / "sample_points.parquet"
 SAMPLE_POINTS_GEOJSON = INTERIM_DIR / "sample_points.geojson"  # debug / visual check
 SAMPLE_POINTS_SUMMARY_CSV = INTERIM_DIR / "sample_points_by_quartier.csv"
 CROSSWALK_CHECK_CSV = INTERIM_DIR / "crosswalk_check.csv"
+RENT_BY_QUARTIER_CSV = INTERIM_DIR / "rent_by_quartier.csv"
 GTFS_FEEDS = {
     "stm": GTFS_DIR / "stm.zip",
     "rem": GTFS_DIR / "rem.zip",
