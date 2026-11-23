@@ -295,14 +295,37 @@ def write_explore_map(
 # --- run ------------------------------------------------------------------------------
 
 
-def run(campus_ids: list[str]) -> dict:
+def stats_parquet(campus_id: str, interim_dir: Path = config.INTERIM_DIR) -> Path:
+    return interim_dir / f"commute_{campus_id}_by_quartier.parquet"
+
+
+def available_campuses(interim_dir: Path = config.INTERIM_DIR) -> tuple[list[str], list[str]]:
+    """(campuses with aggregated stats and routing meta, configured campuses without), in
+    config order. commute.json is always written for every available campus, so exporting
+    after one campus's run never drops the others."""
+    have, missing = [], []
+    for c in config.CAMPUSES:
+        ok = (
+            stats_parquet(c, interim_dir).exists()
+            and (interim_dir / config.travel_times_meta(c).name).exists()
+        )
+        (have if ok else missing).append(c)
+    return have, missing
+
+
+def run(campus_ids: list[str] | None = None) -> dict:
+    """Write commute.json for `campus_ids` (default: every available campus)."""
     from mtlhousing import boundaries
+
+    if campus_ids is None:
+        campus_ids, _ = available_campuses()
+    if not campus_ids:
+        raise ValueError("no campus has aggregated results; run travel-times and aggregate")
 
     quartiers = boundaries.load_quartiers()
     stats_by_campus, meta_by_campus = {}, {}
     for c in campus_ids:
-        stats_path = config.INTERIM_DIR / f"commute_{c}_by_quartier.parquet"
-        stats_by_campus[c] = pd.read_parquet(stats_path)
+        stats_by_campus[c] = pd.read_parquet(stats_parquet(c))
         meta_by_campus[c] = json.loads(config.travel_times_meta(c).read_text(encoding="utf-8"))
         config.check_routing_speed(meta_by_campus[c], c)
 

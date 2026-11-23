@@ -92,6 +92,23 @@ def test_meta_records_method_and_adjustments():
     assert m["out_of_scope"][0]["area"] == "L'Île-Dorval"
 
 
+def test_available_campuses_needs_stats_and_routing_meta(tmp_path):
+    # Exporting after one campus's run must keep every other campus that has results.
+    for c in ("udem", "mcgill"):
+        export.stats_parquet(c, tmp_path).write_bytes(b"x")
+    (tmp_path / config.travel_times_meta("udem").name).write_text("{}")
+    have, missing = export.available_campuses(tmp_path)
+    assert have == ["udem"]  # mcgill has stats but no routing meta
+    assert missing == [c for c in config.CAMPUSES if c != "udem"]
+    (tmp_path / config.travel_times_meta("mcgill").name).write_text("{}")
+    assert export.available_campuses(tmp_path)[0] == ["udem", "mcgill"]
+
+
+def test_run_refuses_when_no_campus_has_results():
+    with pytest.raises(ValueError, match="no campus"):
+        export.run([])
+
+
 def test_write_json_is_strict(tmp_path):
     p = export.write_json(_commute(), tmp_path / "c.json")
     text = p.read_text(encoding="utf-8")

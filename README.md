@@ -65,7 +65,7 @@ python -m mtlhousing tunnel-check    :: walk-only check: UdeM metro -> Roger-Gau
 python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped at 6 GB
 python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
 python -m mtlhousing aggregate --campus udem      :: per-quartier median/p10/p90, access adjustments, flags
-python -m mtlhousing export --campus udem         :: web/public/data/*.json(geojson) + data/interim check map
+python -m mtlhousing export                       :: web/public/data/*.json(geojson) for every campus with results + check maps
 python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipeline/validation/udem_results.csv
 python -m mtlhousing access-check --campus udem   :: R5 platform -> building walks and the access adjustments they imply
 python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone, checked against CMHC unit counts (exit 1 on a problem)

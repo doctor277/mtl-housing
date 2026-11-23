@@ -178,3 +178,20 @@ Known limits, documented in `docs/methodology.md`:
 - **Flat walking.** There is no elevation model. Constant per-building adjustments stand in for the climb at UdeM.
 - **No station models.** The feeds have no `pathways.txt`, so R5 times transfers as street walks between stop coordinates. At Édouard-Montpetit that gives 1 min, which agrees with Google.
 - **Building choice is a near-tie** for most homes (finding 4).
+
+## McGill and Concordia (M3): pending
+
+Route lists: [`mcgill_routes.csv`](mcgill_routes.csv) and [`concordia_sgw_routes.csv`](concordia_sgw_routes.csv).
+- **Five transit origins per campus**, reused from the UdeM list. McGill: routes 1–5. Concordia: routes 1, 2, 3, 7 (as its route 4) and 5. They have the same coordinates as the UdeM rows.
+- **One platform → entrance walk per campus:**
+  - McGill metro → Roddick Gates (STM stop 32);
+  - Guy-Concordia → Hall Building through the tunnel (STM stop 34).
+
+**Google side.** The author collects these the same way as for UdeM: "Arrive by 8:30", Tuesday 2026-12-01, first suggested trip. Walks are timed on foot. Until then `google_min` is blank, and `validate` gives no verdict for those rows.
+
+**R5 side.** The settings stay as tuned on UdeM: walking at 4.0 km/h, the same window and the same feeds. These comparisons are therefore not used to re-tune them. The platform walks show whether either campus needs an access adjustment like UdeM's. If one is added, it is calibrated on that walk, which makes the walk route in-sample.
+
+Re-run, after the heavy `travel-times` runs:
+- `python -m mtlhousing validate --campus mcgill`
+- `python -m mtlhousing access-check --campus mcgill`
+- the same two commands with `--campus concordia_sgw`.

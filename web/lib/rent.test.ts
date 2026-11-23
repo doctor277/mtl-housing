@@ -5,6 +5,7 @@ import {
   binEdges,
   binIndex,
   binLegend,
+  dataLine,
   detailLine,
   extraLines,
   formatRent,
@@ -150,9 +151,12 @@ describe("texts", () => {
     expect(extraLines(e, META)).toEqual([]);
   });
 
-  it("source and room lines carry the dates", () => {
-    expect(sourceLine(META)).toBe(
-      "Estimated rent for a new lease, not a real listing. Based on CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2).",
+  it("uses the owner's line under every estimate; dates go in the data and room lines", () => {
+    expect(sourceLine()).toBe(
+      "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants.",
+    );
+    expect(dataLine(META)).toBe(
+      "Data: CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2).",
     );
     expect(roomLine(META)).toBe(
       "Room: ≈ $500 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2).",

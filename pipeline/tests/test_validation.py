@@ -32,17 +32,38 @@ def test_verdict_edges():
     assert validation.verdict(30.0, None) == ""
 
 
-def test_routes_csv_is_well_formed():
-    routes = validation.load_routes(validation.routes_csv("udem"))
+@pytest.mark.parametrize("campus", list(config.CAMPUSES))
+def test_routes_csv_is_well_formed(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
     assert set(routes["kind"]) <= {"transit", "walk"}
+    own = {d.id for d in config.CAMPUSES[campus].destinations}
+    assert set(routes["destination_id"]) <= own
     transit = routes[routes["kind"] == "transit"]
     assert transit[["lat", "lon"]].notna().all().all()
     lo_lon, lo_lat, hi_lon, hi_lat = config.BBOX
     assert transit["lat"].between(lo_lat, hi_lat).all()
     assert transit["lon"].between(lo_lon, hi_lon).all()
     walk = routes[routes["kind"] == "walk"]
-    assert walk["gtfs_stop_ids"].notna().all()
-    assert routes["google_min"].gt(0).all()
+    assert len(walk) >= 1 and walk["gtfs_stop_ids"].notna().all()
+    # Google times are collected by hand (VALIDATION.md); McGill and Concordia may still
+    # be pending (blank), but a value that is there must be a real duration.
+    google = routes["google_min"].dropna()
+    assert google.gt(0).all()
+    if campus == "udem":
+        assert len(google) == len(routes)
+
+
+@pytest.mark.skipif(
+    not all(p.exists() for p in config.GTFS_FEEDS.values()), reason="GTFS feeds not downloaded"
+)
+@pytest.mark.parametrize("campus", list(config.CAMPUSES))
+def test_walk_routes_start_at_real_gtfs_stops(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
+    names = validation.gtfs_names()
+    for refs in routes.loc[routes["kind"] == "walk", "gtfs_stop_ids"]:
+        for ref in refs.split("|"):
+            feed, sid = ref.split(":", 1)
+            assert sid in names[feed][1], ref
 
 
 def test_load_routes_rejects_unknown_destination(tmp_path):

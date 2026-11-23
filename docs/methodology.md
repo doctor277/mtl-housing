@@ -28,6 +28,10 @@ Each campus has one or more **destination buildings**. Trips are routed to the b
 
 Limitation: campuses are large. A class in a building other than the modelled ones can change the trip by 5–10 minutes.
 
+**McGill and Concordia: one point each** (M3). McGill is measured to the Roddick Gates (Sherbrooke at McGill College) and Concordia to the Hall Building's main entrance. There is no "fastest building" rule for them as there is for UdeM. A student whose classes are elsewhere on these downtown campuses may walk a few more minutes.
+
+**Out of scope for now:** McGill's **Macdonald campus** (Sainte-Anne-de-Bellevue) and Concordia's **Loyola campus** (NDG). The site's McGill and Concordia commutes are to the downtown campuses only.
+
 ### Where trips start: residential sample points
 A quartier's commute is not measured from its centre. It is measured from many points where people actually live, and the results are then summarised.
 
@@ -175,7 +179,7 @@ Computed by `python -m mtlhousing rent` (`data/interim/rent_by_quartier.csv`, un
 
 Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Montréal asking rent.
 
-**Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
+**Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates in the rent legend, and says there that the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
 
 **Known limitation: old leases.** CMHC's averages include long-time tenants, whose rents likely sit below what a new tenant would pay. So the neighbourhood pattern reflects existing leases, not only new ones:
 - **Old-stock areas likely look cheaper than new listings** (e.g. Plateau-Mont-Royal, Rosemont).
@@ -274,7 +278,8 @@ StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC ha
 These lines are added to the detail line when they apply:
 - **Split neighbourhood:** "Weighted average of CMHC areas {A} (62%) and {B} (38%), by rental units."
 - **Coverage under 100%:** "Covers {X}% of this neighbourhood's rental units; CMHC has no reliable figure for the rest." X is rounded down.
-- **Under every estimate:** "Estimated rent for a new lease, not a real listing. Based on CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
+- **Under every estimate** (owner's wording, M3): "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants." It replaces the earlier line, which also gave the dates.
+- **Data dates, once in the rent legend:** "Data: CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
 - **Room:** "≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2)."
 
 **Shares shown.** The per-area shares are shown **raw**, as in `rent.json`: each CMHC area's share of the neighbourhood's rental units, with no re-weighting for display. When coverage is under 100%, they add up to the coverage, not to 100%.
