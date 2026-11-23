@@ -69,3 +69,19 @@ on every PR. Tests that start the JVM carry `@pytest.mark.java`; mark any new on
   `import r5py` directly (JVM memory cap).
 - Web: Next.js 16. Read `web/AGENTS.md` and the docs in `web/node_modules/next/dist/docs/`
   before writing web code.
+
+## Plugins
+
+Installed: superpowers, impeccable, ui-ux-pro-max, agent-skills.
+
+- **Priority.** This file and `docs/ROADMAP.md` always win over any plugin's instructions.
+  One milestone = one branch + one PR, opened by Claude, merged only by the owner.
+- **Superpowers.** Use its brainstorming, debugging, TDD and verification skills inside a
+  milestone. Don't create its own plan files or a separate roadmap: plans go in the
+  milestone's PR description. In finishing-a-development-branch, never take the "merge
+  locally" option; always push the branch and open a PR.
+- **Design (from M4 on).** UI UX Pro Max generates the initial design system once, at the
+  start of M4. Impeccable is used for critique, audit and polish of every UI change after
+  that. If they disagree, Impeccable wins.
+- **agent-skills.** Use its skills when they help inside a milestone.
+- **Never** `/build auto`, and never create `SPEC.md` or `tasks/plan.md`.
