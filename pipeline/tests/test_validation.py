@@ -27,6 +27,23 @@ def test_walk_routes_calibrate_every_adjusted_building():
     assert set(config.ACCESS_ADJUSTMENT_MIN) <= walk_dests
 
 
+def test_walk_target_uses_the_platform_target_when_google_is_a_lower_bound():
+    assert validation.walk_target(7, float("nan")) == 7.0  # UdeM: Google's walk is the target
+    assert validation.walk_target(3, 4.5) == 4.5  # Concordia: street entrance + 1-2 min
+    # Concordia's configured adjustment follows from the target, not from Google's raw 3 min.
+    assert validation.implied_adjustment(validation.walk_target(3, 4.5), 2.87) == pytest.approx(
+        config.ACCESS_ADJUSTMENT_MIN["concordia_sgw_hall"], abs=0.05
+    )
+
+
+@pytest.mark.parametrize("campus", ["mcgill", "concordia_sgw"])
+def test_lower_bound_walks_carry_a_platform_target(campus):
+    routes = validation.load_routes(validation.routes_csv(campus))
+    walks = routes[routes["kind"] == "walk"]
+    assert walks["walk_target_min"].notna().all()
+    assert (walks["walk_target_min"] > walks["google_min"]).all()
+
+
 def test_verdict_edges():
     assert validation.verdict(36.0, 31) == "pass"  # exactly +5
     assert validation.verdict(36.1, 31) == "fail"

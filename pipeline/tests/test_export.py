@@ -104,6 +104,19 @@ def test_available_campuses_needs_stats_and_routing_meta(tmp_path):
     assert export.available_campuses(tmp_path)[0] == ["udem", "mcgill"]
 
 
+def test_export_refuses_stats_aggregated_with_other_adjustments(tmp_path):
+    path = aggregate.aggregated_with_path("concordia_sgw", tmp_path)
+    with pytest.raises(ValueError, match="no record"):
+        export.check_aggregated_with("concordia_sgw", tmp_path)
+    want = aggregate.campus_adjustments("concordia_sgw")
+    path.write_text(json.dumps({"access_adjustment_min": want}))
+    export.check_aggregated_with("concordia_sgw", tmp_path)  # matches: fine
+    stale = {k: v + 1.0 for k, v in want.items()}
+    path.write_text(json.dumps({"access_adjustment_min": stale}))
+    with pytest.raises(ValueError, match="re-run"):
+        export.check_aggregated_with("concordia_sgw", tmp_path)
+
+
 def test_run_refuses_when_no_campus_has_results():
     with pytest.raises(ValueError, match="no campus"):
         export.run([])

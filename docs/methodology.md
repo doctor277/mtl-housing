@@ -136,7 +136,7 @@ UdeM result (4.0 km/h, adjustments +1.9 / −2.4):
   - Near Côte-des-Neiges, the Jean-Brillant adjustment offsets the slower walk: Loyola and Côte-Saint-Luc −0.4, Édouard-Montpetit −0.1.
 
 ### Web export (step 1.8)
-`python -m mtlhousing export --campus udem` writes two files to `web/public/data/` (committed, so the site never runs Python):
+`python -m mtlhousing export` writes two files to `web/public/data/` (committed, so the site never runs Python):
 
 - **`neighbourhoods.geojson`** (~290 kB): one feature per quartier with `id`, `name`, `borough`, `municipality` and `dwellings`.
   - Boundaries are simplified as a coverage (5 m tolerance in MTM 8), so neighbouring quartiers still share their edges with no gaps or overlaps.
@@ -173,8 +173,9 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 
 ### McGill and Concordia (M3)
 Same settings, feeds and analysis date as UdeM; nothing was re-tuned. There are five transit routes per campus plus one platform walk each. The origins are reused from the UdeM list. The Google times are dated 2026-11-23. Details are in `VALIDATION.md`.
-- **McGill: 5 of 6 pass.** Route 5 (Fairview-Pointe-Claire REM → McGill) fails: R5 40 min against Google 33. R5 takes the same REM trip. The gap is the wait at the first stop, which R5's median over the 7:30–8:30 window includes and Google's well-timed trip doesn't. R5's p10 is 35 min.
-- **Concordia: 6 of 6 pass.**
+- **McGill: 4 of 5 transit routes pass.** Route 5 (Fairview-Pointe-Claire REM → McGill) fails: R5 40 min against Google 33. R5 takes the same REM trip. The gap is most likely the wait at the first stop, as R5's p10 of 35 min suggests: R5's median over the 7:30–8:30 window includes that wait, and Google's well-timed trip doesn't.
+- **Concordia: 5 of 5 transit routes pass.** The platform walks aren't counted as passes: each is the calibration, or is judged against its range (below).
+- **Concordia trips from the east.** R5's printed 7:45 itineraries get off at Peel and walk 9 min, instead of riding to Guy-Concordia. But R5's median for those routes is faster than every Peel option R5 lists, so the published numbers use a faster exit, most likely Guy-Concordia. This is explained in `VALIDATION.md`; the cause in R5's itinerary router is unknown.
 - **Mean R5 − Google over the transit routes:** +0.4 min for both campuses.
 - **Access adjustments.** Google's walks start at the station's street entrance and go outdoors, so they are a lower bound. Each is judged against Google **plus 1–2 min** from platform to street.
   - **McGill: none.** R5's platform walk (5.43 min) falls inside the 5–6 min range.

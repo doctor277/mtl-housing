@@ -81,13 +81,14 @@ Requires Node 22.12+ (Vitest 5; CI uses Node 22). From the repo root:
 cd web
 npm ci
 npm run dev        :: http://localhost:3000
-npm test           :: Vitest: rent classes, labels and texts (web/lib/*.test.ts)
+npm test           :: Vitest: rent classes and texts, campus picker and commute texts (web/lib/*.test.ts)
 ```
 
 The page reads `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json`
 (written by the pipeline's `export` and `rent-export` steps and committed). It is still a bare
-map: a Commute / Rent toggle; quartiers coloured by median UdeM commute (fastest building) or by
-the estimated rent for a studio, 3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
+map: a Commute / Rent toggle; quartiers coloured by median transit commute to the chosen campus
+(UdeM, McGill or Concordia SGW, picked in Commute mode) or by the estimated rent for a studio,
+3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
 
 ## Status
 

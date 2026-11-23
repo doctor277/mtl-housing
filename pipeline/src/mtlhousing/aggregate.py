@@ -124,6 +124,20 @@ def quartier_stats(
     return pd.DataFrame(rows, columns=STAT_COLUMNS)
 
 
+def campus_adjustments(campus_id: str) -> dict[str, float]:
+    """The access adjustment of each of a campus's destinations (0 when none)."""
+    return {
+        d.id: config.ACCESS_ADJUSTMENT_MIN.get(d.id, 0.0)
+        for d in config.CAMPUSES[campus_id].destinations
+    }
+
+
+def aggregated_with_path(campus_id: str, interim_dir=None):
+    """Sidecar recording the settings a campus's stats were aggregated with."""
+    base = config.INTERIM_DIR if interim_dir is None else interim_dir
+    return base / f"commute_{campus_id}_by_quartier.aggregated_with.json"
+
+
 def run_campus(campus_id: str) -> pd.DataFrame:
     import json
 
@@ -138,4 +152,9 @@ def run_campus(campus_id: str) -> pd.DataFrame:
     stats.to_parquet(path.with_suffix(".parquet"), index=False)
     flat = stats.assign(flags=stats["flags"].map(";".join))
     flat.to_csv(path.with_suffix(".csv"), index=False)
+    # So export can refuse stats aggregated with adjustments config no longer has.
+    aggregated_with_path(campus_id).write_text(
+        json.dumps({"access_adjustment_min": campus_adjustments(campus_id)}, indent=1),
+        encoding="utf-8",
+    )
     return stats

@@ -133,8 +133,13 @@ function RentLegend({ rent, size }: { rent: RentFile | null; size: BedroomType }
 export default function MapView() {
   const [mode, setMode] = useState<Mode>("commute");
   const [size, setSize] = useState<BedroomType>(DEFAULT_SIZE);
-  const [campus, setCampus] = useState("udem");
+  const [chosenCampus, setCampus] = useState("udem");
   const [commute, setCommute] = useState<CommuteFile | null>(null);
+  // Fall back to the first campus in commute.json if the chosen one isn't there.
+  const campus =
+    commute && !(chosenCampus in commute.meta.campuses)
+      ? (Object.keys(commute.meta.campuses)[0] ?? chosenCampus)
+      : chosenCampus;
   const [rent, setRent] = useState<RentFile | null>(null);
   const [legendOpen, setLegendOpen] = useState(true); // on a phone the legend hides half the map
 
