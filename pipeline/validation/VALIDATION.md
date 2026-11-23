@@ -204,7 +204,7 @@ Route lists: [`mcgill_routes.csv`](mcgill_routes.csv) and [`concordia_sgw_routes
 
 ### Results (2026-11-23, settings frozen at 4.0 km/h)
 
-Travel times were routed by the owner in his own terminal on 2026-11-23: 3,219 origins, complete. The unreachable homes are 2 for McGill and 4 for Concordia, all in L'Île-Bizard–Sainte-Geneviève (as for UdeM). Files: [`mcgill_results.csv`](mcgill_results.csv), [`concordia_sgw_results.csv`](concordia_sgw_results.csv).
+Travel times were routed by the owner in their own terminal on 2026-11-23: 3,219 origins, complete. The unreachable homes are 2 for McGill and 4 for Concordia, all in L'Île-Bizard–Sainte-Geneviève (as for UdeM). Files: [`mcgill_results.csv`](mcgill_results.csv), [`concordia_sgw_results.csv`](concordia_sgw_results.csv).
 
 | Route | McGill: Google / R5 median (p10) | verdict | Concordia: Google / R5 median (p10) | verdict |
 |---|---|---|---|---|
