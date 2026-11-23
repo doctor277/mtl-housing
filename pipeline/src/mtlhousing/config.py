@@ -34,6 +34,9 @@ STATCAN_RENT_QUARTER = "2026-04"  # 2026 Q2, released 2026-09-09
 # CMHC Rental Market Survey, HMIP exports (Phase 2): average rent by bedroom type,
 # Row / Apartment, Montréal CMA. Only ratios to the CMA total are used.
 CMHC_RMS_PERIOD = "October 2025"
+CROSSWALK_DIR = REPO_ROOT / "pipeline" / "crosswalk"  # hand-made, committed
+QUARTIER_TO_CMHC_CSV = CROSSWALK_DIR / "quartier_to_cmhc_neighbourhood.csv"
+CMHC_NBHD_TO_ZONE_CSV = CROSSWALK_DIR / "cmhc_neighbourhood_to_zone.csv"
 CMHC_RENT_CSV = {
     "neighbourhood": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_neighbourhood.csv",
     "zone": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_zone.csv",
