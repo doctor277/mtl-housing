@@ -1,0 +1,7 @@
+route,kind,origin,quartier,destination_id,google_min,r5_median_min,r5_raw_median_min,adjustment_min,r5_p10_min,diff_min,tolerance_min,verdict,google_alt_min,google_alt_note,alt_diff_min,alt_verdict,other_buildings,r5_route_0745
+1,transit,4500 Rue Saint-Denis,Mile End,mcgill_roddick_gates,22,21.0,21.0,0.0,19.0,-1.0,5.0,pass,,,,,,walk 3 ; metro 2 Station Mont-Royal -> Station Berri-UQAM (wait 1) ; walk 0 ; metro 1 Station Berri-UQAM -> Station McGill (wait 4) ; walk 5
+2,transit,"4000 Rue Wellington, Verdun",Verdun-Centre,mcgill_roddick_gates,21,24.0,24.0,0.0,23.0,3.0,5.0,pass,,,,,,walk 5 ; metro 1 Station De l'Église -> Station McGill (wait 1) ; walk 5
+3,transit,1500 Rue Fleury Est,Sault-au-Récollet,mcgill_roddick_gates,55,47.0,47.0,0.0,42.0,-8.0,8.2,pass,,,,,,walk 3 ; bus 41 Fleury / Christophe-Colomb -> Berri / Sauriol (wait 1) ; walk 4 ; metro 2 Station Sauvé -> Station Berri-UQAM (wait 3) ; walk 0 ; metro 1 Station Berri-UQAM -> Station McGill (wait 2) ; walk 5
+4,transit,3800 Rue Ontario Est,Hochelaga,mcgill_roddick_gates,30,31.0,31.0,0.0,30.0,1.0,5.0,pass,,,,,,walk 14 ; metro 1 Station Joliette -> Station McGill (wait 1) ; walk 5
+5,transit,Fairview-Pointe-Claire REM station,Pointe-Claire,mcgill_roddick_gates,33,40.0,40.0,0.0,35.0,7.0,5.0,fail,,,,,,walk 0 ; REM A3-A1 Station Fairview-Pointe-Claire quai 2 -> Station McGill - Quai 2 (wait 1) ; walk 4
+6,walk,McGill metro platform,,mcgill_roddick_gates,4,5.4,5.4,0.0,,1.4,5.0,pass,,,,,,walk only; stm:32: 5.4 min / 357 m

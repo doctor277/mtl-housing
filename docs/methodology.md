@@ -28,6 +28,10 @@ Each campus has one or more **destination buildings**. Trips are routed to the b
 
 Limitation: campuses are large. A class in a building other than the modelled ones can change the trip by 5–10 minutes.
 
+**McGill and Concordia: one point each** (M3). McGill is measured to the Roddick Gates (Sherbrooke at McGill College) and Concordia to the Hall Building's main entrance. There is no "fastest building" rule for them as there is for UdeM. A student whose classes are elsewhere on these downtown campuses may walk a few more minutes.
+
+**Out of scope for now:** McGill's **Macdonald campus** (Sainte-Anne-de-Bellevue) and Concordia's **Loyola campus** (NDG). The site's McGill and Concordia commutes are to the downtown campuses only.
+
 ### Where trips start: residential sample points
 A quartier's commute is not measured from its centre. It is measured from many points where people actually live, and the results are then summarised.
 
@@ -132,7 +136,7 @@ UdeM result (4.0 km/h, adjustments +1.9 / −2.4):
   - Near Côte-des-Neiges, the Jean-Brillant adjustment offsets the slower walk: Loyola and Côte-Saint-Luc −0.4, Édouard-Montpetit −0.1.
 
 ### Web export (step 1.8)
-`python -m mtlhousing export --campus udem` writes two files to `web/public/data/` (committed, so the site never runs Python):
+`python -m mtlhousing export` writes two files to `web/public/data/` (committed, so the site never runs Python):
 
 - **`neighbourhoods.geojson`** (~290 kB): one feature per quartier with `id`, `name`, `borough`, `municipality` and `dwellings`.
   - Boundaries are simplified as a coverage (5 m tolerance in MTM 8), so neighbouring quartiers still share their edges with no gaps or overlaps.
@@ -154,7 +158,8 @@ UdeM result (4.0 km/h, adjustments +1.9 / −2.4):
   - A `null` not listed in `over_max` means no data.
   - For UdeM, only L'Île-Bizard–Sainte-Geneviève has a stat over the limit (its p90).
 - **No-residents areas** (Parc Jean-Drapeau, see Geography) are separate features with `no_residents: true`, `part_of` and `dwellings: 0`. They have no entry in `commute.json`.
-- A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
+- A folium check map per campus (`data/interim/commute_<campus>_map.html`) is written next to the interim data. It is not used by the site.
+- `python -m mtlhousing export` always writes every campus that has results, so exporting after one campus's run never drops the others.
 
 ### Validation against Google Maps (step 1.9)
 Seven hand-picked routes plus two platform walks were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). Details, R5 itineraries and the first run are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
@@ -166,6 +171,17 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - Routes 6 and 6b (platform → building walks) are the calibration of the access adjustments, not independent evidence.
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
+### McGill and Concordia (M3)
+Same settings, feeds and analysis date as UdeM; nothing was re-tuned. There are five transit routes per campus plus one platform walk each. The origins are reused from the UdeM list. The Google times are dated 2026-11-23. Details are in `VALIDATION.md`.
+- **McGill: 4 of 5 transit routes pass.** Route 5 (Fairview-Pointe-Claire REM → McGill) fails: R5 40 min against Google 33. R5 takes the same REM trip. The gap is most likely the wait at the first stop, as R5's p10 of 35 min suggests: R5's median over the 7:30–8:30 window includes that wait, and Google's well-timed trip doesn't.
+- **Concordia: 5 of 5 transit routes pass.** The platform walks aren't counted as passes: each is the calibration, or is judged against its range (below).
+- **Concordia trips from the east.** R5's printed 7:45 itineraries get off at Peel and walk 9 min, instead of riding to Guy-Concordia. But R5's median for those routes is faster than every Peel option R5 lists, so the published numbers use a faster exit, most likely Guy-Concordia. This is explained in `VALIDATION.md`; the cause in R5's itinerary router is unknown.
+- **Mean R5 − Google over the transit routes:** +0.4 min for both campuses.
+- **Access adjustments.** Google's walks start at the station's street entrance and go outdoors, so they are a lower bound. Each is judged against Google **plus 1–2 min** from platform to street.
+  - **McGill: none.** R5's platform walk (5.43 min) falls inside the 5–6 min range.
+  - **Concordia Hall: +1.6 min.** R5 walks 2.87 min against a 4–5 min range; the midpoint is 4.5. That walk route is therefore calibration, not evidence.
+- **Unreachable homes:** 2 (McGill) and 4 (Concordia), all in L'Île-Bizard–Sainte-Geneviève, beyond the 2-hour limit. For Concordia this flags that quartier "many unreachable", and its p90 shows as "more than 2 h".
+
 ## Rent (Phase 2)
 Computed by `python -m mtlhousing rent` (`data/interim/rent_by_quartier.csv`, unrounded) and exported for the site by `python -m mtlhousing rent-export` (`web/public/data/rent.json`, rounded). The export re-checks the crosswalk against CMHC's unit counts first, and refuses to write if anything is off.
 
@@ -175,7 +191,7 @@ Computed by `python -m mtlhousing rent` (`data/interim/rent_by_quartier.csv`, un
 
 Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Montréal asking rent.
 
-**Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
+**Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates in the rent legend, and says there that the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
 
 **Known limitation: old leases.** CMHC's averages include long-time tenants, whose rents likely sit below what a new tenant would pay. So the neighbourhood pattern reflects existing leases, not only new ones:
 - **Old-stock areas likely look cheaper than new listings** (e.g. Plateau-Mont-Royal, Rosemont).
@@ -274,7 +290,8 @@ StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC ha
 These lines are added to the detail line when they apply:
 - **Split neighbourhood:** "Weighted average of CMHC areas {A} (62%) and {B} (38%), by rental units."
 - **Coverage under 100%:** "Covers {X}% of this neighbourhood's rental units; CMHC has no reliable figure for the rest." X is rounded down.
-- **Under every estimate:** "Estimated rent for a new lease, not a real listing. Based on CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
+- **Under every estimate** (owner's wording, M3): "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants." It replaces the earlier line, which also gave the dates.
+- **Data dates, once in the rent legend:** "Data: CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
 - **Room:** "≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2)."
 
 **Shares shown.** The per-area shares are shown **raw**, as in `rent.json`: each CMHC area's share of the neighbourhood's rental units, with no re-weighting for display. When coverage is under 100%, they add up to the coverage, not to 100%.

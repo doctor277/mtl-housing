@@ -3,12 +3,14 @@
 // The map plus its controls and legend. Commute/Rent toggle, size picker (rent only).
 
 import { type CSSProperties, useState } from "react";
+import { type CommuteFile, campusOptions, commuteTarget, windowLabel } from "@/lib/commute";
 import { BINS, NO_DATA_COLOUR, NO_RESIDENTS_COLOUR, OVER_MAX_COLOUR } from "@/lib/legend";
 import {
   type BedroomType,
   binEdges,
   binLegend,
   DEFAULT_SIZE,
+  dataLine,
   formatDollars,
   RENT_FILL_OPACITY,
   RENT_BINS,
@@ -73,12 +75,14 @@ function Toggle<T extends string>({
   );
 }
 
-function CommuteLegend() {
+function CommuteLegend({ commute, campus }: { commute: CommuteFile | null; campus: string }) {
+  const meta = commute?.meta.campuses[campus];
+  if (!commute || !meta) return <div>Loading commutes…</div>;
   return (
     <>
-      <b>Median transit commute to UdeM</b>
+      <b>Median transit commute to {meta.name}</b>
       <br />
-      fastest UdeM building, leaving 7:30–8:30, Tue 2026-12-01
+      {commuteTarget(campus, meta)}, {windowLabel(commute.meta)}
       {BINS.map(([label, colour]) => (
         <div key={label}>
           {swatch(colour)}
@@ -120,7 +124,8 @@ function RentLegend({ rent, size }: { rent: RentFile | null; size: BedroomType }
         {swatch(RENT_NO_DATA_COLOUR)}not enough data
       </div>
       <div style={{ marginTop: 4, fontSize: 11 }}>{roomLine(rent.meta)}</div>
-      <div style={{ marginTop: 4, fontSize: 11 }}>{sourceLine(rent.meta)}</div>
+      <div style={{ marginTop: 4, fontSize: 11 }}>{sourceLine()}</div>
+      <div style={{ marginTop: 4, fontSize: 11 }}>{dataLine(rent.meta)}</div>
     </>
   );
 }
@@ -128,12 +133,27 @@ function RentLegend({ rent, size }: { rent: RentFile | null; size: BedroomType }
 export default function MapView() {
   const [mode, setMode] = useState<Mode>("commute");
   const [size, setSize] = useState<BedroomType>(DEFAULT_SIZE);
+  const [chosenCampus, setCampus] = useState("udem");
+  const [commute, setCommute] = useState<CommuteFile | null>(null);
+  // Fall back to the first campus in commute.json if the chosen one isn't there.
+  const campus =
+    commute && !(chosenCampus in commute.meta.campuses)
+      ? (Object.keys(commute.meta.campuses)[0] ?? chosenCampus)
+      : chosenCampus;
   const [rent, setRent] = useState<RentFile | null>(null);
   const [legendOpen, setLegendOpen] = useState(true); // on a phone the legend hides half the map
 
   return (
     <main style={{ position: "relative", height: "100vh" }}>
-      <QuartierMap mode={mode} size={size} onRentLoaded={setRent} />
+      <QuartierMap
+        mode={mode}
+        size={size}
+        campus={campus}
+        onDataLoaded={(c, r) => {
+          setCommute(c);
+          setRent(r);
+        }}
+      />
       <div
         style={{
           position: "absolute",
@@ -158,6 +178,15 @@ export default function MapView() {
           value={mode}
           onChange={setMode}
         />
+        {mode === "commute" && commute && (
+          // Only campuses present in commute.json are offered.
+          <Toggle
+            label="Campus"
+            options={campusOptions(commute)}
+            value={campus}
+            onChange={setCampus}
+          />
+        )}
         {mode === "rent" && <Toggle label="Size" options={SIZES} value={size} onChange={setSize} />}
         <button
           type="button"
@@ -177,7 +206,11 @@ export default function MapView() {
         </button>
         {legendOpen && (
           <>
-            {mode === "commute" ? <CommuteLegend /> : <RentLegend rent={rent} size={size} />}
+            {mode === "commute" ? (
+              <CommuteLegend commute={commute} campus={campus} />
+            ) : (
+              <RentLegend rent={rent} size={size} />
+            )}
             <div>
               {swatch(NO_RESIDENTS_COLOUR, { outline: "1.5px dashed #333", outlineOffset: -1 })}no
               residents (park)
