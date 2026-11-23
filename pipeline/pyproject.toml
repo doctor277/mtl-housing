@@ -18,7 +18,10 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 # The JVM (r5py) raises and handles access violations itself on Windows; pytest's
 # faulthandler would print each one as a scary "fatal exception" traceback.
-addopts = "-ra -p no:faulthandler"
+addopts = "-ra -p no:faulthandler --strict-markers"
+markers = [
+    "java: starts the JVM (r5py). CI skips these with -m 'not java'; run them locally.",
+]
 
 [tool.ruff]
 line-length = 100
