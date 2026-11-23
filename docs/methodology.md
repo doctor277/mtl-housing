@@ -226,7 +226,7 @@ For each quartier and bedroom type, the first available value in this order is u
 | 4 | Zone, grade d | low reliability (CMHC grade d), zone level |
 | 5 | none | not enough data |
 
-- A grade d value is used only when no a, b or c value exists at either level. That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
+- A grade d value is used only when no a, b or c value exists at either level. For a split quartier, that means no a/b/c values covering at least 80% of its rental units (see below). That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
 - Between two grade d values, the neighbourhood comes first, because it's more local.
 - `**` is never used, at either level.
 
