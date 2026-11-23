@@ -1,6 +1,7 @@
 """Smoke tests: the conda env has the right Java and r5py starts it with our memory cap."""
 
 import jpype
+import pytest
 
 from mtlhousing.r5py_setup import import_r5py
 
@@ -10,6 +11,7 @@ def test_geopandas_imports():
     import pyogrio  # noqa: F401
 
 
+@pytest.mark.java
 def test_r5py_runs_on_jdk_21_or_newer():
     import_r5py()
     if not jpype.isJVMStarted():
@@ -22,6 +24,7 @@ def test_r5py_runs_on_jdk_21_or_newer():
     )
 
 
+@pytest.mark.java
 def test_jvm_max_memory_is_capped():
     import_r5py()
     max_bytes = jpype.java.lang.Runtime.getRuntime().maxMemory()
