@@ -158,7 +158,8 @@ UdeM result (4.0 km/h, adjustments +1.9 / −2.4):
   - A `null` not listed in `over_max` means no data.
   - For UdeM, only L'Île-Bizard–Sainte-Geneviève has a stat over the limit (its p90).
 - **No-residents areas** (Parc Jean-Drapeau, see Geography) are separate features with `no_residents: true`, `part_of` and `dwellings: 0`. They have no entry in `commute.json`.
-- A folium check map (`data/interim/commute_udem_map.html`) is written next to the interim data. It is not used by the site.
+- A folium check map per campus (`data/interim/commute_<campus>_map.html`) is written next to the interim data. It is not used by the site.
+- `python -m mtlhousing export` always writes every campus that has results, so exporting after one campus's run never drops the others.
 
 ### Validation against Google Maps (step 1.9)
 Seven hand-picked routes plus two platform walks were routed with the published settings and compared with Google "Arrive by 8:30" (pass rule |R5 − Google| ≤ max(5 min, 15%)). Details, R5 itineraries and the first run are in [`pipeline/validation/VALIDATION.md`](../pipeline/validation/VALIDATION.md).
@@ -169,6 +170,16 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **The building split is a near-tie.** Google and R5 disagree on the faster building for route 7 by about 1 min.
 - Routes 6 and 6b (platform → building walks) are the calibration of the access adjustments, not independent evidence.
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
+
+### McGill and Concordia (M3)
+Same settings, feeds and analysis date as UdeM; nothing was re-tuned. There are five transit routes per campus plus one platform walk each. The origins are reused from the UdeM list. The Google times are dated 2026-11-23. Details are in `VALIDATION.md`.
+- **McGill: 5 of 6 pass.** Route 5 (Fairview-Pointe-Claire REM → McGill) fails: R5 40 min against Google 33. R5 takes the same REM trip. The gap is the wait at the first stop, which R5's median over the 7:30–8:30 window includes and Google's well-timed trip doesn't. R5's p10 is 35 min.
+- **Concordia: 6 of 6 pass.**
+- **Mean R5 − Google over the transit routes:** +0.4 min for both campuses.
+- **Access adjustments.** Google's walks start at the station's street entrance and go outdoors, so they are a lower bound. Each is judged against Google **plus 1–2 min** from platform to street.
+  - **McGill: none.** R5's platform walk (5.43 min) falls inside the 5–6 min range.
+  - **Concordia Hall: +1.6 min.** R5 walks 2.87 min against a 4–5 min range; the midpoint is 4.5. That walk route is therefore calibration, not evidence.
+- **Unreachable homes:** 2 (McGill) and 4 (Concordia), all in L'Île-Bizard–Sainte-Geneviève, beyond the 2-hour limit. For Concordia this flags that quartier "many unreachable", and its p90 shows as "more than 2 h".
 
 ## Rent (Phase 2)
 Computed by `python -m mtlhousing rent` (`data/interim/rent_by_quartier.csv`, unrounded) and exported for the site by `python -m mtlhousing rent-export` (`web/public/data/rent.json`, rounded). The export re-checks the crosswalk against CMHC's unit counts first, and refuses to write if anything is off.

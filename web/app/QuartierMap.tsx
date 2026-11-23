@@ -65,9 +65,10 @@ function commutePopup(props: QuartierProps, commute: CommuteFile, campus: string
   for (const d of meta.destinations) {
     const b = r.by_destination[d.id];
     const adj = d.access_adjustment_min;
-    const access = adj ? ` (incl. ${adj > 0 ? "+" : "−"}${Math.abs(adj)} min access adjustment)` : "";
+    const signed = `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`;
+    const access = adj ? ` (incl. ${signed} access adjustment)` : "";
     if (!several) {
-      if (access) lines.push(`includes the access adjustment${access}`);
+      if (adj) lines.push(`includes a ${signed} access adjustment (platform to entrance)`);
       continue;
     }
     if (!b) continue;

@@ -18,9 +18,13 @@ def test_implied_adjustment():
 
 
 def test_walk_routes_calibrate_every_adjusted_building():
-    routes = validation.load_routes(validation.routes_csv("udem"))
-    walk_dests = set(routes.loc[routes["kind"] == "walk", "destination_id"])
-    assert walk_dests == set(config.ACCESS_ADJUSTMENT_MIN)
+    # Every access adjustment has a platform -> entrance walk route behind it (a walk route
+    # without an adjustment is fine: McGill's matched R5 within its range).
+    walk_dests = set()
+    for campus in config.CAMPUSES:
+        routes = validation.load_routes(validation.routes_csv(campus))
+        walk_dests |= set(routes.loc[routes["kind"] == "walk", "destination_id"])
+    assert set(config.ACCESS_ADJUSTMENT_MIN) <= walk_dests
 
 
 def test_verdict_edges():

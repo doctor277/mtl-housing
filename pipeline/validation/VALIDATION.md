@@ -202,6 +202,27 @@ Route lists: [`mcgill_routes.csv`](mcgill_routes.csv) and [`concordia_sgw_routes
 
 **R5 side.** The settings stay as tuned on UdeM: walking at 4.0 km/h, the same window and the same feeds. These comparisons are therefore not used to re-tune them. The platform walks show whether either campus needs an access adjustment like UdeM's. If one is added, it is calibrated on that walk, which makes the walk route in-sample.
 
+### Results (2026-11-23, settings frozen at 4.0 km/h)
+
+Travel times were routed by the owner in his own terminal on 2026-11-23: 3,219 origins, complete. The unreachable homes are 2 for McGill and 4 for Concordia, all in L'Île-Bizard–Sainte-Geneviève (as for UdeM). Files: [`mcgill_results.csv`](mcgill_results.csv), [`concordia_sgw_results.csv`](concordia_sgw_results.csv).
+
+| Route | McGill: Google / R5 median (p10) | verdict | Concordia: Google / R5 median (p10) | verdict |
+|---|---|---|---|---|
+| 1 Saint-Denis | 22 / 21.0 (19.0) | pass | 22 / 21.6 (20.6) | pass |
+| 2 Wellington | 21 / 24.0 (23.0) | pass | 17 / 20.6 (18.6) | pass |
+| 3 Fleury Est | 55 / 47.0 (42.0) | pass | 53 / 48.6 (43.6) | pass |
+| 4 | Ontario Est: 30 / 31.0 (30.0) | pass | NDG: 34 / 31.6 (29.6) | pass |
+| 5 Fairview REM | 33 / 40.0 (35.0) | **fail** (+7.0, tolerance 5) | 42 / 47.6 (41.6) | pass |
+| 6 walk | 4 / 5.4 | pass | 3 / 4.5 (with the +1.6 adjustment) | pass |
+
+**McGill 5/6, Concordia 6/6.** Over the five transit routes, the mean R5 − Google difference is +0.4 min for both campuses (UdeM: +0.0).
+
+**McGill route 5 fails, and is explained, not tuned.** At 7:45, R5 takes Google's trip: REM A3-A1 from Fairview-Pointe-Claire to McGill station, then a 4-minute walk. The gap is the wait at the first stop. R5's median runs over departures from 7:30 to 8:30, so it includes waiting for the REM. Google's "arrive by 8:30" trip leaves at the right moment and has no wait. R5's well-timed trip (p10, 35 min) is 2 min from Google. This is the same R5-vs-Google effect described for UdeM (see Method), and it is largest where the first vehicle is infrequent.
+
+**Access adjustments** (`config.ACCESS_ADJUSTMENT_MIN`). Each is judged against Google's walk **plus 1–2 min** from platform to street, as the owner noted:
+- **McGill: none.** Google gives 4 min from the street entrance, so the real walk is 5–6 min. R5 walks 357 m from the platform (STM stop 32) in 5.43 min, inside that range.
+- **Concordia: +1.6 min.** Google gives 3 min / 180 m from the street entrance, outdoors, so the real walk is 4–5 min; the midpoint is 4.5. R5 walks 184 m from the platform (STM stop 34) in 2.87 min. 4.5 − 2.87 = +1.6. This walk route is now in-sample: the adjustment was calibrated on it.
+
 Re-run, after the heavy `travel-times` runs:
 - `python -m mtlhousing validate --campus mcgill`
 - `python -m mtlhousing access-check --campus mcgill`
