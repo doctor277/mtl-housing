@@ -7,7 +7,7 @@ summed over the DA's blocks. Montréal has ~3,200 such DAs, ~35 per quartier.
 
 Steps:
 1. extract_gaf(): filter the Canada-wide CSV to one census division once, cache as parquet
-   (rebuilt only when the source zip's SHA-256 changes).
+   (rebuilt only when the source zip's SHA-256 or the extracted columns change).
 2. da_points(): one weighted point per DA.
 3. build_sample_points(): assign points to quartiers, add a fallback point for empty
    quartiers, and report per quartier (point count, low_sample, dwelling cross-check).

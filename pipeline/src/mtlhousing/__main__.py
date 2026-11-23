@@ -219,11 +219,12 @@ def step_crosswalk_check() -> None:
     cmhc = cmhc_rent.load(config.CMHC_RENT_CSV, config.CMHC_RMS_PERIOD)
     universe = cmhc_universe.load(config.CMHC_UNIVERSE_CSV, config.CMHC_RMS_PERIOD)
     quartiers = boundaries.load_quartiers()
-    points = sample_points.da_points(sample_points.extract_gaf())
-    homes = crosswalk.tract_homes(points, quartiers)
+    gaf = sample_points.extract_gaf()
+    homes = crosswalk.tract_homes(sample_points.da_points(gaf), quartiers)
+    census_tracts = set(gaf["ct_name"].dropna())
 
     crosswalk.check(qm, zm, crosswalk.quartier_table(export.NEIGHBOURHOODS_GEOJSON), cmhc)
-    report = crosswalk.verify(qm, zm, tm, universe, homes)
+    report = crosswalk.verify(qm, zm, tm, universe, homes, census_tracts)
     q = report["quartiers"]
     q.to_csv(config.CROSSWALK_CHECK_CSV, index=False, encoding="utf-8", lineterminator="\n")
     for name, key, col in (
@@ -248,7 +249,18 @@ def step_crosswalk_check() -> None:
             f"folded: quartier {r['quartier_id']}, {r['raw_share']:.1%} of its rental units "
             f"in {r['cmhc_neighbourhood']}"
         )
+    un = report["unallocated"]
+    print(
+        f"rental units in tracts with no 2021 census home (given to no quartier): "
+        f"{int(un['units'].sum())} = {report['unallocated_share']:.3%} {un['ct_name'].tolist()}"
+    )
+    print(
+        "homes in tracts with no CMHC rental units: "
+        f"{report['homes_without_units_share']:.1%} of homes in quartiers"
+    )
     bad = crosswalk.problems(report)
+    for _, r in bounds[~bounds["inside"]].iterrows():
+        bad.append(f"zone {r['cmhc_zone']}, {r['unit']}: rent outside its neighbourhoods' range")
     if bad:
         raise SystemExit("crosswalk problems:\n  " + "\n  ".join(bad))
     print("OK: every 'verified' row is confirmed by the unit counts")

@@ -1,11 +1,12 @@
 """Crosswalk: city quartier -> CMHC neighbourhood(s) -> CMHC zone (Phase 2).
 
 CMHC neighbourhoods and zones are groupings of census tracts, but the HMIP rent exports
-carry names only. Three hand-made CSVs in pipeline/crosswalk/ link them:
+carry names only. Three committed CSVs in pipeline/crosswalk/ link them:
 
 census_tract_to_cmhc_neighbourhood.csv
     ct_name, cmhc_neighbourhood. Every census tract of Montréal island that has CMHC rental
-    units, with the CMHC neighbourhood it belongs to.
+    units, with the CMHC neighbourhood it belongs to. How this file was first built was
+    not recorded; its evidence is the sum check below.
 quartier_to_cmhc_neighbourhood.csv
     quartier_id, quartier_name, cmhc_neighbourhood, share, confidence, note. One row per
     (quartier, neighbourhood); a quartier spanning several neighbourhoods has several rows
@@ -30,6 +31,10 @@ How `verify` checks the maps against the rental universe (unit counts, October 2
    CROSSWALK_FOLD_BELOW is folded into the rest. The committed shares must match these to
    3 decimals, and a row is verified when its neighbourhood is confirmed. A quartier with
    no tract with rental units can't be checked this way and must not say "verified".
+   Every mapped tract must exist in the census file (same names on both sides). A tract
+   missing from CMHC's export has no rental units (the export lists no tract with 0).
+   Units in mapped tracts with no census home can't go to any quartier; their share of
+   all mapped units must stay under CROSSWALK_MAX_UNALLOCATED.
 """
 
 from __future__ import annotations
@@ -241,15 +246,33 @@ def verify(
     tract_map: pd.DataFrame,
     universe: dict[str, pd.DataFrame],
     homes: pd.DataFrame,
+    census_tracts: set[str],
     fold_below: float = config.CROSSWALK_FOLD_BELOW,
-) -> dict[str, pd.DataFrame]:
-    """Check the three maps against the unit counts (module docstring). Returns
-    {"quartiers", "zones", "neighbourhood_sums", "zone_sums", "folded"}; the first two
-    carry a `problem` column (None when the row is fine). See `problems`."""
+) -> dict:
+    """Check the three maps against the unit counts (module docstring). `census_tracts`
+    is every tract name in the census file for the island, with or without homes.
+
+    Returns {"quartiers", "zones", "neighbourhood_sums", "zone_sums", "folded",
+    "unallocated", "unallocated_share", "homes_without_units_share"}. "quartiers" and
+    "zones" carry a `problem` column (None when the row is fine). "unallocated" lists
+    mapped tracts with rental units but no census home in any quartier (built after
+    2021), whose units no quartier gets. See `problems`."""
     t = universe["tract"]
     missing = sorted(set(tract_map["ct_name"]) - set(t["area"]))
     if missing:
         raise ValueError(f"mapped tracts not in the universe export: {missing}")
+    # CMHC and StatCan must name tracts the same way; a renamed or split tract would
+    # otherwise drop out of the shares silently.
+    unknown = sorted(set(tract_map["ct_name"]) - census_tracts)
+    if unknown:
+        raise ValueError(f"mapped tracts not in the census file: {unknown}")
+    total = t[t["unit"] == "total"].set_index("area")["units"]
+    mapped_units = tract_map.assign(units=tract_map["ct_name"].map(total))
+    with_homes = set(homes.loc[homes["homes"] > 0, "ct_name"])
+    unallocated = mapped_units[
+        (mapped_units["units"] > 0) & ~mapped_units["ct_name"].isin(with_homes)
+    ].reset_index(drop=True)
+    h = homes[homes["homes"] > 0]
     tracts = t.merge(tract_map, left_on="area", right_on="ct_name")
     nb_sums = sum_check(tracts, universe["neighbourhood"], "cmhc_neighbourhood")
     nb_ok = confirmed(nb_sums, "cmhc_neighbourhood")
@@ -292,13 +315,26 @@ def verify(
         "neighbourhood_sums": nb_sums,
         "zone_sums": z_sums,
         "folded": derived[derived["folded"]].reset_index(drop=True),
+        "unallocated": unallocated,
+        "unallocated_share": float(unallocated["units"].sum() / mapped_units["units"].sum()),
+        # Homes in tracts the CMHC export doesn't list (it lists no tract with 0 units):
+        # treated as having no purpose-built rental units.
+        "homes_without_units_share": float(
+            h.loc[~h["ct_name"].isin(total.index), "homes"].sum() / h["homes"].sum()
+        ),
     }
 
 
-def problems(report: dict[str, pd.DataFrame]) -> list[str]:
+def problems(report: dict, max_unallocated: float = config.CROSSWALK_MAX_UNALLOCATED) -> list[str]:
     out = []
     for _, r in report["quartiers"].dropna(subset=["problem"]).iterrows():
         out.append(f"quartier {r['quartier_id']} -> {r['cmhc_neighbourhood']}: {r['problem']}")
     for _, r in report["zones"].dropna(subset=["problem"]).iterrows():
         out.append(f"{r['cmhc_neighbourhood']} -> zone {r['cmhc_zone']}: {r['problem']}")
+    if report["unallocated_share"] > max_unallocated:
+        tracts = report["unallocated"]["ct_name"].tolist()
+        out.append(
+            f"{report['unallocated_share']:.2%} of mapped rental units are in tracts with no "
+            f"census home (limit {max_unallocated:.2%}): {tracts}"
+        )
     return out

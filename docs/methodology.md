@@ -207,7 +207,9 @@ A row is marked **verified** only when this check confirms it. 94 of the 95 rows
 | Côte-Saint-Luc | Côte-Saint-Luc/Montreal West 0.866, Hampstead/Côte-Saint-Luc 0.134 |
 
 **Limits.**
-- The tract → neighbourhood file was first built by hand. Its evidence is that the counts add up exactly. A tract with no rental units, or with every count suppressed, doesn't change any sum, so its assignment can't be confirmed. Those tracts carry no rental units, so they don't change any share.
+- How the tract → neighbourhood file was first built wasn't recorded. Its evidence is that the counts add up exactly. A tract that adds nothing to a sum (a suppressed count) can't be confirmed by it. No tract in the export has a suppressed **total**, and the check refuses to share out a tract that has one.
+- CMHC's tract export lists no tract with 0 units, so a census tract missing from it is taken to have **no purpose-built rental units**. That covers 1.7% of the homes in the quartiers. Every tract in the crosswalk exists in the census file under the same name, which the check enforces.
+- Three mapped tracts (0014.02, 0091.00, 0189.00) had no occupied home in the 2021 census, probably because they were built since. Their 89 rental units (0.02% of the island's) can't be given to any quartier. The check fails if such units ever exceed 0.1% (`config.CROSSWALK_MAX_UNALLOCATED`).
 - Rental units are spread over a tract's homes evenly. A tract on a quartier edge whose rental buildings sit on one side will be divided slightly wrong. This only affects the 4 split quartiers and the 2 folded slivers.
 - The tract units are CMHC's October 2025 counts, and the homes are from the 2021 census.
 

@@ -53,6 +53,10 @@ TRACT_TO_CMHC_CSV = CROSSWALK_DIR / "census_tract_to_cmhc_neighbourhood.csv"
 # A quartier's part in a second neighbourhood holding less than this share of its rental
 # units is folded into the rest instead of kept as a split.
 CROSSWALK_FOLD_BELOW = 0.05
+# Rental units in mapped tracts that had no occupied dwelling in the 2021 census (built
+# since) can't be given to any quartier. Above this share of all mapped units, the
+# crosswalk check fails instead of quietly dropping them.
+CROSSWALK_MAX_UNALLOCATED = 0.001
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 

@@ -122,10 +122,13 @@ GOOD_Q = "01,A,N1,1,verified,\n02,B,N1,0.6,verified,\n02,B,N2,0.4,verified,\n03,
 GOOD_Z = "N1,Z,verified,\nN2,Z,verified,\n"
 
 
-def _verify(tmp_path, q=GOOD_Q, z=GOOD_Z, universe=UNIVERSE, **kw):
+CENSUS_TRACTS = {"0001.00", "0002.00", "0003.00", "0009.00"}
+
+
+def _verify(tmp_path, q=GOOD_Q, z=GOOD_Z, universe=UNIVERSE, homes=HOMES, **kw):
     qm = crosswalk.load_quartier_map(_csv(tmp_path, "q.csv", Q_HEAD + q))
     zm = crosswalk.load_zone_map(_csv(tmp_path, "z.csv", Z_HEAD + z))
-    return crosswalk.verify(qm, zm, TRACT_MAP, universe, HOMES, **kw)
+    return crosswalk.verify(qm, zm, TRACT_MAP, universe, homes, CENSUS_TRACTS, **kw)
 
 
 def test_sum_check_statuses():
@@ -141,6 +144,10 @@ def test_sum_check_statuses():
     assert s.to_dict() == {"A": "match", "B": "match", "C": "unchecked"}
     with pytest.raises(ValueError, match="not in the universe export"):
         crosswalk.sum_check(children, parents[parents["area"] != "C"], "p")
+    # A suppressed parent count can't be checked either way.
+    parents = _units({"A": {"total": None}, "B": {"total": 5}, "C": {"total": 9}})
+    s = crosswalk.sum_check(children, parents, "p").set_index("p")["status"]
+    assert s["A"] == "unchecked"
 
 
 def test_confirmed_needs_a_matching_total_and_no_contradiction():
@@ -225,6 +232,30 @@ def test_verify_flags_tract_and_zone_sums_that_disagree(tmp_path):
     assert "N1 -> zone Z: says verified, the counts don't confirm it" in bad
 
 
+def test_verify_refuses_a_tract_the_census_doesnt_know(tmp_path):
+    qm = crosswalk.load_quartier_map(_csv(tmp_path, "q.csv", Q_HEAD + GOOD_Q))
+    zm = crosswalk.load_zone_map(_csv(tmp_path, "z.csv", Z_HEAD + GOOD_Z))
+    with pytest.raises(ValueError, match=r"not in the census file: \['0003.00'\]"):
+        crosswalk.verify(qm, zm, TRACT_MAP, UNIVERSE, HOMES, CENSUS_TRACTS - {"0003.00"})
+
+
+def test_verify_reports_units_no_quartier_gets(tmp_path):
+    r = _verify(tmp_path)
+    assert r["unallocated"].empty and r["unallocated_share"] == 0
+    # homes in 0009.00 (absent from the export) out of all homes in quartiers
+    assert r["homes_without_units_share"] == pytest.approx(110 / 710)
+
+    # Tract 0003.00 loses its homes (e.g. built after the census): its 40 units go nowhere.
+    homes = HOMES[HOMES["ct_name"] != "0003.00"]
+    q = "01,A,N1,1,verified,\n02,B,N1,1,verified,\n03,C,N1,1,high,\n"
+    r = _verify(tmp_path, q=q, homes=homes)
+    assert r["unallocated"]["ct_name"].tolist() == ["0003.00"]
+    assert r["unallocated_share"] == pytest.approx(40 / 220)
+    assert crosswalk.problems(r, max_unallocated=0.5) == []
+    bad = crosswalk.problems(r, max_unallocated=0.1)
+    assert len(bad) == 1 and "no census home" in bad[0]
+
+
 def test_load_tract_map_refuses(tmp_path):
     with pytest.raises(ValueError, match="not like"):
         crosswalk.load_tract_map(_csv(tmp_path, "t.csv", "ct_name,cmhc_neighbourhood\n12.01,N\n"))
@@ -260,10 +291,10 @@ def test_committed_crosswalk_is_confirmed_by_the_unit_counts():
     crosswalk.check(qm, zm, crosswalk.quartier_table(export.NEIGHBOURHOODS_GEOJSON), cmhc)
     assert crosswalk.zone_bounds(zm, cmhc)["inside"].all()
 
-    points = sample_points.da_points(sample_points.extract_gaf())
-    homes = crosswalk.tract_homes(points, boundaries.load_quartiers())
-    report = crosswalk.verify(qm, zm, tm, universe, homes)
-    assert crosswalk.problems(report) == []
+    gaf = sample_points.extract_gaf()
+    homes = crosswalk.tract_homes(sample_points.da_points(gaf), boundaries.load_quartiers())
+    report = crosswalk.verify(qm, zm, tm, universe, homes, set(gaf["ct_name"].dropna()))
+    assert crosswalk.problems(report) == []  # includes the unallocated-units limit
     # Every neighbourhood and zone used is confirmed, not just consistent.
     nb = crosswalk.confirmed(report["neighbourhood_sums"], "cmhc_neighbourhood")
     assert nb == set(tm["cmhc_neighbourhood"]) == set(zm["cmhc_neighbourhood"])
