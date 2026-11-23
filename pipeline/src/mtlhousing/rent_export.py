@@ -92,7 +92,15 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
     """Short notes on the crosswalk for the sources & limitations page (M5): links the
     unit counts can't confirm, folded slivers, and two island-wide facts."""
     notes = []
+    # Quartiers whose census tracts hold no CMHC rental units: why the counts can't help.
+    checked = set(report["quartiers"].dropna(subset=["n_tracts"])["quartier_id"])
     for r in quartier_map[quartier_map["confidence"] != "verified"].itertuples():
+        text = (
+            f"Linked to CMHC area {r.cmhc_neighbourhood} by name. CMHC's unit counts "
+            "can't confirm this link"
+        )
+        if r.quartier_id not in checked:
+            text += ": none of its census tracts has CMHC rental units"
         notes.append(
             {
                 "quartier_id": r.quartier_id,
@@ -100,17 +108,15 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
                 "kind": "unconfirmed_link",
                 "cmhc_area": r.cmhc_neighbourhood,
                 "confidence": r.confidence,
-                "text": (
-                    f"Linked to CMHC area {r.cmhc_neighbourhood} by name. CMHC's unit "
-                    "counts can't confirm this link."
-                ),
-                "detail": r.note,
+                "text": text + ".",
             }
         )
     names = quartier_map.drop_duplicates("quartier_id").set_index("quartier_id")
-    main = quartier_map.sort_values("share").drop_duplicates("quartier_id", keep="last")
-    main = main.set_index("quartier_id")["cmhc_neighbourhood"]
+    # Folded units are re-weighted over every kept part (crosswalk.derive_shares).
+    kept = quartier_map.groupby("quartier_id")["cmhc_neighbourhood"].agg(list)
     for r in report["folded"].itertuples():
+        parts = kept[r.quartier_id]
+        into = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
         notes.append(
             {
                 "quartier_id": r.quartier_id,
@@ -118,10 +124,10 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
                 "kind": "folded",
                 "cmhc_area": r.cmhc_neighbourhood,
                 "share": round(float(r.raw_share), SHARE_DECIMALS),
+                "counted_with": parts,
                 "text": (
                     f"{r.raw_share:.1%} of its rental units are in CMHC area "
-                    f"{r.cmhc_neighbourhood}; they are counted with "
-                    f"{main[r.quartier_id]} instead."
+                    f"{r.cmhc_neighbourhood}; they are counted with {into} instead."
                 ),
             }
         )
@@ -163,7 +169,8 @@ def sources(statcan_quarter: str) -> list[str]:
         "of this product.",
         "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). "
         "This does not constitute an endorsement by Statistics Canada of this product.",
-        "Contains data from the Ville de Montréal open data portal, CC BY 4.0.",
+        # Exact wording from DATA_SOURCES.md, "Attribution text to show on the site".
+        "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
     ]
 
 

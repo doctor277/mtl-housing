@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-22T23:56:45",
+  "generated_at": "2026-11-23T00:01:32",
   "currency": "CAD",
   "per": "month",
   "rounding": {
@@ -80,8 +80,7 @@
     "kind": "unconfirmed_link",
     "cmhc_area": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
     "confidence": "high",
-    "text": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link.",
-    "detail": "its census tract has no CMHC rental units, so the counts can't confirm it; matched by name, reviewed by the owner"
+    "text": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link: none of its census tracts has CMHC rental units."
    },
    {
     "quartier_id": "58",
@@ -89,6 +88,9 @@
     "kind": "folded",
     "cmhc_area": "Senneville/Roxboro-Pierrefonds",
     "share": 0.006,
+    "counted_with": [
+     "Saint-Laurent"
+    ],
     "text": "0.6% of its rental units are in CMHC area Senneville/Roxboro-Pierrefonds; they are counted with Saint-Laurent instead."
    },
    {
@@ -97,6 +99,9 @@
     "kind": "folded",
     "cmhc_area": "Mercier",
     "share": 0.018,
+    "counted_with": [
+     "Saint-Léonard"
+    ],
     "text": "1.8% of its rental units are in CMHC area Mercier; they are counted with Saint-Léonard instead."
    },
    {
@@ -116,7 +121,7 @@
    "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
    "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product.",
    "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product.",
-   "Contains data from the Ville de Montréal open data portal, CC BY 4.0."
+   "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0."
   ]
  },
  "results": {

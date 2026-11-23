@@ -83,8 +83,13 @@ ASKING = pd.DataFrame(
     index=pd.Index([*rent.UNITS, "room"], name="unit"),
 )
 REPORT = {
+    # crosswalk.verify: 03 has no tract with rental units (n_tracts NaN)
+    "quartiers": pd.DataFrame(
+        {"quartier_id": ["01", "02", "02", "03"], "n_tracts": [2, 1, 1, NAN]}
+    ),
+    # a sliver folded into a split quartier: re-weighted over both kept parts
     "folded": pd.DataFrame(
-        {"quartier_id": ["01"], "cmhc_neighbourhood": ["N9"], "raw_share": [0.012]}
+        {"quartier_id": ["02"], "cmhc_neighbourhood": ["N9"], "raw_share": [0.012]}
     ),
     "homes_without_units_share": 0.017,
     "unallocated": pd.DataFrame({"ct_name": ["0001.00"], "units": [89]}),
@@ -147,11 +152,30 @@ def test_meta_carries_sources_grade_words_and_crosswalk_notes():
     assert m["montreal"]["1br"] == {"cmhc_average": 1000.0, "statcan_asking": 1500.0}
     assert any("Canada Mortgage and Housing Corporation" in s for s in m["sources"])
     notes = {(n["kind"], n["quartier_id"]): n for n in m["crosswalk_notes"]}
-    assert notes[("unconfirmed_link", "03")]["cmhc_area"] == "N3"
-    assert notes[("unconfirmed_link", "03")]["detail"] == "matched by name"
-    folded = notes[("folded", "01")]
-    assert folded["share"] == 0.012 and "counted with N1 instead" in folded["text"]
+    link = notes[("unconfirmed_link", "03")]
+    assert link["cmhc_area"] == "N3" and "detail" not in link  # no internal CSV note
+    assert link["text"].endswith("none of its census tracts has CMHC rental units.")
+    folded = notes[("folded", "02")]
+    assert folded["share"] == 0.012 and folded["counted_with"] == ["N1", "N2"]
+    assert "counted with N1 and N2 instead" in folded["text"]
     assert ("homes_without_units", None) in notes and ("unallocated_units", None) in notes
+    assert "Ville de Montréal open data portal, licensed under CC BY 4.0." in m["sources"][-1]
+
+
+@pytest.mark.parametrize("grade, key", [("a", "zone"), ("d", "zone_low")])
+def test_zone_values_list_the_zone_once_with_the_parts_shares_summed(grade, key):
+    # N1 and N2 suppressed, both in zone Z -> quartier 02 uses Z for its whole 100%
+    cmhc = dict(
+        CMHC,
+        neighbourhood=_table({"N1": (NAN, None), "N2": (NAN, None), "N3": (900, "d")}),
+        zone=_table({"Z": (1050, grade)}),
+    )
+    est = rent.estimate_all(QM, ZM, cmhc, ASKING)
+    out = rent_export.build_rent(est, QM, REPORT, CMHC["cma"], ASKING, "2026 Q2", "2026-09-09")
+    e = out["results"]["02"]["2br"]
+    assert e["label"] == key and e["grade"] == grade and e["coverage_pct"] is None
+    assert e["cmhc_areas"] == [{"type": "zone", "name": "Z", "share": 1.0, "grade": grade}]
+    assert e["estimate"] == round_rent(1.05 * 1500)
 
 
 @pytest.mark.parametrize(
