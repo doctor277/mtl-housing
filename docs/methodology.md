@@ -177,6 +177,12 @@ Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Mon
 
 **Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
 
+**Known limitation: old leases.** CMHC's averages include long-time tenants, whose rents likely sit below what a new tenant would pay. So the neighbourhood pattern reflects existing leases, not only new ones:
+- **Old-stock areas likely look cheaper than new listings** (e.g. Plateau-Mont-Royal, Rosemont).
+- **New-build areas, with more recent leases, likely look pricier** (e.g. the West Island).
+
+This hasn't been measured yet, so how large the effect is in each area is unknown. Scaling to StatCan's asking rents fixes the citywide level, not this pattern. The site will say so on its sources & limitations page (M5). A possible correction, using CMHC rents of vacant units, is the optional M2.7 in `docs/ROADMAP.md`.
+
 Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
 
 ### From quartiers to CMHC areas: the crosswalk
