@@ -59,15 +59,15 @@ export const RENT_BINS: [pct: string, colour: string][] = [
   ["> 130%", "#6a2d05"],
 ];
 export const RENT_NO_DATA_COLOUR = "#6e6e6e"; // "not enough data", darker than "no residents"
+export const RENT_FILL_OPACITY = 0.8; // map fill; the legend swatches use the same
 
-/** Round half up to the nearest `step` dollars, as the pipeline does. */
-export function roundToStep(x: number, step: number): number {
-  return Math.floor(x / step + 0.5) * step;
-}
-
-/** Class edges in dollars for one size, rounded like the rents themselves. */
+/** Class edges in dollars for one size: the smallest multiple of `step` at or above
+ * pct × level. Rents are multiples of `step`, so "rent ≥ edge" means exactly "rent ≥ pct"
+ * and no rent is coloured in a class whose % it doesn't meet. (Rounding the edge to the
+ * nearest step instead could put it below the %: 85% of $1,480 = $1,258 → $1,250 = 84.5%.)
+ * The epsilon absorbs float noise such as 1.3 × 1250 = 1625.0000000000002. */
 export function binEdges(montrealAsking: number, step: number): number[] {
-  return BIN_PCT.map((p) => roundToStep(p * montrealAsking, step));
+  return BIN_PCT.map((p) => Math.ceil((p * montrealAsking) / step - 1e-9) * step);
 }
 
 /** Index into RENT_BINS: the number of edges at or below the (rounded) estimate. */
@@ -161,8 +161,9 @@ export function extraLines(e: RentEntry, meta: RentMeta): string[] {
   const partial = e.coverage_pct !== null;
   const kind = areas[0]?.type === "zone" ? "CMHC zones" : "CMHC areas";
   if (areas.length > 1) {
+    const rated = (g: string) => (g === "d" ? `rated "${words[g]}"` : `rated ${words[g]}`);
     const parts = areas.map(
-      (a) => `${a.name} (${partial ? oneDecimalPct(a.share) : wholePct(a.share)}, rated ${words[a.grade]})`,
+      (a) => `${a.name} (${partial ? oneDecimalPct(a.share) : wholePct(a.share)}, ${rated(a.grade)})`,
     );
     lines.push(`Weighted average of ${kind} ${joinNames(parts)}, by rental units.`);
   }

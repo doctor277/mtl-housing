@@ -14,23 +14,22 @@ import {
   type RentMeta,
   rentFeatureProps,
   roomLine,
-  roundToStep,
   sourceLine,
 } from "@/lib/rent";
 
-// Clearly fake fixtures (CLAUDE.md): areas N1/N2, zone Z.
+// Clearly fake fixtures (CLAUDE.md): areas N1/N2, zone Z, round-number levels and rents.
 const META: RentMeta = {
   rounding: { step: 25, mode: "half_up" },
   shown_bedroom_types: ["studio", "1br", "2br"],
   cmhc: { period: "October 2025" },
   statcan: { quarter: "2026 Q2" },
   montreal: {
-    studio: { cmhc_average: 1000, statcan_asking: 1250 },
-    "1br": { cmhc_average: 1000, statcan_asking: 1480 },
-    "2br": { cmhc_average: 1000, statcan_asking: 1820 },
-    "3br_plus": { cmhc_average: 1000, statcan_asking: 2260 },
+    studio: { cmhc_average: 900, statcan_asking: 1000 },
+    "1br": { cmhc_average: 900, statcan_asking: 1200 },
+    "2br": { cmhc_average: 900, statcan_asking: 1500 },
+    "3br_plus": { cmhc_average: 900, statcan_asking: 2000 },
   },
-  room: { estimate: 725 },
+  room: { estimate: 500 },
   grade_words: { a: "excellent", b: "very good", c: "good", d: "use with caution" },
 };
 
@@ -43,37 +42,44 @@ const entry = (e: Partial<RentEntry>): RentEntry => ({
   ...e,
 });
 
-describe("rounding and classes", () => {
-  it("rounds half up to $25 like the pipeline", () => {
-    expect(roundToStep(1187.5, 25)).toBe(1200); // a tie goes up
-    expect(roundToStep(1612.49, 25)).toBe(1600);
-    expect(roundToStep(1258, 25)).toBe(1250);
+describe("classes", () => {
+  it("puts each edge at the first $25 step at or above its % of the Montréal level", () => {
+    expect(binEdges(1000, 25)).toEqual([850, 950, 1050, 1150, 1300]); // exact multiples stay
+    expect(binEdges(1250, 25)).toEqual([1075, 1200, 1325, 1450, 1625]); // 1.3 × 1250 float noise
+    // Regression (review): rounding to the nearest step put the 85% edge of 1480 at
+    // 1250 = 84.5% and the 95% edge at 1400 = 94.6%; rounding up keeps them at or above.
+    expect(binEdges(1480, 25)).toEqual([1275, 1425, 1575, 1725, 1925]);
   });
 
-  it("puts class edges at % of the Montréal level, rounded to $25", () => {
-    // Same numbers as the pipeline-side check for 2026 Q2.
-    expect(binEdges(1250, 25)).toEqual([1075, 1200, 1325, 1450, 1625]);
-    expect(binEdges(1480, 25)).toEqual([1250, 1400, 1550, 1700, 1925]);
-    expect(binEdges(1820, 25)).toEqual([1550, 1725, 1900, 2100, 2375]);
+  it("never colours a rent in a class whose % it doesn't meet", () => {
+    const pct = [0, 0.85, 0.95, 1.05, 1.15, 1.3, Infinity];
+    for (const level of [1000, 1250, 1480, 1820, 2260, 1337]) {
+      const edges = binEdges(level, 25);
+      for (let rent = 500; rent <= 4000; rent += 25) {
+        const i = binIndex(rent, edges);
+        expect(rent / level).toBeGreaterThanOrEqual(pct[i]);
+        expect(rent / level).toBeLessThan(pct[i + 1]);
+      }
+    }
   });
 
-  it("assigns a rounded rent to a class: an edge belongs to the class above", () => {
-    const edges = binEdges(1480, 25);
-    expect(binIndex(1225, edges)).toBe(0);
-    expect(binIndex(1250, edges)).toBe(1);
-    expect(binIndex(1475, edges)).toBe(2);
-    expect(binIndex(1925, edges)).toBe(5);
+  it("assigns a rent equal to an edge to the class above", () => {
+    const edges = binEdges(1000, 25);
+    expect(binIndex(825, edges)).toBe(0);
+    expect(binIndex(850, edges)).toBe(1);
+    expect(binIndex(1000, edges)).toBe(2);
+    expect(binIndex(1300, edges)).toBe(5);
     expect(RENT_BINS).toHaveLength(edges.length + 1);
   });
 
   it("writes the legend in dollars with no gaps between classes", () => {
-    expect(binLegend(binEdges(1480, 25), 25)).toEqual([
-      "under $1,250",
-      "$1,250–$1,375",
-      "$1,400–$1,525",
-      "$1,550–$1,675",
-      "$1,700–$1,900",
-      "$1,925 or more",
+    expect(binLegend(binEdges(1000, 25), 25)).toEqual([
+      "under $850",
+      "$850–$925",
+      "$950–$1,025",
+      "$1,050–$1,125",
+      "$1,150–$1,275",
+      "$1,300 or more",
     ]);
     expect(formatRent(1475)).toBe("≈ $1,475");
   });
@@ -122,7 +128,7 @@ describe("texts", () => {
       'Based on CMHC\'s average rents in CMHC areas N1 and N2; CMHC rates at least one of them "use with caution".',
     );
     expect(extraLines(e, META)).toEqual([
-      "Weighted average of CMHC areas N1 (62%, rated good) and N2 (38%, rated use with caution), by rental units.",
+      'Weighted average of CMHC areas N1 (62%, rated good) and N2 (38%, rated "use with caution"), by rental units.',
     ]);
   });
 
@@ -149,7 +155,7 @@ describe("texts", () => {
       "Estimated rent for a new lease, not a real listing. Based on CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2).",
     );
     expect(roomLine(META)).toBe(
-      "Room: ≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2).",
+      "Room: ≈ $500 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2).",
     );
   });
 });
@@ -166,10 +172,12 @@ describe("map properties", () => {
       },
       META,
     );
+    // studio 1000 at level 1000: edges 850/950/1050 → class 2; 3½ 1475 at level 1200:
+    // edges 1025/1150/1275/1400/1575 → class 4
     expect(props).toEqual({
-      rent_bin_studio: 0,
+      rent_bin_studio: 2,
       rent_low_studio: false,
-      rent_bin_1br: 2,
+      rent_bin_1br: 4,
       rent_low_1br: true,
       rent_bin_2br: -1,
       rent_low_2br: false,
@@ -193,6 +201,7 @@ describe("the committed rent.json", () => {
     }
   });
 
+  // Counts cross-checked in exact (fraction) arithmetic outside this code.
   it("spreads over the classes as reported in the PR (studio > 130% is empty)", () => {
     const counts = (size: "studio" | "1br" | "2br") => {
       const edges = binEdges(file.meta.montreal[size].statcan_asking, file.meta.rounding.step);
@@ -204,7 +213,7 @@ describe("the committed rent.json", () => {
       return c;
     };
     expect(counts("studio")).toEqual([37, 22, 16, 8, 8, 0]);
-    expect(counts("1br")).toEqual([14, 25, 23, 9, 10, 4]);
-    expect(counts("2br")).toEqual([9, 13, 38, 17, 3, 5]);
+    expect(counts("1br")).toEqual([14, 27, 21, 15, 4, 4]);
+    expect(counts("2br")).toEqual([9, 13, 48, 7, 3, 5]);
   });
 });

@@ -5,7 +5,7 @@
 // ranking (those come in M4).
 
 import { useEffect, useRef, useState } from "react";
-import type { ExpressionSpecification, Map as MlMap } from "maplibre-gl";
+import type { ExpressionSpecification, Map as MlMap, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { type CommuteFile, featureProps, formatTime } from "@/lib/commute";
 import {
@@ -22,6 +22,7 @@ import {
   extraLines,
   formatRent,
   RENT_BINS,
+  RENT_FILL_OPACITY,
   RENT_NO_DATA_COLOUR,
   type RentFile,
   rentFeatureProps,
@@ -152,6 +153,7 @@ export default function QuartierMap({
 }) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
+  const popupRef = useRef<Popup | null>(null); // closed when the mode or size changes
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // The click handler is registered once; it reads the current choice from here.
@@ -237,7 +239,7 @@ export default function QuartierMap({
           type: "fill",
           source: "quartiers",
           layout: { visibility: m === "rent" ? "visible" : "none" },
-          paint: { "fill-color": rentColour(s), "fill-opacity": 0.8 },
+          paint: { "fill-color": rentColour(s), "fill-opacity": RENT_FILL_OPACITY },
         });
         map.addLayer({
           id: "rent-low-hatch",
@@ -276,7 +278,7 @@ export default function QuartierMap({
             const { mode: cm, size: cs } = view.current;
             // Narrow enough on a phone for MapLibre's anchoring to keep it on screen
             // (a real mobile detail panel comes in M4).
-            new maplibregl.Popup({ maxWidth: "min(360px, 70vw)" })
+            popupRef.current = new maplibregl.Popup({ maxWidth: "min(360px, 70vw)" })
               .setLngLat(e.lngLat)
               .setHTML(popupHtml(f.properties as QuartierProps, cm, cs, commute, rent, names))
               .addTo(map);
@@ -295,6 +297,8 @@ export default function QuartierMap({
     return () => {
       cancelled = true;
       mapRef.current = null;
+      popupRef.current = null;
+      setReady(false); // a remount must wait for the new map's layers
       map?.remove();
     };
     // Load once; mode and size changes are applied by the effect below.
@@ -310,6 +314,9 @@ export default function QuartierMap({
     map.setLayoutProperty("rent-low-hatch", "visibility", rentVis);
     map.setPaintProperty("rent-fill", "fill-color", rentColour(size));
     map.setFilter("rent-low-hatch", lowFilter(size));
+    // An open popup describes the previous mode or size: close it.
+    popupRef.current?.remove();
+    popupRef.current = null;
   }, [ready, mode, size]);
 
   return (

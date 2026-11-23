@@ -9,7 +9,8 @@ import {
   binEdges,
   binLegend,
   DEFAULT_SIZE,
-  formatRent,
+  formatDollars,
+  RENT_FILL_OPACITY,
   RENT_BINS,
   RENT_NO_DATA_COLOUR,
   type RentFile,
@@ -104,10 +105,11 @@ function RentLegend({ rent, size }: { rent: RentFile | null; size: BedroomType }
     <>
       <b>Estimated rent, {label}</b>
       <br />
-      compared with the Montréal asking rent ({formatRent(level)})
+      {/* A published StatCan figure, shown as is (no "≈"). */}
+      compared with the Montréal asking rent (${formatDollars(level)}, Statistics Canada)
       {RENT_BINS.map(([pct, colour], i) => (
         <div key={pct}>
-          {swatch(colour)}
+          {swatch(colour, { opacity: RENT_FILL_OPACITY })}
           {pct}: {ranges[i]}
         </div>
       ))}

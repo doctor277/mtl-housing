@@ -272,7 +272,7 @@ These lines are added to the detail line when they apply:
 - **Room:** "≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2)."
 
 **Shares shown.** The per-area shares are shown **raw**, as in `rent.json`: each CMHC area's share of the neighbourhood's rental units, with no re-weighting for display. When coverage is under 100%, they add up to the coverage, not to 100%.
-- In a split, each share is a whole percent and carries that area's own rating: "Weighted average of CMHC areas Villeray (89%, rated very good) and Parc-Extension (11%, rated good), by rental units."
+- In a split, each share carries that area's own rating: "Weighted average of CMHC areas Villeray (89%, rated very good) and Parc-Extension (11%, rated good), by rental units." A grade d area reads `rated "use with caution"`, quoted as everywhere else. Shares are whole percents, or one decimal when coverage is under 100% (no current split is).
 - Next to "covers X%", the share has one decimal, so it doesn't look like a contradiction: "Covers 86% of this neighbourhood's rental units (Côte-Saint-Luc/Montreal West: 86.6%)".
 - For a split, the detail line names every area but leaves the rating out, because the label's worst grade isn't every area's rating: "Based on CMHC's average rents in CMHC areas Villeray and Parc-Extension (October 2025), adjusted to current Montréal asking rents." If the label is low reliability, it ends "CMHC rates at least one of them "use with caution"".
 
@@ -280,14 +280,14 @@ The unrounded Montréal figures in `meta.montreal` (CMHC average, StatCan asking
 
 **On the map** (rent layer, M2.6). One size at a time: studio, 3½ (the default) or 4½. Each neighbourhood is coloured by its rounded rent compared with the Montréal asking rent for that size:
 - **Six classes:** < 85%, 85–95%, 95–105%, 105–115%, 115–130%, > 130%.
-- **Class edges** are those percentages of the Montréal level, rounded to $25 like the rents. A rent equal to an edge goes in the class above. The legend shows each class in dollars for the chosen size (for 3½: under $1,250 … $1,925 or more).
+- **Class edges** are those percentages of the Montréal level, **rounded up** to the next $25. Rents are multiples of $25, so "rent ≥ edge" means exactly "rent ≥ that %", and no neighbourhood is coloured in a class whose % it doesn't meet. Rounding to the nearest $25 would break that: for 3½, the 85% edge would become $1,250, which is 84.5%. A rent equal to an edge goes in the class above. The legend shows each class in dollars for the chosen size (for 3½: under $1,275 … $1,925 or more). It also shows the Montréal level as published ($1,480, no "≈"), and its swatches use the map's opacity.
 - **Palette:** a diverging scale centred on a neutral, near-white 95–105%. Blue is cheaper, orange-brown is pricier: `#2166ac`, `#6aaed6`, `#f3f2ee`, `#eb9236`, `#b85208`, `#6a2d05`. It is colour-blind-safe. It was checked with a palette validator: each arm steps light to dark in one hue, and every pair of neighbouring classes stays distinguishable for colour-blind and full-vision readers (worst ΔE 16.4). It is deliberately not the green-to-red commute scale.
 - **Low reliability** (grade d) keeps its class colour, with a diagonal hatch of dark and light lines, so it shows on pale and dark classes alike.
 - **Not enough data** is a dark grey (`#6e6e6e`). "No residents" keeps the commute map's light grey (`#d4d4d4`) and gets a dashed outline, in both modes. Its grey is close to the near-white neutral, so the outline tells them apart.
 - **Spread with 2026 Q2 data**, neighbourhoods per class (< 85% … > 130%):
   - studio: 37, 22, 16, 8, 8, **0**. No studio is above 130%: the highest is 128% of the Montréal level;
-  - 3½: 14, 25, 23, 9, 10, 4;
-  - 4½: 9, 13, 38, 17, 3, 5.
+  - 3½: 14, 27, 21, 15, 4, 4;
+  - 4½: 9, 13, 48, 7, 3, 5.
 
 **Crosswalk notes.** Notes on the crosswalk are shown only on the sources & limitations page, not in the main interface. `rent.json` carries them in `meta.crosswalk_notes`:
 - Baie-D'Urfé's link to Sainte-Anne-de-Bellevue/Baie-d'Urfé is by name and can't be confirmed from the counts.
