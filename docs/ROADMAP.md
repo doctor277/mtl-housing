@@ -12,8 +12,8 @@ them: heavy local runs, approvals, deploys.
 | **M2.6** Rent on the map | A rent layer on the map | done (PR #8) |
 | **M2.7** (optional) Old-lease bias | Investigate CMHC vacant-unit rents by zone to correct the old-lease bias (see `docs/methodology.md`, Rent, "Known limitation: old leases") | optional, parked until after M4 |
 | **M3** McGill + Concordia commutes | Travel times for the other two campuses (downtown campuses only: Roddick Gates, Hall Building; Macdonald and Loyola out of scope for now). **Needs owner:** Google times for validation, heavy local run, at home | done (PR #10) |
-| **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first. Before starting, review garrytan/gstack's /design-review and /qa skills; copy useful parts into .claude/, don't install the whole toolkit. Impeccable wins over gstack: take from gstack only what Impeccable doesn't do (likely browser QA). First screen: one-line explanation ('Find where to live in Montréal without a car') + the search form (campus, size, budget, max commute) + 'Show me neighbourhoods' button, no sign-up. Results: ranked shortlist cards first (name, commute, rent, reliability badge), map second. An 'example search' link. Short 'How it works' + honest data line + link to sources. The map is the results view, not the homepage. | |
-| **M5** Languages, sources, sharing | French/English, sources & limitations page (must include the old-lease bias: CMHC averages include long-time tenants, so old-stock areas look cheaper and new-build areas pricier than new listings), shareable URL holding the search settings | |
+| **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first. Before starting, review garrytan/gstack's /design-review and /qa skills; copy useful parts into .claude/, don't install the whole toolkit. Impeccable wins over gstack: take from gstack only what Impeccable doesn't do (likely browser QA). First screen: one-line explanation ('Find where to live in Montréal without a car') + the search form (campus, size, budget, max commute) + 'Show me neighbourhoods' button, no sign-up. Results: ranked shortlist cards first (name, commute, rent, reliability badge), map second. An 'example search' link. Short 'How it works' + honest data line + link to sources. The map is the results view, not the homepage. Decisions: see "M4 decisions" below. | |
+| **M5** Languages, sources, sharing | French/English, sources & limitations page (must include: the old-lease bias, i.e. CMHC averages include long-time tenants, so old-stock areas look cheaper and new-build areas pricier than new listings; R5 itinerary vs matrix mismatch for Concordia east trips (Peel exit); McGill route 5: R5 counts waiting time, Google doesn't), shareable URL holding the search settings | |
 | **M5.5** Auto-refresh | See below | |
 | **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5; settings frozen; failures reported, not tuned); refresh before launch (GTFS, and check for a newer StatCan quarter); deploy to Vercel. **Needs owner:** OK to deploy | |
 
@@ -36,10 +36,19 @@ Heavy routing stays a local run the owner triggers at home; CI never routes.
 Decided by the owner (2026-11-23), on top of the M4 row above:
 
 1. **Shortlist order:** fastest commute first by default, with a "sort by cheapest" toggle.
-2. **Budget:** neighbourhoods up to ~10% over budget are shown under a "Slightly over budget"
-   heading, below the ones that fit. Above that, hidden.
-3. **Rent unknown:** neighbourhoods with no rent data are still shown, at the bottom, marked
-   "Rent unknown".
-4. **Max commute:** buttons 20 / 30 / 45 / 60 min (no slider).
-5. **Language:** English and French both at launch, with an FR/EN switch. M4 keeps every UI
+   Sorting happens **within each group** (fits / slightly over budget / not enough data): the
+   groups are the budget answer, and sorting keeps them intact.
+2. **Budget:** compare the **rounded rent the user sees** with the budget. A rent shown as
+   ≈ $1,400 with a $1,400 budget is within budget (rounded rent ≤ budget). "Slightly over
+   budget" means up to 10% above the budget (budget < rounded rent ≤ budget × 1.10); those
+   are shown under that heading, below the ones that fit. Above that, hidden.
+3. **No rent data:** still shown, at the bottom, marked **"Not enough data"**, the same label
+   as on the map (one name for one thing). Unknown rent only means the budget can't be
+   checked.
+4. **Max commute:** buttons 20 / 30 / 45 / 60 min (no slider). It is a **hard filter** for
+   every neighbourhood, including those with no rent data.
+5. **Rooms:** there is one citywide figure, so neighbourhoods can't be compared on room rent.
+   Show a single note ("Room rent: ≈ $725 citywide, same estimate everywhere") and sort by
+   commute only. Don't pretend the figure varies by neighbourhood.
+6. **Language:** English and French both at launch, with an FR/EN switch. M4 keeps every UI
    string in one place (no hard-coded text in components) so M5 only adds the French file.
