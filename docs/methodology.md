@@ -241,11 +241,11 @@ For a quartier split between neighbourhoods (see the crosswalk), the rule above 
 The rule applies at **every step**, grade d included, and the labels combine: for example "low reliability (CMHC grade d), covers 90% of rental units". "Usable" means a value that qualifies for that step: grade a, b or c at steps 1–2, grade d at steps 3–4. In practice:
 - **Côte-Saint-Luc:** Hampstead/Côte-Saint-Luc is suppressed for every size. Côte-Saint-Luc/Montreal West covers 86.6%, so every size is labelled "covers 86% of rental units".
 - **Gabriel-Sagard, studio:** Villeray has a grade c value but covers only 53%, so the quartier uses the zone, which covers both halves.
-- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic has a grade c value but covers only 62%. The zone is grade d and Cartierville is grade d, so the quartier ends at step 4 (zone, grade d).
+- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic has a grade c value but covers only 61.9%. The zone is grade d and Cartierville is grade d, so the quartier ends at step 4 (zone, grade d).
 - All four split quartiers have both parts in the same zone, so the zone steps give a single value.
 
 ### What is computed
-Every quartier gets a value for all four bedroom types CMHC and StatCan share: studio, 1 bedroom (3½), 2 bedrooms (4½) and 3+ bedrooms. The site shows the first three. The estimate is kept unrounded until the export. If the StatCan Montréal value for a bedroom type is missing, unusable, or flagged E ("use with caution") or worse, the step stops: how to label such a value isn't decided yet. 2026 Q2 has no flag on any apartment value.
+Every quartier gets a row for each of the four bedroom types CMHC and StatCan share: studio, 1 bedroom (3½), 2 bedrooms (4½) and 3+ bedrooms. The row holds either an estimate or "not enough data". The site shows the first three types. With October 2025 data, "not enough data" covers 0 quartiers for studios, 6 for 1 bedroom, 6 for 2 bedrooms and 33 for 3+ bedrooms. The estimate is kept unrounded until the export. If the StatCan Montréal value for a bedroom type is missing, unusable, or flagged E ("use with caution") or worse, the step stops: how to label such a value isn't decided yet. 2026 Q2 has no flag on any apartment value.
 
 ### Rooms
 StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".

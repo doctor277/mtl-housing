@@ -96,10 +96,11 @@ def test_coverage_threshold_is_inclusive(share, level):
 
 
 def test_below_80_percent_falls_back_to_the_zone_even_with_a_neighbourhood_value():
-    # Gabriel-Sagard, studio: Villeray c (53%), Saint-Michel ** -> zone covers both halves
+    # Shape of Gabriel-Sagard, studio: one part graded c (53%), the other ** -> the zone
+    # covers both halves. Values are fake.
     parts = [
-        part("Villeray", 0.53, r(906, "c"), r(950, "b")),
-        part("Saint-Michel", 0.47, SUPPRESSED, r(950, "b")),
+        part("N1", 0.53, r(906, "c"), r(950, "b")),
+        part("N2", 0.47, SUPPRESSED, r(950, "b")),
     ]
     e = estimate_quartier(parts, CMA_RENT)
     assert (e.level, e.grade, e.ratio) == ("zone", "b", pytest.approx(0.95))
@@ -230,8 +231,14 @@ def test_real_estimates():
     assert (est.loc[has, "estimate"] > 0).all() and est.loc[~has, "estimate"].isna().all()
     assert (est.loc[~has, "label"] == "not enough data").all()
     e = est.set_index(["quartier_name", "unit"])
-    # the cases the owner confirmed
-    csl = e.loc[("Côte-Saint-Luc", "1br")]
-    assert csl["label"] == "estimate (CMHC neighbourhood), covers 86% of rental units"
-    assert csl["estimate"] == pytest.approx(1226 / 1131 * 1480)
+    # the cases docs/methodology.md describes
+    for unit in rent.UNITS:
+        assert e.loc[("Côte-Saint-Luc", unit), "label"] == (
+            "estimate (CMHC neighbourhood), covers 86% of rental units"
+        )
+    assert e.loc[("Côte-Saint-Luc", "1br"), "estimate"] == pytest.approx(1226 / 1131 * 1480)
     assert e.loc[("Gabriel-Sagard", "studio"), "level"] == "zone"
+    nb = e.loc[("Nouveau-Bordeaux", "3br_plus")]
+    assert (nb["level"], nb["reliability"]) == ("zone", "low")
+    n_none = est[est["level"].isna()].groupby("unit").size().reindex(rent.UNITS).fillna(0)
+    assert n_none.astype(int).tolist() == [0, 6, 6, 33]
