@@ -1,7 +1,7 @@
 route,kind,origin,lat,lon,coord_source,gtfs_stop_ids,destination_id,google_min,google_alt_min,google_alt_note,google_route
-1,transit,4500 Rue Saint-Denis,45.523861,-73.583154,author (Google Maps pin; same as udem route 1),,mcgill_roddick_gates,,,,
-2,transit,"4000 Rue Wellington, Verdun",45.4637752,-73.566789,OSM node/4907803398 (addr tags; same as udem route 2),,mcgill_roddick_gates,,,,
-3,transit,1500 Rue Fleury Est,45.5626456,-73.6562057,author (Google Maps pin; same as udem route 3),,mcgill_roddick_gates,,,,
-4,transit,3800 Rue Ontario Est,45.5475014,-73.5429487,author (Google Maps pin; same as udem route 4),,mcgill_roddick_gates,,,,
-5,transit,Fairview-Pointe-Claire REM station,45.459943,-73.835339,REM GTFS stop ST_PTC_1 (parent station; same as udem route 5),,mcgill_roddick_gates,,,,
-6,walk,McGill metro platform,,,STM GTFS metro stop 32 (green line; one stop for both directions),stm:32,mcgill_roddick_gates,,,,
+1,transit,4500 Rue Saint-Denis,45.523861,-73.583154,author (Google Maps pin; same as udem route 1),,mcgill_roddick_gates,22,,,orange -> green
+2,transit,"4000 Rue Wellington, Verdun",45.4637752,-73.566789,OSM node/4907803398 (addr tags; same as udem route 2),,mcgill_roddick_gates,21,,,green
+3,transit,1500 Rue Fleury Est,45.5626456,-73.6562057,author (Google Maps pin; same as udem route 3),,mcgill_roddick_gates,55,,,bus 121 -> REM A4-A1
+4,transit,3800 Rue Ontario Est,45.5475014,-73.5429487,author (Google Maps pin; same as udem route 4),,mcgill_roddick_gates,30,,,green from Joliette
+5,transit,Fairview-Pointe-Claire REM station,45.459943,-73.835339,REM GTFS stop ST_PTC_1 (parent station; same as udem route 5),,mcgill_roddick_gates,33,,,REM A3-A1
+6,walk,McGill metro platform,,,STM GTFS metro stop 32 (green line; one stop for both directions),stm:32,mcgill_roddick_gates,4,,"Google walk from the station's street entrance (geocode), outdoors via McGill College, 250 m: a lower bound; platform to street adds ~1-2 min (owner)",walk

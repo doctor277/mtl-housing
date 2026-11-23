@@ -45,12 +45,8 @@ def test_routes_csv_is_well_formed(campus):
     assert transit["lon"].between(lo_lon, hi_lon).all()
     walk = routes[routes["kind"] == "walk"]
     assert len(walk) >= 1 and walk["gtfs_stop_ids"].notna().all()
-    # Google times are collected by hand (VALIDATION.md); McGill and Concordia may still
-    # be pending (blank), but a value that is there must be a real duration.
-    google = routes["google_min"].dropna()
-    assert google.gt(0).all()
-    if campus == "udem":
-        assert len(google) == len(routes)
+    # Google times are collected by hand (VALIDATION.md); every route must have one.
+    assert routes["google_min"].notna().all() and routes["google_min"].gt(0).all()
 
 
 @pytest.mark.skipif(

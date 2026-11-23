@@ -179,7 +179,7 @@ Known limits, documented in `docs/methodology.md`:
 - **No station models.** The feeds have no `pathways.txt`, so R5 times transfers as street walks between stop coordinates. At Édouard-Montpetit that gives 1 min, which agrees with Google.
 - **Building choice is a near-tie** for most homes (finding 4).
 
-## McGill and Concordia (M3): pending
+## McGill and Concordia (M3)
 
 Route lists: [`mcgill_routes.csv`](mcgill_routes.csv) and [`concordia_sgw_routes.csv`](concordia_sgw_routes.csv).
 - **Five transit origins per campus**, reused from the UdeM list. McGill: routes 1–5. Concordia: routes 1, 2, 3, 7 (as its route 4) and 5. They have the same coordinates as the UdeM rows.
@@ -187,7 +187,18 @@ Route lists: [`mcgill_routes.csv`](mcgill_routes.csv) and [`concordia_sgw_routes
   - McGill metro → Roddick Gates (STM stop 32);
   - Guy-Concordia → Hall Building through the tunnel (STM stop 34).
 
-**Google side.** The author collects these the same way as for UdeM: "Arrive by 8:30", Tuesday 2026-12-01, first suggested trip. Walks are timed on foot. Until then `google_min` is blank, and `validate` gives no verdict for those rows.
+**Google side.** Collected on 2026-11-23 through Google Maps in the owner's browser, by Claude (chat) for the owner. Same method as for UdeM: "Arrive by 8:30", Tuesday 2026-12-01, first suggested trip.
+
+| Route | McGill → Roddick Gates | Concordia → Hall Building |
+|---|---|---|
+| 1 Saint-Denis | 22 min (orange → green) | 22 min (orange → green) |
+| 2 Wellington, Verdun | 21 min (green) | 17 min (green) |
+| 3 Fleury Est | 55 min (bus 121 → REM A4-A1) | 53 min (bus 13 → orange → green) |
+| 4 | Ontario Est: 30 min (green from Joliette) | 5800 Sherbrooke O (NDG): 34 min (bus 105 → orange → green) |
+| 5 Fairview-Pointe-Claire REM | 33 min (REM A3-A1) | 42 min (REM A3-A1, 13 min walking) |
+| 6 walk | McGill station → Roddick Gates: 4 min / 250 m, via McGill College | Guy-Concordia → Hall: 3 min / 180 m, outdoors via De Maisonneuve |
+
+**The two walks are a lower bound.** Google starts them at the station's **street entrance** (its geocode), not at the platform, and routes them **outdoors**, not through the tunnel. Platform to street adds about **1–2 min** (owner). When deciding whether a campus needs an access adjustment, compare R5's platform walk with the Google time **plus 1–2 min**, not with the raw number. `access-check` reports the raw implied adjustment against `google_min`.
 
 **R5 side.** The settings stay as tuned on UdeM: walking at 4.0 km/h, the same window and the same feeds. These comparisons are therefore not used to re-tune them. The platform walks show whether either campus needs an access adjustment like UdeM's. If one is added, it is calibrated on that walk, which makes the walk route in-sample.
 
