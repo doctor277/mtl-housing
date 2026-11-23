@@ -167,7 +167,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_In progress. Still to come: the rent estimate per quartier (M2.4)._
+_In progress. The per-quartier estimate is computed (`python -m mtlhousing rent` → `data/interim/rent_by_quartier.csv`). Still to come: the site export (M2.5)._
 
 ### Two sources, two jobs
 - **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
@@ -231,12 +231,21 @@ For each quartier and bedroom type, the first available value in this order is u
 - `**` is never used, at either level.
 
 ### Quartiers split between neighbourhoods
-_Decided; applied with the per-quartier estimate (M2.4)._
+Applied by `rent.estimate_quartier`; the threshold is `config.RENT_MIN_COVERAGE`.
 
 For a quartier split between neighbourhoods (see the crosswalk), the rule above is applied once for the whole quartier, at one level at a time:
 - **Every part has a usable value at the same level:** the quartier's ratio is the share-weighted average of the parts' ratios (share = the part's share of the quartier's rental units). It is labelled with the **worst grade** among the parts.
-- **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover.
+- **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover, **rounded down** to a whole percent (86.6% → "86%").
 - **Below 80%:** fall back to the next step of the order above, as for any quartier.
+
+The rule applies at **every step**, grade d included, and the labels combine: for example "low reliability (CMHC grade d), covers 90% of rental units". "Usable" means a value that qualifies for that step: grade a, b or c at steps 1–2, grade d at steps 3–4. In practice:
+- **Côte-Saint-Luc:** Hampstead/Côte-Saint-Luc is suppressed for every size. Côte-Saint-Luc/Montreal West covers 86.6%, so every size is labelled "covers 86% of rental units".
+- **Gabriel-Sagard, studio:** Villeray has a grade c value but covers only 53%, so the quartier uses the zone, which covers both halves.
+- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic has a grade c value but covers only 62%. The zone is grade d and Cartierville is grade d, so the quartier ends at step 4 (zone, grade d).
+- All four split quartiers have both parts in the same zone, so the zone steps give a single value.
+
+### What is computed
+Every quartier gets a value for all four bedroom types CMHC and StatCan share: studio, 1 bedroom (3½), 2 bedrooms (4½) and 3+ bedrooms. The site shows the first three. The estimate is kept unrounded until the export. If the StatCan Montréal value for a bedroom type is missing, unusable, or flagged E ("use with caution") or worse, the step stops: how to label such a value isn't decided yet. 2026 Q2 has no flag on any apartment value.
 
 ### Rooms
 StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".

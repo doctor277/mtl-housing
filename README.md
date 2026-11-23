@@ -69,6 +69,7 @@ python -m mtlhousing export --campus udem         :: web/public/data/*.json(geoj
 python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipeline/validation/udem_results.csv
 python -m mtlhousing access-check --campus udem   :: R5 platform -> building walks and the access adjustments they imply
 python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone, checked against CMHC unit counts (exit 1 on a problem)
+python -m mtlhousing rent             :: rent estimate per quartier and bedroom type -> data/interim/rent_by_quartier.csv
 ```
 
 ### Web
@@ -87,13 +88,7 @@ UdeM commute (fastest building), click for details. Basemap: OpenFreeMap (no API
 
 ## Status
 
-- [x] Phase 0: repo skeleton
-- [x] Phase 1: UdeM commute pipeline + manual validation (in-sample; see `pipeline/validation/VALIDATION.md`)
-- [x] Phase 1.5: ugly map
-- [ ] Phase 2: other campuses, rent data, crosswalk, estimates
-- [ ] Phase 3: web UI (form, map, shortlist, detail panel)
-- [ ] Phase 4: FR/EN, sources page, shareable URLs, deploy
-  - [ ] before launch: 3–4 out-of-sample validation routes, settings frozen
+See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Credits
 
