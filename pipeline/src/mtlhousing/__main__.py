@@ -202,6 +202,70 @@ def step_cmhc_rent() -> None:
     print(tables["cma"].set_index("unit")[["rent", "grade"]].T.to_string())
 
 
+def step_crosswalk_check() -> None:
+    from mtlhousing import (
+        boundaries,
+        cmhc_rent,
+        cmhc_universe,
+        config,
+        crosswalk,
+        export,
+        sample_points,
+    )
+
+    qm = crosswalk.load_quartier_map(config.QUARTIER_TO_CMHC_CSV)
+    zm = crosswalk.load_zone_map(config.CMHC_NBHD_TO_ZONE_CSV)
+    tm = crosswalk.load_tract_map(config.TRACT_TO_CMHC_CSV)
+    cmhc = cmhc_rent.load(config.CMHC_RENT_CSV, config.CMHC_RMS_PERIOD)
+    universe = cmhc_universe.load(config.CMHC_UNIVERSE_CSV, config.CMHC_RMS_PERIOD)
+    quartiers = boundaries.load_quartiers()
+    gaf = sample_points.extract_gaf()
+    homes = crosswalk.tract_homes(sample_points.da_points(gaf), quartiers)
+    census_tracts = set(gaf["ct_name"].dropna())
+
+    crosswalk.check(qm, zm, crosswalk.quartier_table(export.NEIGHBOURHOODS_GEOJSON), cmhc)
+    report = crosswalk.verify(qm, zm, tm, universe, homes, census_tracts)
+    q = report["quartiers"]
+    q.to_csv(config.CROSSWALK_CHECK_CSV, index=False, encoding="utf-8", lineterminator="\n")
+    for name, key, col in (
+        ("neighbourhood_sums", "neighbourhood", "cmhc_neighbourhood"),
+        ("zone_sums", "zone", "cmhc_zone"),
+    ):
+        s = report[name]
+        ok = crosswalk.confirmed(s, col)
+        counts = s["status"].value_counts().to_dict()
+        print(
+            f"{key} = sum of its parts, per (area, bedroom type): {counts}; "
+            f"confirmed {len(ok)}/{s[col].nunique()}"
+        )
+    bounds = crosswalk.zone_bounds(zm, cmhc)
+    inside = int(bounds["inside"].sum())
+    print(f"zone rent inside its neighbourhoods' range: {inside}/{len(bounds)}")
+    conf = q["confidence"].value_counts().to_dict()
+    n_q = q["quartier_id"].nunique()
+    print(f"quartier rows: {conf} ({n_q} quartiers) -> {config.CROSSWALK_CHECK_CSV}")
+    for _, r in report["folded"].iterrows():
+        print(
+            f"folded: quartier {r['quartier_id']}, {r['raw_share']:.1%} of its rental units "
+            f"in {r['cmhc_neighbourhood']}"
+        )
+    un = report["unallocated"]
+    print(
+        f"rental units in tracts with no 2021 census home (given to no quartier): "
+        f"{int(un['units'].sum())} = {report['unallocated_share']:.3%} {un['ct_name'].tolist()}"
+    )
+    print(
+        "homes in tracts with no CMHC rental units: "
+        f"{report['homes_without_units_share']:.1%} of homes in quartiers"
+    )
+    bad = crosswalk.problems(report)
+    for _, r in bounds[~bounds["inside"]].iterrows():
+        bad.append(f"zone {r['cmhc_zone']}, {r['unit']}: rent outside its neighbourhoods' range")
+    if bad:
+        raise SystemExit("crosswalk problems:\n  " + "\n  ".join(bad))
+    print("OK: every 'verified' row is confirmed by the unit counts")
+
+
 STEPS = {
     "boundaries": step_boundaries,
     "sample-points": step_sample_points,
@@ -215,6 +279,7 @@ STEPS = {
     "access-check": step_access_check,
     "statcan-rent": step_statcan_rent,
     "cmhc-rent": step_cmhc_rent,
+    "crosswalk-check": step_crosswalk_check,
 }
 
 

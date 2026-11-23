@@ -7,7 +7,7 @@ summed over the DA's blocks. Montréal has ~3,200 such DAs, ~35 per quartier.
 
 Steps:
 1. extract_gaf(): filter the Canada-wide CSV to one census division once, cache as parquet
-   (rebuilt only when the source zip's SHA-256 changes).
+   (rebuilt only when the source zip's SHA-256 or the extracted columns change).
 2. da_points(): one weighted point per DA.
 3. build_sample_points(): assign points to quartiers, add a fallback point for empty
    quartiers, and report per quartier (point count, low_sample, dwelling cross-check).
@@ -29,6 +29,7 @@ GAF_COLUMNS = {
     "CDUID_DRIDU": "cduid",
     "CSDUID_SDRIDU": "csduid",
     "CSDNAME_SDRNOM": "csd_name",
+    "CTNAME_SRNOM": "ct_name",  # census tract, e.g. "0012.01" (crosswalk to CMHC areas)
     "DAUID_ADIDU": "dauid",
     "DARPLAT_ADLAT": "da_lat",
     "DARPLONG_ADLONG": "da_lon",
@@ -66,10 +67,11 @@ def extract_gaf(
     out_path: Path = config.GAF_MONTREAL_PARQUET,
     cduid: str = config.MONTREAL_CDUID,
 ) -> pd.DataFrame:
-    """Rows of the GAF for one census division. Cached; rebuilt when the zip changes."""
+    """Rows of the GAF for one census division. Cached; rebuilt when the zip or the
+    extracted columns change."""
     stamp = out_path.with_name(out_path.name + ".source-sha256")
-    digest = sha256(zip_path)
-    if out_path.exists() and stamp.exists() and stamp.read_text().strip() == f"{digest} {cduid}":
+    key = f"{sha256(zip_path)} {cduid} {','.join(GAF_COLUMNS.values())}"
+    if out_path.exists() and stamp.exists() and stamp.read_text().strip() == key:
         return pd.read_parquet(out_path)
 
     with zipfile.ZipFile(zip_path) as z:
@@ -94,21 +96,26 @@ def extract_gaf(
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     rows.to_parquet(out_path, index=False)
-    stamp.write_text(f"{digest} {cduid}\n")
+    stamp.write_text(f"{key}\n")
     return rows
 
 
 def da_points(gaf: pd.DataFrame) -> gpd.GeoDataFrame:
-    """One point per DA at StatCan's representative point; drops DAs with no residents."""
+    """One point per DA at StatCan's representative point; drops DAs with no residents.
+    Keeps the DA's census tract as `ct_name` when the GAF rows carry it (DAs nest in
+    tracts)."""
     grouped = gaf.groupby("dauid", sort=True)
     if (grouped["da_lat"].nunique() > 1).any() or (grouped["da_lon"].nunique() > 1).any():
         raise ValueError("a DA has more than one representative point")
+    if "ct_name" in gaf and (grouped["ct_name"].nunique(dropna=False) > 1).any():
+        raise ValueError("a DA spans more than one census tract")
     da = grouped.agg(
         lat=("da_lat", "first"),
         lon=("da_lon", "first"),
         occupied_dwellings=("occupied_dwellings", "sum"),
         total_dwellings=("total_dwellings", "sum"),
         **({"csd_name": ("csd_name", "first")} if "csd_name" in gaf else {}),
+        **({"ct_name": ("ct_name", "first")} if "ct_name" in gaf else {}),
     ).reset_index()
     da = da[da["occupied_dwellings"] > 0]
     return gpd.GeoDataFrame(
@@ -118,6 +125,7 @@ def da_points(gaf: pd.DataFrame) -> gpd.GeoDataFrame:
             "weight": da["occupied_dwellings"].astype(float),
             "total_dwellings": da["total_dwellings"],
             "csd_name": da["csd_name"] if "csd_name" in da else None,
+            **({"ct_name": da["ct_name"]} if "ct_name" in da else {}),
         },
         geometry=gpd.points_from_xy(da["lon"], da["lat"]),
         crs=config.CRS_WGS84,

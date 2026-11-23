@@ -167,7 +167,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_In progress. Still to be written: crosswalk, split quartiers._
+_In progress. Still to come: the rent estimate per quartier (M2.4)._
 
 ### Two sources, two jobs
 - **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
@@ -178,6 +178,40 @@ Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Mon
 **Why two different dates.** StatCan's latest quarter is used because the site should show today's asking level. Asking rents fell 4–5% between 2025 Q4 and 2026 Q2 (1 bedroom: $1,550 → $1,480). This assumes the neighbourhood pattern of October 2025 still holds. The site shows both dates next to every estimate and says the StatCan figures are experimental estimates. The quarter is one config value (`STATCAN_RENT_QUARTER`).
 
 Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
+
+### From quartiers to CMHC areas: the crosswalk
+CMHC publishes rents for its own areas: **neighbourhoods** (groups of census tracts) and **zones** (groups of neighbourhoods). Their edges don't follow the city's quartiers, and CMHC's exports carry names only, with no codes and no map of which tract belongs where. So the link is a hand-made crosswalk in `pipeline/crosswalk/`, three files:
+
+| File | Links | Rows |
+|---|---|---|
+| `census_tract_to_cmhc_neighbourhood.csv` | census tract → CMHC neighbourhood | 520 tracts (every island tract with rental units) |
+| `quartier_to_cmhc_neighbourhood.csv` | quartier → CMHC neighbourhood(s), with each one's share | 95 rows for 91 quartiers |
+| `cmhc_neighbourhood_to_zone.csv` | CMHC neighbourhood → zone | 37 neighbourhoods in 18 zones |
+
+**How it is checked.** CMHC also publishes how many rental units each zone, neighbourhood and census tract has, by bedroom type (rental universe, October 2025, same survey). Those counts must add up, so `python -m mtlhousing crosswalk-check` (and a test) checks the hand-made links against them:
+- **Tracts → neighbourhoods.** For each neighbourhood and bedroom type, its tracts' units must add up to its published count. A count CMHC suppressed (`**`) can't be added up, so that cell is "unchecked". Even then, the published tracts must not add up to *more* than the neighbourhood. Result: **all 37 neighbourhoods match on their total.** 153 cells match, 32 are unchecked because of a suppressed tract, and none contradicts.
+- **Neighbourhoods → zones.** The same test one level up. **All 18 zones match on their total** (89 cells match, 1 unchecked, none contradicts). As a second check, every zone's average rent lies between its neighbourhoods' rents (54 of 54 comparisons).
+- **Quartiers → neighbourhoods.** A quartier's tracts come from the census: each dissemination-area point (see "Where trips start") carries its census tract. A tract on a quartier edge is divided between the quartiers by their homes in it (2021 occupied dwellings). That gives each quartier's rental units in each neighbourhood, and its **share** of them. The committed shares must equal these to 3 decimals.
+
+A row is marked **verified** only when this check confirms it. 94 of the 95 rows are verified. The other one is **Baie-D'Urfé**: its only census tract has no CMHC rental units, so the counts can't confirm anything. It is matched by name to *Sainte-Anne-de-Bellevue/Baie-d'Urfé* (confidence "high", reviewed by the owner).
+
+**Small slivers are folded in.** When less than 5% of a quartier's rental units fall in a second neighbourhood, that part is folded into the main one instead of kept as a split (`config.CROSSWALK_FOLD_BELOW`). This happens twice: Bois-Francs (0.6% of its rental units in Senneville/Roxboro-Pierrefonds) and Grande-Prairie (1.8% in Mercier).
+
+**Four quartiers are split** between two neighbourhoods, by rental units:
+
+| Quartier | Neighbourhoods (share of the quartier's rental units) |
+|---|---|
+| Nouveau-Bordeaux | Ahuntsic 0.619, Cartierville 0.381 |
+| Gabriel-Sagard | Villeray 0.530, Saint-Michel 0.470 |
+| Parc-Jarry | Villeray 0.893, Parc-Extension 0.107 |
+| Côte-Saint-Luc | Côte-Saint-Luc/Montreal West 0.866, Hampstead/Côte-Saint-Luc 0.134 |
+
+**Limits.**
+- How the tract → neighbourhood file was first built wasn't recorded. Its evidence is that the counts add up exactly. A tract that adds nothing to a sum (a suppressed count) can't be confirmed by it. No tract in the export has a suppressed **total**, and the check refuses to share out a tract that has one.
+- CMHC's tract export lists no tract with 0 units, so a census tract missing from it is taken to have **no purpose-built rental units**. That covers 1.7% of the homes in the quartiers. Every tract in the crosswalk exists in the census file under the same name, which the check enforces.
+- Three mapped tracts (0014.02, 0091.00, 0189.00) had no occupied home in the 2021 census, probably because they were built since. Their 89 rental units (0.02% of the island's) can't be given to any quartier. The check fails if such units ever exceed 0.1% (`config.CROSSWALK_MAX_UNALLOCATED`).
+- Rental units are spread over a tract's homes evenly. A tract on a quartier edge whose rental buildings sit on one side will be divided slightly wrong. This only affects the 4 split quartiers and the 2 folded slivers.
+- The tract units are CMHC's October 2025 counts, and the homes are from the 2021 census.
 
 ### Which CMHC value is used, and how it is labelled
 CMHC grades each average rent by reliability: a excellent, b very good, c good, d poor ("use with caution"). `**` means suppressed or not statistically reliable. A zone is a group of neighbourhoods.
@@ -195,6 +229,14 @@ For each quartier and bedroom type, the first available value in this order is u
 - A grade d value is used only when no a, b or c value exists at either level. That's why a zone graded c comes before a neighbourhood graded d: it's less local, but more reliable.
 - Between two grade d values, the neighbourhood comes first, because it's more local.
 - `**` is never used, at either level.
+
+### Quartiers split between neighbourhoods
+_Decided; applied with the per-quartier estimate (M2.4)._
+
+For a quartier split between neighbourhoods (see the crosswalk), the rule above is applied once for the whole quartier, at one level at a time:
+- **Every part has a usable value at the same level:** the quartier's ratio is the share-weighted average of the parts' ratios (share = the part's share of the quartier's rental units). It is labelled with the **worst grade** among the parts.
+- **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover.
+- **Below 80%:** fall back to the next step of the order above, as for any quartier.
 
 ### Rooms
 StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".

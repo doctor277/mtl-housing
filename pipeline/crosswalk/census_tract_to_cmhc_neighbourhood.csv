@@ -1,0 +1,521 @@
+ct_name,cmhc_neighbourhood
+0001.00,Mercier
+0002.00,Mercier
+0003.00,Mercier
+0004.00,Mercier
+0005.00,Mercier
+0006.00,Mercier
+0007.00,Mercier
+0008.00,Mercier
+0009.00,Mercier
+0010.00,Mercier
+0011.00,Mercier
+0012.01,Mercier
+0012.02,Mercier
+0013.00,Mercier
+0014.02,Hochelaga-Maisonneuve
+0014.03,Hochelaga-Maisonneuve
+0014.04,Hochelaga-Maisonneuve
+0015.00,Hochelaga-Maisonneuve
+0016.00,Hochelaga-Maisonneuve
+0017.00,Hochelaga-Maisonneuve
+0018.00,Hochelaga-Maisonneuve
+0019.00,Hochelaga-Maisonneuve
+0021.00,Hochelaga-Maisonneuve
+0022.00,Hochelaga-Maisonneuve
+0023.00,Hochelaga-Maisonneuve
+0024.00,Hochelaga-Maisonneuve
+0025.00,Hochelaga-Maisonneuve
+0026.00,Hochelaga-Maisonneuve
+0027.00,Hochelaga-Maisonneuve
+0028.00,Hochelaga-Maisonneuve
+0029.00,Hochelaga-Maisonneuve
+0030.00,Hochelaga-Maisonneuve
+0031.00,Hochelaga-Maisonneuve
+0032.00,East Ville-Marie
+0033.00,East Ville-Marie
+0034.00,East Ville-Marie
+0035.00,East Ville-Marie
+0036.00,East Ville-Marie
+0037.00,East Ville-Marie
+0038.00,East Ville-Marie
+0039.00,East Ville-Marie
+0041.00,East Ville-Marie
+0042.00,East Ville-Marie
+0043.00,East Ville-Marie
+0044.00,East Ville-Marie
+0045.00,East Ville-Marie
+0046.00,East Ville-Marie
+0047.00,East Ville-Marie
+0048.00,East Ville-Marie
+0049.00,East Ville-Marie
+0050.00,East Ville-Marie
+0051.00,Ville-Marie
+0052.00,Ville-Marie
+0053.00,Ville-Marie
+0054.00,Ville-Marie
+0055.01,Ville-Marie
+0056.00,Ville-Marie
+0057.00,Ville-Marie
+0058.00,Ville-Marie
+0059.00,Ville-Marie
+0061.00,Ville-Marie
+0062.00,Ville-Marie
+0063.00,Ville-Marie
+0064.00,Ville-Marie
+0065.01,Ville-Marie
+0065.02,Ville-Marie
+0066.01,Ville-Marie
+0066.02,Ville-Marie
+0067.00,South West
+0068.00,South West
+0069.01,Ville-Marie
+0069.02,South West
+0070.01,Ville-Marie
+0070.02,South West
+0072.00,South West
+0073.00,South West
+0074.00,South West
+0075.00,South West
+0076.00,South West
+0077.00,South West
+0078.00,South West
+0079.00,South West
+0080.00,South West
+0081.00,South West
+0082.00,South West
+0083.00,South West
+0084.00,South West
+0085.00,South West
+0086.00,South West
+0087.00,South West
+0088.00,South West
+0089.00,South West
+0090.00,South West
+0091.00,South West
+0092.00,South West
+0093.00,South West
+0094.01,Notre-Dame-de-Grâce
+0095.00,Notre-Dame-de-Grâce
+0096.00,Notre-Dame-de-Grâce
+0097.01,Notre-Dame-de-Grâce
+0097.02,Notre-Dame-de-Grâce
+0098.00,Notre-Dame-de-Grâce
+0099.00,Notre-Dame-de-Grâce
+0100.01,Notre-Dame-de-Grâce
+0100.02,Notre-Dame-de-Grâce
+0101.01,Notre-Dame-de-Grâce
+0101.02,Notre-Dame-de-Grâce
+0102.00,Notre-Dame-de-Grâce
+0103.00,Notre-Dame-de-Grâce
+0104.00,Notre-Dame-de-Grâce
+0105.00,Notre-Dame-de-Grâce
+0106.00,Notre-Dame-de-Grâce
+0107.00,Notre-Dame-de-Grâce
+0108.00,Notre-Dame-de-Grâce
+0109.00,Côte-des-Neiges
+0110.00,Côte-des-Neiges
+0111.00,Côte-des-Neiges
+0112.01,Côte-des-Neiges
+0112.02,Côte-des-Neiges
+0113.00,Côte-des-Neiges
+0114.00,Côte-des-Neiges
+0115.01,Côte-des-Neiges
+0115.02,Côte-des-Neiges
+0116.00,Côte-des-Neiges
+0117.00,Côte-des-Neiges
+0118.00,Côte-des-Neiges
+0119.00,Côte-des-Neiges
+0120.01,Côte-des-Neiges
+0120.02,Hampstead/Côte-Saint-Luc
+0121.00,Côte-des-Neiges
+0122.00,Côte-des-Neiges
+0123.00,Côte-des-Neiges
+0124.00,Côte-des-Neiges
+0125.00,Côte-des-Neiges
+0126.00,Côte-des-Neiges
+0127.01,Côte-des-Neiges
+0127.02,Côte-des-Neiges
+0128.00,Ville-Marie
+0129.01,Ville-Marie
+0129.02,Ville-Marie
+0130.00,Plateau-Mont-Royal
+0131.00,Plateau-Mont-Royal
+0132.00,Plateau-Mont-Royal
+0133.00,Plateau-Mont-Royal
+0134.00,Plateau-Mont-Royal
+0135.00,Plateau-Mont-Royal
+0136.00,Plateau-Mont-Royal
+0137.00,Plateau-Mont-Royal
+0138.00,Plateau-Mont-Royal
+0139.00,Plateau-Mont-Royal
+0140.00,Plateau-Mont-Royal
+0141.00,Plateau-Mont-Royal
+0142.00,Plateau-Mont-Royal
+0143.00,Plateau-Mont-Royal
+0144.00,Plateau-Mont-Royal
+0146.00,Plateau-Mont-Royal
+0147.00,Plateau-Mont-Royal
+0148.00,Plateau-Mont-Royal
+0149.00,Plateau-Mont-Royal
+0150.00,Plateau-Mont-Royal
+0151.00,Plateau-Mont-Royal
+0152.00,Plateau-Mont-Royal
+0153.00,Plateau-Mont-Royal
+0154.00,Plateau-Mont-Royal
+0155.00,Plateau-Mont-Royal
+0156.00,Plateau-Mont-Royal
+0157.00,Plateau-Mont-Royal
+0158.00,Plateau-Mont-Royal
+0159.00,Plateau-Mont-Royal
+0160.00,Plateau-Mont-Royal
+0161.00,Plateau-Mont-Royal
+0162.00,Plateau-Mont-Royal
+0163.00,Plateau-Mont-Royal
+0164.00,Plateau-Mont-Royal
+0165.00,Plateau-Mont-Royal
+0166.00,Rosemont/La Petite-Patrie
+0167.00,Plateau-Mont-Royal
+0168.00,Plateau-Mont-Royal
+0169.00,Plateau-Mont-Royal
+0170.00,Plateau-Mont-Royal
+0171.00,Plateau-Mont-Royal
+0172.00,Plateau-Mont-Royal
+0173.00,Plateau-Mont-Royal
+0174.00,Plateau-Mont-Royal
+0175.00,Plateau-Mont-Royal
+0176.00,Plateau-Mont-Royal
+0177.00,Plateau-Mont-Royal
+0178.00,Plateau-Mont-Royal
+0179.00,Rosemont/La Petite-Patrie
+0180.00,Rosemont/La Petite-Patrie
+0181.00,Rosemont/La Petite-Patrie
+0182.00,Rosemont/La Petite-Patrie
+0183.00,Rosemont/La Petite-Patrie
+0184.00,Rosemont/La Petite-Patrie
+0185.00,Rosemont/La Petite-Patrie
+0186.00,Rosemont/La Petite-Patrie
+0187.01,Rosemont/La Petite-Patrie
+0187.03,Rosemont/La Petite-Patrie
+0187.04,Rosemont/La Petite-Patrie
+0188.01,Rosemont/La Petite-Patrie
+0188.02,Rosemont/La Petite-Patrie
+0189.00,Rosemont/La Petite-Patrie
+0190.01,Mercier
+0190.02,Rosemont/La Petite-Patrie
+0191.00,Mercier
+0192.00,Mercier
+0193.00,Mercier
+0194.01,Mercier
+0194.02,Mercier
+0195.01,Rosemont/La Petite-Patrie
+0195.02,Mercier
+0195.03,Mercier
+0196.00,Rosemont/La Petite-Patrie
+0197.00,Rosemont/La Petite-Patrie
+0198.00,Rosemont/La Petite-Patrie
+0199.00,Rosemont/La Petite-Patrie
+0200.00,Rosemont/La Petite-Patrie
+0201.00,Rosemont/La Petite-Patrie
+0202.00,Rosemont/La Petite-Patrie
+0203.00,Rosemont/La Petite-Patrie
+0204.00,Rosemont/La Petite-Patrie
+0205.00,Rosemont/La Petite-Patrie
+0206.00,Rosemont/La Petite-Patrie
+0207.00,Rosemont/La Petite-Patrie
+0208.00,Rosemont/La Petite-Patrie
+0209.00,Rosemont/La Petite-Patrie
+0210.00,Rosemont/La Petite-Patrie
+0211.00,Rosemont/La Petite-Patrie
+0212.00,Rosemont/La Petite-Patrie
+0213.00,Rosemont/La Petite-Patrie
+0214.00,Rosemont/La Petite-Patrie
+0215.00,Rosemont/La Petite-Patrie
+0216.00,Rosemont/La Petite-Patrie
+0217.00,Rosemont/La Petite-Patrie
+0218.00,Rosemont/La Petite-Patrie
+0219.00,Rosemont/La Petite-Patrie
+0220.00,Parc-Extension
+0221.00,Parc-Extension
+0222.00,Parc-Extension
+0223.01,Parc-Extension
+0223.02,Parc-Extension
+0224.00,Parc-Extension
+0225.00,Parc-Extension
+0226.00,Villeray
+0227.00,Villeray
+0228.00,Villeray
+0230.00,Villeray
+0231.00,Villeray
+0232.00,Villeray
+0233.00,Villeray
+0234.00,Villeray
+0235.00,Villeray
+0236.00,Villeray
+0237.00,Villeray
+0238.00,Villeray
+0239.00,Villeray
+0240.00,Villeray
+0241.00,Villeray
+0242.00,Villeray
+0243.00,Villeray
+0244.00,Villeray
+0245.00,Villeray
+0247.00,Rosemont/La Petite-Patrie
+0249.00,Saint-Michel
+0250.00,Saint-Michel
+0251.01,Saint-Michel
+0251.02,Saint-Michel
+0252.00,Saint-Michel
+0253.00,Saint-Michel
+0254.00,Saint-Michel
+0256.00,Saint-Michel
+0257.00,Saint-Michel
+0258.00,Saint-Michel
+0259.00,Saint-Michel
+0260.00,Saint-Michel
+0261.00,Saint-Michel
+0262.00,Saint-Michel
+0263.00,Saint-Michel
+0264.01,Ahuntsic
+0264.02,Ahuntsic
+0265.00,Ahuntsic
+0266.00,Ahuntsic
+0267.00,Ahuntsic
+0268.01,Ahuntsic
+0268.02,Ahuntsic
+0269.00,Ahuntsic
+0270.00,Ahuntsic
+0271.00,Ahuntsic
+0272.00,Ahuntsic
+0273.00,Ahuntsic
+0274.00,Ahuntsic
+0275.00,Ahuntsic
+0276.00,Ahuntsic
+0277.00,Ahuntsic
+0278.00,Ahuntsic
+0279.00,Ahuntsic
+0280.00,Ahuntsic
+0281.00,Ahuntsic
+0282.00,Ahuntsic
+0283.01,Cartierville
+0283.02,Cartierville
+0284.00,Cartierville
+0285.00,Cartierville
+0286.00,Cartierville
+0287.01,Cartierville
+0287.02,Cartierville
+0290.01,Rivière-des-Prairies
+0290.02,Rivière-des-Prairies
+0290.03,Rivière-des-Prairies
+0290.04,Rivière-des-Prairies
+0290.05,Rivière-des-Prairies
+0290.06,Rivière-des-Prairies
+0290.07,Rivière-des-Prairies
+0290.08,Rivière-des-Prairies
+0290.09,Rivière-des-Prairies
+0291.01,Rivière-des-Prairies
+0291.03,Rivière-des-Prairies
+0291.04,Rivière-des-Prairies
+0300.00,Verdun
+0301.00,Verdun
+0302.00,Verdun
+0303.00,Verdun
+0304.00,Verdun
+0305.00,Verdun
+0306.00,Verdun
+0307.00,Verdun
+0308.00,Verdun
+0309.00,Verdun
+0310.00,Verdun
+0311.00,Verdun
+0312.00,Verdun
+0313.00,Verdun
+0314.00,Verdun
+0316.00,Verdun
+0317.03,Île-des-Soeurs
+0317.05,Île-des-Soeurs
+0317.06,Île-des-Soeurs
+0317.07,Île-des-Soeurs
+0317.08,Île-des-Soeurs
+0320.00,LaSalle
+0321.00,LaSalle
+0322.02,LaSalle
+0322.03,LaSalle
+0322.04,LaSalle
+0323.00,LaSalle
+0324.01,LaSalle
+0324.02,LaSalle
+0325.01,LaSalle
+0325.02,LaSalle
+0325.03,LaSalle
+0325.05,LaSalle
+0325.06,LaSalle
+0326.01,LaSalle
+0326.02,LaSalle
+0326.03,LaSalle
+0327.00,LaSalle
+0328.00,LaSalle
+0329.00,LaSalle
+0330.00,Lachine
+0340.00,Côte-Saint-Luc/Montreal West
+0350.00,Westmount
+0351.00,Westmount
+0352.00,Westmount
+0353.00,Westmount
+0354.00,Westmount
+0355.00,Westmount
+0360.00,Outremont
+0361.00,Outremont
+0362.00,Outremont
+0363.00,Outremont
+0364.00,Outremont
+0365.00,Outremont
+0366.00,Outremont
+0367.00,Outremont
+0370.00,Hampstead/Côte-Saint-Luc
+0380.00,Côte-Saint-Luc/Montreal West
+0381.00,Côte-Saint-Luc/Montreal West
+0382.01,Côte-Saint-Luc/Montreal West
+0382.02,Côte-Saint-Luc/Montreal West
+0383.01,Côte-Saint-Luc/Montreal West
+0383.02,Côte-Saint-Luc/Montreal West
+0385.00,Hampstead/Côte-Saint-Luc
+0390.00,Lachine
+0391.00,Lachine
+0392.00,Lachine
+0393.00,Lachine
+0394.00,Lachine
+0395.01,Lachine
+0395.02,Lachine
+0395.03,Lachine
+0396.00,Lachine
+0397.00,Lachine
+0400.00,Mont-Royal
+0401.00,Mont-Royal
+0402.00,Mont-Royal
+0403.00,Mont-Royal
+0404.00,Mont-Royal
+0410.01,Saint-Laurent
+0410.02,Saint-Laurent
+0410.03,Saint-Laurent
+0412.00,Saint-Laurent
+0413.01,Saint-Laurent
+0413.02,Saint-Laurent
+0415.03,Saint-Laurent
+0415.04,Saint-Laurent
+0415.07,Saint-Laurent
+0415.08,Saint-Laurent
+0415.09,Saint-Laurent
+0416.01,Saint-Laurent
+0416.02,Saint-Laurent
+0417.01,Saint-Laurent
+0417.02,Saint-Laurent
+0418.00,Saint-Laurent
+0419.00,Saint-Laurent
+0420.00,Saint-Laurent
+0421.03,Saint-Laurent
+0421.04,Saint-Laurent
+0421.05,Saint-Laurent
+0421.06,Saint-Laurent
+0430.00,Dorval/Île-Dorval
+0431.00,Dorval/Île-Dorval
+0432.00,Dorval/Île-Dorval
+0433.00,Dorval/Île-Dorval
+0450.00,Pointe-Claire
+0451.00,Pointe-Claire
+0452.00,Pointe-Claire
+0453.01,Pointe-Claire
+0453.02,Pointe-Claire
+0462.01,Beaconsfield-Kirkland
+0462.02,Beaconsfield-Kirkland
+0470.01,Beaconsfield-Kirkland
+0470.03,Beaconsfield-Kirkland
+0490.00,Sainte-Anne-de-Bellevue/Baie-d'Urfé
+0491.00,Sainte-Anne-de-Bellevue/Baie-d'Urfé
+0500.00,Senneville/Roxboro-Pierrefonds
+0511.01,Senneville/Roxboro-Pierrefonds
+0511.02,Senneville/Roxboro-Pierrefonds
+0512.02,Senneville/Roxboro-Pierrefonds
+0512.03,Senneville/Roxboro-Pierrefonds
+0512.04,Senneville/Roxboro-Pierrefonds
+0513.01,Senneville/Roxboro-Pierrefonds
+0513.02,Senneville/Roxboro-Pierrefonds
+0514.01,Senneville/Roxboro-Pierrefonds
+0514.02,Senneville/Roxboro-Pierrefonds
+0515.01,Senneville/Roxboro-Pierrefonds
+0515.02,Senneville/Roxboro-Pierrefonds
+0515.03,Senneville/Roxboro-Pierrefonds
+0515.04,Senneville/Roxboro-Pierrefonds
+0520.02,Dollard-des-Ormeaux
+0520.03,Dollard-des-Ormeaux
+0520.04,Dollard-des-Ormeaux
+0521.01,Dollard-des-Ormeaux
+0521.04,Dollard-des-Ormeaux
+0521.07,Dollard-des-Ormeaux
+0522.01,Dollard-des-Ormeaux
+0522.02,Dollard-des-Ormeaux
+0530.00,Senneville/Roxboro-Pierrefonds
+0540.00,L'Île-Bizard/Sainte-Geneviève
+0550.02,L'Île-Bizard/Sainte-Geneviève
+0550.03,L'Île-Bizard/Sainte-Geneviève
+0550.04,L'Île-Bizard/Sainte-Geneviève
+0570.00,Montréal-Est
+0580.01,Pointe-aux-Trembles
+0580.02,Pointe-aux-Trembles
+0580.03,Pointe-aux-Trembles
+0581.01,Pointe-aux-Trembles
+0581.02,Pointe-aux-Trembles
+0582.01,Pointe-aux-Trembles
+0582.02,Pointe-aux-Trembles
+0583.00,Pointe-aux-Trembles
+0584.00,Pointe-aux-Trembles
+0585.01,Pointe-aux-Trembles
+0585.02,Pointe-aux-Trembles
+0590.01,Anjou
+0590.02,Anjou
+0591.01,Anjou
+0591.02,Anjou
+0592.00,Anjou
+0593.01,Anjou
+0593.02,Anjou
+0594.01,Anjou
+0594.02,Anjou
+0600.01,Saint-Léonard
+0600.02,Saint-Léonard
+0600.03,Saint-Léonard
+0601.01,Saint-Léonard
+0601.02,Saint-Léonard
+0602.01,Saint-Léonard
+0602.02,Saint-Léonard
+0603.01,Saint-Léonard
+0603.02,Saint-Léonard
+0603.03,Saint-Léonard
+0604.01,Saint-Léonard
+0604.02,Saint-Léonard
+0604.03,Saint-Léonard
+0604.04,Saint-Léonard
+0604.05,Saint-Léonard
+0605.01,Saint-Léonard
+0605.02,Saint-Léonard
+0605.03,Saint-Léonard
+0605.04,Saint-Léonard
+0605.05,Saint-Léonard
+0610.01,Montréal-Nord
+0610.02,Montréal-Nord
+0610.03,Montréal-Nord
+0610.04,Montréal-Nord
+0610.05,Montréal-Nord
+0610.06,Montréal-Nord
+0610.07,Montréal-Nord
+0611.01,Montréal-Nord
+0611.02,Montréal-Nord
+0612.00,Montréal-Nord
+0613.00,Montréal-Nord
+0614.00,Montréal-Nord
+0615.00,Montréal-Nord
+0616.00,Montréal-Nord
+0617.01,Montréal-Nord
+0617.02,Montréal-Nord
+0618.00,Montréal-Nord
+0619.00,Montréal-Nord

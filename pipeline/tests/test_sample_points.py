@@ -12,8 +12,8 @@ from mtlhousing import config, sample_points
 HEADER = ",".join(f'"{c}"' for c in sample_points.GAF_COLUMNS)
 
 
-def _row(cd, csd, da, lat, lon, db, pop, tot, occ):
-    return f'{cd},{cd}001,"{csd}",{da},{lat},{lon},{db},{pop},{tot},{occ}'
+def _row(cd, csd, da, lat, lon, db, pop, tot, occ, ct="0001.00"):
+    return f'{cd},{cd}001,"{csd}",{ct},{da},{lat},{lon},{db},{pop},{tot},{occ}'
 
 
 def _write_zip(path, rows):
@@ -40,6 +40,7 @@ def test_extract_filters_division_and_decodes_cp1252(gaf_zip, tmp_path):
     rows = sample_points.extract_gaf(gaf_zip, tmp_path / "out.parquet", "2466")
     assert rows["dbuid"].tolist() == ["11", "12"]
     assert rows["csd_name"].iloc[0] == "Montréal"
+    assert rows["ct_name"].iloc[0] == "0001.00"
     assert rows["occupied_dwellings"].sum() == 12
 
 
@@ -82,6 +83,22 @@ def test_da_points_sums_blocks_and_drops_empty_das():
 def test_da_points_rejects_inconsistent_representative_point():
     with pytest.raises(ValueError, match="representative point"):
         sample_points.da_points(_gaf([("1", 45.5, -73.6, 1, 1), ("1", 45.7, -73.6, 1, 1)]))
+
+
+def test_da_points_keeps_census_tract_and_rejects_a_da_in_two_tracts():
+    gaf = _gaf([("1", 45.5, -73.6, 1, 1), ("1", 45.5, -73.6, 1, 1)]).assign(ct_name="0012.01")
+    assert sample_points.da_points(gaf)["ct_name"].tolist() == ["0012.01"]
+    gaf.loc[1, "ct_name"] = "0012.02"
+    with pytest.raises(ValueError, match="more than one census tract"):
+        sample_points.da_points(gaf)
+
+
+def test_extract_rebuilds_when_columns_change(gaf_zip, tmp_path, monkeypatch):
+    out = tmp_path / "out.parquet"
+    sample_points.extract_gaf(gaf_zip, out, "2466")
+    fewer = {k: v for k, v in sample_points.GAF_COLUMNS.items() if v != "ct_name"}
+    monkeypatch.setattr(sample_points, "GAF_COLUMNS", fewer)
+    assert "ct_name" not in sample_points.extract_gaf(gaf_zip, out, "2466")  # rebuilt
 
 
 # --- build_sample_points ---------------------------------------------------------

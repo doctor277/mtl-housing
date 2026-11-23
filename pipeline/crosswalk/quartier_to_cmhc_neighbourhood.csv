@@ -1,0 +1,96 @@
+quartier_id,quartier_name,cmhc_neighbourhood,share,confidence,note
+01,Cartierville,Cartierville,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+02,Nouveau-Bordeaux,Ahuntsic,0.619,verified,split by rental units: 3 census tracts with units here; a tract on the quartier edge is divided by its homes
+02,Nouveau-Bordeaux,Cartierville,0.381,verified,split by rental units: 3 census tracts with units here; a tract on the quartier edge is divided by its homes
+03,Nicolas-Viel,Ahuntsic,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+04,Sault-au-Récollet,Ahuntsic,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+05,Saint-Sulpice,Ahuntsic,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+06,La Visitation,Ahuntsic,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+07,Sainte-Lucie,Saint-Michel,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+08,René-Goupil,Saint-Michel,1,verified,its 2 census tracts with rental units are all in this CMHC neighbourhood
+09,Gabriel-Sagard,Villeray,0.53,verified,split by rental units: 2 census tracts with units here; a tract on the quartier edge is divided by its homes
+09,Gabriel-Sagard,Saint-Michel,0.47,verified,split by rental units: 3 census tracts with units here; a tract on the quartier edge is divided by its homes
+10,François-Perrault,Saint-Michel,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+11,Parc-Extension,Parc-Extension,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+12,Parc-Jarry,Villeray,0.893,verified,split by rental units: 6 census tracts with units here; a tract on the quartier edge is divided by its homes
+12,Parc-Jarry,Parc-Extension,0.107,verified,split by rental units: 1 census tract with units here; a tract on the quartier edge is divided by its homes
+13,Crémazie,Villeray,1,verified,its 11 census tracts with rental units are all in this CMHC neighbourhood
+14,Saint-Édouard,Rosemont/La Petite-Patrie,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+15,Père-Marquette,Rosemont/La Petite-Patrie,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+16,Louis-Hébert,Rosemont/La Petite-Patrie,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+17,Étienne Desmarteaux,Rosemont/La Petite-Patrie,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+18,Vieux-Rosemont,Rosemont/La Petite-Patrie,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+19,Petite-Côte,Rosemont/La Petite-Patrie,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+20,Marie-Victorin,Rosemont/La Petite-Patrie,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+21,Louis-Riel,Mercier,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+22,Dupéré,Mercier,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+23,Tétreaultville,Mercier,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+24,Beaurivage,Mercier,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+25,Guybourg,Mercier,1,verified,its one census tract with rental units is in this CMHC neighbourhood
+26,Longue-Pointe,Mercier,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+27,Hochelaga,Hochelaga-Maisonneuve,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+28,Maisonneuve,Hochelaga-Maisonneuve,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+29,Préfontaine,Hochelaga-Maisonneuve,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+30,Sainte-Marie,East Ville-Marie,1,verified,its 18 census tracts with rental units are all in this CMHC neighbourhood
+31,Lorimier,Plateau-Mont-Royal,1,verified,its 11 census tracts with rental units are all in this CMHC neighbourhood
+32,Parc-Lafontaine,Plateau-Mont-Royal,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+33,Parc-Laurier,Plateau-Mont-Royal,1,verified,its 9 census tracts with rental units are all in this CMHC neighbourhood
+34,Mile End,Plateau-Mont-Royal,1,verified,its 10 census tracts with rental units are all in this CMHC neighbourhood
+35,Saint-Louis,Plateau-Mont-Royal,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+36,Milton-Parc,Plateau-Mont-Royal,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+37,Vieux-Montréal,Ville-Marie,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+38,René-Lévesque,Ville-Marie,1,verified,its 12 census tracts with rental units are all in this CMHC neighbourhood
+39,Montagne,Ville-Marie,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+40,Snowdon,Côte-des-Neiges,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+41,Édouard-Montpetit,Côte-des-Neiges,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+42,Parc-Kent,Côte-des-Neiges,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+43,Savane,Côte-des-Neiges,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+44,Upper Lachine,Notre-Dame-de-Grâce,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+45,Loyola,Notre-Dame-de-Grâce,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+46,Côte-Saint-Antoine,Notre-Dame-de-Grâce,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+47,Pointe-Saint-Charles,South West,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+48,Côte-Saint-Paul,South West,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+49,Ville-Émard,South West,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+50,Saint-Henri,South West,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+51,Petite-Bourgogne,South West,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+52,Marc-Aurèle-Fortin,Rivière-des-Prairies,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+53,Rivière-des-Prairies,Rivière-des-Prairies,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+54,Pointe-aux-Trembles,Pointe-aux-Trembles,1,verified,its 11 census tracts with rental units are all in this CMHC neighbourhood
+55,Chameran/Montpellier,Saint-Laurent,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+56,Grenet,Saint-Laurent,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+57,Dutrisac,Saint-Laurent,1,verified,its 2 census tracts with rental units are all in this CMHC neighbourhood
+58,Bois-Francs,Saint-Laurent,1,verified,"7 census tracts with rental units in this CMHC neighbourhood; 0.6% of its rental units are in one tract of Senneville/Roxboro-Pierrefonds, folded in (under 5%)"
+59,Du College/Hodge,Saint-Laurent,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+60A,Ouest,Montréal-Nord,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+60B,Centre-Nord,Montréal-Nord,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+60C,Centre,Montréal-Nord,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+61,Est,Montréal-Nord,1,verified,its 7 census tracts with rental units are all in this CMHC neighbourhood
+62,Port-Maurice,Saint-Léonard,1,verified,its 12 census tracts with rental units are all in this CMHC neighbourhood
+63,Grande-Prairie,Saint-Léonard,1,verified,"8 census tracts with rental units in this CMHC neighbourhood; 1.8% of its rental units are in one tract of Mercier, folded in (under 5%)"
+64,Verdun-Centre,Verdun,1,verified,its 10 census tracts with rental units are all in this CMHC neighbourhood
+65,Ile-des-Soeurs,Île-des-Soeurs,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+66,Desmarchais-Crawford,Verdun,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+67,Cecil-P.-Newman,LaSalle,1,verified,its 9 census tracts with rental units are all in this CMHC neighbourhood
+68,Sault-Saint-Louis,LaSalle,1,verified,its 10 census tracts with rental units are all in this CMHC neighbourhood
+69,Lachine-Ouest,Lachine,1,verified,its 3 census tracts with rental units are all in this CMHC neighbourhood
+70,Vieux-Lachine - Saint-Pierre,Lachine,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+71,Pierrefonds-Ouest,Senneville/Roxboro-Pierrefonds,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+72,Pierrefonds-Est,Senneville/Roxboro-Pierrefonds,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+73,Anjou,Anjou,1,verified,its 9 census tracts with rental units are all in this CMHC neighbourhood
+74,Outremont,Outremont,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+75,L'Île-Bizard–Sainte-Geneviève,L'Île-Bizard/Sainte-Geneviève,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+80,Montréal-Est,Montréal-Est,1,verified,its one census tract with rental units is in this CMHC neighbourhood
+81,Westmount,Westmount,1,verified,its 6 census tracts with rental units are all in this CMHC neighbourhood
+82,Hampstead,Hampstead/Côte-Saint-Luc,1,verified,its one census tract with rental units is in this CMHC neighbourhood
+83,Côte-Saint-Luc,Côte-Saint-Luc/Montreal West,0.866,verified,split by rental units: 6 census tracts with units here; a tract on the quartier edge is divided by its homes
+83,Côte-Saint-Luc,Hampstead/Côte-Saint-Luc,0.134,verified,split by rental units: 2 census tracts with units here; a tract on the quartier edge is divided by its homes
+84,Montréal-Ouest,Côte-Saint-Luc/Montreal West,1,verified,its one census tract with rental units is in this CMHC neighbourhood
+85,Dorval,Dorval/Île-Dorval,1,verified,its 4 census tracts with rental units are all in this CMHC neighbourhood
+86,Pointe-Claire,Pointe-Claire,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
+87,Beaconsfield,Beaconsfield-Kirkland,1,verified,its 2 census tracts with rental units are all in this CMHC neighbourhood
+88,Baie-D'Urfé,Sainte-Anne-de-Bellevue/Baie-d'Urfé,1.0,high,"its census tract has no CMHC rental units, so the counts can't confirm it; matched by name, reviewed by the owner"
+89,Dollard-Des Ormeaux,Dollard-des-Ormeaux,1,verified,its 8 census tracts with rental units are all in this CMHC neighbourhood
+90,Kirkland,Beaconsfield-Kirkland,1,verified,its 2 census tracts with rental units are all in this CMHC neighbourhood
+91,Sainte-Anne-de-Bellevue,Sainte-Anne-de-Bellevue/Baie-d'Urfé,1,verified,its 2 census tracts with rental units are all in this CMHC neighbourhood
+92,Senneville,Senneville/Roxboro-Pierrefonds,1,verified,its one census tract with rental units is in this CMHC neighbourhood
+93,Mont-Royal,Mont-Royal,1,verified,its 5 census tracts with rental units are all in this CMHC neighbourhood
