@@ -1,0 +1,5123 @@
+{
+ "meta": {
+  "method_version": "1.0",
+  "generated_at": "2026-11-22T23:56:45",
+  "currency": "CAD",
+  "per": "month",
+  "rounding": {
+   "step": 25,
+   "mode": "half_up"
+  },
+  "bedroom_types": [
+   "studio",
+   "1br",
+   "2br",
+   "3br_plus"
+  ],
+  "shown_bedroom_types": [
+   "studio",
+   "1br",
+   "2br"
+  ],
+  "bedroom_names": {
+   "studio": "studio (1½–2½)",
+   "1br": "1 bedroom (3½)",
+   "2br": "2 bedrooms (4½)",
+   "3br_plus": "3+ bedrooms (5½ and up)"
+  },
+  "cmhc": {
+   "product": "Rental Market Survey, average rent by bedroom type, Row / Apartment",
+   "period": "October 2025"
+  },
+  "statcan": {
+   "table": "46-10-0092-01",
+   "estimate": "average asking rent",
+   "quarter": "2026 Q2",
+   "released": "2026-09-09",
+   "experimental": true
+  },
+  "montreal": {
+   "studio": {
+    "cmhc_average": 1005.0,
+    "statcan_asking": 1250.0
+   },
+   "1br": {
+    "cmhc_average": 1131.0,
+    "statcan_asking": 1480.0
+   },
+   "2br": {
+    "cmhc_average": 1346.0,
+    "statcan_asking": 1820.0
+   },
+   "3br_plus": {
+    "cmhc_average": 1625.0,
+    "statcan_asking": 2260.0
+   }
+  },
+  "room": {
+   "estimate": 725,
+   "scope": "Montréal-wide average asking rent for a room, not per neighbourhood"
+  },
+  "min_coverage": 0.8,
+  "label_keys": {
+   "neighbourhood": "CMHC area value, rated excellent, very good or good by CMHC",
+   "zone": "wider CMHC zone value, rated excellent, very good or good by CMHC",
+   "neighbourhood_low": "CMHC area value, rated 'use with caution' by CMHC (grade d)",
+   "zone_low": "wider CMHC zone value, rated 'use with caution' by CMHC (grade d)",
+   "none": "not enough data: estimate is null"
+  },
+  "grade_words": {
+   "a": "excellent",
+   "b": "very good",
+   "c": "good",
+   "d": "use with caution"
+  },
+  "null_meaning": "estimate is null when label is 'none': not enough data.",
+  "crosswalk_notes": [
+   {
+    "quartier_id": "88",
+    "quartier_name": "Baie-D'Urfé",
+    "kind": "unconfirmed_link",
+    "cmhc_area": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+    "confidence": "high",
+    "text": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link.",
+    "detail": "its census tract has no CMHC rental units, so the counts can't confirm it; matched by name, reviewed by the owner"
+   },
+   {
+    "quartier_id": "58",
+    "quartier_name": "Bois-Francs",
+    "kind": "folded",
+    "cmhc_area": "Senneville/Roxboro-Pierrefonds",
+    "share": 0.006,
+    "text": "0.6% of its rental units are in CMHC area Senneville/Roxboro-Pierrefonds; they are counted with Saint-Laurent instead."
+   },
+   {
+    "quartier_id": "63",
+    "quartier_name": "Grande-Prairie",
+    "kind": "folded",
+    "cmhc_area": "Mercier",
+    "share": 0.018,
+    "text": "1.8% of its rental units are in CMHC area Mercier; they are counted with Saint-Léonard instead."
+   },
+   {
+    "quartier_id": null,
+    "kind": "homes_without_units",
+    "share": 0.017,
+    "text": "1.7% of the island's homes are in census tracts with no CMHC rental units (CMHC lists no such tract); they don't affect any estimate."
+   },
+   {
+    "quartier_id": null,
+    "kind": "unallocated_units",
+    "share": 0.00019,
+    "text": "89 CMHC rental units (0.02%) are in census tracts with no home in the 2021 census, so no neighbourhood gets them."
+   }
+  ],
+  "sources": [
+   "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
+   "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product.",
+   "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product.",
+   "Contains data from the Ville de Montréal open data portal, CC BY 4.0."
+  ]
+ },
+ "results": {
+  "01": {
+   "1br": {
+    "estimate": 1200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1500,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2725,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 900,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "02": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 0.619,
+      "grade": "b"
+     },
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 0.381,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 0.619,
+      "grade": "b"
+     },
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 0.381,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2250,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 0.619,
+      "grade": "c"
+     },
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 0.381,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 0.619,
+      "grade": "c"
+     },
+     {
+      "type": "area",
+      "name": "Cartierville",
+      "share": 0.381,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "03": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 975,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "04": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 975,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "05": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 975,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "06": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 975,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ahuntsic",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "07": {
+   "1br": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "08": {
+   "1br": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "09": {
+   "1br": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "10": {
+   "1br": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "11": {
+   "1br": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Parc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Parc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "12": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Villeray",
+      "share": 0.893,
+      "grade": "b"
+     },
+     {
+      "type": "area",
+      "name": "Parc-Extension",
+      "share": 0.107,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1100,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Villeray",
+      "share": 0.893,
+      "grade": "c"
+     },
+     {
+      "type": "area",
+      "name": "Parc-Extension",
+      "share": 0.107,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "13": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Villeray",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Villeray/St-Michel/Pc-Extension",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Villeray",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "14": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "15": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "16": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "17": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "18": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "19": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "20": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1250,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rosemont/La Petite-Patrie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "21": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "22": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "23": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "24": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "25": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "26": {
+   "1br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Mercier",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "27": {
+   "1br": {
+    "estimate": 1500,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1800,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2275,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "28": {
+   "1br": {
+    "estimate": 1500,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1800,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2275,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "29": {
+   "1br": {
+    "estimate": 1500,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1800,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2275,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "30": {
+   "1br": {
+    "estimate": 1575,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "East Ville-Marie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1775,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "East Ville-Marie",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2275,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Hochelaga-Maisonneuve",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1225,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "East Ville-Marie",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "31": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "32": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "33": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "34": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "35": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "36": {
+   "1br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Plateau-Mont-Royal",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "37": {
+   "1br": {
+    "estimate": 2150,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 3050,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 3150,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Downtown Montréal/Îles-des-Soeurs",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1600,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "38": {
+   "1br": {
+    "estimate": 2150,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 3050,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 3150,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Downtown Montréal/Îles-des-Soeurs",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1600,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "39": {
+   "1br": {
+    "estimate": 2150,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 3050,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 3150,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Downtown Montréal/Îles-des-Soeurs",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1600,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Ville-Marie",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "40": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2600,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "41": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2600,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "42": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2600,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "43": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2600,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-des-Neiges",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "44": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2175,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1050,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "45": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2175,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1050,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "46": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1750,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2175,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1050,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Notre-Dame-de-Grâce",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "47": {
+   "1br": {
+    "estimate": 1575,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1475,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "South West",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   }
+  },
+  "48": {
+   "1br": {
+    "estimate": 1575,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1475,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "South West",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   }
+  },
+  "49": {
+   "1br": {
+    "estimate": 1575,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1475,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "South West",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   }
+  },
+  "50": {
+   "1br": {
+    "estimate": 1575,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1475,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "South West",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   }
+  },
+  "51": {
+   "1br": {
+    "estimate": 1575,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sud-Ouest/Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1475,
+    "label": "neighbourhood_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "South West",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   }
+  },
+  "52": {
+   "1br": {
+    "estimate": 1275,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1775,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rivière-des-Prairies",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2300,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rivière-des-Prairies",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 950,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "53": {
+   "1br": {
+    "estimate": 1275,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1775,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rivière-des-Prairies",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2300,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Rivière-des-Prairies",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 950,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "54": {
+   "1br": {
+    "estimate": 1275,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-aux-Trembles",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1425,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-aux-Trembles",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1500,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-aux-Trembles",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 950,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-aux-Trembles",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "55": {
+   "1br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1850,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "56": {
+   "1br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1850,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "57": {
+   "1br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1850,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "58": {
+   "1br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1850,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "59": {
+   "1br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1850,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2950,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Laurent",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "60A": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "60B": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "60C": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "61": {
+   "1br": {
+    "estimate": 1375,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1525,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Montréal-Nord",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "62": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Léonard",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Léonard",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 850,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Anjou/Saint-Léonard",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "63": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Léonard",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Saint-Léonard",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 850,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Anjou/Saint-Léonard",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "64": {
+   "1br": {
+    "estimate": 1450,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2125,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "65": {
+   "1br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Île-des-Soeurs",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2100,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Île-des-Soeurs",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Île-des-Soeurs",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1350,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Île-des-Soeurs",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "66": {
+   "1br": {
+    "estimate": 1450,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1650,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2125,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Verdun",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "67": {
+   "1br": {
+    "estimate": 1425,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2350,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1075,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "68": {
+   "1br": {
+    "estimate": 1425,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2350,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1075,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "LaSalle",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "69": {
+   "1br": {
+    "estimate": 1175,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Lachine",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Lachine",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1100,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Dorval/Lachine/Saint-Pierre",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "70": {
+   "1br": {
+    "estimate": 1175,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Lachine",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Lachine",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1100,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Dorval/Lachine/Saint-Pierre",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "71": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "72": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "73": {
+   "1br": {
+    "estimate": 1000,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Anjou",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1525,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Anjou/Saint-Léonard",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 875,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Anjou",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "74": {
+   "1br": {
+    "estimate": 1500,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1925,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2700,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "75": {
+   "1br": {
+    "estimate": 1400,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sainte-Geneviève/Senneville etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1925,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sainte-Geneviève/Senneville etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1150,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sainte-Geneviève/Senneville etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "80": {
+   "1br": {
+    "estimate": 1275,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1600,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2275,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 950,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Pte-aux-Trembles/Montréal-E etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "81": {
+   "1br": {
+    "estimate": 1725,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Westmount",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2425,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Westmount",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2500,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "ND-de-Grâce/Ct-St-Luc etc.",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Westmount",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "82": {
+   "1br": {
+    "estimate": 1475,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "ND-de-Grâce/Ct-St-Luc etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1975,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "ND-de-Grâce/Ct-St-Luc etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2500,
+    "label": "zone",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "ND-de-Grâce/Ct-St-Luc etc.",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1075,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "ND-de-Grâce/Ct-St-Luc etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   }
+  },
+  "83": {
+   "1br": {
+    "estimate": 1600,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": 86,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 0.866,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": 86,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 0.866,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2875,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": 86,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 0.866,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1300,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": 86,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 0.866,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "84": {
+   "1br": {
+    "estimate": 1600,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2875,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1300,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Côte-Saint-Luc/Montreal West",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "85": {
+   "1br": {
+    "estimate": 1400,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dorval/Île-Dorval",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1700,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dorval/Île-Dorval",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2075,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dorval/Île-Dorval",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dorval/Île-Dorval",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "86": {
+   "1br": {
+    "estimate": 1975,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-Claire",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2525,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-Claire",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2575,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-Claire",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1025,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Pointe-Claire",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "87": {
+   "1br": {
+    "estimate": 1875,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Baie-d'Urfé/Beaconsfield etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2000,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Beaconsfield-Kirkland",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Beaconsfield-Kirkland",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1050,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Baie-d'Urfé/Beaconsfield etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "88": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1075,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "89": {
+   "1br": {
+    "estimate": 1575,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dollard-des-Ormeaux",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1925,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Sainte-Geneviève/Senneville etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1175,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Dollard-des-Ormeaux",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   }
+  },
+  "90": {
+   "1br": {
+    "estimate": 1875,
+    "label": "zone",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Baie-d'Urfé/Beaconsfield etc.",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 2000,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Beaconsfield-Kirkland",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2200,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Beaconsfield-Kirkland",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1050,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Baie-d'Urfé/Beaconsfield etc.",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "91": {
+   "1br": {
+    "estimate": 1475,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1825,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 1925,
+    "label": "neighbourhood",
+    "grade": "c",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "c"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1075,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "92": {
+   "1br": {
+    "estimate": 1325,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1900,
+    "label": "neighbourhood",
+    "grade": "a",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "a"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": null,
+    "label": "none",
+    "grade": null,
+    "coverage_pct": null,
+    "cmhc_areas": []
+   },
+   "studio": {
+    "estimate": 1125,
+    "label": "neighbourhood",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "area",
+      "name": "Senneville/Roxboro-Pierrefonds",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  },
+  "93": {
+   "1br": {
+    "estimate": 1500,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "2br": {
+    "estimate": 1925,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   },
+   "3br_plus": {
+    "estimate": 2700,
+    "label": "zone_low",
+    "grade": "d",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "d"
+     }
+    ]
+   },
+   "studio": {
+    "estimate": 1225,
+    "label": "zone",
+    "grade": "b",
+    "coverage_pct": null,
+    "cmhc_areas": [
+     {
+      "type": "zone",
+      "name": "Ct-des-Neiges/Mt-Royal/Outremont",
+      "share": 1.0,
+      "grade": "b"
+     }
+    ]
+   }
+  }
+ }
+}

@@ -167,7 +167,7 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ## Rent (Phase 2)
-_In progress. The per-quartier estimate is computed (`python -m mtlhousing rent` → `data/interim/rent_by_quartier.csv`). Still to come: the site export (M2.5)._
+Computed by `python -m mtlhousing rent` (`data/interim/rent_by_quartier.csv`, unrounded) and exported for the site by `python -m mtlhousing rent-export` (`web/public/data/rent.json`, rounded). The export re-checks the crosswalk against CMHC's unit counts first, and refuses to write if anything is off.
 
 ### Two sources, two jobs
 - **Where rents are higher or lower: CMHC, October 2025.** CMHC's Rental Market Survey gives the average rent by neighbourhood and bedroom count. We only use its ratios: a neighbourhood's average divided by the Montréal average for the same bedroom count. Every ratio comes from that one survey, so they are consistent with each other.
@@ -248,4 +248,35 @@ The rule applies at **every step**, grade d included, and the labels combine: fo
 Every quartier gets a row for each of the four bedroom types CMHC and StatCan share: studio, 1 bedroom (3½), 2 bedrooms (4½) and 3+ bedrooms. The row holds either an estimate or "not enough data". The site shows the first three types. With October 2025 data, "not enough data" covers 0 quartiers for studios, 6 for 1 bedroom, 6 for 2 bedrooms and 33 for 3+ bedrooms. The estimate is kept unrounded until the export. If the StatCan Montréal value for a bedroom type is missing, unusable, or flagged E ("use with caution") or worse, the step stops: how to label such a value isn't decided yet. 2026 Q2 has no flag on any apartment value.
 
 ### Rooms
-StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, labelled "Montréal-wide average, not specific to this neighbourhood".
+StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC has no room data, so there is no estimate per neighbourhood. The site shows the room figure once, rounded like the rest (≈ $725). The wording is under "What the site shows".
+
+### What the site shows
+**Rounding.** Every rent is rounded **half up to the nearest $25** in the export, rooms included ($1,612.50 → $1,625, $1,604 → $1,600), and shown with "≈": "≈ $1,600". The site, its budget filter and the shortlist all use the rounded value, so a rent shown as ≈ $1,475 is never excluded at a $1,475 budget. "Not enough data" is `null` in `rent.json`, never a number.
+
+**Words.** The city's quartiers are "neighbourhoods" on the site. CMHC's areas are always "CMHC area" and "CMHC zone", so the two are never confused. CMHC's grade is shown in words, never as a letter: a "excellent", b "very good", c "good", d "use with caution".
+
+**Labels.** `rent.json` carries a key; the site holds the text. English is below; French comes in M5.
+
+| Key | Badge (map, shortlist) | Detail panel line |
+|---|---|---|
+| `neighbourhood` | Estimate | Based on CMHC's average rent in {CMHC area} (October 2025, rated {excellent / very good / good} by CMHC), adjusted to current Montréal asking rents. |
+| `zone` | Wider-area estimate | CMHC has no reliable figure for this area, so this uses the wider CMHC zone {zone} (rated {excellent / very good / good} by CMHC). |
+| `neighbourhood_low` | Low reliability | Based on CMHC's average rent in {CMHC area}, which CMHC rates "use with caution". |
+| `zone_low` | Low reliability | Based on the wider CMHC zone {zone}, which CMHC rates "use with caution". |
+| `none` | Not enough data | CMHC doesn't publish a reliable rent for this size here or nearby. |
+
+These lines are added to the detail line when they apply:
+- **Split neighbourhood:** "Weighted average of CMHC areas {A} (62%) and {B} (38%), by rental units."
+- **Coverage under 100%:** "Covers {X}% of this neighbourhood's rental units; CMHC has no reliable figure for the rest." X is rounded down.
+- **Under every estimate:** "Estimated rent for a new lease, not a real listing. Based on CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
+- **Room:** "≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2)."
+
+**Crosswalk notes.** Notes on the crosswalk are shown only on the sources & limitations page, not in the main interface. `rent.json` carries them in `meta.crosswalk_notes`:
+- Baie-D'Urfé's link to Sainte-Anne-de-Bellevue/Baie-d'Urfé is by name and can't be confirmed from the counts.
+- Two slivers are folded in: Bois-Francs and Grande-Prairie.
+- Two island-wide facts: homes in tracts with no CMHC units, and units in tracts with no 2021 home.
+
+**Attribution** (in `meta.sources`, shown on the sources page):
+- "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC."
+- "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product."
+- Statistics Canada 2021 Census Geographic Attribute File and Ville de Montréal open data, as for the commute.

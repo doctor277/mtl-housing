@@ -117,6 +117,8 @@ class Estimate:
     coverage: float  # share of the quartier's rental units behind the ratio (0 if none)
     areas: str  # CMHC areas used, e.g. "Villeray 0.530 (b) + Saint-Michel 0.470 (c)"
     label: str
+    # The same, structured: (area or zone name, share of the quartier's rental units, grade)
+    used: tuple[tuple[str, float, str], ...] = ()
 
 
 def coverage_pct(coverage: float) -> int | None:
@@ -154,7 +156,10 @@ def estimate_quartier(
         pct = coverage_pct(covered)
         if pct is not None:
             label += f", covers {pct}% of rental units"
-        return Estimate(level, reliability, worst, ratio, min(covered, 1.0), text, label)
+        used_areas = tuple((n, min(s, 1.0), g) for n, (s, g) in areas.items())
+        return Estimate(
+            level, reliability, worst, ratio, min(covered, 1.0), text, label, used_areas
+        )
     return Estimate(None, None, None, math.nan, 0.0, "", NOT_ENOUGH_DATA_LABEL)
 
 
@@ -226,6 +231,7 @@ def estimate_all(
                     "coverage_pct": coverage_pct(e.coverage) if e.level else None,
                     "ratio": e.ratio,
                     "cmhc_areas": e.areas,
+                    "cmhc_used": [{"name": n, "share": s, "grade": g} for n, s, g in e.used],
                     "n_parts": len(parts),
                     "cmhc_cma_rent": cma_rent,
                     "statcan_asking_rent": level_rent,
