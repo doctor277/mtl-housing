@@ -34,13 +34,25 @@ STATCAN_RENT_QUARTER = "2026-04"  # 2026 Q2, released 2026-09-09
 # CMHC Rental Market Survey, HMIP exports (Phase 2): average rent by bedroom type,
 # Row / Apartment, Montréal CMA. Only ratios to the CMA total are used.
 CMHC_RMS_PERIOD = "October 2025"
-CROSSWALK_DIR = REPO_ROOT / "pipeline" / "crosswalk"  # hand-made, committed
-QUARTIER_TO_CMHC_CSV = CROSSWALK_DIR / "quartier_to_cmhc_neighbourhood.csv"
-CMHC_NBHD_TO_ZONE_CSV = CROSSWALK_DIR / "cmhc_neighbourhood_to_zone.csv"
 CMHC_RENT_CSV = {
     "neighbourhood": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_neighbourhood.csv",
     "zone": RAW_DIR / "cmhc" / "cmhc_rms_2025-10_avg_rent_by_zone.csv",
 }
+# Same survey, rental universe (number of units). Only used to check the crosswalk.
+CMHC_UNIVERSE_CSV = {
+    "zone": RAW_DIR / "cmhc" / "cmhc_universe_by_zone.csv",
+    "neighbourhood": RAW_DIR / "cmhc" / "cmhc_universe_by_neighbourhood.csv",
+    "tract": RAW_DIR / "cmhc" / "cmhc_universe_by_tract.csv",
+}
+# Crosswalk quartier -> CMHC neighbourhood -> zone (hand-made, committed, checked against
+# the unit counts by `crosswalk-check`; see docs/methodology.md, Rent).
+CROSSWALK_DIR = REPO_ROOT / "pipeline" / "crosswalk"
+QUARTIER_TO_CMHC_CSV = CROSSWALK_DIR / "quartier_to_cmhc_neighbourhood.csv"
+CMHC_NBHD_TO_ZONE_CSV = CROSSWALK_DIR / "cmhc_neighbourhood_to_zone.csv"
+TRACT_TO_CMHC_CSV = CROSSWALK_DIR / "census_tract_to_cmhc_neighbourhood.csv"
+# A quartier's part in a second neighbourhood holding less than this share of its rental
+# units is folded into the rest instead of kept as a split.
+CROSSWALK_FOLD_BELOW = 0.05
 OSM_PBF = RAW_DIR / "osm" / "quebec-261119.osm.pbf"
 GTFS_DIR = RAW_DIR / "gtfs"
 
@@ -49,6 +61,7 @@ GAF_MONTREAL_PARQUET = INTERIM_DIR / "gaf_montreal.parquet"  # cache of the 299 
 SAMPLE_POINTS_PARQUET = INTERIM_DIR / "sample_points.parquet"
 SAMPLE_POINTS_GEOJSON = INTERIM_DIR / "sample_points.geojson"  # debug / visual check
 SAMPLE_POINTS_SUMMARY_CSV = INTERIM_DIR / "sample_points_by_quartier.csv"
+CROSSWALK_CHECK_CSV = INTERIM_DIR / "crosswalk_check.csv"
 GTFS_FEEDS = {
     "stm": GTFS_DIR / "stm.zip",
     "rem": GTFS_DIR / "rem.zip",

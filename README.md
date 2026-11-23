@@ -68,6 +68,7 @@ python -m mtlhousing aggregate --campus udem      :: per-quartier median/p10/p90
 python -m mtlhousing export --campus udem         :: web/public/data/*.json(geojson) + data/interim check map
 python -m mtlhousing validate --campus udem       :: R5 vs Google routes -> pipeline/validation/udem_results.csv
 python -m mtlhousing access-check --campus udem   :: R5 platform -> building walks and the access adjustments they imply
+python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone, checked against CMHC unit counts (exit 1 on a problem)
 ```
 
 ### Web
