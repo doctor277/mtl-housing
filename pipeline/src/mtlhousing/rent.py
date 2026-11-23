@@ -11,7 +11,8 @@ not statistically reliable) is never used.
 
 A quartier split between neighbourhoods (crosswalk) goes through the same steps once,
 for all its parts together (`estimate_quartier`). At each step, the parts with a value
-that qualifies count with their share of the quartier's rental units:
+that qualifies count with their share of the quartier's rental units. Steps 1-2 accept
+a, b or c; steps 3-4 accept d *or better*, so a c part is never ignored there:
 - they cover it all: share-weighted average of their ratios (rent / CMA rent);
 - they cover at least RENT_MIN_COVERAGE: the same average, re-weighted over them,
   labelled "covers X% of rental units" (X rounded down);
@@ -61,11 +62,16 @@ def _grade(r: CmhcRent) -> str | None:
     return r.grade
 
 
+# (grades that count at this step, level, reliability). The grade-d steps accept "d or
+# better": a c value is never ignored at a step that accepts d. For one area this changes
+# nothing (an a/b/c value is used at step 1 or 2); for a split quartier, a part graded c
+# and a part graded d can together reach the coverage a step needs.
+D_OR_BETTER = (*GOOD_GRADES, LOW_GRADE)
 STEPS = (
     (GOOD_GRADES, "neighbourhood", "ok"),
     (GOOD_GRADES, "zone", "ok"),
-    ((LOW_GRADE,), "neighbourhood", "low"),
-    ((LOW_GRADE,), "zone", "low"),
+    (D_OR_BETTER, "neighbourhood", "low"),
+    (D_OR_BETTER, "zone", "low"),
 )
 
 

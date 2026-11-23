@@ -238,10 +238,10 @@ For a quartier split between neighbourhoods (see the crosswalk), the rule above 
 - **The parts with a usable value cover at least 80% of the quartier's rental units:** the average is re-weighted over those parts only, and labelled "covers X% of rental units", with X the share they cover, **rounded down** to a whole percent (86.6% → "86%").
 - **Below 80%:** fall back to the next step of the order above, as for any quartier.
 
-The rule applies at **every step**, grade d included, and the labels combine: for example "low reliability (CMHC grade d), covers 90% of rental units". "Usable" means a value that qualifies for that step: grade a, b or c at steps 1–2, grade d at steps 3–4. In practice:
+The rule applies at **every step**, grade d included, and the labels combine: for example "low reliability (CMHC grade d), covers 90% of rental units". "Usable" means a value that qualifies for that step: grade a, b or c at steps 1–2, and grade **d or better** (a, b, c or d) at steps 3–4. A c value is never ignored at a step that accepts d. For a quartier with one neighbourhood this changes nothing, since an a/b/c value is already used at step 1 or 2. For a split quartier, a part graded c and a part graded d can together reach the coverage a step needs. The label is then grade d, the worst grade used. In practice:
 - **Côte-Saint-Luc:** Hampstead/Côte-Saint-Luc is suppressed for every size. Côte-Saint-Luc/Montreal West covers 86.6%, so every size is labelled "covers 86% of rental units".
 - **Gabriel-Sagard, studio:** Villeray has a grade c value but covers only 53%, so the quartier uses the zone, which covers both halves.
-- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic has a grade c value but covers only 61.9%. The zone is grade d and Cartierville is grade d, so the quartier ends at step 4 (zone, grade d).
+- **Nouveau-Bordeaux, 3+ bedrooms:** Ahuntsic (grade c) covers only 61.9%, so step 1 fails, and the zone has no a/b/c value, so step 2 fails. At step 3, Ahuntsic (c) and Cartierville (d) both count and cover 100%. The quartier gets a neighbourhood-level estimate labelled "low reliability (CMHC grade d)".
 - All four split quartiers have both parts in the same zone, so the zone steps give a single value.
 
 ### What is computed

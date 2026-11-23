@@ -125,6 +125,20 @@ def test_coverage_rule_applies_at_grade_d_steps_with_a_combined_label():
     assert e.areas == "Z1 0.850 (d)"
 
 
+def test_grade_d_steps_count_c_parts_too():
+    # Nouveau-Bordeaux, 3+ bedrooms pattern: one part c under 80%, the other d, zone not
+    # a/b/c. Step 3 counts both (d or better): neighbourhood level, 100% covered, grade d.
+    parts = [
+        part("N1", 0.619, r(1400, "c"), r(1450, "d")),
+        part("N2", 0.381, r(1950, "d"), r(1450, "d")),
+    ]
+    e = estimate_quartier(parts, CMA_RENT)
+    assert (e.level, e.reliability, e.grade) == ("neighbourhood", "low", "d")
+    assert e.coverage == 1 and e.ratio == pytest.approx(0.619 * 1.4 + 0.381 * 1.95)
+    assert e.label == "low reliability (CMHC grade d)"
+    assert e.areas == "N1 0.619 (c) + N2 0.381 (d)"
+
+
 def test_grade_d_never_beats_a_qualifying_abc_step():
     # neighbourhood a/b/c covers only 62% -> zone a/b/c wins over neighbourhood d at 100%
     parts = [
@@ -239,6 +253,8 @@ def test_real_estimates():
     assert e.loc[("Côte-Saint-Luc", "1br"), "estimate"] == pytest.approx(1226 / 1131 * 1480)
     assert e.loc[("Gabriel-Sagard", "studio"), "level"] == "zone"
     nb = e.loc[("Nouveau-Bordeaux", "3br_plus")]
-    assert (nb["level"], nb["reliability"]) == ("zone", "low")
+    assert (nb["level"], nb["reliability"], nb["coverage"]) == ("neighbourhood", "low", 1)
+    assert nb["label"] == "low reliability (CMHC grade d)"
+    assert nb["cmhc_areas"] == "Ahuntsic 0.619 (c) + Cartierville 0.381 (d)"
     n_none = est[est["level"].isna()].groupby("unit").size().reindex(rent.UNITS).fillna(0)
     assert n_none.astype(int).tolist() == [0, 6, 6, 33]
