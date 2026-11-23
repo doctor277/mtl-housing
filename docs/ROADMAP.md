@@ -14,7 +14,7 @@ them: heavy local runs, approvals, deploys.
 | **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first | |
 | **M5** Languages, sources, sharing | French/English, sources & limitations page, shareable URL holding the search settings | |
 | **M5.5** Auto-refresh | See below | |
-| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5); GTFS refresh; deploy to Vercel. **Needs owner:** OK to deploy | |
+| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5); GTFS refresh before launch; deploy to Vercel. **Needs owner:** OK to deploy | |
 
 ## M5.5 Auto-refresh
 
