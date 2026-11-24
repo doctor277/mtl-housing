@@ -7,6 +7,11 @@
 
 import type { MaxCommute, SearchField, SearchSize } from "../search";
 
+/** "a, b or c": an English list joined with "or" (no serial comma). */
+function orList(items: string[]): string {
+  return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} or ${items.at(-1)}`;
+}
+
 export const en = {
   lang: "en",
   /** Placeholder until the name is chosen (M6). */
@@ -34,7 +39,7 @@ export const en = {
     budget: {
       label: "Budget per month",
       optional: "optional",
-      hint: "Steps of $25. Leave it empty to sort by commute only.",
+      hint: (step: number) => `Steps of $${step}. Leave it empty to sort by commute only.`,
       prefix: "$",
     },
     maxCommute: {
@@ -58,9 +63,10 @@ export const en = {
     invalid: {
       campus: "Pick one of the campuses.",
       size: "Pick a size: room, studio, 3½ or 4½.",
-      budget: "The budget must be whole dollars in steps of $25, or left empty.",
-      maxCommute: "Pick a max commute: 20, 30, 45 or 60 min.",
-    } satisfies Record<SearchField, string>,
+      budget: (step: number) => `The budget must be whole dollars in steps of $${step}, or left empty.`,
+      maxCommute: (options: readonly number[]) =>
+        `Pick a max commute: ${orList(options.map(String))} min.`,
+    } satisfies Record<SearchField, unknown>,
   },
 };
 

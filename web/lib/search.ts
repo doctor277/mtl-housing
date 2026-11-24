@@ -48,7 +48,8 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   const rawBudget = (single(params, "budget") ?? "").trim();
   if (rawBudget !== "" || (params.budget !== undefined && typeof params.budget !== "string")) {
     budget = /^\d+$/.test(rawBudget) ? Number(rawBudget) : NaN;
-    if (!(budget > 0 && budget % BUDGET_STEP === 0)) errors.push("budget");
+    // Safe integers only: past 2^53 a typed number is silently rounded (1e19 + 1 -> 1e19).
+    if (!(Number.isSafeInteger(budget) && budget > 0 && budget % BUDGET_STEP === 0)) errors.push("budget");
   }
 
   const max = single(params, "max");

@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { campusOptions } from "@/lib/commute";
 import { loadCommute } from "@/lib/data";
 import { formatDollars } from "@/lib/rent";
-import { parseSearch } from "@/lib/search";
+import { BUDGET_STEP, MAX_COMMUTE_MIN, parseSearch, type SearchField } from "@/lib/search";
 import { strings } from "@/lib/strings";
 
 const t = strings.results;
@@ -14,6 +14,12 @@ const t = strings.results;
 export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
 
 const linkClass = "font-semibold text-link underline";
+
+function invalidMessage(field: SearchField): string {
+  if (field === "budget") return t.invalid.budget(BUDGET_STEP);
+  if (field === "maxCommute") return t.invalid.maxCommute(MAX_COMMUTE_MIN);
+  return t.invalid[field];
+}
 
 // searchParams is request data: it renders inside Suspense (Cache Components).
 export default function Results({ searchParams }: PageProps<"/results">) {
@@ -38,7 +44,7 @@ async function SearchSummary({ searchParams }: Pick<PageProps<"/results">, "sear
         <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.invalidTitle}</h1>
         <ul className="mt-4 list-disc pl-5 text-error">
           {parsed.errors.map((e) => (
-            <li key={e}>{t.invalid[e]}</li>
+            <li key={e}>{invalidMessage(e)}</li>
           ))}
         </ul>
         <p className="mt-6">

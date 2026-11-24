@@ -2,11 +2,11 @@
 
 A Montréal "where should I live?" tool for students and renters without a car.
 
-Pick your campus (UdeM, McGill, Concordia SGW), apartment size (studio / 3½ / 4½),
-maximum budget and maximum transit commute. The site shows:
+Pick your campus (UdeM, McGill, Concordia SGW), size (room / studio / 3½ / 4½), an optional
+budget and a maximum transit commute. The site shows:
 
-- a map of Montréal neighbourhoods coloured by transit commute time,
-- a ranked shortlist of 3–5 neighbourhoods that fit,
+- a ranked shortlist of neighbourhoods that fit,
+- a map of Montréal neighbourhoods coloured by transit commute time or rent, as a second view,
 - a detail panel per neighbourhood: commute estimate, rent estimate, data source, date and reliability.
 
 **Data honesty is rule #1.** Every number shows where it comes from, when, and how reliable it is.
@@ -81,14 +81,20 @@ Requires Node 22.12+ (Vitest 5; CI uses Node 22). From the repo root:
 cd web
 npm ci
 npm run dev        :: http://localhost:3000
-npm test           :: Vitest: rent classes and texts, campus picker and commute texts (web/lib/*.test.ts)
+npm test           :: Vitest: rent classes, commute texts, search parsing, UI strings (web/lib/**/*.test.ts)
 ```
 
-The page reads `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json`
-(written by the pipeline's `export` and `rent-export` steps and committed). It is still a bare
-map: a Commute / Rent toggle; quartiers coloured by median transit commute to the chosen campus
-(UdeM, McGill or Concordia SGW, picked in Commute mode) or by the estimated rent for a studio,
-3½ or 4½; click for details. Basemap: OpenFreeMap (no API key).
+Pages (M4 in progress):
+
+- `/`: the search form (campus, size, optional budget, max commute). All UI text is in
+  `web/lib/strings/`; the design system is described in `web/DESIGN.md`.
+- `/results`: placeholder until M4.2; it repeats the search and links to the map.
+- `/map`: the map. A Commute / Rent toggle; quartiers coloured by median transit commute to
+  the chosen campus or by the estimated rent for a studio, 3½ or 4½; click for details.
+  Basemap: OpenFreeMap (no API key).
+
+They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
+the pipeline's `export` and `rent-export` steps and committed).
 
 ## Status
 

@@ -37,7 +37,8 @@ describe("parseSearch", () => {
     expect(BUDGET_STEP).toBe(25);
     expect(parseSearch({ ...ok, budget: "25" }, CAMPUSES).ok).toBe(true);
     expect(parseSearch({ ...ok, budget: "1475" }, CAMPUSES).ok).toBe(true);
-    for (const budget of ["1480", "0", "-25", "1500.5", "1,500", "$1500", "abc", "1e3"]) {
+    const tooBig = ["1000000000000000000000", "10000000000000000001"]; // 1e21; 1e19 + 1 rounds to 1e19
+    for (const budget of ["1480", "0", "-25", "1500.5", "1,500", "$1500", "abc", "1e3", ...tooBig]) {
       expect(parseSearch({ ...ok, budget }, CAMPUSES)).toEqual({ ok: false, errors: ["budget"] });
     }
   });
@@ -50,6 +51,7 @@ describe("parseSearch", () => {
 
   it("rejects a repeated parameter instead of picking one", () => {
     expect(parseSearch({ ...ok, campus: ["a", "b"] }, CAMPUSES)).toEqual({ ok: false, errors: ["campus"] });
+    expect(parseSearch({ ...ok, budget: ["1500", "1600"] }, CAMPUSES)).toEqual({ ok: false, errors: ["budget"] });
   });
 
   it("lists every problem at once, in form order", () => {

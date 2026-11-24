@@ -76,7 +76,7 @@ export default function SearchForm({
           {t.budget.label} <span className="font-normal text-ink-muted">({t.budget.optional})</span>
         </label>
         <p id="budget-hint" className="mt-1 text-sm text-ink-muted">
-          {t.budget.hint}
+          {t.budget.hint(BUDGET_STEP)}
         </p>
         <div className="mt-3 flex h-12 w-44 items-center rounded-control border border-control bg-surface focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus">
           <span aria-hidden="true" className="pl-3 text-ink-muted">
