@@ -6,6 +6,7 @@ import {
   campusFeatureProps,
   campusOptions,
   commuteTarget,
+  departureWindow,
   windowLabel,
 } from "@/lib/commute";
 
@@ -49,6 +50,9 @@ describe("campus picker and texts", () => {
       departure_window: { start: "07:30", minutes: 60 },
     } as unknown as CommuteFile["meta"];
     expect(windowLabel(meta)).toBe("leaving 7:30–8:30, Tue 2026-12-01");
+    expect(departureWindow(meta)).toEqual({ start: "7:30", end: "8:30" });
+    const late = { ...meta, departure_window: { start: "08:45", minutes: 30 } };
+    expect(departureWindow(late as CommuteFile["meta"])).toEqual({ start: "8:45", end: "9:15" });
   });
 
   it("lists the campuses present in commute.json, in file order", () => {

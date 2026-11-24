@@ -1,6 +1,11 @@
-// Phase 1.5 "ugly map", plus the rent layer (M2.6): data on screen, nothing else.
-import MapView from "./MapView";
+// The map of commutes and rents (M1–M3). Not the home page: the search form is (M4). In M4.3
+// it becomes the results' second view.
+import type { Metadata } from "next";
+import { strings } from "@/lib/strings";
+import MapView from "../MapView";
 
-export default function Home() {
+export const metadata: Metadata = { title: strings.meta.mapTitle };
+
+export default function MapPage() {
   return <MapView />;
 }
