@@ -302,11 +302,6 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
         <p className="mt-6 text-sm text-ink-muted">{t.hiddenNoCommute(list.hiddenNoCommute, campusLabel)}</p>
       )}
 
-      <p className="mt-10 border-t border-line pt-6">
-        <Link href="/map" className={linkClass}>
-          {t.openMap}
-        </Link>
-      </p>
     </>
   );
 }

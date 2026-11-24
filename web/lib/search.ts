@@ -16,6 +16,9 @@ export type MaxCommute = (typeof MAX_COMMUTE_MIN)[number];
 // Budgets are any whole number of dollars (owner, M4.3). They are compared with the rent as
 // shown, which rent.json has already rounded to $25 (lib/shortlist.ts, rentGroup).
 
+/** The owner's example search on the first screen: "UdeM, 3½, $1,500, 45 min" (M4). */
+export const EXAMPLE_SEARCH: Search = { campus: "udem", size: "1br", budget: 1500, maxCommute: 45 };
+
 /** The example in the budget hint ("e.g. 1,400"); a valid budget (tested). */
 export const BUDGET_EXAMPLE = 1400;
 

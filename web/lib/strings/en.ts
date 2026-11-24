@@ -155,6 +155,16 @@ export const en = {
   format: {
     dollars,
     rent: rentAbout,
+    /** "Tuesday, December 1, 2026" from "2026-12-01" (noon UTC avoids a day shift). */
+    longDate: (iso: string) =>
+      new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-CA", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      }),
+    andList,
   },
   home: {
     title: "Find where to live in Montréal without a car",
@@ -230,7 +240,6 @@ export const en = {
         : `${n} more neighbourhoods are more than ${pct}% over your budget.`,
     tryBudget: (n: number) =>
       n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
-    openMap: "See every neighbourhood on the map",
     invalidTitle: "This search can’t be used",
     invalid: {
       campus: "Pick one of the campuses.",
@@ -298,6 +307,74 @@ export const en = {
     target: (campusShort: string, destinations: { name: string }[]) =>
       destinations.length === 1 ? `to ${destinations[0].name}` : `fastest ${campusShort} building`,
     classLabels: commuteClassLabels,
+  },
+  /** First screen: the example search (owner's example, M4). */
+  example: {
+    lead: "Not sure? Try an example:",
+  },
+  /** Footer of the site's pages: the honest data line and links (M4.3). */
+  footer: {
+    dataLine: (scheduleDay: string, cmhcPeriod: string, statcanQuarter: string) =>
+      `Data: STM, REM and exo transit schedules for ${scheduleDay}; rents from CMHC (${cmhcPeriod}) and Statistics Canada (${statcanQuarter}). Estimates, not listings.`,
+    howItWorks: "How it works",
+    map: "Map of all neighbourhoods",
+  },
+  /** /how-it-works (M4.3). Numbers come from the data files; the full sources and limitations
+   * page is M5. */
+  howItWorks: {
+    title: "How it works",
+    lead: "Where the commute times and rents come from, and how the shortlist is made.",
+    commute: {
+      heading: "Commute times",
+      doorToDoor:
+        "Times are door to door by public transit, walking included: from the homes in each neighbourhood to the campus entrance.",
+      schedule: (start: string, end: string, day: string) =>
+        `Every trip leaving between ${start} and ${end} is planned on the STM, REM and exo schedules for ${day}, a regular weekday in the fall term. Each home’s time is the median of those trips, so it includes a typical wait; the neighbourhood’s time is the median over its homes.`,
+      range:
+        "“For most homes” is the range from the 10th to the 90th percentile of the neighbourhood’s homes, weighted by the number of households.",
+      walking: (kmh: number) => `Walking is counted at ${kmh} km/h, a winter-sidewalk pace.`,
+      closest: (campus: string, buildings: string) =>
+        `For ${campus}, each home’s time is to whichever of ${buildings} it reaches first. A class in another building can add a few minutes.`,
+      adjustmentsLead:
+        "A few times include a small fixed correction for the walk between the metro platform and the building entrance, which the trip planner gets wrong. It was set by comparing with Google Maps:",
+      adjustment: (building: string, signed: string) => `${building}: ${signed}`,
+      limits: "Schedules don’t include delays, detours or outages.",
+    },
+    rent: {
+      heading: "Rents",
+      method: (cmhcPeriod: string, statcanQuarter: string) =>
+        `Each neighbourhood’s rent is CMHC’s average rent there (${cmhcPeriod}) divided by CMHC’s Montréal average, times Statistics Canada’s current Montréal asking rent (${statcanQuarter}).`,
+      oldLeases:
+        "CMHC’s averages include long-time tenants, who usually pay less than a new tenant. Rents in neighbourhoods with older buildings may look lower than what you’ll find in listings.",
+      rounding: (step: number) => `Rents are rounded to the nearest $${step} and shown with ≈.`,
+      labelsLead: "When CMHC’s figure for a neighbourhood is missing or less reliable, the rent says so:",
+      labels: {
+        zone: "uses CMHC’s figure for the wider surrounding area.",
+        low: "CMHC rates its figure “use with caution”.",
+        none: "CMHC publishes no reliable figure here or nearby, so there is no estimate.",
+      },
+    },
+    shortlist: {
+      heading: "The shortlist",
+      maxCommute: "Only neighbourhoods within your max commute are shown.",
+      budget: (pct: number) =>
+        `With a budget, they are grouped: within your budget, slightly over (up to ${pct}% over) and not enough data. Neighbourhoods more than ${pct}% over are left out, and the page says how many. The rent compared is the rounded one you see.`,
+      noBudget: "Without a budget, they are listed by commute.",
+      rooms: "Rooms have one citywide figure, so they are listed by commute and the budget doesn’t filter them.",
+    },
+    data: {
+      heading: "Data and credits",
+      /** Attribution texts required by the sources (DATA_SOURCES.md). */
+      attributions: (cmhcPeriod: string, statcanQuarter: string) => [
+        "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules.",
+        "Neighbourhoods: contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+        `Adapted from Statistics Canada, 2021 Census Geographic Attribute File, and Asking rent and paid rent prices (table 46-10-0092-01, ${statcanQuarter}). This does not constitute an endorsement by Statistics Canada of this product.`,
+        `Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey (${cmhcPeriod}). This does not constitute an endorsement by CMHC.`,
+        "Street network and map data © OpenStreetMap contributors.",
+      ],
+      licence: "CC BY 4.0 licence",
+      more: "A full sources and limitations page is coming.",
+    },
   },
   /** The results' map view (M4.3): the same neighbourhoods as the list, on the map. */
   resultsMap: {

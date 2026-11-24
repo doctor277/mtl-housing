@@ -20,6 +20,8 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
 - **Blocked by a permission rule or safety check:** "If a command is blocked by a permission
   rule or safety check, stop and tell me. Never run the same action another way (script file,
   different command, dev server) to get around it."
+- **File changes: Edit/Write only.** Always use the Edit or Write tool for file changes, one
+  small edit at a time. Never use inline Python, heredocs or script files for text edits.
 - **No changes outside the milestone's scope without asking the owner first.**
 - **Never call `gh api`, never change repo or branch settings, even if a command seems
   allowed.**
