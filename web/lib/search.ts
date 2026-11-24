@@ -13,11 +13,15 @@ export const SEARCH_SIZES: readonly SearchSize[] = ["room", "studio", "1br", "2b
 export const MAX_COMMUTE_MIN = [20, 30, 45, 60] as const;
 export type MaxCommute = (typeof MAX_COMMUTE_MIN)[number];
 
-/** Budgets are whole dollars in steps of $25, the rounding step of the rents shown. */
-export const BUDGET_STEP = 25;
+// Budgets are any whole number of dollars (owner, M4.3). They are compared with the rent as
+// shown, which rent.json has already rounded to $25 (lib/shortlist.ts, rentGroup).
 
-/** The example in the budget hint ("e.g. 1,400"); a valid budget (tested). */
-export const BUDGET_EXAMPLE = 1400;
+/** The owner's example search on the first screen: "UdeM, 3½, $1,500, 45 min" (M4). */
+export const EXAMPLE_SEARCH: Search = { campus: "udem", size: "1br", budget: 1500, maxCommute: 45 };
+
+/** The example in the budget hint ("e.g. 1,500"), the same as the example search (owner,
+ * M4.3); a valid budget (tested). */
+export const BUDGET_EXAMPLE = 1500;
 
 export interface Search {
   campus: string;
@@ -53,7 +57,7 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   if (rawBudget !== "" || (params.budget !== undefined && typeof params.budget !== "string")) {
     budget = /^\d+$/.test(rawBudget) ? Number(rawBudget) : NaN;
     // Safe integers only: past 2^53 a typed number is silently rounded (1e19 + 1 -> 1e19).
-    if (!(Number.isSafeInteger(budget) && budget > 0 && budget % BUDGET_STEP === 0)) errors.push("budget");
+    if (!(Number.isSafeInteger(budget) && budget > 0)) errors.push("budget");
   }
 
   const max = single(params, "max");
@@ -67,13 +71,17 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   };
 }
 
-/** The query string for a search, with the form's own parameter names; `sort` only when it
- * isn't the default. */
-export function searchQuery(s: Search, sort: SortKey = "commute"): string {
+/** Results as cards (default) or on the map (M4 decision 9: the map is never the default). */
+export type ResultsView = "list" | "map";
+
+/** The query string for a search, with the form's own parameter names; `sort` and `view` only
+ * when they aren't the defaults. */
+export function searchQuery(s: Search, sort: SortKey = "commute", view: ResultsView = "list"): string {
   const p = new URLSearchParams({ campus: s.campus, size: s.size });
   if (s.budget !== null) p.set("budget", String(s.budget));
   p.set("max", String(s.maxCommute));
   if (sort !== "commute") p.set("sort", sort);
+  if (view !== "list") p.set("view", view);
   return p.toString();
 }
 
@@ -81,4 +89,14 @@ export function searchQuery(s: Search, sort: SortKey = "commute"): string {
  * Not a form field, so anything else falls back to the default instead of an error. */
 export function parseSort(params: Params): SortKey {
   return single(params, "sort") === "rent" ? "rent" : "commute";
+}
+
+/** `view=map`, else the cards. Not a form field: anything else falls back to the default. */
+export function parseView(params: Params): ResultsView {
+  return single(params, "view") === "map" ? "map" : "list";
+}
+
+/** `open=<id>`: the card to show open (from a map popup's "Show details"). */
+export function parseOpen(params: Params): string | null {
+  return single(params, "open") ?? null;
 }

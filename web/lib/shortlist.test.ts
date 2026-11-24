@@ -68,6 +68,10 @@ describe("rentGroup (owner's M4 decision 2: compare the rounded rent the user se
   it("uses the rent as shown, rounded to $25: one step over the budget is over", () => {
     // rent.json holds rents already rounded to $25; ≈ $1,425 against $1,400 is over budget.
     expect(rentGroup(1425, 1400)).toBe("over");
+    // Budgets can be any whole dollar (owner, M4.3); the rent compared is still the rounded one.
+    expect(rentGroup(1400, 1410)).toBe("fits");
+    expect(rentGroup(1425, 1410)).toBe("over");
+    expect(rentGroup(1400, 1399)).toBe("over");
   });
 
   it("puts just under and exactly 10% over as slightly over, just over 10% as hidden", () => {
@@ -138,6 +142,19 @@ describe("buildShortlist", () => {
     const s = buildShortlist(hoods, commute, rent, search(), "commute");
     expect(ids(s)).toEqual({ fits: ["A"] });
     expect(s.hiddenNoCommute).toBe(2);
+    expect(s.excluded).toEqual({ B: "noCommute", C: "noCommute" });
+  });
+
+  it("says why each neighbourhood is left out (for the map view)", () => {
+    const { hoods, commute, rent } = fixture([
+      ["A", 20, 1000], // in
+      ["B", 50, 1000], // too far
+      ["C", "over", 1000], // more than 2 h: too far
+      ["D", 20, 3000], // more than 10% over budget
+      ["E", 20, 1500], // slightly over: in
+    ]);
+    const s = buildShortlist(hoods, commute, rent, search(), "commute");
+    expect(s.excluded).toEqual({ B: "tooFar", C: "tooFar", D: "overBudget" });
   });
 
   it("sorts by commute within each group, then by name", () => {

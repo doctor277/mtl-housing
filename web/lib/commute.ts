@@ -1,3 +1,5 @@
+import { strings } from "./strings";
+
 // Types for web/public/data/commute.json (written by pipeline/src/mtlhousing/export.py)
 // and the join used by the map. A null time listed in `over_max` means "more than
 // meta.max_trip_min"; any other null means "no data".
@@ -41,17 +43,18 @@ export interface CommuteFile {
     analysis_date: string;
     departure_window: { start: string; minutes: number };
     max_trip_min: number;
+    walk_speed_kmh: number;
+    /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
+    sources: string[];
     campuses: Record<string, CampusMeta>;
     [key: string]: unknown;
   };
   results: Record<string, Record<string, CampusResult | undefined>>;
 }
 
-/** "44 min", "> 120 min" or "no data". */
+/** "44 min", "> 120 min" or "no data" (wording in lib/strings). */
 export function formatTime(block: TimeBlock, stat: TimeStat, maxTripMin: number): string {
-  const v = block[stat];
-  if (v !== null) return `${Math.round(v)} min`;
-  return block.over_max.includes(stat) ? `> ${maxTripMin} min` : "no data";
+  return strings.commute.time(block, stat, maxTripMin);
 }
 
 /** Flat properties for the map layer: numbers only where they exist. */
@@ -73,18 +76,11 @@ export function campusFeatureProps(
   return out;
 }
 
-// Short labels for the campus picker; any other campus falls back to its full name.
-const SHORT_NAMES: Record<string, string> = {
-  udem: "UdeM",
-  mcgill: "McGill",
-  concordia_sgw: "Concordia SGW",
-};
-
-/** Campuses present in commute.json, in file order, with picker labels. */
+/** Campuses present in commute.json, in file order, with short labels ("UdeM"). */
 export function campusOptions(commute: CommuteFile): { key: string; label: string }[] {
   return Object.entries(commute.meta.campuses).map(([key, c]) => ({
     key,
-    label: SHORT_NAMES[key] ?? c.name,
+    label: strings.commute.campusShort(key, c.name),
   }));
 }
 
@@ -96,20 +92,14 @@ export function departureWindow(meta: CommuteFile["meta"]): { start: string; end
   return { start: hhmm(start), end: hhmm(start + meta.departure_window.minutes) };
 }
 
-/** "leaving 7:30–8:30, Tue 2026-12-01", from commute.json meta. */
+/** "leaving 7:30–8:30, Tue 2026-12-01", from commute.json meta (wording in lib/strings). */
 export function windowLabel(meta: CommuteFile["meta"]): string {
   const { start, end } = departureWindow(meta);
-  // Noon UTC avoids a time-zone shift to the previous day.
-  const day = new Date(`${meta.analysis_date}T12:00:00Z`).toLocaleDateString("en-CA", {
-    weekday: "short",
-    timeZone: "UTC",
-  });
-  return `leaving ${start}–${end}, ${day} ${meta.analysis_date}`;
+  return strings.commute.window(start, end, meta.analysis_date);
 }
 
-/** What the time is measured to: "to Roddick Gates" for one destination, "fastest
- * UdeM building" when several buildings count (the faster one per home). */
+/** What the time is measured to: "to Roddick Gates", or "fastest UdeM building" when several
+ * buildings count (the faster one per home). */
 export function commuteTarget(campusId: string, campus: CampusMeta): string {
-  if (campus.destinations.length === 1) return `to ${campus.destinations[0].name}`;
-  return `fastest ${SHORT_NAMES[campusId] ?? campus.name} building`;
+  return strings.commute.target(strings.commute.campusShort(campusId, campus.name), campus.destinations);
 }

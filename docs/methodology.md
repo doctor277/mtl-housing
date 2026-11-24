@@ -281,7 +281,7 @@ StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC ha
 
 | Key | Badge (map popup, detail panel; shortlist cards only for caveats) | Detail panel line |
 |---|---|---|
-| `neighbourhood` | Estimate | Based on CMHC's average rent in {CMHC area} (October 2025, rated {excellent / very good / good} by CMHC), adjusted to current Montréal asking rents. |
+| `neighbourhood` | Estimate | Based on CMHC's average rent in {CMHC area} (October 2025, rated {excellent / very good / good} by CMHC). |
 | `zone` | Wider-area estimate | CMHC has no reliable figure for this area, so this uses the wider CMHC zone {zone} (rated {excellent / very good / good} by CMHC). |
 | `neighbourhood_low` | Low reliability | Based on CMHC's average rent in {CMHC area}, which CMHC rates "use with caution". |
 | `zone_low` | Low reliability | Based on the wider CMHC zone {zone}, which CMHC rates "use with caution". |
@@ -292,6 +292,7 @@ On shortlist cards, the plain `neighbourhood` case gets no badge: the list says 
 These lines are added to the detail line when they apply:
 - **Split neighbourhood:** "Weighted average of CMHC areas {A} (62%) and {B} (38%), by rental units."
 - **Coverage under 100%:** "Covers {X}% of this neighbourhood's rental units; CMHC has no reliable figure for the rest." X is rounded down.
+- The adjustment to current asking rents is said once, in the line under every estimate, not again in the detail line (owner, M4.3).
 - **Under every estimate** (owner's wording, M3): "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants." It replaces the earlier line, which also gave the dates.
 - **Data dates, once in the rent legend:** "Data: CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2)."
 - **Room:** "≈ $725 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2)."
@@ -299,7 +300,7 @@ These lines are added to the detail line when they apply:
 **Shares shown.** The per-area shares are shown **raw**, as in `rent.json`: each CMHC area's share of the neighbourhood's rental units, with no re-weighting for display. When coverage is under 100%, they add up to the coverage, not to 100%.
 - In a split, each share carries that area's own rating: "Weighted average of CMHC areas Villeray (89%, rated very good) and Parc-Extension (11%, rated good), by rental units." A grade d area reads `rated "use with caution"`, quoted as everywhere else. Shares are whole percents, or one decimal when coverage is under 100% (no current split is).
 - Next to "covers X%", the share has one decimal, so it doesn't look like a contradiction: "Covers 86% of this neighbourhood's rental units (Côte-Saint-Luc/Montreal West: 86.6%)".
-- For a split, the detail line names every area but leaves the rating out, because the label's worst grade isn't every area's rating: "Based on CMHC's average rents in CMHC areas Villeray and Parc-Extension (October 2025), adjusted to current Montréal asking rents." If the label is low reliability, it ends "CMHC rates at least one of them "use with caution"".
+- For a split, the detail line names every area but leaves the rating out, because the label's worst grade isn't every area's rating: "Based on CMHC's average rents in CMHC areas Villeray and Parc-Extension (October 2025)." If the label is low reliability, it ends "CMHC rates at least one of them "use with caution"".
 
 The unrounded Montréal figures in `meta.montreal` (CMHC average, StatCan asking rent) are published source values. They can be shown as they are.
 

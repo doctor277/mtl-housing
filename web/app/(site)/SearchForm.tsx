@@ -2,8 +2,7 @@
 // adds client-side navigation). Choices are native radio buttons drawn as buttons. On the first
 // screen nothing is preselected; on the results page it starts from the current search.
 import Form from "next/form";
-import { formatDollars } from "@/lib/rent";
-import { BUDGET_EXAMPLE, BUDGET_STEP, MAX_COMMUTE_MIN, SEARCH_SIZES, type Search } from "@/lib/search";
+import { BUDGET_EXAMPLE, MAX_COMMUTE_MIN, SEARCH_SIZES, type Search } from "@/lib/search";
 import type { SortKey } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
 
@@ -99,7 +98,7 @@ export default function SearchForm({
           {t.budget.label} <span className="font-normal text-ink-muted">({t.budget.optional})</span>
         </label>
         <p id="budget-hint" className="mt-1 text-sm text-ink-muted">
-          {t.budget.hint(formatDollars(BUDGET_EXAMPLE))}
+          {t.budget.hint(strings.format.dollars(BUDGET_EXAMPLE))}
         </p>
         <div className="mt-3 flex h-12 w-44 items-center rounded-control border border-control bg-surface focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus">
           <span aria-hidden="true" className="pl-3 text-ink-muted">
@@ -110,8 +109,8 @@ export default function SearchForm({
             name="budget"
             type="number"
             inputMode="numeric"
-            min={BUDGET_STEP}
-            step={BUDGET_STEP}
+            min={1}
+            step={1}
             defaultValue={initial?.budget ?? undefined}
             aria-describedby="budget-hint"
             className="h-full w-full min-w-0 bg-transparent px-2 outline-none"

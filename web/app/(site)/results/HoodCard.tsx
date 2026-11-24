@@ -2,18 +2,7 @@
 // panel in place: commute (median, range, buildings, flags, source) and rent (estimate,
 // CMHC basis, source, data dates). A native <details>, so it needs no JavaScript.
 import { type CampusMeta, type CampusResult, type CommuteFile, departureWindow, type TimeBlock } from "@/lib/commute";
-import {
-  BADGES,
-  dataLine,
-  detailLine,
-  extraLines,
-  formatRent,
-  isLowReliability,
-  type RentEntry,
-  type RentMeta,
-  roomLine,
-  sourceLine,
-} from "@/lib/rent";
+import { isLowReliability, type RentEntry, type RentMeta } from "@/lib/rent";
 import type { ShortlistItem } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
 
@@ -79,7 +68,7 @@ function RentDetail({ e, ctx }: { e: RentEntry | null; ctx: CardContext }) {
     return (
       <section>
         {heading}
-        <p className="mt-1">{roomLine(ctx.rentMeta)}</p>
+        <p className="mt-1">{strings.rent.roomLine(ctx.rentMeta)}</p>
       </section>
     );
   }
@@ -89,18 +78,18 @@ function RentDetail({ e, ctx }: { e: RentEntry | null; ctx: CardContext }) {
       {heading}
       <p className="mt-1">
         {entry.estimate !== null && (
-          <span className="font-semibold tabular-nums">{strings.card.perMonth(formatRent(entry.estimate))} · </span>
+          <span className="font-semibold tabular-nums">{strings.card.perMonth(strings.format.rent(entry.estimate))} · </span>
         )}
-        {BADGES[entry.label]}
+        {strings.rent.badges[entry.label]}
       </p>
-      <p className="mt-1">{detailLine(entry, ctx.rentMeta)}</p>
-      {extraLines(entry, ctx.rentMeta).map((l) => (
+      <p className="mt-1">{strings.rent.detailLine(entry, ctx.rentMeta)}</p>
+      {strings.rent.extraLines(entry, ctx.rentMeta).map((l) => (
         <p key={l} className="mt-1">
           {l}
         </p>
       ))}
-      {entry.estimate !== null && <p className="mt-2 text-ink-muted">{sourceLine()}</p>}
-      <p className="mt-1 text-ink-muted">{dataLine(ctx.rentMeta)}</p>
+      {entry.estimate !== null && <p className="mt-2 text-ink-muted">{strings.rent.sourceLine}</p>}
+      <p className="mt-1 text-ink-muted">{strings.rent.dataLine(ctx.rentMeta)}</p>
     </section>
   );
 }
@@ -115,7 +104,7 @@ function Badge({ label }: { label: RentEntry["label"] }) {
         dashed ? "border-dashed" : ""
       }`}
     >
-      {BADGES[label]}
+      {strings.rent.badges[label]}
     </span>
   );
 }
@@ -125,15 +114,18 @@ export default function HoodCard({
   commute,
   rentEntry,
   ctx,
+  open = false,
 }: {
   item: ShortlistItem;
   commute: CampusResult;
   rentEntry: RentEntry | null;
   ctx: CardContext;
+  /** Open on load: the card a map popup's "Show details" pointed to. */
+  open?: boolean;
 }) {
   return (
-    <li>
-      <details className="group rounded-control border border-control bg-surface">
+    <li id={`hood-${item.id}`} className="scroll-mt-4">
+      <details className="group rounded-control border border-control bg-surface" open={open}>
         {/* Grid: name | minutes | chevron, then borough | rent, then the badge on its own line,
             so a wide badge never squeezes the names. */}
         <summary className="grid min-h-12 cursor-pointer list-none grid-cols-[1fr_auto_auto] items-baseline gap-x-3 gap-y-1 rounded-control p-4 transition-colors duration-150 ease-out hover:bg-hover active:bg-hover [&::-webkit-details-marker]:hidden">
@@ -148,7 +140,7 @@ export default function HoodCard({
           </svg>
           <span className="min-w-0 text-sm text-ink-muted">{item.borough !== item.name ? item.borough : ""}</span>
           <span className="text-right tabular-nums">
-            {!ctx.room && item.rent !== null ? formatRent(item.rent) : ""}
+            {!ctx.room && item.rent !== null ? strings.format.rent(item.rent) : ""}
           </span>
           {!ctx.room && item.label && item.label !== "neighbourhood" && (
             <span className="col-span-2 justify-self-end">

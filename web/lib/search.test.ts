@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUDGET_STEP, MAX_COMMUTE_MIN, parseSearch, parseSort, SEARCH_SIZES, searchQuery } from "./search";
+import { MAX_COMMUTE_MIN, parseOpen, parseSearch, parseSort, parseView, SEARCH_SIZES, searchQuery } from "./search";
 
 // Fake campus ids: the parser only checks membership in the list it is given.
 const CAMPUSES = ["a", "b"];
@@ -33,12 +33,15 @@ describe("parseSearch", () => {
     }
   });
 
-  it("accepts budgets in $25 steps only", () => {
-    expect(BUDGET_STEP).toBe(25);
-    expect(parseSearch({ ...ok, budget: "25" }, CAMPUSES).ok).toBe(true);
-    expect(parseSearch({ ...ok, budget: "1475" }, CAMPUSES).ok).toBe(true);
+  it("accepts any whole number of dollars as a budget", () => {
+    for (const budget of ["1", "25", "1475", "1480", "1399"]) {
+      expect(parseSearch({ ...ok, budget }, CAMPUSES)).toEqual({
+        ok: true,
+        search: { campus: "a", size: "1br", budget: Number(budget), maxCommute: 45 },
+      });
+    }
     const tooBig = ["1000000000000000000000", "10000000000000000001"]; // 1e21; 1e19 + 1 rounds to 1e19
-    for (const budget of ["1480", "0", "-25", "1500.5", "1,500", "$1500", "abc", "1e3", ...tooBig]) {
+    for (const budget of ["0", "-25", "1500.5", "1,500", "$1500", "abc", "1e3", ...tooBig]) {
       expect(parseSearch({ ...ok, budget }, CAMPUSES)).toEqual({ ok: false, errors: ["budget"] });
     }
   });
@@ -56,7 +59,7 @@ describe("parseSearch", () => {
 
   it("lists every problem at once, in form order", () => {
     expect(parseSearch({}, CAMPUSES)).toEqual({ ok: false, errors: ["campus", "size", "maxCommute"] });
-    expect(parseSearch({ budget: "7" }, CAMPUSES)).toEqual({
+    expect(parseSearch({ budget: "seven" }, CAMPUSES)).toEqual({
       ok: false,
       errors: ["campus", "size", "budget", "maxCommute"],
     });
@@ -75,6 +78,8 @@ describe("searchQuery", () => {
     const search = { campus: "a", size: "1br" as const, budget: null, maxCommute: 45 as const };
     expect(searchQuery(search, "commute")).toBe("campus=a&size=1br&max=45");
     expect(searchQuery(search, "rent")).toBe("campus=a&size=1br&max=45&sort=rent");
+    expect(searchQuery(search, "commute", "map")).toBe("campus=a&size=1br&max=45&view=map");
+    expect(searchQuery(search, "rent", "map")).toBe("campus=a&size=1br&max=45&sort=rent&view=map");
   });
 
   it("leaves the budget out when there is none", () => {
@@ -84,19 +89,25 @@ describe("searchQuery", () => {
   });
 });
 
-describe("budget step", () => {
-  it("matches the rounding step of the rents in rent.json (budgets compare with rounded rents)", async () => {
-    const { readFile } = await import("node:fs/promises");
-    const rent = JSON.parse(await readFile(new URL("../public/data/rent.json", import.meta.url), "utf-8"));
-    expect(rent.meta.rounding.step).toBe(BUDGET_STEP);
-  });
-});
-
 describe("parseSort", () => {
   it("is fastest commute unless sort=rent", () => {
     expect(parseSort({})).toBe("commute");
     expect(parseSort({ sort: "rent" })).toBe("rent");
     expect(parseSort({ sort: "price" })).toBe("commute");
     expect(parseSort({ sort: ["rent", "rent"] })).toBe("commute");
+  });
+});
+
+describe("parseView and parseOpen", () => {
+  it("shows the cards unless view=map", () => {
+    expect(parseView({})).toBe("list");
+    expect(parseView({ view: "map" })).toBe("map");
+    expect(parseView({ view: "grid" })).toBe("list");
+    expect(parseView({ view: ["map", "map"] })).toBe("list");
+  });
+
+  it("reads the card to open", () => {
+    expect(parseOpen({ open: "A" })).toBe("A");
+    expect(parseOpen({})).toBeNull();
   });
 });
