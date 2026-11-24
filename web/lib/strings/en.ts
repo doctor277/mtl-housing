@@ -193,6 +193,7 @@ export const en = {
     changeSearch: "Change search",
     update: "Update",
     sort: { label: "Sort by", commute: "Fastest commute", rent: "Cheapest rent" },
+    view: { label: "View", list: "List", map: "Map" },
     /** Above the list: the cards only badge real caveats (owner, M4.2). */
     allEstimates: "All rents are estimates.",
     /** Group headings ("all": no budget, or rooms; read by screen readers only). Owner's words for "over" and "noData". */
@@ -297,6 +298,24 @@ export const en = {
     target: (campusShort: string, destinations: { name: string }[]) =>
       destinations.length === 1 ? `to ${destinations[0].name}` : `fastest ${campusShort} building`,
     classLabels: commuteClassLabels,
+  },
+  /** The results' map view (M4.3): the same neighbourhoods as the list, on the map. */
+  resultsMap: {
+    colourBy: "Colour by",
+    needsJavaScript: "The map needs JavaScript. The list shows the same neighbourhoods.",
+    hint: "Tap a neighbourhood for its commute and rent.",
+    commuteLegend: (campus: string) => `Median commute to ${campus}`,
+    rentLegend: (size: string) => `Rent for a ${size}, compared with the Montréal asking rent`,
+    inResults: "In your results: dark outline",
+    notInResults: "Not in your results",
+    showDetails: "Show details",
+    /** Popup line for a neighbourhood in the results: "27 min · ≈ $1,225". */
+    numbers: (minutes: string, rent: string | null) => (rent ? `${minutes} · ${rent}` : minutes),
+    out: {
+      tooFar: (max: number, campus: string) => `Not in your results: more than ${max} min from ${campus}.`,
+      overBudget: (pct: number) => `Not in your results: more than ${pct}% over your budget.`,
+      noCommute: (campus: string) => `Not in your results: no commute data to ${campus}.`,
+    },
   },
   /** The map: /map (all neighbourhoods) and the results' map view. */
   map: {

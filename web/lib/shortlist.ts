@@ -31,6 +31,8 @@ export interface ShortlistItem extends Hood {
   label: LabelKey | null;
 }
 
+export type ExcludedReason = "tooFar" | "overBudget" | "noCommute";
+
 export interface Shortlist {
   mode: "budget" | "noBudget" | "room";
   /** Non-empty groups, in display order. */
@@ -45,6 +47,8 @@ export interface Shortlist {
   hiddenOverBudget: number;
   /** The cheapest of those (then fastest), named when nothing else is left. */
   cheapestHidden: { name: string; rent: number } | null;
+  /** Why each neighbourhood left out is out (the map view's popups). */
+  excluded: Record<string, ExcludedReason>;
   /** Rooms: the one citywide figure, and whether it is above the budget (decision 5). */
   roomEstimate: number | null;
   roomWarning: boolean;
@@ -82,6 +86,7 @@ export function buildShortlist(
     hiddenNoCommute: 0,
     hiddenOverBudget: 0,
     cheapestHidden: null,
+    excluded: {},
     roomEstimate: room ? rent.meta.room.estimate : null,
     roomWarning: room && search.budget !== null && search.budget < rent.meta.room.estimate,
   };
@@ -92,11 +97,13 @@ export function buildShortlist(
     const c = commute.results[hood.id]?.[search.campus];
     if (!c || (c.median === null && !c.over_max.includes("median"))) {
       out.hiddenNoCommute++;
+      out.excluded[hood.id] = "noCommute";
       continue;
     }
     // Compared as shown, in whole minutes; "more than 2 h" is over every button.
     if (c.median === null || Math.round(c.median) > search.maxCommute) {
       out.tooFar++;
+      out.excluded[hood.id] = "tooFar";
       continue;
     }
     out.withinCommute++;
@@ -124,6 +131,7 @@ export function buildShortlist(
       continue;
     }
     out.hiddenOverBudget++;
+    out.excluded[hood.id] = "overBudget";
     if (!cheapest || byRent(item, cheapest) < 0) cheapest = item;
   }
 

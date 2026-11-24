@@ -142,6 +142,19 @@ describe("buildShortlist", () => {
     const s = buildShortlist(hoods, commute, rent, search(), "commute");
     expect(ids(s)).toEqual({ fits: ["A"] });
     expect(s.hiddenNoCommute).toBe(2);
+    expect(s.excluded).toEqual({ B: "noCommute", C: "noCommute" });
+  });
+
+  it("says why each neighbourhood is left out (for the map view)", () => {
+    const { hoods, commute, rent } = fixture([
+      ["A", 20, 1000], // in
+      ["B", 50, 1000], // too far
+      ["C", "over", 1000], // more than 2 h: too far
+      ["D", 20, 3000], // more than 10% over budget
+      ["E", 20, 1500], // slightly over: in
+    ]);
+    const s = buildShortlist(hoods, commute, rent, search(), "commute");
+    expect(s.excluded).toEqual({ B: "tooFar", C: "tooFar", D: "overBudget" });
   });
 
   it("sorts by commute within each group, then by name", () => {

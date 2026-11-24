@@ -246,12 +246,18 @@ export default function QuartierMap({
       map = new maplibregl.Map({
         container: container.current,
         style: BASEMAP,
-        ...(fit ? { bounds: fit, fitBoundsOptions: { padding: 24, maxZoom: 13 } } : { center: [-73.72, 45.55], zoom: 10 }),
+        center: [-73.72, 45.55],
+        zoom: 10,
       });
       mapRef.current = map;
 
       map.on("load", () => {
         if (!map) return;
+        // Results view: show every result. Fitted here, once the map knows its own size.
+        if (fit) {
+          map.resize();
+          map.fitBounds(fit, { padding: 24, maxZoom: 13, animate: false });
+        }
         map.addSource("quartiers", { type: "geojson", data: geo });
         map.addImage(HATCH, hatchImage());
 

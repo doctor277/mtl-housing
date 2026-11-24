@@ -1,6 +1,7 @@
-// Results (M4.2): the shortlist. Rules in lib/shortlist.ts (owner's M4 decisions). Cards
-// first; the map becomes a second view in M4.3. Works without JavaScript: the order toggle
-// is two links, "show more" and the detail panels are native <details>.
+// Results: the shortlist (M4.2) and its map view (M4.3). Rules in lib/shortlist.ts (owner's M4
+// decisions). Cards first; the map is a second view the user switches to (decision 9). Works
+// without JavaScript except the map itself: the view and sort toggles are links, "show more"
+// and the detail panels are native <details>.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
@@ -8,8 +9,11 @@ import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadHoods, loadRent } from "@/lib/data";
 import {
   MAX_COMMUTE_MIN,
+  parseOpen,
   parseSearch,
   parseSort,
+  parseView,
+  type ResultsView,
   type Search,
   type SearchField,
   searchQuery,
@@ -18,6 +22,7 @@ import { buildShortlist, type GroupKey, SLIGHTLY_OVER_PCT, type ShortlistItem, t
 import { strings } from "@/lib/strings";
 import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
+import ResultsMap, { type MapItem } from "./ResultsMap";
 
 const t = strings.results;
 
@@ -43,28 +48,52 @@ export default function Results({ searchParams }: PageProps<"/results">) {
   );
 }
 
-function SortToggle({ search, sort }: { search: Search; sort: SortKey }) {
-  const option = (key: SortKey, label: string) => (
-    <Link
-      href={`/results?${searchQuery(search, key)}`}
-      aria-current={key === sort ? "true" : undefined}
-      replace
-      scroll={false}
-      className={`flex min-h-11 items-center rounded-control border px-3 no-underline transition-colors duration-150 ease-out ${
-        key === sort
-          ? "border-ink bg-ink font-semibold text-white"
-          : "border-control bg-surface hover:bg-hover active:bg-hover"
-      }`}
-    >
-      {label}
-    </Link>
-  );
+/** Two or more links drawn like the form's choices; the current one is ink. */
+function LinkToggle({ label, options }: { label: string; options: { href: string; text: string; current: boolean }[] }) {
   return (
-    <nav aria-label={t.sort.label} className="mt-6 flex flex-wrap items-center gap-2">
-      <span className="mr-1 text-sm text-ink-muted">{t.sort.label}</span>
-      {option("commute", t.sort.commute)}
-      {option("rent", t.sort.rent)}
+    <nav aria-label={label} className="flex flex-wrap items-center gap-2">
+      <span className="mr-1 text-sm text-ink-muted">{label}</span>
+      {options.map((o) => (
+        <Link
+          key={o.href}
+          href={o.href}
+          aria-current={o.current ? "true" : undefined}
+          replace
+          scroll={false}
+          className={`flex min-h-11 items-center rounded-control border px-3 no-underline transition-colors duration-150 ease-out ${
+            o.current ? "border-ink bg-ink font-semibold text-white" : "border-control bg-surface hover:bg-hover active:bg-hover"
+          }`}
+        >
+          {o.text}
+        </Link>
+      ))}
     </nav>
+  );
+}
+
+function SortToggle({ search, sort }: { search: Search; sort: SortKey }) {
+  return (
+    <LinkToggle
+      label={t.sort.label}
+      options={(["commute", "rent"] as const).map((key) => ({
+        href: `/results?${searchQuery(search, key)}`,
+        text: t.sort[key],
+        current: key === sort,
+      }))}
+    />
+  );
+}
+
+function ViewToggle({ search, sort, view }: { search: Search; sort: SortKey; view: ResultsView }) {
+  return (
+    <LinkToggle
+      label={t.view.label}
+      options={(["list", "map"] as const).map((key) => ({
+        href: `/results?${searchQuery(search, sort, key)}`,
+        text: t.view[key],
+        current: key === view,
+      }))}
+    />
   );
 }
 
@@ -74,12 +103,14 @@ function Group({
   hint,
   items,
   card,
+  openId,
 }: {
   heading: string;
   visualHeading: boolean;
   hint?: string;
   items: ShortlistItem[];
   card: (item: ShortlistItem) => ReactNode;
+  openId: string | null;
 }) {
   const first = items.slice(0, FIRST);
   const rest = items.slice(FIRST);
@@ -92,7 +123,7 @@ function Group({
         {first.map(card)}
       </ol>
       {rest.length > 0 && (
-        <details className="group/more mt-2">
+        <details className="group/more mt-2" open={rest.some((i) => i.id === openId)}>
           {/* The control stays where it is (keyboard focus isn't lost); only its label changes. */}
           <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
             <span className="group-open/more:hidden">{t.showMore(rest.length)}</span>
@@ -141,6 +172,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
 
   const s = parsed.search;
   const sort = parseSort(params);
+  const view = parseView(params);
+  const openId = parseOpen(params);
   const list = buildShortlist(hoods, commute, rent, s, sort);
   const campusLabel = campuses.find((c) => c.key === s.campus)!.label;
   const sizeLabel = strings.form.size.labels[s.size];
@@ -166,6 +199,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
       commute={commute.results[item.id]![s.campus]!}
       rentEntry={s.size === "room" ? null : (rent.results[item.id]?.[s.size] ?? null)}
       ctx={ctx}
+      open={item.id === openId}
     />
   );
   // Cheapest first only with a budget and something to sort (decisions 1, 8).
@@ -198,22 +232,44 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
         </div>
       )}
 
-      {sortable && <SortToggle search={s} sort={sort} />}
+      <div className="mt-6 flex flex-col gap-3">
+        <ViewToggle search={s} sort={sort} view={view} />
+        {view === "list" && sortable && <SortToggle search={s} sort={sort} />}
+      </div>
 
-      {list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
+      {view === "list" && list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
         <p className="mt-6 text-sm text-ink-muted">{t.allEstimates}</p>
       )}
 
-      {list.groups.map((g) => (
-        <Group
-          key={g.key}
-          heading={HEADINGS[g.key]}
-          visualHeading={g.key !== "all"}
-          hint={g.key === "all" ? undefined : HINTS[g.key]}
-          items={g.items}
-          card={card}
+      {view === "list" &&
+        list.groups.map((g) => (
+          <Group
+            key={g.key}
+            heading={HEADINGS[g.key]}
+            visualHeading={g.key !== "all"}
+            hint={g.key === "all" ? undefined : HINTS[g.key]}
+            items={g.items}
+            card={card}
+            openId={openId}
+          />
+        ))}
+
+      {view === "map" && (
+        <ResultsMap
+          campus={s.campus}
+          campusLabel={campusLabel}
+          size={s.size === "room" ? null : s.size}
+          maxCommute={s.maxCommute}
+          maxTripMin={commute.meta.max_trip_min}
+          rentLevel={s.size === "room" ? null : rent.meta.montreal[s.size].statcan_asking}
+          rentStep={rent.meta.rounding.step}
+          items={list.groups.flatMap((g) =>
+            g.items.map((i): MapItem => ({ id: i.id, group: g.key, minutes: i.minutes, rent: i.rent, label: i.label })),
+          )}
+          excluded={list.excluded}
+          detailsBase={`/results?${searchQuery(s, sort)}`}
         />
-      ))}
+      )}
 
       {list.groups.length === 0 && (
         <div className="mt-8">

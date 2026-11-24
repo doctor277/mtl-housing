@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_COMMUTE_MIN, parseSearch, parseSort, SEARCH_SIZES, searchQuery } from "./search";
+import { MAX_COMMUTE_MIN, parseOpen, parseSearch, parseSort, parseView, SEARCH_SIZES, searchQuery } from "./search";
 
 // Fake campus ids: the parser only checks membership in the list it is given.
 const CAMPUSES = ["a", "b"];
@@ -78,6 +78,8 @@ describe("searchQuery", () => {
     const search = { campus: "a", size: "1br" as const, budget: null, maxCommute: 45 as const };
     expect(searchQuery(search, "commute")).toBe("campus=a&size=1br&max=45");
     expect(searchQuery(search, "rent")).toBe("campus=a&size=1br&max=45&sort=rent");
+    expect(searchQuery(search, "commute", "map")).toBe("campus=a&size=1br&max=45&view=map");
+    expect(searchQuery(search, "rent", "map")).toBe("campus=a&size=1br&max=45&sort=rent&view=map");
   });
 
   it("leaves the budget out when there is none", () => {
@@ -94,5 +96,19 @@ describe("parseSort", () => {
     expect(parseSort({ sort: "rent" })).toBe("rent");
     expect(parseSort({ sort: "price" })).toBe("commute");
     expect(parseSort({ sort: ["rent", "rent"] })).toBe("commute");
+  });
+});
+
+describe("parseView and parseOpen", () => {
+  it("shows the cards unless view=map", () => {
+    expect(parseView({})).toBe("list");
+    expect(parseView({ view: "map" })).toBe("map");
+    expect(parseView({ view: "grid" })).toBe("list");
+    expect(parseView({ view: ["map", "map"] })).toBe("list");
+  });
+
+  it("reads the card to open", () => {
+    expect(parseOpen({ open: "A" })).toBe("A");
+    expect(parseOpen({})).toBeNull();
   });
 });

@@ -114,15 +114,18 @@ export default function HoodCard({
   commute,
   rentEntry,
   ctx,
+  open = false,
 }: {
   item: ShortlistItem;
   commute: CampusResult;
   rentEntry: RentEntry | null;
   ctx: CardContext;
+  /** Open on load: the card a map popup's "Show details" pointed to. */
+  open?: boolean;
 }) {
   return (
-    <li>
-      <details className="group rounded-control border border-control bg-surface">
+    <li id={`hood-${item.id}`} className="scroll-mt-4">
+      <details className="group rounded-control border border-control bg-surface" open={open}>
         {/* Grid: name | minutes | chevron, then borough | rent, then the badge on its own line,
             so a wide badge never squeezes the names. */}
         <summary className="grid min-h-12 cursor-pointer list-none grid-cols-[1fr_auto_auto] items-baseline gap-x-3 gap-y-1 rounded-control p-4 transition-colors duration-150 ease-out hover:bg-hover active:bg-hover [&::-webkit-details-marker]:hidden">

@@ -67,13 +67,17 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   };
 }
 
-/** The query string for a search, with the form's own parameter names; `sort` only when it
- * isn't the default. */
-export function searchQuery(s: Search, sort: SortKey = "commute"): string {
+/** Results as cards (default) or on the map (M4 decision 9: the map is never the default). */
+export type ResultsView = "list" | "map";
+
+/** The query string for a search, with the form's own parameter names; `sort` and `view` only
+ * when they aren't the defaults. */
+export function searchQuery(s: Search, sort: SortKey = "commute", view: ResultsView = "list"): string {
   const p = new URLSearchParams({ campus: s.campus, size: s.size });
   if (s.budget !== null) p.set("budget", String(s.budget));
   p.set("max", String(s.maxCommute));
   if (sort !== "commute") p.set("sort", sort);
+  if (view !== "list") p.set("view", view);
   return p.toString();
 }
 
@@ -81,4 +85,14 @@ export function searchQuery(s: Search, sort: SortKey = "commute"): string {
  * Not a form field, so anything else falls back to the default instead of an error. */
 export function parseSort(params: Params): SortKey {
   return single(params, "sort") === "rent" ? "rent" : "commute";
+}
+
+/** `view=map`, else the cards. Not a form field: anything else falls back to the default. */
+export function parseView(params: Params): ResultsView {
+  return single(params, "view") === "map" ? "map" : "list";
+}
+
+/** `open=<id>`: the card to show open (from a map popup's "Show details"). */
+export function parseOpen(params: Params): string | null {
+  return single(params, "open") ?? null;
 }
