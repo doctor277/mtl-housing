@@ -88,7 +88,9 @@ Pages (M4 in progress):
 
 - `/`: the search form (campus, size, optional budget, max commute). All UI text is in
   `web/lib/strings/`; the design system is described in `web/DESIGN.md`.
-- `/results`: placeholder until M4.2; it repeats the search and links to the map.
+- `/results`: the shortlist. Neighbourhoods within the max commute, grouped by budget (within
+  budget / slightly over / not enough data), fastest commute or cheapest rent first; each card
+  opens a detail panel (commute range, buildings, rent basis, sources). Rules: `web/lib/shortlist.ts`.
 - `/map`: the map. A Commute / Rent toggle; quartiers coloured by median transit commute to
   the chosen campus or by the estimated rent for a studio, 3½ or 4½; click for details.
   Basemap: OpenFreeMap (no API key).

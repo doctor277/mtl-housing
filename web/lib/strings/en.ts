@@ -62,7 +62,7 @@ export const en = {
     changeSearch: "Change search",
     update: "Update",
     sort: { label: "Order", commute: "Fastest commute", rent: "Cheapest rent" },
-    /** Group headings; "all" (no budget, or rooms) has none. Owner's words for "over" and "noData". */
+    /** Group headings ("all": no budget, or rooms; read by screen readers only). Owner's words for "over" and "noData". */
     groups: {
       /** Screen-reader heading for the one list (no budget, or rooms). */
       all: "Shortlist",
