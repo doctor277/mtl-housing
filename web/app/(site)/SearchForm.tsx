@@ -11,20 +11,18 @@ interface Option {
   label: string;
 }
 
-/** A required single choice: a fieldset of radios, each drawn as a 48 px button. */
+/** A required single choice, nothing preselected: a fieldset of radios drawn as 48 px buttons. */
 function Choice({
   name,
   legend,
   hint,
   options,
-  defaultValue,
   columns,
 }: {
   name: string;
   legend: string;
   hint?: string;
   options: Option[];
-  defaultValue?: string;
   columns: string;
 }) {
   const hintId = hint ? `${name}-hint` : undefined;
@@ -43,11 +41,10 @@ function Choice({
               type="radio"
               name={name}
               value={o.value}
-              defaultChecked={o.value === defaultValue}
               required
               className="peer sr-only"
             />
-            <span className="flex min-h-12 cursor-pointer items-center justify-center rounded-control border border-control bg-surface px-2 text-center leading-tight text-balance transition-colors duration-150 ease-out select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:font-semibold peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus hover:bg-hover peer-checked:hover:bg-ink-hover">
+            <span className="flex min-h-12 cursor-pointer items-center justify-center rounded-control border border-control bg-surface px-2 text-center leading-tight text-balance transition-colors duration-150 ease-out select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:font-semibold peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus hover:bg-hover active:bg-hover peer-checked:hover:bg-ink-hover peer-checked:active:bg-ink-hover">
               {o.label}
             </span>
           </label>
@@ -72,7 +69,6 @@ export default function SearchForm({
         legend={t.size.legend}
         hint={t.size.hint}
         options={SEARCH_SIZES.map((s) => ({ value: s, label: t.size.labels[s] }))}
-        defaultValue="1br"
         columns="grid-cols-4"
       />
       <div>
@@ -94,7 +90,7 @@ export default function SearchForm({
             min={BUDGET_STEP}
             step={BUDGET_STEP}
             aria-describedby="budget-hint"
-            className="h-full w-full min-w-0 bg-transparent px-2 tabular-nums outline-none"
+            className="h-full w-full min-w-0 bg-transparent px-2 outline-none"
           />
         </div>
       </div>
@@ -103,12 +99,11 @@ export default function SearchForm({
         legend={t.maxCommute.legend}
         hint={t.maxCommute.hint(departure.start, departure.end)}
         options={MAX_COMMUTE_MIN.map((m) => ({ value: String(m), label: t.maxCommute.option(m) }))}
-        defaultValue="45"
         columns="grid-cols-4"
       />
       <button
         type="submit"
-        className="h-12 cursor-pointer rounded-control bg-ink px-6 font-semibold text-white transition-colors duration-150 ease-out hover:bg-ink-hover sm:self-start"
+        className="h-12 cursor-pointer rounded-control bg-ink px-6 font-semibold text-white transition-colors duration-150 ease-out hover:bg-ink-hover active:bg-ink-hover sm:self-start"
       >
         {strings.home.submit}
       </button>

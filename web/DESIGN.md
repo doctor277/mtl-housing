@@ -46,12 +46,14 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
 ## Components so far (M4.1)
 
 - **Choice:** a fieldset of native radio buttons drawn as 48 px buttons in a grid; unselected
-  = white with control edge, selected = ink fill, white semibold text. Works with keyboard
+  = white with control edge, selected = ink fill, white semibold text; pressed = the hover
+  colour (touch has no hover). Nothing is preselected: every choice is the user's. Works with keyboard
   (arrow keys), screen readers and without JavaScript.
-- **Budget field:** labelled number input with a `$` prefix, `step` 25, tabular numerals.
+- **Budget field:** labelled number input with a `$` prefix, `step` 25.
 - **Primary button:** ink, 48 px, full width on phones, content width from `sm`.
 - **Text links:** `#1d4ed8`, underlined, semibold.
-- **Browser surfaces:** themed selection, caret, accent colour and focus ring.
+- **Browser surfaces:** themed selection, caret, accent colour and focus ring; no browser tap
+  tint. Tabular numerals only where numbers line up in columns (none yet).
 
 The map (`/map`) keeps its own M2.6/M3 styling until M4.3 reworks it as the results' second
 view.

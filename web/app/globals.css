@@ -35,6 +35,7 @@ body {
   font-family: var(--font-sans);
   caret-color: var(--color-ink);
   accent-color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent; /* pressed states are drawn by the controls */
 }
 
 ::selection {
