@@ -46,9 +46,17 @@ Decided by the owner (2026-11-23), on top of the M4 row above:
    as on the map (one name for one thing). Unknown rent only means the budget can't be
    checked.
 4. **Max commute:** buttons 20 / 30 / 45 / 60 min (no slider). It is a **hard filter** for
-   every neighbourhood, including those with no rent data.
+   every neighbourhood, including those with no rent data. Neighbourhoods with **missing
+   commute data** are hidden by it too, with one line under the results saying how many were
+   hidden and why.
 5. **Rooms:** there is one citywide figure, so neighbourhoods can't be compared on room rent.
    Show a single note ("Room rent: ≈ $725 citywide, same estimate everywhere") and sort by
    commute only. Don't pretend the figure varies by neighbourhood.
+   - **The budget does not filter rooms:** show all neighbourhoods, sorted by commute. If the
+     budget is under the citywide room figure, show a warning that typical room rent is
+     above their budget and we can't tell where cheaper rooms are.
+   - **Wording:** the short note in the results; the methodology's room line in "How it
+     works" and on the sources page. The number always comes from the data file
+     (`rent.json`), never typed into the text.
 6. **Language:** English and French both at launch, with an FR/EN switch. M4 keeps every UI
    string in one place (no hard-coded text in components) so M5 only adds the French file.
