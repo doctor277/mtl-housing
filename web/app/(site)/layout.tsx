@@ -7,7 +7,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
     <>
       <header className="border-b border-line">
         <div className="mx-auto flex h-14 w-full max-w-2xl items-center px-4">
-          <Link href="/" className="font-semibold tracking-tight no-underline">
+          <Link href="/" className="-mx-2 flex min-h-11 items-center px-2 font-semibold tracking-tight no-underline">
             {strings.siteName}
           </Link>
         </div>
