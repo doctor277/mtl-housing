@@ -24,13 +24,16 @@ export const en = {
   },
   home: {
     title: "Find where to live in Montréal without a car",
+    /** `count`: the neighbourhoods in commute.json. */
+    intro: (count: number) =>
+      `Compare transit commute times and typical rents across ${count} Montréal neighbourhoods.`,
     submit: "Show me neighbourhoods",
   },
   form: {
     campus: { legend: "Campus" },
     size: {
       legend: "Size",
-      hint: "Room: one room in a shared apartment. 3½: one bedroom. 4½: two bedrooms.",
+      hint: "Room: one room in a shared apartment. Studio: 1½–2½. 3½: one bedroom. 4½: two bedrooms.",
       labels: { room: "Room", studio: "Studio", "1br": "3½", "2br": "4½" } satisfies Record<
         SearchSize,
         string
@@ -39,7 +42,8 @@ export const en = {
     budget: {
       label: "Budget per month",
       optional: "optional",
-      hint: (step: number) => `Steps of $${step}. Leave it empty to sort by commute only.`,
+      /** `example`: BUDGET_EXAMPLE, already formatted ("1,400"). */
+      hint: (example: string) => `e.g. ${example}. Leave it empty to sort by commute only.`,
       prefix: "$",
     },
     maxCommute: {

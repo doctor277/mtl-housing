@@ -3,9 +3,8 @@
 <!-- impeccable:product-schema 1 -->
 
 Written for the Impeccable design tool in M4.1, from the owner's brief: README.md,
-docs/ROADMAP.md ("M4" row and "M4 decisions"), docs/methodology.md, DATA_SOURCES.md. The
-owner was not interviewed for this file; lines marked *(inferred)* are guesses listed in the
-M4.1 PR for the owner to confirm.
+docs/ROADMAP.md ("M4" row and "M4 decisions"), docs/methodology.md, DATA_SOURCES.md, and
+reviewed by the owner in the M4.1 PR.
 
 ## Platform
 
@@ -14,8 +13,9 @@ web
 ## Users
 
 University students (UdeM, McGill, Concordia SGW) and other renters without a car, choosing
-where in Montréal to look for an apartment. *(inferred)* Often on a phone, often new to
-Montréal or to Québec apartment names (3½, 4½), often before the 1 July moving season.
+where in Montréal to look for an apartment. Often on a phone, often new to Montréal or to
+Québec apartment names (3½, 4½), often before the 1 July moving season or in August before
+the fall term.
 
 ## Product Purpose
 
@@ -57,7 +57,7 @@ No testimonials, user counts or press: none may be invented.
 
 1. Honest over impressive: a number is shown with its source and reliability, or not at all.
 2. The search answers the question; the map explains it.
-3. *(inferred)* Plain words a newcomer understands (explain 3½ and 4½).
+3. Plain words a newcomer understands (explain 3½ and 4½).
 
 ## Accessibility & Inclusion
 

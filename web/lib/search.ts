@@ -15,6 +15,9 @@ export type MaxCommute = (typeof MAX_COMMUTE_MIN)[number];
 /** Budgets are whole dollars in steps of $25, the rounding step of the rents shown. */
 export const BUDGET_STEP = 25;
 
+/** The example in the budget hint ("e.g. 1,400"); a valid budget (tested). */
+export const BUDGET_EXAMPLE = 1400;
+
 export interface Search {
   campus: string;
   size: SearchSize;
