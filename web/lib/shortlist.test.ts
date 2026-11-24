@@ -100,16 +100,19 @@ describe("buildShortlist", () => {
     expect(s.hiddenOverBudget).toBe(1);
   });
 
-  it("shows rent 'Not enough data' at the bottom even with no budget", () => {
+  it("with no budget: one list by commute, no groups; 'Not enough data' stays in commute order", () => {
     const { hoods, commute, rent } = fixture([
-      ["A", 30, null],
+      ["A", 15, null],
       ["B", 20, 2500],
       ["C", 25, 900],
     ]);
     const s = buildShortlist(hoods, commute, rent, search({ budget: null }), "commute");
     expect(s.mode).toBe("noBudget");
-    expect(ids(s)).toEqual({ all: ["B", "C"], noData: ["A"] });
+    expect(ids(s)).toEqual({ all: ["A", "B", "C"] });
+    expect(s.groups[0].items[0]).toMatchObject({ id: "A", rent: null, label: "none" });
     expect(s.hiddenOverBudget).toBe(0);
+    // Cheapest first: an unknown rent can't be ranked, so it goes last.
+    expect(ids(buildShortlist(hoods, commute, rent, search({ budget: null }), "rent"))).toEqual({ all: ["C", "B", "A"] });
   });
 
   it("is a hard max-commute filter for everyone, on the minutes shown (rounded)", () => {

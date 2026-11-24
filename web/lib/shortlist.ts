@@ -15,7 +15,7 @@ export interface Hood {
 
 export type SortKey = "commute" | "rent";
 
-/** "fits" / "over" / "noData" with a budget; "all" (+ "noData") without one; "all" for rooms. */
+/** "fits" / "over" / "noData" with a budget; "all" without one, and for rooms. */
 export type GroupKey = "fits" | "over" | "all" | "noData";
 
 export interface ShortlistItem extends Hood {
@@ -100,12 +100,14 @@ export function buildShortlist(
     const entry = rent.results[hood.id]?.[search.size as BedroomType];
     item.rent = entry?.estimate ?? null;
     item.label = entry?.label ?? "none";
-    if (item.rent === null) {
-      groups.noData.push(item);
-      continue;
-    }
+    // No budget: one list, no groups (decision 8). Missing rent keeps its "Not enough data"
+    // badge but isn't moved to the bottom: there is no budget it fails to be checked against.
     if (search.budget === null) {
       groups.all.push(item);
+      continue;
+    }
+    if (item.rent === null) {
+      groups.noData.push(item);
       continue;
     }
     const g = rentGroup(item.rent, search.budget);
@@ -113,9 +115,10 @@ export function buildShortlist(
     else groups[g as "fits" | "over"].push(item);
   }
 
-  const order: GroupKey[] = mode === "budget" ? ["fits", "over", "noData"] : ["all", "noData"];
+  const order: GroupKey[] = mode === "budget" ? ["fits", "over", "noData"] : ["all"];
   for (const key of order) {
-    // Rooms and "not enough data" have no rent to sort by: commute only (decisions 3, 5).
+    // Rooms and "not enough data" have no rent to sort by: commute only (decisions 3, 5). In
+    // one no-budget list sorted by rent, unknown rents come last (byRent).
     const cmp = sort === "rent" && !room && key !== "noData" ? byRent : byCommute;
     if (groups[key].length) out.groups.push({ key, items: groups[key].sort(cmp) });
   }

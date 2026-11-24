@@ -64,6 +64,8 @@ export const en = {
     sort: { label: "Order", commute: "Fastest commute", rent: "Cheapest rent" },
     /** Group headings; "all" (no budget, or rooms) has none. Owner's words for "over" and "noData". */
     groups: {
+      /** Screen-reader heading for the one list (no budget, or rooms). */
+      all: "Shortlist",
       fits: "Within your budget",
       over: "Slightly over budget",
       noData: "Not enough data",
@@ -73,6 +75,7 @@ export const en = {
       noData: "We can’t check these against your budget: there isn’t enough rent data for this size.",
     },
     showMore: (n: number) => `Show ${n} more`,
+    showFewer: "Show fewer",
     /** Owner's wording (M4 decision 5); the figure comes from rent.json. */
     roomNote: (rent: string) => `Room rent: ${rent} citywide, same estimate everywhere`,
     roomWarning: (rent: string) =>
@@ -85,7 +88,8 @@ export const en = {
       n === 1
         ? `The one neighbourhood within ${max} min costs more than 10% over your budget.`
         : `All ${n} neighbourhoods within ${max} min cost more than 10% over your budget.`,
-    tryBudget: "Try a higher budget, or leave it empty to see them all.",
+    tryBudget: (n: number) =>
+      n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
     openMap: "See every neighbourhood on the map",
     invalidTitle: "This search can’t be used",
     invalid: {
@@ -109,7 +113,7 @@ export const en = {
     building: (name: string, time: string, share: string) => `${name}: ${time}, fastest for ${share} of homes here.`,
     buildingTime: (name: string, time: string) => `${name}: ${time}.`,
     accessIncluded: (signed: string) => `Includes a ${signed} access adjustment (platform to entrance).`,
-    buildingAccess: (signed: string) => ` (incl. ${signed} access adjustment)`,
+    buildingAccess: (signed: string) => ` (incl. ${signed} access adjustment, platform to entrance)`,
     lowSample: (n: number) => `Based on only ${n} sample points.`,
     manyUnreachable: (pct: string) => `${pct} of homes here are more than 2 h away by transit.`,
     commuteSource:

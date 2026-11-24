@@ -28,7 +28,8 @@ export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` }
 /** Cards shown per group before "Show N more". */
 const FIRST = 5;
 
-const linkClass = "font-semibold text-link underline";
+// Standalone links: a 44 px hit area, like every other control.
+const linkClass = "inline-flex min-h-11 items-center font-semibold text-link underline";
 
 function invalidMessage(field: SearchField): string {
   if (field === "budget") return t.invalid.budget(BUDGET_STEP);
@@ -72,11 +73,13 @@ function SortToggle({ search, sort }: { search: Search; sort: SortKey }) {
 
 function Group({
   heading,
+  visualHeading,
   hint,
   items,
   card,
 }: {
-  heading?: string;
+  heading: string;
+  visualHeading: boolean;
   hint?: string;
   items: ShortlistItem[];
   card: (item: ShortlistItem) => ReactNode;
@@ -85,15 +88,20 @@ function Group({
   const rest = items.slice(FIRST);
   return (
     <section className="mt-8">
-      {heading && <h2 className="text-lg font-semibold">{heading}</h2>}
+      <h2 className={visualHeading ? "text-lg font-semibold" : "sr-only"}>{heading}</h2>
       {hint && <p className="mt-1 text-sm text-ink-muted">{hint}</p>}
-      <ol className="mt-3 flex flex-col gap-2">{first.map(card)}</ol>
+      {/* role="list": Safari drops the list role when list-style is none. */}
+      <ol role="list" className="mt-3 flex flex-col gap-2">
+        {first.map(card)}
+      </ol>
       {rest.length > 0 && (
         <details className="group/more mt-2">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline group-open/more:hidden [&::-webkit-details-marker]:hidden">
-            {t.showMore(rest.length)}
+          {/* The control stays where it is (keyboard focus isn't lost); only its label changes. */}
+          <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
+            <span className="group-open/more:hidden">{t.showMore(rest.length)}</span>
+            <span className="hidden group-open/more:inline">{t.showFewer}</span>
           </summary>
-          <ol start={FIRST + 1} className="flex flex-col gap-2">
+          <ol role="list" start={FIRST + 1} className="flex flex-col gap-2">
             {rest.map(card)}
           </ol>
         </details>
@@ -102,7 +110,7 @@ function Group({
   );
 }
 
-const HEADINGS: Partial<Record<GroupKey, string>> = t.groups;
+const HEADINGS: Record<GroupKey, string> = t.groups;
 const HINTS: Partial<Record<GroupKey, string>> = t.groupHint;
 
 async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "searchParams">) {
@@ -191,7 +199,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
       {list.groups.map((g) => (
         <Group
           key={g.key}
-          heading={g.key === "all" ? undefined : HEADINGS[g.key]}
+          heading={HEADINGS[g.key]}
+          visualHeading={g.key !== "all"}
           hint={g.key === "all" ? undefined : HINTS[g.key]}
           items={g.items}
           card={card}
@@ -208,7 +217,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           ) : (
             <>
               <p className="font-semibold">{t.noneFits(list.withinCommute, s.maxCommute)}</p>
-              <p className="mt-1">{t.tryBudget}</p>
+              <p className="mt-1">{t.tryBudget(list.withinCommute)}</p>
             </>
           )}
         </div>
