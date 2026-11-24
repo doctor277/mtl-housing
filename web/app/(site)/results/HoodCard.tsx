@@ -28,10 +28,6 @@ export interface CardContext {
   room: boolean;
 }
 
-function signedMin(adj: number): string {
-  return `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`;
-}
-
 function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext; minutes: number }) {
   const max = ctx.commuteMeta.max_trip_min;
   const dests = ctx.campusMeta.destinations;
@@ -43,7 +39,7 @@ function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext;
     for (const d of dests) {
       const b = r.by_destination[d.id];
       if (!b) continue;
-      const access = d.access_adjustment_min ? t.buildingAccess(signedMin(d.access_adjustment_min)) : "";
+      const access = d.access_adjustment_min ? t.buildingAccess(t.signedMin(d.access_adjustment_min)) : "";
       const time = formatTime(b, "median", max) + access;
       // A building that is never the faster one just shows its time.
       lines.push(
@@ -53,11 +49,11 @@ function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext;
       );
     }
   } else if (dests[0]?.access_adjustment_min) {
-    lines.push(t.accessIncluded(signedMin(dests[0].access_adjustment_min)));
+    lines.push(t.accessIncluded(t.signedMin(dests[0].access_adjustment_min)));
   }
   if (r.flags.includes("low_sample")) lines.push(t.lowSample(r.n_points));
   if (r.flags.includes("many_unreachable") && r.unreachable_share !== null) {
-    lines.push(t.manyUnreachable(`${Math.round(r.unreachable_share * 100)}%`));
+    lines.push(t.manyUnreachable(`${Math.round(r.unreachable_share * 100)}%`, max));
   }
   return (
     <section>

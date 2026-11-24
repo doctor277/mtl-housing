@@ -1,5 +1,5 @@
 // The shortlist (M4.2): which neighbourhoods a search shows, in which group, in which order.
-// Rules: docs/ROADMAP.md, "M4 decisions" 1–5 and 7–8. Pure functions, no text: wording lives
+// Rules: docs/ROADMAP.md, "M4 decisions" 1–5 and 8. Pure functions, no text: wording lives
 // in lib/strings.
 
 import type { CommuteFile } from "./commute";
@@ -14,6 +14,9 @@ export interface Hood {
 }
 
 export type SortKey = "commute" | "rent";
+
+/** "Slightly over budget" reaches this many percent above the budget (decision 2). */
+export const SLIGHTLY_OVER_PCT = 10;
 
 /** "fits" / "over" / "noData" with a budget; "all" without one, and for rooms. */
 export type GroupKey = "fits" | "over" | "all" | "noData";
@@ -45,12 +48,13 @@ export interface Shortlist {
   roomWarning: boolean;
 }
 
-/** Where a rent goes against a budget. `rent` is the rounded rent the user sees. "over" is
- * budget < rent ≤ budget × 1.10, computed in integers (decision 7: rent·10 ≤ budget·11). */
+/** Where a rent goes against a budget (decision 2). `rent` is the rounded rent the user sees.
+ * "over" is budget < rent ≤ budget × 1.10, computed in integers (rent·100 ≤ budget·110) so
+ * no float rounding can move the edge. */
 export function rentGroup(rent: number | null, budget: number): "fits" | "over" | "hidden" | "noData" {
   if (rent === null) return "noData";
   if (rent <= budget) return "fits";
-  if (rent * 10 <= budget * 11) return "over";
+  if (rent * 100 <= budget * (100 + SLIGHTLY_OVER_PCT)) return "over";
   return "hidden";
 }
 
@@ -117,9 +121,9 @@ export function buildShortlist(
 
   const order: GroupKey[] = mode === "budget" ? ["fits", "over", "noData"] : ["all"];
   for (const key of order) {
-    // Rooms and "not enough data" have no rent to sort by: commute only (decisions 3, 5). In
-    // one no-budget list sorted by rent, unknown rents come last (byRent).
-    const cmp = sort === "rent" && !room && key !== "noData" ? byRent : byCommute;
+    // Cheapest first only with a budget (decision 1). Rooms, "not enough data" and searches
+    // without a budget sort by commute only (decisions 3, 5, 8).
+    const cmp = sort === "rent" && mode === "budget" && key !== "noData" ? byRent : byCommute;
     if (groups[key].length) out.groups.push({ key, items: groups[key].sort(cmp) });
   }
   return out;

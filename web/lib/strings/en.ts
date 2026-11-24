@@ -71,7 +71,7 @@ export const en = {
       noData: "Not enough data",
     },
     groupHint: {
-      over: "Up to 10% over your budget.",
+      over: (pct: number) => `Up to ${pct}% over your budget.`,
       noData: "We can’t check these against your budget: there isn’t enough rent data for this size.",
     },
     showMore: (n: number) => `Show ${n} more`,
@@ -84,10 +84,11 @@ export const en = {
       `${n} ${n === 1 ? "neighbourhood is" : "neighbourhoods are"} not shown: there is no commute data to ${campus} for ${n === 1 ? "it" : "them"}.`,
     noneWithin: (max: number, campus: string) => `No neighbourhood is within ${max} min of ${campus}.`,
     tryLonger: "Try a longer max commute.",
-    noneFits: (n: number, max: number) =>
+    noCommuteData: (campus: string) => `There is no commute data to ${campus} for these neighbourhoods.`,
+    noneFits: (n: number, max: number, pct: number) =>
       n === 1
-        ? `The one neighbourhood within ${max} min costs more than 10% over your budget.`
-        : `All ${n} neighbourhoods within ${max} min cost more than 10% over your budget.`,
+        ? `The one neighbourhood within ${max} min costs more than ${pct}% over your budget.`
+        : `All ${n} neighbourhoods within ${max} min cost more than ${pct}% over your budget.`,
     tryBudget: (n: number) =>
       n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
     openMap: "See every neighbourhood on the map",
@@ -115,7 +116,10 @@ export const en = {
     accessIncluded: (signed: string) => `Includes a ${signed} access adjustment (platform to entrance).`,
     buildingAccess: (signed: string) => ` (incl. ${signed} access adjustment, platform to entrance)`,
     lowSample: (n: number) => `Based on only ${n} sample points.`,
-    manyUnreachable: (pct: string) => `${pct} of homes here are more than 2 h away by transit.`,
+    manyUnreachable: (pct: string, maxMin: number) =>
+      `${pct} of homes here are more than ${maxMin} min away by transit.`,
+    /** An access adjustment: "+1.9 min", "−2.4 min". */
+    signedMin: (adj: number) => `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`,
     commuteSource:
       "Travel times are derived from STM, REM and exo schedules (CC BY 4.0). Schedules don’t include delays or outages.",
     rentHeading: (size: string) => `Rent, ${size}`,

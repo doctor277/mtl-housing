@@ -16,7 +16,7 @@ import {
   type SearchField,
   searchQuery,
 } from "@/lib/search";
-import { buildShortlist, type GroupKey, type ShortlistItem, type SortKey } from "@/lib/shortlist";
+import { buildShortlist, type GroupKey, SLIGHTLY_OVER_PCT, type ShortlistItem, type SortKey } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
 import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
@@ -111,7 +111,10 @@ function Group({
 }
 
 const HEADINGS: Record<GroupKey, string> = t.groups;
-const HINTS: Partial<Record<GroupKey, string>> = t.groupHint;
+const HINTS: Partial<Record<GroupKey, string>> = {
+  over: t.groupHint.over(SLIGHTLY_OVER_PCT),
+  noData: t.groupHint.noData,
+};
 
 async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "searchParams">) {
   const [commute, rent, hoods, params] = await Promise.all([loadCommute(), loadRent(), loadHoods(), searchParams]);
@@ -167,7 +170,9 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
       ctx={ctx}
     />
   );
-  const anyRent = list.groups.some((g) => g.key !== "noData");
+  // Cheapest first only with a budget and something to sort (decisions 1, 8).
+  const sortable = list.mode === "budget" && list.groups.some((g) => g.key !== "noData");
+  const longest = MAX_COMMUTE_MIN[MAX_COMMUTE_MIN.length - 1];
 
   return (
     <>
@@ -182,6 +187,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           campuses={campuses.map((c) => ({ value: c.key, label: c.label }))}
           departure={departureWindow(commute.meta)}
           initial={s}
+          sort={sort}
           submitLabel={t.update}
           className="mt-4 mb-4 border-b border-line pb-8"
         />
@@ -194,7 +200,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
         </div>
       )}
 
-      {list.mode !== "room" && anyRent && <SortToggle search={s} sort={sort} />}
+      {sortable && <SortToggle search={s} sort={sort} />}
 
       {list.groups.map((g) => (
         <Group
@@ -209,14 +215,16 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
 
       {list.groups.length === 0 && (
         <div className="mt-8">
-          {list.withinCommute === 0 ? (
+          {list.withinCommute === 0 && list.tooFar === 0 ? (
+            <p className="font-semibold">{t.noCommuteData(campusLabel)}</p>
+          ) : list.withinCommute === 0 ? (
             <>
               <p className="font-semibold">{t.noneWithin(s.maxCommute, campusLabel)}</p>
-              <p className="mt-1">{t.tryLonger}</p>
+              {s.maxCommute !== longest && <p className="mt-1">{t.tryLonger}</p>}
             </>
           ) : (
             <>
-              <p className="font-semibold">{t.noneFits(list.withinCommute, s.maxCommute)}</p>
+              <p className="font-semibold">{t.noneFits(list.withinCommute, s.maxCommute, SLIGHTLY_OVER_PCT)}</p>
               <p className="mt-1">{t.tryBudget(list.withinCommute)}</p>
             </>
           )}

@@ -4,6 +4,7 @@
 import Form from "next/form";
 import { formatDollars } from "@/lib/rent";
 import { BUDGET_EXAMPLE, BUDGET_STEP, MAX_COMMUTE_MIN, SEARCH_SIZES, type Search } from "@/lib/search";
+import type { SortKey } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
 
 const t = strings.form;
@@ -63,17 +64,21 @@ export default function SearchForm({
   campuses,
   departure,
   initial,
+  sort = "commute",
   submitLabel = strings.home.submit,
   className = "mt-8",
 }: {
   campuses: Option[];
   departure: { start: string; end: string };
   initial?: Search;
+  /** Kept when the search changes from the results page. */
+  sort?: SortKey;
   submitLabel?: string;
   className?: string;
 }) {
   return (
     <Form action="/results" className={`flex flex-col gap-8 ${className}`}>
+      {sort !== "commute" && <input type="hidden" name="sort" value={sort} />}
       <Choice
         name="campus"
         legend={t.campus.legend}

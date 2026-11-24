@@ -29,7 +29,7 @@ function rentEntry(estimate: number | null, label: LabelKey = estimate === null 
 /** One quartier: [id, median commute to Z (or null / "over"), 3½ rent (or null)]. */
 type Row = [id: string, commute: number | null | "over" | "absent", rent: number | null];
 
-function fixture(rows: Row[], roomEstimate = 725) {
+function fixture(rows: Row[], roomEstimate = 999) {
   const hoods: Hood[] = rows.map(([id]) => ({ id, name: `Quartier ${id}`, borough: "Borough Y" }));
   const commute = {
     meta: { max_trip_min: 120 },
@@ -111,8 +111,8 @@ describe("buildShortlist", () => {
     expect(ids(s)).toEqual({ all: ["A", "B", "C"] });
     expect(s.groups[0].items[0]).toMatchObject({ id: "A", rent: null, label: "none" });
     expect(s.hiddenOverBudget).toBe(0);
-    // Cheapest first: an unknown rent can't be ranked, so it goes last.
-    expect(ids(buildShortlist(hoods, commute, rent, search({ budget: null }), "rent"))).toEqual({ all: ["C", "B", "A"] });
+    // No budget means commute order (decision 8), even if sort=rent is in the URL.
+    expect(ids(buildShortlist(hoods, commute, rent, search({ budget: null }), "rent"))).toEqual({ all: ["A", "B", "C"] });
   });
 
   it("is a hard max-commute filter for everyone, on the minutes shown (rounded)", () => {
@@ -173,14 +173,14 @@ describe("buildShortlist", () => {
       ["B", 10, null],
       ["C", 20, 900],
     ]);
-    const low = buildShortlist(hoods, commute, rent, search({ size: "room", budget: 700 }), "rent");
+    const low = buildShortlist(hoods, commute, rent, search({ size: "room", budget: 975 }), "rent");
     expect(low.mode).toBe("room");
     expect(ids(low)).toEqual({ all: ["B", "C", "A"] }); // every one, by commute, "rent" sort ignored
     expect(low.roomWarning).toBe(true);
-    expect(low.roomEstimate).toBe(725);
+    expect(low.roomEstimate).toBe(999);
     expect(low.hiddenOverBudget).toBe(0);
 
-    expect(buildShortlist(hoods, commute, rent, search({ size: "room", budget: 725 }), "commute").roomWarning).toBe(false);
+    expect(buildShortlist(hoods, commute, rent, search({ size: "room", budget: 999 }), "commute").roomWarning).toBe(false);
     expect(buildShortlist(hoods, commute, rent, search({ size: "room", budget: null }), "commute").roomWarning).toBe(false);
   });
 
