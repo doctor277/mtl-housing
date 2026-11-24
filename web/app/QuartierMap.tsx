@@ -30,6 +30,8 @@ import { strings } from "@/lib/strings";
 export type Mode = "commute" | "rent";
 
 const BASEMAP = "https://tiles.openfreemap.org/styles/positron";
+/** Campus building pins: ink (the site's --color-ink), shared with the results legend. */
+export const CAMPUS_MARKER_COLOUR = "#0f172a";
 const HATCH = "low-reliability-hatch";
 const t = strings.map;
 
@@ -318,7 +320,9 @@ export default function QuartierMap({
         const campuses = inResults ? { [c]: commute.meta.campuses[c] } : commute.meta.campuses;
         for (const meta of Object.values(campuses)) {
           for (const d of meta?.destinations ?? []) {
-            new maplibregl.Marker()
+            // Ink, not MapLibre's teal (blue is for links and the rent map's cheaper classes);
+            // smaller, so UdeM's two buildings stay two pins at phone zoom.
+            new maplibregl.Marker({ color: CAMPUS_MARKER_COLOUR, scale: 0.7 })
               .setLngLat([d.lon, d.lat])
               .setPopup(new maplibregl.Popup().setText(t.marker(meta.name, d.name)))
               .addTo(map);
@@ -331,7 +335,9 @@ export default function QuartierMap({
             if (!f || !map) return;
             const props = f.properties as QuartierProps;
             const { mode: cm, size: cs, campus: cc, results: rs } = view.current;
-            const head = `<b>${escapeHtml(props.name)}</b> (${escapeHtml(props.borough)})<br>`;
+            // The borough only when it differs from the name, as on the cards.
+            const borough = props.borough !== props.name ? ` (${escapeHtml(props.borough)})` : "";
+            const head = `<b>${escapeHtml(props.name)}</b>${borough}<br>`;
             const body = props.no_residents
               ? noResidentsPopup(props, cm, names)
               : rs

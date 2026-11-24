@@ -50,7 +50,10 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
   colour (touch has no hover). On the first screen nothing is preselected: every choice is
   the user's ("Change search" on the results starts from the current search). Works with
   keyboard (arrow keys), screen readers and without JavaScript.
-- **Budget field:** labelled number input with a `$` prefix, `step` 25.
+- **Budget field:** labelled number input with a `$` prefix, any whole dollar (owner, M4.3).
+- **Map popups (M4.3):** drawn in the system, not MapLibre's defaults: Public Sans 14 px,
+  ink on white, 1 px control edge, 8 px radius, no shadow, a drawn close icon with a 44 px
+  target. Campus pins are ink. The results map's legend sits below the map, never over it.
 - **Primary button:** ink, 48 px, full width on phones, content width from `sm`.
 - **Text links:** `#1d4ed8`, underlined, semibold; standalone ones have a 44 px hit area.
 - **Shortlist card:** a native `<details>` in a white card with a control edge. Summary: name

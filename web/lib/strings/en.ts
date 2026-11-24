@@ -316,7 +316,11 @@ export const en = {
   footer: {
     dataLine: (scheduleDay: string, cmhcPeriod: string, statcanQuarter: string) =>
       `Data: STM, REM and exo transit schedules for ${scheduleDay}; rents from CMHC (${cmhcPeriod}) and Statistics Canada (${statcanQuarter}). Estimates, not listings.`,
+    /** The footer's links, for screen readers (not the main navigation). */
+    navLabel: "About this site",
     howItWorks: "How it works",
+    /** Until M5's sources page: points to How it works, "Data and credits". */
+    sources: "Sources",
     map: "Map of all neighbourhoods",
   },
   /** /how-it-works (M4.3). Numbers come from the data files; the full sources and limitations
@@ -384,6 +388,7 @@ export const en = {
     commuteLegend: (campus: string) => `Median commute to ${campus}`,
     rentLegend: (size: string) => `Rent for a ${size}, compared with the Montréal asking rent`,
     inResults: "In your results: dark outline",
+    pin: "Pin: the campus building the times are measured to",
     notInResults: "Not in your results",
     showDetails: "Show details",
     /** Popup line for a neighbourhood in the results: "27 min · ≈ $1,225". */

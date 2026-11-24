@@ -19,9 +19,9 @@ const CAVEATS: [LabelKey, keyof typeof t.rent.labels][] = [
 
 export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
 
-function Section({ heading, children }: { heading: string; children: React.ReactNode }) {
+function Section({ heading, id, children }: { heading: string; id?: string; children: React.ReactNode }) {
   return (
-    <section className="mt-10">
+    <section id={id} className="mt-10 scroll-mt-4">
       <h2 className="text-lg font-semibold">{heading}</h2>
       <div className="mt-3 flex flex-col gap-3">{children}</div>
     </section>
@@ -72,7 +72,6 @@ export default async function HowItWorks() {
 
       <Section heading={t.rent.heading}>
         <p>{t.rent.method(r.cmhc.period, r.statcan.quarter)}</p>
-        <p>{strings.rent.sourceLine}</p>
         <p>{t.rent.oldLeases}</p>
         <p>{t.rent.rounding(r.rounding.step)}</p>
         <p>{t.rent.labelsLead}</p>
@@ -93,7 +92,8 @@ export default async function HowItWorks() {
         <p>{t.shortlist.rooms}</p>
       </Section>
 
-      <Section heading={t.data.heading}>
+      {/* The footer's "Sources" link points here until M5's sources page. */}
+      <Section heading={t.data.heading} id="data-and-credits">
         <ul role="list" className="flex flex-col gap-2 text-sm text-ink-muted">
           {t.data.attributions(r.cmhc.period, r.statcan.quarter).map((a) => (
             <li key={a}>{a}</li>

@@ -9,7 +9,7 @@ import { BIN_UPPER_MIN, COMMUTE_COLOURS, NOT_IN_RESULTS_COLOUR } from "@/lib/leg
 import { BIN_PCT, binEdges, type LabelKey, RENT_COLOURS, RENT_FILL_OPACITY, RENT_NO_DATA_COLOUR, type ShownSize } from "@/lib/rent";
 import { type ExcludedReason, type GroupKey, SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
-import QuartierMap, { escapeHtml, type Mode } from "../../QuartierMap";
+import QuartierMap, { CAMPUS_MARKER_COLOUR, escapeHtml, type Mode } from "../../QuartierMap";
 
 const t = strings.resultsMap;
 
@@ -45,9 +45,9 @@ function Swatch({
   );
 }
 
-function LegendRow({ swatch, label }: { swatch: React.ReactNode; label: string }) {
+function LegendRow({ swatch, label, wide = false }: { swatch: React.ReactNode; label: string; wide?: boolean }) {
   return (
-    <li className="flex items-center gap-2">
+    <li className={`flex items-center gap-2 ${wide ? "col-span-full" : ""}`}>
       {swatch}
       <span>{label}</span>
     </li>
@@ -107,7 +107,10 @@ export default function ResultsMap({
         );
         if (item.label && item.label !== "neighbourhood") lines.push(escapeHtml(strings.rent.badges[item.label]));
         const href = `${detailsBase}&open=${encodeURIComponent(id)}#hood-${encodeURIComponent(id)}`;
-        lines.push(`<a href="${escapeHtml(href)}" style="font-weight:600;text-decoration:underline">${escapeHtml(t.showDetails)}</a>`);
+        // The site's link treatment, with a 44 px hit area (the popup's only action).
+        lines.push(
+          `<a href="${escapeHtml(href)}" class="inline-flex min-h-11 items-center font-semibold text-link underline">${escapeHtml(t.showDetails)}</a>`,
+        );
         return lines.join("<br>");
       },
     }),
@@ -175,6 +178,15 @@ export default function ResultsMap({
             </>
           )}
           <LegendRow swatch={<Swatch background="transparent" outlined />} label={t.inResults} />
+          <LegendRow
+            swatch={
+              <span aria-hidden="true" className="flex w-5 shrink-0 justify-center">
+                <span className="size-3 rounded-full" style={{ background: CAMPUS_MARKER_COLOUR }} />
+              </span>
+            }
+            label={t.pin}
+            wide
+          />
           <LegendRow swatch={<Swatch colour={NOT_IN_RESULTS_COLOUR} />} label={t.notInResults} />
         </ul>
         <p className="mt-3 text-xs text-ink-muted">{strings.map.attribution(mode === "rent")}</p>

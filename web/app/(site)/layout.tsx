@@ -24,9 +24,12 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
           <p className="max-w-prose text-ink-muted">
             {strings.footer.dataLine(day, rent.meta.cmhc.period, rent.meta.statcan.quarter)}
           </p>
-          <nav aria-label={strings.siteName} className="mt-2 flex flex-wrap gap-x-6">
+          <nav aria-label={strings.footer.navLabel} className="mt-2 flex flex-wrap gap-x-6">
             <Link href="/how-it-works" className={footerLink}>
               {strings.footer.howItWorks}
+            </Link>
+            <Link href="/how-it-works#data-and-credits" className={footerLink}>
+              {strings.footer.sources}
             </Link>
             <Link href="/map" className={footerLink}>
               {strings.footer.map}

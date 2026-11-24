@@ -51,3 +51,34 @@ a {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+
+/* Map popups drawn in the system, not MapLibre's defaults (Impeccable, M4.3): Public Sans,
+   ink on white, a control edge instead of a shadow, and a drawn close icon with a 44 px target. */
+/* Two classes: MapLibre's own stylesheet loads after this one, and its map container sets a
+   12 px Helvetica font that the popup would otherwise inherit. */
+.maplibregl-popup .maplibregl-popup-content {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-control);
+  border-radius: var(--radius-control);
+  box-shadow: none;
+  padding: 12px 44px 12px 14px;
+}
+
+.maplibregl-popup .maplibregl-popup-close-button {
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  font-size: 0;
+  border-radius: var(--radius-control);
+  background: no-repeat center / 16px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230f172a' stroke-width='1.75' stroke-linecap='round'%3E%3Cpath d='M4 4l8 8M12 4l-8 8'/%3E%3C/svg%3E");
+}
+
+.maplibregl-popup .maplibregl-popup-close-button:hover {
+  background-color: var(--color-hover);
+}
