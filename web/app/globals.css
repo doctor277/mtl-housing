@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens. Source: web/design/MASTER.md + tokens.css (UI UX Pro Max, generated once),
+   with Impeccable's overrides recorded in web/DESIGN.md. Light only (see DESIGN.md).
+   Colour is kept for data: the UI itself is ink on paper, with blue only for links and focus.
+   The map's data colours stay in lib/rent.ts and lib/legend.ts. */
+@theme {
+  --color-paper: #f8fafc; /* page background (MASTER: background) */
+  --color-surface: #ffffff; /* controls (MASTER: card) */
+  --color-ink: #0f172a; /* text, primary action, selected choice (MASTER: foreground) */
+  --color-ink-hover: #1e293b;
+  --color-ink-muted: #475569; /* hints, secondary text: 7.2:1 on paper (MASTER: muted-foreground) */
+  --color-control: #64748b; /* control borders: 4.6:1 on paper, above the 3:1 UI minimum */
+  --color-line: #e2e8f0; /* dividers only, never a control's edge */
+  --color-hover: #f1f5f9; /* unselected control on hover */
+  --color-link: #1d4ed8; /* 6.4:1 on paper */
+  --color-focus: #2563eb; /* focus ring (MASTER: ring) */
+  --color-error: #b91c1c; /* 6.2:1 on paper */
+  --color-selection: #dbeafe;
+
+  --radius-control: 0.5rem; /* MASTER: 8px buttons and inputs */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  caret-color: var(--color-ink);
+  accent-color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-selection);
+  color: var(--color-ink);
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
