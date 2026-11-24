@@ -40,9 +40,10 @@ export default async function HowItWorks() {
   );
   const r = rent.meta;
   // The attribution texts the pipeline writes into the data files (DATA_SOURCES.md wording),
-  // once each: both files credit the Ville de Montréal and the census file.
+  // once each: both files credit the Ville de Montréal and the census file. rent.json first:
+  // its Ville de Montréal line has the full "licensed under CC BY 4.0" wording.
   const seen = new Set<string>();
-  const credits = [...meta.sources, ...r.sources].filter((s) => {
+  const credits = [...r.sources, ...meta.sources].filter((s) => {
     const key = s.replace("licensed under ", "");
     if (seen.has(key)) return false;
     seen.add(key);
