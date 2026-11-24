@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { formatDollars } from "../rent";
 import { BUDGET_EXAMPLE, MAX_COMMUTE_MIN, parseSearch, SEARCH_SIZES } from "../search";
 import { strings } from ".";
 
@@ -19,7 +18,7 @@ describe("strings", () => {
   });
 
   it("takes the budget example and the commute buttons from the code, not typed text", () => {
-    expect(strings.form.budget.hint(formatDollars(BUDGET_EXAMPLE))).toBe(
+    expect(strings.form.budget.hint(strings.format.dollars(BUDGET_EXAMPLE))).toBe(
       "e.g. 1,400. Leave it empty to sort by commute only.",
     );
     expect(parseSearch({ campus: "a", size: "1br", budget: String(BUDGET_EXAMPLE), max: "45" }, ["a"]).ok).toBe(
@@ -66,6 +65,17 @@ describe("strings", () => {
     expect(strings.detail.lowSample(2)).toBe("Few homes sampled here (2), so this is less certain.");
     expect(strings.results.cheapest("Quartier A", "≈ $1,650")).toBe("Cheapest: Quartier A, ≈ $1,650.");
     expect(strings.results.sort.label).toBe("Sort by");
+  });
+
+  it("builds the map's commute class labels from the class edges and the routing limit", () => {
+    expect(strings.commute.classLabels([20, 30, 45, 60, 90], 120)).toEqual([
+      "≤ 20 min",
+      "21–30",
+      "31–45",
+      "46–60",
+      "61–90",
+      "91–120",
+    ]);
   });
 
   it("keeps the owner's first-screen wording", () => {

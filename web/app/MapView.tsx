@@ -1,26 +1,27 @@
 "use client";
 
-// The map plus its controls and legend. Commute/Rent toggle, size picker (rent only).
+// /map: every neighbourhood, with Commute/Rent, campus and size pickers and the legend. Its
+// look is still the M2.6/M3 one; the results' map view (M4.3) is app/(site)/results/ResultsMap.tsx.
+// Wording: lib/strings.
 
 import { type CSSProperties, useState } from "react";
 import { type CommuteFile, campusOptions, commuteTarget, windowLabel } from "@/lib/commute";
-import { BINS, NO_DATA_COLOUR, NO_RESIDENTS_COLOUR, OVER_MAX_COLOUR } from "@/lib/legend";
+import { BIN_UPPER_MIN, COMMUTE_COLOURS, NO_DATA_COLOUR, NO_RESIDENTS_COLOUR, OVER_MAX_COLOUR } from "@/lib/legend";
 import {
-  type BedroomType,
+  BIN_PCT,
   binEdges,
-  binLegend,
   DEFAULT_SIZE,
-  dataLine,
-  formatDollars,
+  RENT_COLOURS,
   RENT_FILL_OPACITY,
-  RENT_BINS,
   RENT_NO_DATA_COLOUR,
   type RentFile,
-  roomLine,
   SIZES,
-  sourceLine,
+  type ShownSize,
 } from "@/lib/rent";
+import { strings } from "@/lib/strings";
 import QuartierMap, { type Mode } from "./QuartierMap";
+
+const t = strings.map;
 
 const swatch = (background: string, extra: CSSProperties = {}) => (
   <span
@@ -77,62 +78,67 @@ function Toggle<T extends string>({
 
 function CommuteLegend({ commute, campus }: { commute: CommuteFile | null; campus: string }) {
   const meta = commute?.meta.campuses[campus];
-  if (!commute || !meta) return <div>Loading commutes…</div>;
+  if (!commute || !meta) return <div>{t.loadingCommutes}</div>;
+  const max = commute.meta.max_trip_min;
+  const labels = strings.commute.classLabels(BIN_UPPER_MIN, max);
   return (
     <>
-      <b>Median transit commute to {meta.name}</b>
+      <b>{t.commuteTitle(meta.name)}</b>
       <br />
       {commuteTarget(campus, meta)}, {windowLabel(commute.meta)}
-      {BINS.map(([label, colour]) => (
-        <div key={label}>
+      {COMMUTE_COLOURS.map((colour, i) => (
+        <div key={colour}>
           {swatch(colour)}
-          {label}
+          {labels[i]}
         </div>
       ))}
       <div>
-        {swatch(OVER_MAX_COLOUR)}&gt; 120 min
+        {swatch(OVER_MAX_COLOUR)}
+        {t.overMaxClass(max)}
       </div>
       <div>
-        {swatch(NO_DATA_COLOUR)}no data
+        {swatch(NO_DATA_COLOUR)}
+        {t.noData}
       </div>
     </>
   );
 }
 
-function RentLegend({ rent, size }: { rent: RentFile | null; size: BedroomType }) {
-  if (!rent) return <div>Loading rents…</div>;
+function RentLegend({ rent, size }: { rent: RentFile | null; size: ShownSize }) {
+  if (!rent) return <div>{t.loadingRents}</div>;
   const step = rent.meta.rounding.step;
   const level = rent.meta.montreal[size].statcan_asking;
-  const ranges = binLegend(binEdges(level, step), step);
-  const label = SIZES.find((s) => s.key === size)?.label ?? size;
+  const ranges = strings.rent.classRanges(binEdges(level, step), step);
+  const pct = strings.rent.classPct(BIN_PCT);
   return (
     <>
-      <b>Estimated rent, {label}</b>
+      <b>{t.rentTitle(strings.rent.sizeLabel(size))}</b>
       <br />
-      {/* A published StatCan figure, shown as is (no "≈"). */}
-      compared with the Montréal asking rent (${formatDollars(level)}, Statistics Canada)
-      {RENT_BINS.map(([pct, colour], i) => (
-        <div key={pct}>
+      {t.rentBasis(level)}
+      {RENT_COLOURS.map((colour, i) => (
+        <div key={colour}>
           {swatch(colour, { opacity: RENT_FILL_OPACITY })}
-          {pct}: {ranges[i]}
+          {t.rentClass(pct[i], ranges[i])}
         </div>
       ))}
       <div>
-        {swatch("", { background: HATCH_CSS })}low reliability (CMHC: “use with caution”)
+        {swatch("", { background: HATCH_CSS })}
+        {t.lowReliability}
       </div>
       <div>
-        {swatch(RENT_NO_DATA_COLOUR)}not enough data
+        {swatch(RENT_NO_DATA_COLOUR)}
+        {t.notEnoughData}
       </div>
-      <div style={{ marginTop: 4, fontSize: 11 }}>{roomLine(rent.meta)}</div>
-      <div style={{ marginTop: 4, fontSize: 11 }}>{sourceLine()}</div>
-      <div style={{ marginTop: 4, fontSize: 11 }}>{dataLine(rent.meta)}</div>
+      <div style={{ marginTop: 4, fontSize: 11 }}>{strings.rent.roomLine(rent.meta)}</div>
+      <div style={{ marginTop: 4, fontSize: 11 }}>{strings.rent.sourceLine}</div>
+      <div style={{ marginTop: 4, fontSize: 11 }}>{strings.rent.dataLine(rent.meta)}</div>
     </>
   );
 }
 
 export default function MapView() {
   const [mode, setMode] = useState<Mode>("commute");
-  const [size, setSize] = useState<BedroomType>(DEFAULT_SIZE);
+  const [size, setSize] = useState<ShownSize>(DEFAULT_SIZE);
   const [chosenCampus, setCampus] = useState("udem");
   const [commute, setCommute] = useState<CommuteFile | null>(null);
   // Fall back to the first campus in commute.json if the chosen one isn't there.
@@ -170,24 +176,26 @@ export default function MapView() {
         }}
       >
         <Toggle
-          label="Map"
+          label={t.group}
           options={[
-            { key: "commute", label: "Commute" },
-            { key: "rent", label: "Rent" },
+            { key: "commute", label: t.modes.commute },
+            { key: "rent", label: t.modes.rent },
           ]}
           value={mode}
           onChange={setMode}
         />
         {mode === "commute" && commute && (
           // Only campuses present in commute.json are offered.
+          <Toggle label={t.campus} options={campusOptions(commute)} value={campus} onChange={setCampus} />
+        )}
+        {mode === "rent" && (
           <Toggle
-            label="Campus"
-            options={campusOptions(commute)}
-            value={campus}
-            onChange={setCampus}
+            label={t.size}
+            options={SIZES.map((key) => ({ key, label: strings.rent.sizeLabel(key) }))}
+            value={size}
+            onChange={setSize}
           />
         )}
-        {mode === "rent" && <Toggle label="Size" options={SIZES} value={size} onChange={setSize} />}
         <button
           type="button"
           aria-expanded={legendOpen}
@@ -202,24 +210,17 @@ export default function MapView() {
             cursor: "pointer",
           }}
         >
-          {legendOpen ? "Hide legend" : "Show legend"}
+          {legendOpen ? t.hideLegend : t.showLegend}
         </button>
         {legendOpen && (
           <>
-            {mode === "commute" ? (
-              <CommuteLegend commute={commute} campus={campus} />
-            ) : (
-              <RentLegend rent={rent} size={size} />
-            )}
+            {mode === "commute" ? <CommuteLegend commute={commute} campus={campus} /> : <RentLegend rent={rent} size={size} />}
             <div>
-              {swatch(NO_RESIDENTS_COLOUR, { outline: "1.5px dashed #333", outlineOffset: -1 })}no
-              residents (park)
+              {swatch(NO_RESIDENTS_COLOUR, { outline: "1.5px dashed #333", outlineOffset: -1 })}
+              {t.noResidents}
             </div>
             <div style={{ marginTop: 4, fontSize: 11 }}>
-              Click a neighbourhood for details. Quartiers: Ville de Montréal (CC BY 4.0).
-              Schedules: STM, REM, exo (CC BY 4.0).{" "}
-              {mode === "rent" && "Rents: CMHC, Statistics Canada. "}Map data © OpenStreetMap
-              contributors.
+              {t.clickHint} {t.attribution(mode === "rent")}
             </div>
           </>
         )}

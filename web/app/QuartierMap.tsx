@@ -1,46 +1,39 @@
 "use client";
 
-// Quartiers coloured by median transit commute to the chosen campus or by the estimated
-// rent for one size. Still the Phase 1.5 "ugly map": no styling, no form, no ranking
-// (those come in M4).
+// Quartiers coloured by median transit commute to a campus or by the estimated rent for one
+// size. Two uses: /map (every neighbourhood, explorer popups) and the results' map view
+// (`results` set: neighbourhoods outside the search are drawn without data colour, the popup
+// comes from the results page, the view fits the results). Wording: lib/strings.
 
 import { useEffect, useRef, useState } from "react";
 import type { ExpressionSpecification, Map as MlMap, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import {
-  type CommuteFile,
-  campusFeatureProps,
-  commuteTarget,
-  formatTime,
-} from "@/lib/commute";
+import { type CommuteFile, campusFeatureProps, commuteTarget, formatTime } from "@/lib/commute";
 import {
   BIN_UPPER_MIN,
-  BINS,
+  COMMUTE_COLOURS,
   NO_DATA_COLOUR,
   NO_RESIDENTS_COLOUR,
+  NOT_IN_RESULTS_COLOUR,
   OVER_MAX_COLOUR,
 } from "@/lib/legend";
 import {
-  BADGES,
-  type BedroomType,
-  detailLine,
-  extraLines,
-  formatRent,
-  RENT_BINS,
+  RENT_COLOURS,
   RENT_FILL_OPACITY,
   RENT_NO_DATA_COLOUR,
   type RentFile,
   rentFeatureProps,
-  SIZES,
-  sourceLine,
+  type ShownSize,
 } from "@/lib/rent";
+import { strings } from "@/lib/strings";
 
 export type Mode = "commute" | "rent";
 
 const BASEMAP = "https://tiles.openfreemap.org/styles/positron";
 const HATCH = "low-reliability-hatch";
+const t = strings.map;
 
-function escapeHtml(s: string): string {
+export function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
@@ -52,74 +45,78 @@ interface QuartierProps {
   part_of?: string;
 }
 
+/** The results' map view: which neighbourhoods are in the results, and their popup. */
+export interface ResultsLayer {
+  ids: string[];
+  /** Popup HTML for a neighbourhood with residents (already escaped). */
+  popupHtml: (id: string) => string;
+}
+
 function commutePopup(props: QuartierProps, commute: CommuteFile, campus: string): string {
   const max = commute.meta.max_trip_min;
   const meta = commute.meta.campuses[campus];
   const r = commute.results[props.id]?.[campus];
-  if (!r || !meta) return "no data";
+  if (!r || !meta) return t.popup.noCommuteData;
+  const p = t.popup;
   const lines = [
-    `${escapeHtml(meta.name)}, ${escapeHtml(commuteTarget(campus, meta))}, median: <b>${formatTime(r, "median", max)}</b>`,
-    `p10–p90: ${formatTime(r, "p10", max)} – ${formatTime(r, "p90", max)}`,
+    escapeHtml(p.medianPrefix(meta.name, commuteTarget(campus, meta))) + `<b>${escapeHtml(formatTime(r, "median", max))}</b>`,
+    escapeHtml(p.range(formatTime(r, "p10", max), formatTime(r, "p90", max))),
   ];
   const several = meta.destinations.length > 1;
   for (const d of meta.destinations) {
     const b = r.by_destination[d.id];
-    const adj = d.access_adjustment_min;
-    const signed = `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`;
-    const access = adj ? ` (incl. ${signed} access adjustment)` : "";
+    const signed = d.access_adjustment_min ? p.signedMin(d.access_adjustment_min) : null;
     if (!several) {
-      if (adj) lines.push(`includes a ${signed} access adjustment (platform to entrance)`);
+      if (signed) lines.push(escapeHtml(p.access(signed)));
       continue;
     }
     if (!b) continue;
     const share = b.fastest_share === null ? "?" : `${Math.round(b.fastest_share * 100)}%`;
-    lines.push(
-      `${escapeHtml(d.name)}: ${formatTime(b, "median", max)}${access}, fastest for ${share} of homes`,
-    );
+    lines.push(escapeHtml(p.building(d.name, formatTime(b, "median", max), signed, share)));
   }
-  lines.push(`${r.n_points} sample points, ${r.n_unreachable} unreachable`);
-  lines.push(`flags: ${r.flags.length ? r.flags.join(", ") : "none"}`);
+  lines.push(escapeHtml(p.sample(r.n_points, r.n_unreachable)));
+  lines.push(escapeHtml(p.flags(r.flags)));
   return lines.join("<br>");
 }
 
-function rentPopup(props: QuartierProps, rent: RentFile, size: BedroomType): string {
-  const sizeLabel = SIZES.find((s) => s.key === size)?.label ?? size;
+function rentPopup(props: QuartierProps, rent: RentFile, size: ShownSize): string {
+  const sizeLabel = strings.rent.sizeLabel(size);
   const e = rent.results[props.id]?.[size];
-  if (!e) return `${sizeLabel}: not enough data`;
-  const value = e.estimate === null ? "" : `<b>${formatRent(e.estimate)}</b> a month · `;
+  if (!e) return escapeHtml(t.popup.noRent(sizeLabel));
+  const perMonth = e.estimate === null ? null : strings.format.rent(e.estimate);
   const lines = [
-    `${escapeHtml(sizeLabel)}: ${value}<i>${BADGES[e.label]}</i>`,
-    escapeHtml(detailLine(e, rent.meta)),
-    ...extraLines(e, rent.meta).map(escapeHtml),
+    escapeHtml(t.popup.rent(sizeLabel, perMonth, strings.rent.badges[e.label])),
+    escapeHtml(strings.rent.detailLine(e, rent.meta)),
+    ...strings.rent.extraLines(e, rent.meta).map(escapeHtml),
   ];
-  if (e.estimate !== null) {
-    lines.push(`<small>${escapeHtml(sourceLine())}</small>`);
-  }
+  if (e.estimate !== null) lines.push(`<small>${escapeHtml(strings.rent.sourceLine)}</small>`);
   return lines.join("<br>");
 }
 
-function popupHtml(
+function explorerPopup(
   props: QuartierProps,
   mode: Mode,
-  size: BedroomType,
+  size: ShownSize,
   campus: string,
   commute: CommuteFile,
   rent: RentFile,
-  names: Map<string, string>,
 ): string {
-  const head = `<b>${escapeHtml(props.name)}</b> (${escapeHtml(props.borough)})<br>`;
-  if (props.no_residents) {
-    const parent = names.get(props.part_of ?? "") ?? props.part_of ?? "?";
-    const what = mode === "rent" ? "rent estimate" : "commute time";
-    return (
-      head +
-      `No residents, so no ${what} is shown.<br>` +
-      `In the city's data this area is part of the ${escapeHtml(parent)} quartier.`
-    );
-  }
-  return (
-    head + (mode === "rent" ? rentPopup(props, rent, size) : commutePopup(props, commute, campus))
-  );
+  return mode === "rent" ? rentPopup(props, rent, size) : commutePopup(props, commute, campus);
+}
+
+function noResidentsPopup(props: QuartierProps, mode: Mode, names: Map<string, string>): string {
+  const parent = names.get(props.part_of ?? "") ?? props.part_of ?? "?";
+  return `${escapeHtml(t.popup.noResidents(mode))}<br>${escapeHtml(t.popup.partOf(parent))}`;
+}
+
+/** Wraps a fill colour so neighbourhoods outside the results (results view only) are grey. */
+function withResults(colour: unknown[]): ExpressionSpecification {
+  return [
+    "case",
+    ["==", ["coalesce", ["get", "in_results"], true], false],
+    NOT_IN_RESULTS_COLOUR,
+    colour,
+  ] as unknown as ExpressionSpecification;
 }
 
 function commuteColour(campus: string): ExpressionSpecification {
@@ -128,15 +125,15 @@ function commuteColour(campus: string): ExpressionSpecification {
   const step = [
     "step",
     ["get", `median_${campus}`],
-    BINS[0][1],
-    ...BIN_UPPER_MIN.flatMap((upper, i) => [upper + 0.5, BINS[i + 1][1]]),
+    COMMUTE_COLOURS[0],
+    ...BIN_UPPER_MIN.flatMap((upper, i) => [upper + 0.5, COMMUTE_COLOURS[i + 1]]),
   ];
-  return [
+  return withResults([
     "case",
     ["==", ["coalesce", ["get", "no_residents"], false], true],
     NO_RESIDENTS_COLOUR,
     ["match", ["get", `status_${campus}`], "ok", step, "over_max", OVER_MAX_COLOUR, NO_DATA_COLOUR],
-  ] as unknown as ExpressionSpecification;
+  ]);
 }
 
 /** 8×8 diagonal hatch: a dark and a light line side by side, so it shows on pale and
@@ -155,34 +152,52 @@ function hatchImage(): { width: number; height: number; data: Uint8Array } {
   return { width: n, height: n, data };
 }
 
-function rentColour(size: BedroomType): ExpressionSpecification {
+function rentColour(size: ShownSize): ExpressionSpecification {
   const bin = ["get", `rent_bin_${size}`];
-  return [
+  return withResults([
     "case",
     ["==", ["coalesce", ["get", "no_residents"], false], true],
     NO_RESIDENTS_COLOUR,
     ["<", bin, 0],
     RENT_NO_DATA_COLOUR,
-    ["match", bin, ...RENT_BINS.flatMap(([, colour], i) => [i, colour]), RENT_NO_DATA_COLOUR],
-  ] as unknown as ExpressionSpecification;
+    ["match", bin, ...RENT_COLOURS.flatMap((colour, i) => [i, colour]), RENT_NO_DATA_COLOUR],
+  ]);
 }
 
-const lowFilter = (size: BedroomType): ExpressionSpecification => [
-  "==",
-  ["get", `rent_low_${size}`],
-  true,
+const lowFilter = (size: ShownSize): ExpressionSpecification => [
+  "all",
+  ["==", ["get", `rent_low_${size}`], true],
+  ["!=", ["coalesce", ["get", "in_results"], true], false],
 ];
+
+/** [west, south, east, north] of some features' polygons. */
+function bounds(features: { geometry: { coordinates: unknown } }[]): [number, number, number, number] | null {
+  let b: [number, number, number, number] | null = null;
+  const walk = (c: unknown): void => {
+    if (!Array.isArray(c)) return;
+    if (typeof c[0] === "number") {
+      const [x, y] = c as [number, number];
+      b = b ? [Math.min(b[0], x), Math.min(b[1], y), Math.max(b[2], x), Math.max(b[3], y)] : [x, y, x, y];
+      return;
+    }
+    for (const p of c) walk(p);
+  };
+  for (const f of features) walk(f.geometry.coordinates);
+  return b;
+}
 
 export default function QuartierMap({
   mode,
   size,
   campus,
+  results,
   onDataLoaded,
 }: {
   mode: Mode;
-  size: BedroomType;
+  size: ShownSize;
   campus: string;
-  onDataLoaded: (commute: CommuteFile, rent: RentFile) => void;
+  results?: ResultsLayer;
+  onDataLoaded?: (commute: CommuteFile, rent: RentFile) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
@@ -190,10 +205,10 @@ export default function QuartierMap({
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // The click handler is registered once; it reads the current choice from here.
-  const view = useRef({ mode, size, campus });
+  const view = useRef({ mode, size, campus, results });
   useEffect(() => {
-    view.current = { mode, size, campus };
-  }, [mode, size, campus]);
+    view.current = { mode, size, campus, results };
+  }, [mode, size, campus, results]);
 
   useEffect(() => {
     let map: MlMap | undefined;
@@ -201,17 +216,16 @@ export default function QuartierMap({
 
     (async () => {
       const maplibregl = await import("maplibre-gl");
-      maplibregl.setWorkerUrl(
-        new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).toString(),
-      );
+      maplibregl.setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).toString());
       const [geo, commute, rent] = await Promise.all([
         fetch("/data/neighbourhoods.geojson").then((r) => r.json()),
         fetch("/data/commute.json").then((r) => r.json() as Promise<CommuteFile>),
         fetch("/data/rent.json").then((r) => r.json() as Promise<RentFile>),
       ]);
       if (cancelled || !container.current) return;
-      onDataLoaded(commute, rent);
+      onDataLoaded?.(commute, rent);
 
+      const inResults = view.current.results ? new Set(view.current.results.ids) : null;
       const campusIds = Object.keys(commute.meta.campuses);
       const names = new Map<string, string>();
       for (const f of geo.features) {
@@ -221,15 +235,18 @@ export default function QuartierMap({
           Object.assign(p, {
             ...campusFeatureProps(commute.results[p.id], campusIds),
             ...rentFeatureProps(rent.results[p.id], rent.meta),
+            ...(inResults ? { in_results: inResults.has(p.id) } : {}),
           });
         }
       }
 
+      const fit = inResults
+        ? bounds(geo.features.filter((f: { properties: QuartierProps }) => inResults.has(f.properties.id)))
+        : null;
       map = new maplibregl.Map({
         container: container.current,
         style: BASEMAP,
-        center: [-73.72, 45.55],
-        zoom: 10,
+        ...(fit ? { bounds: fit, fitBoundsOptions: { padding: 24, maxZoom: 13 } } : { center: [-73.72, 45.55], zoom: 10 }),
       });
       mapRef.current = map;
 
@@ -275,12 +292,24 @@ export default function QuartierMap({
           filter: ["==", ["coalesce", ["get", "no_residents"], false], true],
           paint: { "line-color": "#333", "line-width": 1.5, "line-dasharray": [2, 2] },
         });
+        if (inResults) {
+          // The results stand out from the greyed rest by a firmer outline as well as colour.
+          map.addLayer({
+            id: "results-line",
+            type: "line",
+            source: "quartiers",
+            filter: ["==", ["get", "in_results"], true],
+            paint: { "line-color": "#0f172a", "line-width": 1.5 },
+          });
+        }
 
-        for (const meta of Object.values(commute.meta.campuses)) {
-          for (const d of meta.destinations) {
+        // The results view marks only the searched campus; the explorer marks them all.
+        const campuses = inResults ? { [c]: commute.meta.campuses[c] } : commute.meta.campuses;
+        for (const meta of Object.values(campuses)) {
+          for (const d of meta?.destinations ?? []) {
             new maplibregl.Marker()
               .setLngLat([d.lon, d.lat])
-              .setPopup(new maplibregl.Popup().setText(`${meta.name}: ${d.name}`))
+              .setPopup(new maplibregl.Popup().setText(t.marker(meta.name, d.name)))
               .addTo(map);
           }
         }
@@ -289,13 +318,17 @@ export default function QuartierMap({
           map.on("click", layer, (e) => {
             const f = e.features?.[0];
             if (!f || !map) return;
-            const { mode: cm, size: cs, campus: cc } = view.current;
-            const html = popupHtml(f.properties as QuartierProps, cm, cs, cc, commute, rent, names);
-            // Narrow enough on a phone for MapLibre's anchoring to keep it on screen
-            // (a real mobile detail panel comes in M4).
-            popupRef.current = new maplibregl.Popup({ maxWidth: "min(360px, 70vw)" })
+            const props = f.properties as QuartierProps;
+            const { mode: cm, size: cs, campus: cc, results: rs } = view.current;
+            const head = `<b>${escapeHtml(props.name)}</b> (${escapeHtml(props.borough)})<br>`;
+            const body = props.no_residents
+              ? noResidentsPopup(props, cm, names)
+              : rs
+                ? rs.popupHtml(props.id)
+                : explorerPopup(props, cm, cs, cc, commute, rent);
+            popupRef.current = new maplibregl.Popup({ maxWidth: "min(320px, 75vw)" })
               .setLngLat(e.lngLat)
-              .setHTML(html)
+              .setHTML(head + body)
               .addTo(map);
           });
           map.on("mouseenter", layer, () => {
@@ -337,7 +370,7 @@ export default function QuartierMap({
 
   return (
     <>
-      {error && <p>Error: {error}</p>}
+      {error && <p role="alert">{t.error(error)}</p>}
       <div ref={container} style={{ position: "absolute", inset: 0 }} />
     </>
   );

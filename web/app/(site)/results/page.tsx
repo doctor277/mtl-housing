@@ -6,7 +6,6 @@ import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadHoods, loadRent } from "@/lib/data";
-import { formatDollars, formatRent } from "@/lib/rent";
 import {
   MAX_COMMUTE_MIN,
   parseSearch,
@@ -148,7 +147,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
   const summary = [
     campusLabel,
     sizeLabel,
-    s.budget === null ? t.noBudget : t.budget(formatDollars(s.budget)),
+    s.budget === null ? t.noBudget : t.budget(strings.format.dollars(s.budget)),
     t.maxCommute(s.maxCommute),
   ];
   const ctx: CardContext = {
@@ -194,8 +193,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
 
       {list.roomEstimate !== null && (
         <div className="mt-6 flex flex-col gap-1">
-          <p className="font-semibold">{t.roomNote(formatRent(list.roomEstimate))}</p>
-          {list.roomWarning && <p>{t.roomWarning(formatRent(list.roomEstimate))}</p>}
+          <p className="font-semibold">{t.roomNote(strings.format.rent(list.roomEstimate))}</p>
+          {list.roomWarning && <p>{t.roomWarning(strings.format.rent(list.roomEstimate))}</p>}
         </div>
       )}
 
@@ -230,7 +229,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
               <p className="font-semibold">{t.noneFits(list.withinCommute, s.maxCommute, SLIGHTLY_OVER_PCT)}</p>
               {list.cheapestHidden && (
                 <p className="mt-1">
-                  {t.cheapest(list.cheapestHidden.name, formatRent(list.cheapestHidden.rent))}
+                  {t.cheapest(list.cheapestHidden.name, strings.format.rent(list.cheapestHidden.rent))}
                 </p>
               )}
               <p className="mt-1">{t.tryBudget(list.withinCommute)}</p>

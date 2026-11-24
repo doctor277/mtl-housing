@@ -2,21 +2,19 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
+  BIN_PCT,
   binEdges,
   binIndex,
-  binLegend,
-  dataLine,
-  detailLine,
-  extraLines,
-  formatRent,
-  RENT_BINS,
+  RENT_COLOURS,
   type RentEntry,
   type RentFile,
   type RentMeta,
   rentFeatureProps,
-  roomLine,
-  sourceLine,
 } from "@/lib/rent";
+import { strings } from "@/lib/strings";
+
+// The rent wording lives in lib/strings (M4.3); these tests pin it.
+const { detailLine, extraLines, dataLine, roomLine, classRanges } = strings.rent;
 
 // Clearly fake fixtures (CLAUDE.md): areas N1/N2, zone Z, round-number levels and rents.
 const META: RentMeta = {
@@ -70,11 +68,11 @@ describe("classes", () => {
     expect(binIndex(850, edges)).toBe(1);
     expect(binIndex(1000, edges)).toBe(2);
     expect(binIndex(1300, edges)).toBe(5);
-    expect(RENT_BINS).toHaveLength(edges.length + 1);
+    expect(RENT_COLOURS).toHaveLength(edges.length + 1);
   });
 
   it("writes the legend in dollars with no gaps between classes", () => {
-    expect(binLegend(binEdges(1000, 25), 25)).toEqual([
+    expect(classRanges(binEdges(1000, 25), 25)).toEqual([
       "under $850",
       "$850–$925",
       "$950–$1,025",
@@ -82,14 +80,15 @@ describe("classes", () => {
       "$1,150–$1,275",
       "$1,300 or more",
     ]);
-    expect(formatRent(1475)).toBe("≈ $1,475");
+    expect(strings.format.rent(1475)).toBe("≈ $1,475");
+    expect(strings.rent.classPct(BIN_PCT)).toEqual(["< 85%", "85–95%", "95–105%", "105–115%", "115–130%", "> 130%"]);
   });
 });
 
 describe("texts", () => {
   it("uses the approved line for one CMHC area, with the grade in words", () => {
     expect(detailLine(entry({}), META)).toBe(
-      "Based on CMHC's average rent in CMHC area N1 (October 2025, rated very good by CMHC).",
+      "Based on CMHC’s average rent in CMHC area N1 (October 2025, rated very good by CMHC).",
     );
     expect(extraLines(entry({}), META)).toEqual([]);
   });
@@ -101,7 +100,7 @@ describe("texts", () => {
       "CMHC has no reliable figure for this area, so this uses the wider CMHC zone Z (rated good by CMHC).",
     );
     expect(detailLine(z("zone_low", "d"), META)).toBe(
-      'Based on the wider CMHC zone Z, which CMHC rates "use with caution".',
+      "Based on the wider CMHC zone Z, which CMHC rates “use with caution”.",
     );
   });
 
@@ -126,10 +125,10 @@ describe("texts", () => {
       ],
     });
     expect(detailLine(e, META)).toBe(
-      'Based on CMHC\'s average rents in CMHC areas N1 and N2; CMHC rates at least one of them "use with caution".',
+      "Based on CMHC’s average rents in CMHC areas N1 and N2; CMHC rates at least one of them “use with caution”.",
     );
     expect(extraLines(e, META)).toEqual([
-      'Weighted average of CMHC areas N1 (62%, rated good) and N2 (38%, rated "use with caution"), by rental units.',
+      "Weighted average of CMHC areas N1 (62%, rated good) and N2 (38%, rated “use with caution”), by rental units.",
     ]);
   });
 
@@ -139,24 +138,24 @@ describe("texts", () => {
       cmhc_areas: [{ type: "area", name: "N1", share: 0.866, grade: "a" }],
     });
     expect(extraLines(e, META)).toEqual([
-      "Covers 86% of this neighbourhood's rental units (N1: 86.6%); CMHC has no reliable figure for the rest.",
+      "Covers 86% of this neighbourhood’s rental units (N1: 86.6%); CMHC has no reliable figure for the rest.",
     ]);
   });
 
   it("not enough data has its own line", () => {
     const e = entry({ estimate: null, label: "none", grade: null, cmhc_areas: [] });
     expect(detailLine(e, META)).toBe(
-      "CMHC doesn't publish a reliable rent for this size here or nearby.",
+      "CMHC doesn’t publish a reliable rent for this size here or nearby.",
     );
     expect(extraLines(e, META)).toEqual([]);
   });
 
   it("uses the owner's line under every estimate; dates go in the data and room lines", () => {
-    expect(sourceLine()).toBe(
+    expect(strings.rent.sourceLine).toBe(
       "Estimate based on average rents, adjusted to current Montréal asking rents. Not a listing, and possibly low in areas with many long-time tenants.",
     );
     expect(dataLine(META)).toBe(
-      "Data: CMHC (October 2025) and Statistics Canada's experimental asking rents (2026 Q2).",
+      "Data: CMHC (October 2025) and Statistics Canada’s experimental asking rents (2026 Q2).",
     );
     expect(roomLine(META)).toBe(
       "Room: ≈ $500 a month: Montréal-wide average asking rent for a room, not specific to this neighbourhood (Statistics Canada, 2026 Q2).",
@@ -209,7 +208,7 @@ describe("the committed rent.json", () => {
   it("spreads over the classes as reported in the PR (studio > 130% is empty)", () => {
     const counts = (size: "studio" | "1br" | "2br") => {
       const edges = binEdges(file.meta.montreal[size].statcan_asking, file.meta.rounding.step);
-      const c = Array(RENT_BINS.length).fill(0);
+      const c = Array(RENT_COLOURS.length).fill(0);
       for (const entries of Object.values(file.results)) {
         const v = entries[size].estimate;
         if (v !== null) c[binIndex(v, edges)] += 1;
