@@ -60,3 +60,18 @@ Decided by the owner (2026-11-23), on top of the M4 row above:
      (`rent.json`), never typed into the text.
 6. **Language:** English and French both at launch, with an FR/EN switch. M4 keeps every UI
    string in one place (no hard-coded text in components) so M5 only adds the French file.
+
+Added by the owner (2026-11-23), when M4 started:
+
+7. **Sizes:** Room / Studio / 3½ / 4½. The site name stays a placeholder until M6.
+8. **Budget is optional.** With no budget: sort by commute, no budget groups.
+9. **The map is never the default results view.** Shortlist cards come first; the map is a
+   second view the user switches to. The map-first page must not be the first thing people
+   see (since M4.1 it lives at `/map`).
+10. **M4.2 tests:** unit tests for the grouping and sorting logic: exactly at budget,
+    rounding to $25, just under and just over 10%, rent "Not enough data", rooms (no budget
+    filter + warning), missing commute hidden with the count line, sort within groups.
+11. **M4 in three PRs:** M4.1 design system, strings file, layout, first screen; M4.2 search,
+    grouped and sorted shortlist, detail panel; M4.3 map as the results' second view,
+    example-search link ("UdeM, 3½, $1,500, 45 min"), How it works, data line, then
+    `/design-review` once.
