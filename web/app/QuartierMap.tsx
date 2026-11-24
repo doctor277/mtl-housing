@@ -343,10 +343,21 @@ export default function QuartierMap({
               : rs
                 ? rs.popupHtml(props.id)
                 : explorerPopup(props, cm, cs, cc, commute, rent);
-            popupRef.current = new maplibregl.Popup({ maxWidth: "min(320px, 75vw)" })
+            // Never wider than the map minus a margin, and panned into view if it opens past
+            // an edge (the map frame clips anything outside it).
+            const popup = new maplibregl.Popup({ maxWidth: "min(320px, calc(100% - 32px))" })
               .setLngLat(e.lngLat)
               .setHTML(head + body)
               .addTo(map);
+            popupRef.current = popup;
+            const frame = container.current?.getBoundingClientRect();
+            const box = popup.getElement().getBoundingClientRect();
+            if (frame) {
+              const m = 8;
+              const dx = box.left < frame.left + m ? box.left - frame.left - m : box.right > frame.right - m ? box.right - frame.right + m : 0;
+              const dy = box.top < frame.top + m ? box.top - frame.top - m : 0;
+              if (dx || dy) map.panBy([dx, dy], { duration: 200 });
+            }
           });
           map.on("mouseenter", layer, () => {
             if (map) map.getCanvas().style.cursor = "pointer";
