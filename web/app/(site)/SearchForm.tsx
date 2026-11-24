@@ -1,8 +1,9 @@
 // The first screen's search form: a GET form to /results (works without JavaScript; next/form
-// adds client-side navigation). Choices are native radio buttons drawn as buttons.
+// adds client-side navigation). Choices are native radio buttons drawn as buttons. On the first
+// screen nothing is preselected; on the results page it starts from the current search.
 import Form from "next/form";
 import { formatDollars } from "@/lib/rent";
-import { BUDGET_EXAMPLE, BUDGET_STEP, MAX_COMMUTE_MIN, SEARCH_SIZES } from "@/lib/search";
+import { BUDGET_EXAMPLE, BUDGET_STEP, MAX_COMMUTE_MIN, SEARCH_SIZES, type Search } from "@/lib/search";
 import { strings } from "@/lib/strings";
 
 const t = strings.form;
@@ -12,19 +13,21 @@ interface Option {
   label: string;
 }
 
-/** A required single choice, nothing preselected: a fieldset of radios drawn as 48 px buttons. */
+/** A required single choice: a fieldset of radios drawn as 48 px buttons. */
 function Choice({
   name,
   legend,
   hint,
   options,
   columns,
+  checked,
 }: {
   name: string;
   legend: string;
   hint?: string;
   options: Option[];
   columns: string;
+  checked?: string;
 }) {
   const hintId = hint ? `${name}-hint` : undefined;
   return (
@@ -42,6 +45,7 @@ function Choice({
               type="radio"
               name={name}
               value={o.value}
+              defaultChecked={o.value === checked}
               required
               className="peer sr-only"
             />
@@ -58,19 +62,32 @@ function Choice({
 export default function SearchForm({
   campuses,
   departure,
+  initial,
+  submitLabel = strings.home.submit,
+  className = "mt-8",
 }: {
   campuses: Option[];
   departure: { start: string; end: string };
+  initial?: Search;
+  submitLabel?: string;
+  className?: string;
 }) {
   return (
-    <Form action="/results" className="mt-8 flex flex-col gap-8">
-      <Choice name="campus" legend={t.campus.legend} options={campuses} columns="grid-cols-3" />
+    <Form action="/results" className={`flex flex-col gap-8 ${className}`}>
+      <Choice
+        name="campus"
+        legend={t.campus.legend}
+        options={campuses}
+        columns="grid-cols-3"
+        checked={initial?.campus}
+      />
       <Choice
         name="size"
         legend={t.size.legend}
         hint={t.size.hint}
         options={SEARCH_SIZES.map((s) => ({ value: s, label: t.size.labels[s] }))}
         columns="grid-cols-4"
+        checked={initial?.size}
       />
       <div>
         <label htmlFor="budget" className="font-semibold">
@@ -90,6 +107,7 @@ export default function SearchForm({
             inputMode="numeric"
             min={BUDGET_STEP}
             step={BUDGET_STEP}
+            defaultValue={initial?.budget ?? undefined}
             aria-describedby="budget-hint"
             className="h-full w-full min-w-0 bg-transparent px-2 outline-none"
           />
@@ -101,12 +119,13 @@ export default function SearchForm({
         hint={t.maxCommute.hint(departure.start, departure.end)}
         options={MAX_COMMUTE_MIN.map((m) => ({ value: String(m), label: t.maxCommute.option(m) }))}
         columns="grid-cols-4"
+        checked={initial ? String(initial.maxCommute) : undefined}
       />
       <button
         type="submit"
         className="h-12 cursor-pointer rounded-control bg-ink px-6 font-semibold text-white transition-colors duration-150 ease-out hover:bg-ink-hover active:bg-ink-hover sm:self-start"
       >
-        {strings.home.submit}
+        {submitLabel}
       </button>
     </Form>
   );

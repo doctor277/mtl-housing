@@ -3,6 +3,7 @@
 // Wording lives in lib/strings; this file only checks values.
 
 import type { BedroomType } from "./rent";
+import type { SortKey } from "./shortlist";
 
 /** Sizes the form offers. "room" has one citywide rent figure (rent.json meta.room). */
 export type SearchSize = "room" | Extract<BedroomType, "studio" | "1br" | "2br">;
@@ -66,10 +67,18 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   };
 }
 
-/** The query string for a search, with the form's own parameter names. */
-export function searchQuery(s: Search): string {
+/** The query string for a search, with the form's own parameter names; `sort` only when it
+ * isn't the default. */
+export function searchQuery(s: Search, sort: SortKey = "commute"): string {
   const p = new URLSearchParams({ campus: s.campus, size: s.size });
   if (s.budget !== null) p.set("budget", String(s.budget));
   p.set("max", String(s.maxCommute));
+  if (sort !== "commute") p.set("sort", sort);
   return p.toString();
+}
+
+/** The shortlist order: `sort=rent` ("cheapest"), else fastest commute first (decision 1).
+ * Not a form field, so anything else falls back to the default instead of an error. */
+export function parseSort(params: Params): SortKey {
+  return single(params, "sort") === "rent" ? "rent" : "commute";
 }

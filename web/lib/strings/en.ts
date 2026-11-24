@@ -54,15 +54,39 @@ export const en = {
     },
   },
   results: {
-    title: "Your search",
+    title: "Neighbourhoods",
     loading: "Loading…",
     budget: (dollars: string) => `up to $${dollars} a month`,
     noBudget: "no budget",
     maxCommute: (min: MaxCommute) => `${min} min max`,
-    notBuilt: "The shortlist of neighbourhoods isn’t built yet. It comes in the next version of the site.",
-    mapNote: "Until then, the map shows commute times and rents for every neighbourhood.",
-    openMap: "Open the map",
     changeSearch: "Change search",
+    update: "Update",
+    sort: { label: "Order", commute: "Fastest commute", rent: "Cheapest rent" },
+    /** Group headings; "all" (no budget, or rooms) has none. Owner's words for "over" and "noData". */
+    groups: {
+      fits: "Within your budget",
+      over: "Slightly over budget",
+      noData: "Not enough data",
+    },
+    groupHint: {
+      over: "Up to 10% over your budget.",
+      noData: "We can’t check these against your budget: there isn’t enough rent data for this size.",
+    },
+    showMore: (n: number) => `Show ${n} more`,
+    /** Owner's wording (M4 decision 5); the figure comes from rent.json. */
+    roomNote: (rent: string) => `Room rent: ${rent} citywide, same estimate everywhere`,
+    roomWarning: (rent: string) =>
+      `Typical room rent (${rent}) is above your budget, and we can’t tell where cheaper rooms are.`,
+    hiddenNoCommute: (n: number, campus: string) =>
+      `${n} ${n === 1 ? "neighbourhood is" : "neighbourhoods are"} not shown: there is no commute data to ${campus} for ${n === 1 ? "it" : "them"}.`,
+    noneWithin: (max: number, campus: string) => `No neighbourhood is within ${max} min of ${campus}.`,
+    tryLonger: "Try a longer max commute.",
+    noneFits: (n: number, max: number) =>
+      n === 1
+        ? `The one neighbourhood within ${max} min costs more than 10% over your budget.`
+        : `All ${n} neighbourhoods within ${max} min cost more than 10% over your budget.`,
+    tryBudget: "Try a higher budget, or leave it empty to see them all.",
+    openMap: "See every neighbourhood on the map",
     invalidTitle: "This search can’t be used",
     invalid: {
       campus: "Pick one of the campuses.",
@@ -71,6 +95,26 @@ export const en = {
       maxCommute: (options: readonly number[]) =>
         `Pick a max commute: ${orList(options.map(String))} min.`,
     } satisfies Record<SearchField, unknown>,
+  },
+  /** A shortlist card and its detail panel. Rent texts (badges, CMHC lines, source line) are
+   * the approved ones in lib/rent.ts. */
+  card: {
+    minutes: (min: number) => `${min} min`,
+    perMonth: (rent: string) => `${rent} a month`,
+  },
+  detail: {
+    commuteHeading: "Commute",
+    median: (min: number, target: string, window: string) => `${min} min median, ${target}, ${window}.`,
+    range: (p10: string, p90: string) => `Most homes here (8 in 10): ${p10} to ${p90}.`,
+    building: (name: string, time: string, share: string) => `${name}: ${time}, fastest for ${share} of homes here.`,
+    buildingTime: (name: string, time: string) => `${name}: ${time}.`,
+    accessIncluded: (signed: string) => `Includes a ${signed} access adjustment (platform to entrance).`,
+    buildingAccess: (signed: string) => ` (incl. ${signed} access adjustment)`,
+    lowSample: (n: number) => `Based on only ${n} sample points.`,
+    manyUnreachable: (pct: string) => `${pct} of homes here are more than 2 h away by transit.`,
+    commuteSource:
+      "Travel times are derived from STM, REM and exo schedules (CC BY 4.0). Schedules don’t include delays or outages.",
+    rentHeading: (size: string) => `Rent, ${size}`,
   },
 };
 
