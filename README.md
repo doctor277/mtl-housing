@@ -84,16 +84,21 @@ npm run dev        :: http://localhost:3000
 npm test           :: Vitest: rent classes, commute texts, search parsing, UI strings (web/lib/**/*.test.ts)
 ```
 
-Pages (M4 in progress):
+Pages:
 
-- `/`: the search form (campus, size, optional budget, max commute). All UI text is in
-  `web/lib/strings/`; the design system is described in `web/DESIGN.md`.
+- `/`: the search form (campus, size, optional budget, max commute) and an example search.
+  All UI text is in `web/lib/strings/`; the design system is described in `web/DESIGN.md`.
 - `/results`: the shortlist. Neighbourhoods within the max commute, grouped by budget (within
   budget / slightly over / not enough data), fastest commute or cheapest rent first; each card
   opens a detail panel (commute range, buildings, rent basis, sources). Rules: `web/lib/shortlist.ts`.
-- `/map`: the map. A Commute / Rent toggle; quartiers coloured by median transit commute to
-  the chosen campus or by the estimated rent for a studio, 3½ or 4½; click for details.
-  Basemap: OpenFreeMap (no API key).
+  - `view=map`: the same results on a map (commute or rent colours, the rest greyed with the
+    reason in its popup). The list stays the default.
+  - `open=<id>`: opens that card (the map popup's "Show details").
+- `/how-it-works`: where the commute times and rents come from, the shortlist rules, credits.
+- `/map`: every neighbourhood, linked from the footer (the older explorer: Commute / Rent,
+  campus and size pickers, legend). Basemap: OpenFreeMap (no API key).
+- Footer on the site's pages: the data line (schedule day, CMHC period, StatCan quarter) and
+  links to How it works, Sources and the full map.
 
 They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
 the pipeline's `export` and `rent-export` steps and committed).

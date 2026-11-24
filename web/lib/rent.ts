@@ -29,6 +29,8 @@ export interface RentMeta {
   montreal: Record<BedroomType, { cmhc_average: number; statcan_asking: number }>;
   room: { estimate: number };
   grade_words: Record<string, string>;
+  /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
+  sources: string[];
   [key: string]: unknown;
 }
 

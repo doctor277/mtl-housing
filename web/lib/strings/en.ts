@@ -311,11 +311,14 @@ export const en = {
   /** First screen: the example search (owner's example, M4). */
   example: {
     lead: "Not sure? Try an example:",
+    /** "UdeM, 3½, $1,500, 45 min" (owner's example). */
+    label: (campus: string, size: string, budget: number, maxCommute: number) =>
+      `${campus}, ${size}, $${dollars(budget)}, ${maxCommute} min`,
   },
   /** Footer of the site's pages: the honest data line and links (M4.3). */
   footer: {
     dataLine: (scheduleDay: string, cmhcPeriod: string, statcanQuarter: string) =>
-      `Data: STM, REM and exo transit schedules for ${scheduleDay}; rents from CMHC (${cmhcPeriod}) and Statistics Canada (${statcanQuarter}). Estimates, not listings.`,
+      `Data: STM, REM and exo transit schedules for ${scheduleDay}; rents from CMHC (${cmhcPeriod}) and Statistics Canada’s experimental asking rents (${statcanQuarter}). Estimates, not listings.`,
     /** The footer's links, for screen readers (not the main navigation). */
     navLabel: "About this site",
     howItWorks: "How it works",
@@ -333,14 +336,15 @@ export const en = {
       doorToDoor:
         "Times are door to door by public transit, walking included: from the homes in each neighbourhood to the campus entrance.",
       schedule: (start: string, end: string, day: string) =>
-        `Every trip leaving between ${start} and ${end} is planned on the STM, REM and exo schedules for ${day}, a regular weekday in the fall term. Each home’s time is the median of those trips, so it includes a typical wait; the neighbourhood’s time is the median over its homes.`,
+        `Every trip leaving between ${start} and ${end} is planned on the STM, REM and exo schedules for ${day}, a weekday with a typical number of trips. Each home’s time is the median of those trips, so it includes a typical wait; the neighbourhood’s time is the median over its homes.`,
       range:
         "“For most homes” is the range from the 10th to the 90th percentile of the neighbourhood’s homes, weighted by the number of households.",
-      walking: (kmh: number) => `Walking is counted at ${kmh} km/h, a winter-sidewalk pace.`,
+      walking: (kmh: number) =>
+        `Walking is counted at ${kmh} km/h, in line with the walking times Google Maps gives and a little slower on winter sidewalks.`,
       closest: (campus: string, buildings: string) =>
         `For ${campus}, each home’s time is to whichever of ${buildings} it reaches first. A class in another building can add a few minutes.`,
       adjustmentsLead:
-        "A few times include a small fixed correction for the walk between the metro platform and the building entrance, which the trip planner gets wrong. It was set by comparing with Google Maps:",
+        "Times to these buildings include a small fixed correction for the walk between the metro platform and the building entrance, which the trip planner gets wrong. It was set by comparing with Google Maps:",
       adjustment: (building: string, signed: string) => `${building}: ${signed}`,
       limits: "Schedules don’t include delays, detours or outages.",
     },
@@ -368,14 +372,8 @@ export const en = {
     },
     data: {
       heading: "Data and credits",
-      /** Attribution texts required by the sources (DATA_SOURCES.md). */
-      attributions: (cmhcPeriod: string, statcanQuarter: string) => [
-        "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules.",
-        "Neighbourhoods: contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
-        `Adapted from Statistics Canada, 2021 Census Geographic Attribute File, and Asking rent and paid rent prices (table 46-10-0092-01, ${statcanQuarter}). This does not constitute an endorsement by Statistics Canada of this product.`,
-        `Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey (${cmhcPeriod}). This does not constitute an endorsement by CMHC.`,
-        "Street network and map data © OpenStreetMap contributors.",
-      ],
+      // The attribution texts themselves come from the data files (meta.sources), in the
+      // wording DATA_SOURCES.md requires; they are not retyped here.
       licence: "CC BY 4.0 licence",
       more: "A full sources and limitations page is coming.",
     },
@@ -397,7 +395,10 @@ export const en = {
       tooFar: (max: number, campus: string) => `Not in your results: more than ${max} min from ${campus}.`,
       overBudget: (pct: number) => `Not in your results: more than ${pct}% over your budget.`,
       noCommute: (campus: string) => `Not in your results: no commute data to ${campus}.`,
+      /** No reason known: say only what is certain. */
+      unknown: "Not in your results.",
     },
+    noResidents: "No residents (park)",
   },
   /** The map: /map (all neighbourhoods) and the results' map view. */
   map: {

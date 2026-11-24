@@ -5,7 +5,7 @@
 // never the default view (M4 decision 9); the list stays one tap away. Wording: lib/strings.
 
 import { useMemo, useState } from "react";
-import { BIN_UPPER_MIN, COMMUTE_COLOURS, NOT_IN_RESULTS_COLOUR } from "@/lib/legend";
+import { BIN_UPPER_MIN, COMMUTE_COLOURS, NO_RESIDENTS_COLOUR, NOT_IN_RESULTS_COLOUR } from "@/lib/legend";
 import { BIN_PCT, binEdges, type LabelKey, RENT_COLOURS, RENT_FILL_OPACITY, RENT_NO_DATA_COLOUR, type ShownSize } from "@/lib/rent";
 import { type ExcludedReason, type GroupKey, SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
@@ -65,6 +65,7 @@ export default function ResultsMap({
   items,
   excluded,
   detailsBase,
+  rentDataLine,
 }: {
   campus: string;
   campusLabel: string;
@@ -79,6 +80,8 @@ export default function ResultsMap({
   excluded: Record<string, ExcludedReason>;
   /** "/results?campus=…": the list view of this search; "&open=<id>" is added per card. */
   detailsBase: string;
+  /** The rent data dates ("Data: CMHC (…) and Statistics Canada's experimental …"), rent mode. */
+  rentDataLine: string | null;
 }) {
   const [mode, setMode] = useState<Mode>("commute");
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
@@ -89,13 +92,16 @@ export default function ResultsMap({
       popupHtml: (id: string) => {
         const item = byId.get(id);
         if (!item) {
-          const why = excluded[id] ?? "tooFar";
+          // A reason only when the shortlist recorded one; never a guessed claim.
+          const why = excluded[id];
           const line =
             why === "tooFar"
               ? t.out.tooFar(maxCommute, campusLabel)
               : why === "overBudget"
                 ? t.out.overBudget(SLIGHTLY_OVER_PCT)
-                : t.out.noCommute(campusLabel);
+                : why === "noCommute"
+                  ? t.out.noCommute(campusLabel)
+                  : t.out.unknown;
           return escapeHtml(line);
         }
         const lines: string[] = [];
@@ -188,7 +194,18 @@ export default function ResultsMap({
             wide
           />
           <LegendRow swatch={<Swatch colour={NOT_IN_RESULTS_COLOUR} />} label={t.notInResults} />
+          <LegendRow
+            swatch={
+              <span
+                aria-hidden="true"
+                className="inline-block h-3 w-5 shrink-0 rounded-[2px] outline-[1.5px] -outline-offset-1 outline-ink outline-dashed"
+                style={{ background: NO_RESIDENTS_COLOUR }}
+              />
+            }
+            label={t.noResidents}
+          />
         </ul>
+        {mode === "rent" && size && rentDataLine && <p className="mt-3 text-xs text-ink-muted">{rentDataLine}</p>}
         <p className="mt-3 text-xs text-ink-muted">{strings.map.attribution(mode === "rent")}</p>
       </div>
     </section>

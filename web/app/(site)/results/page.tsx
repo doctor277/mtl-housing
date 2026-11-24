@@ -238,7 +238,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
         {view === "list" && sortable && <SortToggle search={s} sort={sort} />}
       </div>
 
-      {view === "list" && list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
+      {/* Both views: the map's popups don't badge plain estimates either (decision 16). */}
+      {list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
         <p className="mt-6 text-sm text-ink-muted">{t.allEstimates}</p>
       )}
 
@@ -273,6 +274,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           )}
           excluded={list.excluded}
           detailsBase={`/results?${searchQuery(s, sort)}`}
+          rentDataLine={s.size === "room" ? null : strings.rent.dataLine(rent.meta)}
         />
       )}
 
@@ -306,7 +308,6 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
       {list.hiddenNoCommute > 0 && (
         <p className="mt-6 text-sm text-ink-muted">{t.hiddenNoCommute(list.hiddenNoCommute, campusLabel)}</p>
       )}
-
     </>
   );
 }

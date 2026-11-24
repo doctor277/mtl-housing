@@ -39,6 +39,15 @@ export default async function HowItWorks() {
     c.destinations.filter((d) => d.access_adjustment_min !== 0),
   );
   const r = rent.meta;
+  // The attribution texts the pipeline writes into the data files (DATA_SOURCES.md wording),
+  // once each: both files credit the Ville de Montréal and the census file.
+  const seen = new Set<string>();
+  const credits = [...meta.sources, ...r.sources].filter((s) => {
+    const key = s.replace("licensed under ", "");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   return (
     <article className="max-w-prose leading-relaxed">
@@ -49,7 +58,7 @@ export default async function HowItWorks() {
         <p>{t.commute.doorToDoor}</p>
         <p>{t.commute.schedule(start, end, day)}</p>
         <p>{t.commute.range}</p>
-        <p>{t.commute.walking(Number(meta.walk_speed_kmh))}</p>
+        <p>{t.commute.walking(meta.walk_speed_kmh)}</p>
         {multi.map((c) => (
           <p key={c.key}>
             {t.commute.closest(c.label, strings.format.andList(meta.campuses[c.key].destinations.map((d) => d.name)))}
@@ -94,8 +103,9 @@ export default async function HowItWorks() {
 
       {/* The footer's "Sources" link points here until M5's sources page. */}
       <Section heading={t.data.heading} id="data-and-credits">
+        <p className="text-sm text-ink-muted">{strings.rent.dataLine(r)}</p>
         <ul role="list" className="flex flex-col gap-2 text-sm text-ink-muted">
-          {t.data.attributions(r.cmhc.period, r.statcan.quarter).map((a) => (
+          {credits.map((a) => (
             <li key={a}>{a}</li>
           ))}
           <li>

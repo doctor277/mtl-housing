@@ -8,14 +8,17 @@ import SearchForm from "./SearchForm";
 
 export default async function Home() {
   const commute = await loadCommute();
-  // The example link appears only if its campus is in the data.
+  // The example link appears only if its campus is in the data (and it has a budget).
   const exampleCampus = campusOptions(commute).find((c) => c.key === EXAMPLE_SEARCH.campus);
-  const exampleLabel = exampleCampus && [
-    exampleCampus.label,
-    strings.form.size.labels[EXAMPLE_SEARCH.size],
-    `$${strings.format.dollars(EXAMPLE_SEARCH.budget ?? 0)}`,
-    strings.form.maxCommute.option(EXAMPLE_SEARCH.maxCommute),
-  ].join(", ");
+  const exampleLabel =
+    exampleCampus &&
+    EXAMPLE_SEARCH.budget !== null &&
+    strings.example.label(
+      exampleCampus.label,
+      strings.form.size.labels[EXAMPLE_SEARCH.size],
+      EXAMPLE_SEARCH.budget,
+      EXAMPLE_SEARCH.maxCommute,
+    );
   return (
     <>
       <h1 className="text-[1.75rem] leading-tight font-semibold tracking-tight text-balance sm:text-4xl">

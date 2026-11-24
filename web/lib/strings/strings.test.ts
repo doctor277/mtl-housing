@@ -81,12 +81,10 @@ describe("strings", () => {
   it("writes the footer data line and How it works dates from the data", () => {
     expect(strings.format.longDate("2026-12-01")).toBe("Tuesday, December 1, 2026");
     expect(strings.footer.dataLine("Tuesday, December 1, 2026", "October 2025", "2026 Q2")).toBe(
-      "Data: STM, REM and exo transit schedules for Tuesday, December 1, 2026; rents from CMHC (October 2025) and Statistics Canada (2026 Q2). Estimates, not listings.",
+      "Data: STM, REM and exo transit schedules for Tuesday, December 1, 2026; rents from CMHC (October 2025) and Statistics Canada’s experimental asking rents (2026 Q2). Estimates, not listings.",
     );
-    const credits = strings.howItWorks.data.attributions("Z-period", "Z-quarter").join(" ");
-    expect(credits).toContain("Rental Market Survey (Z-period)");
-    expect(credits).toContain("table 46-10-0092-01, Z-quarter");
     expect(strings.format.andList(["A", "B", "C"])).toBe("A, B and C");
+    expect(strings.example.label("UdeM", "3½", 1500, 45)).toBe("UdeM, 3½, $1,500, 45 min");
   });
 
   it("keeps the owner's example search valid", () => {

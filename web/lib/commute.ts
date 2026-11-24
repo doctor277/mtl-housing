@@ -43,6 +43,9 @@ export interface CommuteFile {
     analysis_date: string;
     departure_window: { start: string; minutes: number };
     max_trip_min: number;
+    walk_speed_kmh: number;
+    /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
+    sources: string[];
     campuses: Record<string, CampusMeta>;
     [key: string]: unknown;
   };

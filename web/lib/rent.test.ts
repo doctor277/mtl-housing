@@ -30,6 +30,7 @@ const META: RentMeta = {
   },
   room: { estimate: 500 },
   grade_words: { a: "excellent", b: "very good", c: "good", d: "use with caution" },
+  sources: ["Source Z"],
 };
 
 const entry = (e: Partial<RentEntry>): RentEntry => ({
@@ -130,6 +131,16 @@ describe("texts", () => {
     expect(extraLines(e, META)).toEqual([
       "Weighted average of CMHC areas N1 (62%, rated good) and N2 (38%, rated “use with caution”), by rental units.",
     ]);
+  });
+
+  it("splits that aren't low reliability: names every area, no rating, adjustment not repeated", () => {
+    const e = entry({
+      cmhc_areas: [
+        { type: "area", name: "N1", share: 0.6, grade: "a" },
+        { type: "area", name: "N2", share: 0.4, grade: "b" },
+      ],
+    });
+    expect(detailLine(e, META)).toBe("Based on CMHC’s average rents in CMHC areas N1 and N2 (October 2025).");
   });
 
   it("partial coverage: covers X% plus the raw share of the area used", () => {

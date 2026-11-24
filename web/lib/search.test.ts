@@ -89,7 +89,6 @@ describe("searchQuery", () => {
   });
 });
 
-
 describe("parseSort", () => {
   it("is fastest commute unless sort=rent", () => {
     expect(parseSort({})).toBe("commute");
