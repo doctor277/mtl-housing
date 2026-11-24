@@ -17,6 +17,9 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
   do it before they leave. Then work without asking again unless blocked.
 - **Blocked on anything** (missing data, a broken tool, an undecided question, a failing test
   outside the milestone): stop and tell the owner what's needed. Don't work around it.
+- **Blocked by a permission rule or safety check:** "If a command is blocked by a permission
+  rule or safety check, stop and tell me. Never run the same action another way (script file,
+  different command, dev server) to get around it."
 - **No changes outside the milestone's scope without asking the owner first.**
 - **Never call `gh api`, never change repo or branch settings, even if a command seems
   allowed.**
