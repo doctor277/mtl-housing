@@ -99,7 +99,10 @@ export default async function HowItWorks() {
             <li key={a}>{a}</li>
           ))}
           <li>
-            <a href="https://creativecommons.org/licenses/by/4.0/" className="font-semibold text-link underline">
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              className="inline-flex min-h-11 items-center font-semibold text-link underline"
+            >
               {t.data.licence}
             </a>
           </li>

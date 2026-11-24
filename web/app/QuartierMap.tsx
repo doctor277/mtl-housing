@@ -212,6 +212,7 @@ export default function QuartierMap({
 
   useEffect(() => {
     let map: MlMap | undefined;
+    let resizeObserver: ResizeObserver | undefined;
     let cancelled = false;
 
     (async () => {
@@ -250,6 +251,10 @@ export default function QuartierMap({
         zoom: 10,
       });
       mapRef.current = map;
+      // Follow the container, not only the window: on a phone, 60vh changes as the address
+      // bar shows and hides, and a canvas left at the old size paints only part of the frame.
+      resizeObserver = new ResizeObserver(() => map?.resize());
+      resizeObserver.observe(container.current);
 
       map.on("load", () => {
         if (!map) return;
@@ -350,6 +355,7 @@ export default function QuartierMap({
 
     return () => {
       cancelled = true;
+      resizeObserver?.disconnect();
       mapRef.current = null;
       popupRef.current = null;
       setReady(false); // a remount must wait for the new map's layers
