@@ -8,7 +8,6 @@ import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadHoods, loadRent } from "@/lib/data";
 import { formatDollars, formatRent } from "@/lib/rent";
 import {
-  BUDGET_STEP,
   MAX_COMMUTE_MIN,
   parseSearch,
   parseSort,
@@ -32,7 +31,6 @@ const FIRST = 5;
 const linkClass = "inline-flex min-h-11 items-center font-semibold text-link underline";
 
 function invalidMessage(field: SearchField): string {
-  if (field === "budget") return t.invalid.budget(BUDGET_STEP);
   if (field === "maxCommute") return t.invalid.maxCommute(MAX_COMMUTE_MIN);
   return t.invalid[field];
 }

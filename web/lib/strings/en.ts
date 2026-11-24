@@ -110,7 +110,7 @@ export const en = {
     invalid: {
       campus: "Pick one of the campuses.",
       size: "Pick a size: room, studio, 3½ or 4½.",
-      budget: (step: number) => `The budget must be whole dollars in steps of $${step}, or left empty.`,
+      budget: "The budget must be a whole number of dollars, or left empty.",
       maxCommute: (options: readonly number[]) =>
         `Pick a max commute: ${orList(options.map(String))} min.`,
     } satisfies Record<SearchField, unknown>,

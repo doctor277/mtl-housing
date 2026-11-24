@@ -68,6 +68,10 @@ describe("rentGroup (owner's M4 decision 2: compare the rounded rent the user se
   it("uses the rent as shown, rounded to $25: one step over the budget is over", () => {
     // rent.json holds rents already rounded to $25; ≈ $1,425 against $1,400 is over budget.
     expect(rentGroup(1425, 1400)).toBe("over");
+    // Budgets can be any whole dollar (owner, M4.3); the rent compared is still the rounded one.
+    expect(rentGroup(1400, 1410)).toBe("fits");
+    expect(rentGroup(1425, 1410)).toBe("over");
+    expect(rentGroup(1400, 1399)).toBe("over");
   });
 
   it("puts just under and exactly 10% over as slightly over, just over 10% as hidden", () => {

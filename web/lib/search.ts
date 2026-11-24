@@ -13,8 +13,8 @@ export const SEARCH_SIZES: readonly SearchSize[] = ["room", "studio", "1br", "2b
 export const MAX_COMMUTE_MIN = [20, 30, 45, 60] as const;
 export type MaxCommute = (typeof MAX_COMMUTE_MIN)[number];
 
-/** Budgets are whole dollars in steps of $25, the rounding step of the rents shown. */
-export const BUDGET_STEP = 25;
+// Budgets are any whole number of dollars (owner, M4.3). They are compared with the rent as
+// shown, which rent.json has already rounded to $25 (lib/shortlist.ts, rentGroup).
 
 /** The example in the budget hint ("e.g. 1,400"); a valid budget (tested). */
 export const BUDGET_EXAMPLE = 1400;
@@ -53,7 +53,7 @@ export function parseSearch(params: Params, campusIds: readonly string[]): Parse
   if (rawBudget !== "" || (params.budget !== undefined && typeof params.budget !== "string")) {
     budget = /^\d+$/.test(rawBudget) ? Number(rawBudget) : NaN;
     // Safe integers only: past 2^53 a typed number is silently rounded (1e19 + 1 -> 1e19).
-    if (!(Number.isSafeInteger(budget) && budget > 0 && budget % BUDGET_STEP === 0)) errors.push("budget");
+    if (!(Number.isSafeInteger(budget) && budget > 0)) errors.push("budget");
   }
 
   const max = single(params, "max");

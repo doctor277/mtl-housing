@@ -92,3 +92,10 @@ Added by the owner (2026-11-24), reviewing M4.2:
 17. **Commute detail:** door-to-door time, the range for most homes and, for UdeM, each
     building's time. The schedule date and the access adjustments are explained in How it
     works (M4.3), not in the panel.
+
+Added by the owner (2026-11-24), starting M4.3:
+
+18. **Budget field:** any whole dollar (no $25 steps). It is still compared with the rounded
+    rent the user sees (decision 2).
+19. **Rent detail:** "adjusted to current Montréal asking rents" is said once, in the line under
+    every estimate, not again in the CMHC detail line.

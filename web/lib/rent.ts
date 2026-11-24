@@ -136,7 +136,7 @@ export function detailLine(e: RentEntry, meta: RentMeta): string {
     const word = words[areas[0].grade];
     switch (e.label) {
       case "neighbourhood":
-        return `Based on CMHC's average rent in CMHC area ${name} (${period}, rated ${word} by CMHC), adjusted to current Montréal asking rents.`;
+        return `Based on CMHC's average rent in CMHC area ${name} (${period}, rated ${word} by CMHC).`;
       case "zone":
         return `CMHC has no reliable figure for this area, so this uses the wider CMHC zone ${name} (rated ${word} by CMHC).`;
       case "neighbourhood_low":
@@ -150,7 +150,7 @@ export function detailLine(e: RentEntry, meta: RentMeta): string {
   if (isLowReliability(e.label)) {
     return `Based on CMHC's average rents in ${kind} ${names}; CMHC rates at least one of them "use with caution".`;
   }
-  return `Based on CMHC's average rents in ${kind} ${names} (${period}), adjusted to current Montréal asking rents.`;
+  return `Based on CMHC's average rents in ${kind} ${names} (${period}).`;
 }
 
 /** Extra lines: the split (raw shares, per-area rating) and the coverage. */

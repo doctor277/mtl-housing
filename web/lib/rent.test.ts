@@ -89,7 +89,7 @@ describe("classes", () => {
 describe("texts", () => {
   it("uses the approved line for one CMHC area, with the grade in words", () => {
     expect(detailLine(entry({}), META)).toBe(
-      "Based on CMHC's average rent in CMHC area N1 (October 2025, rated very good by CMHC), adjusted to current Montréal asking rents.",
+      "Based on CMHC's average rent in CMHC area N1 (October 2025, rated very good by CMHC).",
     );
     expect(extraLines(entry({}), META)).toEqual([]);
   });
