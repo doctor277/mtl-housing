@@ -23,6 +23,7 @@ import { strings } from "@/lib/strings";
 import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
 import ResultsMap, { type MapItem } from "./ResultsMap";
+import ScrollToCard from "./ScrollToCard";
 
 const t = strings.results;
 
@@ -253,6 +254,10 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
             openId={openId}
           />
         ))}
+
+      {view === "list" && openId && list.groups.some((g) => g.items.some((i) => i.id === openId)) && (
+        <ScrollToCard id={openId} />
+      )}
 
       {view === "map" && (
         <ResultsMap
