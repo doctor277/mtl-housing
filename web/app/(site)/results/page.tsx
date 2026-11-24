@@ -203,7 +203,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
 
       {sortable && <SortToggle search={s} sort={sort} />}
 
-      {list.mode !== "room" && list.groups.length > 0 && (
+      {list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
         <p className="mt-6 text-sm text-ink-muted">{t.allEstimates}</p>
       )}
 

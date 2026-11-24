@@ -54,6 +54,7 @@ describe("strings", () => {
       "About 27 min door to door, to the closest UdeM building, on a typical weekday morning (leaving 7:30–8:30).",
     );
     expect(strings.detail.range(20, 37, 120)).toBe("Depending on where you live here: 20–37 min for most homes.");
+    expect(strings.detail.range(27, 27, 120)).toBe("Depending on where you live here: 27 min for most homes.");
     expect(strings.detail.range(40, null, 120)).toBe(
       "Depending on where you live here: 40 min to more than 2 hours for most homes.",
     );

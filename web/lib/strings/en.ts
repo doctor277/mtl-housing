@@ -131,7 +131,7 @@ export const en = {
     toPlace: (name: string) => `to ${name}`,
     /** 10th to 90th percentile in whole minutes; null = over the routing limit. */
     range: (lo: number, hi: number | null, maxMin: number) =>
-      `Depending on where you live here: ${hi === null ? `${lo} min to ${overMax(maxMin)}` : `${lo}–${hi} min`} for most homes.`,
+      `Depending on where you live here: ${hi === null ? `${lo} min to ${overMax(maxMin)}` : lo === hi ? `${lo} min` : `${lo}–${hi} min`} for most homes.`,
     /** "Roger-Gaudry: 27 min · Jean-Brillant: 28 min" (names as in commute.json). */
     buildings: (parts: { name: string; time: string }[]) => parts.map((p) => `${p.name}: ${p.time}`).join(" · "),
     overMax: (maxMin: number) => overMax(maxMin),
