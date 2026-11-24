@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUDGET_STEP, MAX_COMMUTE_MIN, parseSearch, SEARCH_SIZES, searchQuery } from "./search";
+import { BUDGET_STEP, MAX_COMMUTE_MIN, parseSearch, parseSort, SEARCH_SIZES, searchQuery } from "./search";
 
 // Fake campus ids: the parser only checks membership in the list it is given.
 const CAMPUSES = ["a", "b"];
@@ -71,6 +71,12 @@ describe("searchQuery", () => {
     expect(parseSearch(params, CAMPUSES)).toEqual({ ok: true, search });
   });
 
+  it("adds sort=rent only when it isn't the default", () => {
+    const search = { campus: "a", size: "1br" as const, budget: null, maxCommute: 45 as const };
+    expect(searchQuery(search, "commute")).toBe("campus=a&size=1br&max=45");
+    expect(searchQuery(search, "rent")).toBe("campus=a&size=1br&max=45&sort=rent");
+  });
+
   it("leaves the budget out when there is none", () => {
     expect(searchQuery({ campus: "b", size: "room", budget: null, maxCommute: 60 })).toBe(
       "campus=b&size=room&max=60",
@@ -83,5 +89,14 @@ describe("budget step", () => {
     const { readFile } = await import("node:fs/promises");
     const rent = JSON.parse(await readFile(new URL("../public/data/rent.json", import.meta.url), "utf-8"));
     expect(rent.meta.rounding.step).toBe(BUDGET_STEP);
+  });
+});
+
+describe("parseSort", () => {
+  it("is fastest commute unless sort=rent", () => {
+    expect(parseSort({})).toBe("commute");
+    expect(parseSort({ sort: "rent" })).toBe("rent");
+    expect(parseSort({ sort: "price" })).toBe("commute");
+    expect(parseSort({ sort: ["rent", "rent"] })).toBe("commute");
   });
 });

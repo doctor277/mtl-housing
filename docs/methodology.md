@@ -279,13 +279,15 @@ StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC ha
 
 **Labels.** `rent.json` carries a key; the site holds the text. English is below; French comes in M5.
 
-| Key | Badge (map, shortlist) | Detail panel line |
+| Key | Badge (map popup, detail panel; shortlist cards only for caveats) | Detail panel line |
 |---|---|---|
 | `neighbourhood` | Estimate | Based on CMHC's average rent in {CMHC area} (October 2025, rated {excellent / very good / good} by CMHC), adjusted to current Montréal asking rents. |
 | `zone` | Wider-area estimate | CMHC has no reliable figure for this area, so this uses the wider CMHC zone {zone} (rated {excellent / very good / good} by CMHC). |
 | `neighbourhood_low` | Low reliability | Based on CMHC's average rent in {CMHC area}, which CMHC rates "use with caution". |
 | `zone_low` | Low reliability | Based on the wider CMHC zone {zone}, which CMHC rates "use with caution". |
 | `none` | Not enough data | CMHC doesn't publish a reliable rent for this size here or nearby. |
+
+On shortlist cards, the plain `neighbourhood` case gets no badge: the list says once, above the cards, "All rents are estimates." (ROADMAP, M4 decision 16). The other four keys keep their badge on the card.
 
 These lines are added to the detail line when they apply:
 - **Split neighbourhood:** "Weighted average of CMHC areas {A} (62%) and {B} (38%), by rental units."
