@@ -1,14 +1,14 @@
 "use client";
 
-// Quartiers coloured by median transit commute to a campus or by the estimated rent for one
-// size. Two uses: /map (every neighbourhood, explorer popups) and the results' map view
-// (`results` set: neighbourhoods outside the search are drawn without data colour, the popup
-// comes from the results page, the view fits the results). Wording: lib/strings.
+// The results' map view: quartiers coloured by median transit commute to the searched campus
+// or by the estimated rent for one size. Neighbourhoods outside the search are drawn without
+// data colour, the popup comes from the results page, and the view fits the results.
+// Wording: lib/strings. (The older /map explorer that also used this was deleted in M5.1.)
 
 import { useEffect, useRef, useState } from "react";
 import type { ExpressionSpecification, Map as MlMap, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { type CommuteFile, campusFeatureProps, commuteTarget, formatTime } from "@/lib/commute";
+import { type CommuteFile, campusFeatureProps } from "@/lib/commute";
 import {
   BIN_UPPER_MIN,
   COMMUTE_COLOURS,
@@ -52,58 +52,6 @@ export interface ResultsLayer {
   ids: string[];
   /** Popup HTML for a neighbourhood with residents (already escaped). */
   popupHtml: (id: string) => string;
-}
-
-function commutePopup(props: QuartierProps, commute: CommuteFile, campus: string): string {
-  const max = commute.meta.max_trip_min;
-  const meta = commute.meta.campuses[campus];
-  const r = commute.results[props.id]?.[campus];
-  if (!r || !meta) return t.popup.noCommuteData;
-  const p = t.popup;
-  const lines = [
-    escapeHtml(p.medianPrefix(meta.name, commuteTarget(campus, meta))) + `<b>${escapeHtml(formatTime(r, "median", max))}</b>`,
-    escapeHtml(p.range(formatTime(r, "p10", max), formatTime(r, "p90", max))),
-  ];
-  const several = meta.destinations.length > 1;
-  for (const d of meta.destinations) {
-    const b = r.by_destination[d.id];
-    const signed = d.access_adjustment_min ? p.signedMin(d.access_adjustment_min) : null;
-    if (!several) {
-      if (signed) lines.push(escapeHtml(p.access(signed)));
-      continue;
-    }
-    if (!b) continue;
-    const share = b.fastest_share === null ? "?" : `${Math.round(b.fastest_share * 100)}%`;
-    lines.push(escapeHtml(p.building(d.name, formatTime(b, "median", max), signed, share)));
-  }
-  lines.push(escapeHtml(p.sample(r.n_points, r.n_unreachable)));
-  lines.push(escapeHtml(p.flags(r.flags)));
-  return lines.join("<br>");
-}
-
-function rentPopup(props: QuartierProps, rent: RentFile, size: ShownSize): string {
-  const sizeLabel = strings.rent.sizeLabel(size);
-  const e = rent.results[props.id]?.[size];
-  if (!e) return escapeHtml(t.popup.noRent(sizeLabel));
-  const perMonth = e.estimate === null ? null : strings.format.rent(e.estimate);
-  const lines = [
-    escapeHtml(t.popup.rent(sizeLabel, perMonth, strings.rent.badges[e.label])),
-    escapeHtml(strings.rent.detailLine(e, rent.meta)),
-    ...strings.rent.extraLines(e, rent.meta).map(escapeHtml),
-  ];
-  if (e.estimate !== null) lines.push(`<small>${escapeHtml(strings.rent.sourceLine)}</small>`);
-  return lines.join("<br>");
-}
-
-function explorerPopup(
-  props: QuartierProps,
-  mode: Mode,
-  size: ShownSize,
-  campus: string,
-  commute: CommuteFile,
-  rent: RentFile,
-): string {
-  return mode === "rent" ? rentPopup(props, rent, size) : commutePopup(props, commute, campus);
 }
 
 function noResidentsPopup(props: QuartierProps, mode: Mode, names: Map<string, string>): string {
@@ -193,13 +141,11 @@ export default function QuartierMap({
   size,
   campus,
   results,
-  onDataLoaded,
 }: {
   mode: Mode;
   size: ShownSize;
   campus: string;
-  results?: ResultsLayer;
-  onDataLoaded?: (commute: CommuteFile, rent: RentFile) => void;
+  results: ResultsLayer;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
@@ -226,9 +172,8 @@ export default function QuartierMap({
         fetch("/data/rent.json").then((r) => r.json() as Promise<RentFile>),
       ]);
       if (cancelled || !container.current) return;
-      onDataLoaded?.(commute, rent);
 
-      const inResults = view.current.results ? new Set(view.current.results.ids) : null;
+      const inResults = new Set(view.current.results.ids);
       const campusIds = Object.keys(commute.meta.campuses);
       const names = new Map<string, string>();
       for (const f of geo.features) {
@@ -238,14 +183,12 @@ export default function QuartierMap({
           Object.assign(p, {
             ...campusFeatureProps(commute.results[p.id], campusIds),
             ...rentFeatureProps(rent.results[p.id], rent.meta),
-            ...(inResults ? { in_results: inResults.has(p.id) } : {}),
+            in_results: inResults.has(p.id),
           });
         }
       }
 
-      const fit = inResults
-        ? bounds(geo.features.filter((f: { properties: QuartierProps }) => inResults.has(f.properties.id)))
-        : null;
+      const fit = bounds(geo.features.filter((f: { properties: QuartierProps }) => inResults.has(f.properties.id)));
       map = new maplibregl.Map({
         container: container.current,
         style: BASEMAP,
@@ -305,21 +248,19 @@ export default function QuartierMap({
           filter: ["==", ["coalesce", ["get", "no_residents"], false], true],
           paint: { "line-color": "#333", "line-width": 1.5, "line-dasharray": [2, 2] },
         });
-        if (inResults) {
-          // The results stand out from the greyed rest by a firmer outline as well as colour.
-          map.addLayer({
-            id: "results-line",
-            type: "line",
-            source: "quartiers",
-            filter: ["==", ["get", "in_results"], true],
-            paint: { "line-color": "#0f172a", "line-width": 1.5 },
-          });
-        }
+        // The results stand out from the greyed rest by a firmer outline as well as colour.
+        map.addLayer({
+          id: "results-line",
+          type: "line",
+          source: "quartiers",
+          filter: ["==", ["get", "in_results"], true],
+          paint: { "line-color": "#0f172a", "line-width": 1.5 },
+        });
 
-        // The results view marks only the searched campus; the explorer marks them all.
-        const campuses = inResults ? { [c]: commute.meta.campuses[c] } : commute.meta.campuses;
-        for (const meta of Object.values(campuses)) {
-          for (const d of meta?.destinations ?? []) {
+        // Only the searched campus is marked.
+        const meta = commute.meta.campuses[c];
+        if (meta) {
+          for (const d of meta.destinations) {
             // Ink, not MapLibre's teal (blue is for links and the rent map's cheaper classes);
             // smaller, so UdeM's two buildings stay two pins at phone zoom.
             new maplibregl.Marker({ color: CAMPUS_MARKER_COLOUR, scale: 0.7 })
@@ -334,15 +275,11 @@ export default function QuartierMap({
             const f = e.features?.[0];
             if (!f || !map) return;
             const props = f.properties as QuartierProps;
-            const { mode: cm, size: cs, campus: cc, results: rs } = view.current;
+            const { mode: cm, results: rs } = view.current;
             // The borough only when it differs from the name, as on the cards.
             const borough = props.borough !== props.name ? ` (${escapeHtml(props.borough)})` : "";
             const head = `<b>${escapeHtml(props.name)}</b>${borough}<br>`;
-            const body = props.no_residents
-              ? noResidentsPopup(props, cm, names)
-              : rs
-                ? rs.popupHtml(props.id)
-                : explorerPopup(props, cm, cs, cc, commute, rent);
+            const body = props.no_residents ? noResidentsPopup(props, cm, names) : rs.popupHtml(props.id);
             // Never wider than the map minus a margin, and panned into view if it opens past
             // an edge (the map frame clips anything outside it).
             const popup = new maplibregl.Popup({ maxWidth: "min(320px, calc(100% - 32px))" })

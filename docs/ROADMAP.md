@@ -99,3 +99,36 @@ Added by the owner (2026-11-24), starting M4.3:
     rent the user sees (decision 2).
 19. **Rent detail:** "adjusted to current Montréal asking rents" is said once, in the line under
     every estimate, not again in the CMHC detail line.
+
+## M5 decisions
+
+Decided by the owner (2026-11-24), on top of the M5 row above:
+
+1. **Three PRs, in this order:** M5.1 the `/map` decision and the shareable URL; M5.2 the
+   sources & limitations page (English); M5.3 French for everything and the FR/EN switch.
+2. **Process:** `/qa` at phone size before every M5 PR, Impeccable on every screen, and
+   `/design-review` once at the end of M5 (report only).
+3. **`/map` is deleted** (the results map covers it). The M5.1 PR lists every removed file.
+4. **Shareable URL:** a "Copy link" button on the results; clean links (no empty `budget=`, no
+   `open=`; `view` and `sort` kept); link previews with text only (title and description, no
+   image); the language in the link (with M5.3). No link shortener, no analytics.
+5. **Data-file texts in two languages:** the pipeline exports both languages (grade words,
+   credits, campus names), with a test proving the re-export changes only text fields, never a
+   number. This also fixes the transit credit wording ("licensed under CC BY 4.0").
+6. **Official French wording** for credits and CMHC's grade labels comes from the publishers'
+   own French pages, each cited.
+7. **Languages in the URL:** French is the default at `/`, English at `/en/…`. No automatic
+   redirect by browser language. The FR/EN switch keeps the current search.
+8. **French formats:** Québec style: "1 500 $", "≈ 1 475 $", "7 h 30", "mardi 1er décembre
+   2026"; "3½" and "4½" unchanged.
+9. **French review:** Claude drafts; the owner reviews the French before each PR.
+10. **CMHC area names** stay as CMHC publishes them, in both languages.
+11. **`/sources` contents:** the three required limitations (old-lease bias, Concordia Peel-exit
+    mismatch, McGill route 5), every source with link, licence and date, the validation summary,
+    the commute and rent limits, and an **About** block: "Not affiliated with UdeM, McGill,
+    Concordia, STM, REM, exo, CMHC or Statistics Canada", plus a contact line with a placeholder
+    email the owner fills in before launch.
+12. **Validation numbers** on `/sources` are dated facts citing `pipeline/validation/VALIDATION.md`.
+13. **`/sources`** is where the footer's "Sources" link points; How it works keeps one line linking
+    there instead of its own credits list.
+14. **M2.7** (old-lease correction) stays parked; `/sources` says the effect isn't measured yet.
