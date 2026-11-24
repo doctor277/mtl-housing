@@ -88,17 +88,23 @@ export function campusOptions(commute: CommuteFile): { key: string; label: strin
   }));
 }
 
+/** Start and end of the departure window, "7:30" and "8:30", from commute.json meta. */
+export function departureWindow(meta: CommuteFile["meta"]): { start: string; end: string } {
+  const [h, m] = meta.departure_window.start.split(":").map(Number);
+  const start = h * 60 + m;
+  const hhmm = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+  return { start: hhmm(start), end: hhmm(start + meta.departure_window.minutes) };
+}
+
 /** "leaving 7:30–8:30, Tue 2026-12-01", from commute.json meta. */
 export function windowLabel(meta: CommuteFile["meta"]): string {
-  const [h, m] = meta.departure_window.start.split(":").map(Number);
-  const end = h * 60 + m + meta.departure_window.minutes;
-  const hhmm = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+  const { start, end } = departureWindow(meta);
   // Noon UTC avoids a time-zone shift to the previous day.
   const day = new Date(`${meta.analysis_date}T12:00:00Z`).toLocaleDateString("en-CA", {
     weekday: "short",
     timeZone: "UTC",
   });
-  return `leaving ${hhmm(h * 60 + m)}–${hhmm(end)}, ${day} ${meta.analysis_date}`;
+  return `leaving ${start}–${end}, ${day} ${meta.analysis_date}`;
 }
 
 /** What the time is measured to: "to Roddick Gates" for one destination, "fastest

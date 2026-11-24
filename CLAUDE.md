@@ -17,6 +17,9 @@ Rules for Claude working in this repo. Project overview: [README.md](README.md).
   do it before they leave. Then work without asking again unless blocked.
 - **Blocked on anything** (missing data, a broken tool, an undecided question, a failing test
   outside the milestone): stop and tell the owner what's needed. Don't work around it.
+- **Blocked by a permission rule or safety check:** "If a command is blocked by a permission
+  rule or safety check, stop and tell me. Never run the same action another way (script file,
+  different command, dev server) to get around it."
 - **No changes outside the milestone's scope without asking the owner first.**
 - **Never call `gh api`, never change repo or branch settings, even if a command seems
   allowed.**
@@ -81,8 +84,16 @@ Installed: superpowers, impeccable, ui-ux-pro-max, agent-skills.
   milestone. Don't create its own plan files or a separate roadmap: plans go in the
   milestone's PR description. In finishing-a-development-branch, never take the "merge
   locally" option; always push the branch and open a PR.
-- **Design (from M4 on).** UI UX Pro Max generates the initial design system once, at the
-  start of M4. Impeccable is used for critique, audit and polish of every UI change after
-  that. If they disagree, Impeccable wins.
+- **Design (from M4 on).** Three tools, fixed roles:
+  1. **UI UX Pro Max** generated the design system once, at the start of M4
+     (`web/design/`). It is committed and never regenerated.
+  2. **Impeccable** critiques and polishes every screen and wins any design conflict. Its
+     overrides of the generated system are in `web/DESIGN.md`; product facts it reads are in
+     `web/PRODUCT.md`.
+  3. **gstack**, only `/qa` and `/design-review`, adapted in `.claude/skills/` (MIT, see
+     `.claude/skills/LICENSE-gstack.txt`); the rest of gstack is not installed. Run `/qa` at
+     phone size before every M4 PR and put its results in the PR. Run `/design-review` once,
+     at the end of M4: list its findings in the PR and don't apply any without the owner's
+     go-ahead.
 - **agent-skills.** Use its skills when they help inside a milestone.
 - **Never** `/build auto`, and never create `SPEC.md` or `tasks/plan.md`.
