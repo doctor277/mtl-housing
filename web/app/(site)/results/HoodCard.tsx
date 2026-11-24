@@ -1,7 +1,7 @@
 // One shortlist card (name, commute, rent, reliability badge). Tapping it opens the detail
 // panel in place: commute (median, range, buildings, flags, source) and rent (estimate,
 // CMHC basis, source, data dates). A native <details>, so it needs no JavaScript.
-import { type CampusMeta, type CampusResult, type CommuteFile, commuteTarget, formatTime, windowLabel } from "@/lib/commute";
+import { type CampusMeta, type CampusResult, type CommuteFile, departureWindow, type TimeBlock } from "@/lib/commute";
 import {
   BADGES,
   dataLine,
@@ -21,6 +21,8 @@ const t = strings.detail;
 
 export interface CardContext {
   campus: string;
+  /** Short campus name, "UdeM". */
+  campusLabel: string;
   campusMeta: CampusMeta;
   commuteMeta: CommuteFile["meta"];
   rentMeta: RentMeta;
@@ -28,28 +30,31 @@ export interface CardContext {
   room: boolean;
 }
 
+/** Whole minutes, or null when over the routing limit ("more than 2 hours"). */
+function wholeMinutes(v: number | null): number | null {
+  return v === null ? null : Math.round(v);
+}
+
+/** A building's median as shown: "27 min" or "more than 2 hours"; null = no data. */
+function buildingTime(b: TimeBlock, maxMin: number): string | null {
+  if (b.median !== null) return strings.card.minutes(Math.round(b.median));
+  return b.over_max.includes("median") ? t.overMax(maxMin) : null;
+}
+
 function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext; minutes: number }) {
   const max = ctx.commuteMeta.max_trip_min;
   const dests = ctx.campusMeta.destinations;
-  const lines: string[] = [
-    t.median(minutes, commuteTarget(ctx.campus, ctx.campusMeta), windowLabel(ctx.commuteMeta)),
-    t.range(formatTime(r, "p10", max), formatTime(r, "p90", max)),
-  ];
+  const { start, end } = departureWindow(ctx.commuteMeta);
+  const target = dests.length > 1 ? t.toClosestBuilding(ctx.campusLabel) : t.toPlace(dests[0].name);
+  // p10 ≤ median ≤ the max commute, so p10 is always a number here.
+  const lines: string[] = [t.median(minutes, target, start, end), t.range(Math.round(r.p10!), wholeMinutes(r.p90), max)];
   if (dests.length > 1) {
-    for (const d of dests) {
+    const parts = dests.flatMap((d) => {
       const b = r.by_destination[d.id];
-      if (!b) continue;
-      const access = d.access_adjustment_min ? t.buildingAccess(t.signedMin(d.access_adjustment_min)) : "";
-      const time = formatTime(b, "median", max) + access;
-      // A building that is never the faster one just shows its time.
-      lines.push(
-        b.fastest_share
-          ? t.building(d.name, time, `${Math.round(b.fastest_share * 100)}%`)
-          : t.buildingTime(d.name, time),
-      );
-    }
-  } else if (dests[0]?.access_adjustment_min) {
-    lines.push(t.accessIncluded(t.signedMin(dests[0].access_adjustment_min)));
+      const time = b ? buildingTime(b, max) : null;
+      return time ? [{ name: d.name, time }] : [];
+    });
+    if (parts.length) lines.push(t.buildings(parts));
   }
   if (r.flags.includes("low_sample")) lines.push(t.lowSample(r.n_points));
   if (r.flags.includes("many_unreachable") && r.unreachable_share !== null) {
@@ -100,23 +105,17 @@ function RentDetail({ e, ctx }: { e: RentEntry | null; ctx: CardContext }) {
   );
 }
 
-function Badge({ entry }: { entry: { label: RentEntry["label"] } }) {
-  // "Estimate" is the normal case: plain muted text. Anything weaker gets an outline, so it
-  // reads as a caveat without colour (colour is kept for data).
-  const plain = entry.label === "neighbourhood";
+/** Only real caveats get a badge on the card; "Estimate" is said once above the list
+ * (owner, M4.2). An outline, never colour: solid for a wider area, dashed for weaker data. */
+function Badge({ label }: { label: RentEntry["label"] }) {
+  const dashed = isLowReliability(label) || label === "none";
   return (
     <span
-      className={
-        plain
-          ? "text-sm text-ink-muted"
-          : `inline-block rounded-full border px-2 text-sm leading-6 ${
-              isLowReliability(entry.label) || entry.label === "none"
-                ? "border-dashed border-control text-ink"
-                : "border-control text-ink"
-            }`
-      }
+      className={`inline-block rounded-full border border-control px-2 text-sm leading-6 text-ink ${
+        dashed ? "border-dashed" : ""
+      }`}
     >
-      {BADGES[entry.label]}
+      {BADGES[label]}
     </span>
   );
 }
@@ -151,9 +150,9 @@ export default function HoodCard({
           <span className="text-right tabular-nums">
             {!ctx.room && item.rent !== null ? formatRent(item.rent) : ""}
           </span>
-          {!ctx.room && item.label && (
+          {!ctx.room && item.label && item.label !== "neighbourhood" && (
             <span className="col-span-2 justify-self-end">
-              <Badge entry={{ label: item.label }} />
+              <Badge label={item.label} />
             </span>
           )}
         </summary>

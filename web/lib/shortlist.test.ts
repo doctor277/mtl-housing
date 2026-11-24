@@ -98,6 +98,7 @@ describe("buildShortlist", () => {
     expect(s.mode).toBe("budget");
     expect(ids(s)).toEqual({ fits: ["A", "E"], over: ["B"], noData: ["D"] });
     expect(s.hiddenOverBudget).toBe(1);
+    expect(s.cheapestHidden).toEqual({ name: "Quartier C", rent: 1550 });
   });
 
   it("with no budget: one list by commute, no groups; 'Not enough data' stays in commute order", () => {
@@ -193,6 +194,20 @@ describe("buildShortlist", () => {
     expect(s.groups).toEqual([]);
     expect(s.withinCommute).toBe(1);
     expect(s.hiddenOverBudget).toBe(1);
+    expect(s.cheapestHidden).toEqual({ name: "Quartier A", rent: 3000 });
+  });
+
+  it("names the cheapest neighbourhood hidden for budget, then the faster one", () => {
+    const { hoods, commute, rent } = fixture([
+      ["A", 30, 2000],
+      ["B", 20, 1800],
+      ["C", 10, 1800], // same rent as B, faster
+      ["D", 40, 1000], // fits
+    ]);
+    const s = buildShortlist(hoods, commute, rent, search(), "commute");
+    expect(s.hiddenOverBudget).toBe(3);
+    expect(s.cheapestHidden).toEqual({ name: "Quartier C", rent: 1800 });
+    expect(buildShortlist(hoods, commute, rent, search({ budget: null }), "commute").cheapestHidden).toBeNull();
   });
 
   it("carries what a card shows: rounded minutes, rent and its label", () => {

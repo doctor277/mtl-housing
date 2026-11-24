@@ -158,6 +158,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
     campusMeta: commute.meta.campuses[s.campus],
     commuteMeta: commute.meta,
     rentMeta: rent.meta,
+    campusLabel,
     sizeLabel,
     room: list.mode === "room",
   };
@@ -202,6 +203,10 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
 
       {sortable && <SortToggle search={s} sort={sort} />}
 
+      {list.mode !== "room" && list.groups.length > 0 && (
+        <p className="mt-6 text-sm text-ink-muted">{t.allEstimates}</p>
+      )}
+
       {list.groups.map((g) => (
         <Group
           key={g.key}
@@ -225,10 +230,19 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           ) : (
             <>
               <p className="font-semibold">{t.noneFits(list.withinCommute, s.maxCommute, SLIGHTLY_OVER_PCT)}</p>
+              {list.cheapestHidden && (
+                <p className="mt-1">
+                  {t.cheapest(list.cheapestHidden.name, formatRent(list.cheapestHidden.rent))}
+                </p>
+              )}
               <p className="mt-1">{t.tryBudget(list.withinCommute)}</p>
             </>
           )}
         </div>
+      )}
+
+      {list.groups.length > 0 && list.hiddenOverBudget > 0 && (
+        <p className="mt-6 text-sm text-ink-muted">{t.hiddenOverBudget(list.hiddenOverBudget, SLIGHTLY_OVER_PCT)}</p>
       )}
 
       {list.hiddenNoCommute > 0 && (

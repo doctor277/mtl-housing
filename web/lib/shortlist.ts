@@ -41,8 +41,10 @@ export interface Shortlist {
   tooFar: number;
   /** No commute data for this campus: hidden, and said so under the results (decision 4). */
   hiddenNoCommute: number;
-  /** More than 10% over the budget: hidden (decision 2). */
+  /** More than 10% over the budget: hidden, with a count line (decision 2). */
   hiddenOverBudget: number;
+  /** The cheapest of those (then fastest), named when nothing else is left. */
+  cheapestHidden: { name: string; rent: number } | null;
   /** Rooms: the one citywide figure, and whether it is above the budget (decision 5). */
   roomEstimate: number | null;
   roomWarning: boolean;
@@ -79,11 +81,13 @@ export function buildShortlist(
     tooFar: 0,
     hiddenNoCommute: 0,
     hiddenOverBudget: 0,
+    cheapestHidden: null,
     roomEstimate: room ? rent.meta.room.estimate : null,
     roomWarning: room && search.budget !== null && search.budget < rent.meta.room.estimate,
   };
 
   const groups: Record<GroupKey, ShortlistItem[]> = { fits: [], over: [], all: [], noData: [] };
+  let cheapest: ShortlistItem | null = null;
   for (const hood of hoods) {
     const c = commute.results[hood.id]?.[search.campus];
     if (!c || (c.median === null && !c.over_max.includes("median"))) {
@@ -115,9 +119,15 @@ export function buildShortlist(
       continue;
     }
     const g = rentGroup(item.rent, search.budget);
-    if (g === "hidden") out.hiddenOverBudget++;
-    else groups[g as "fits" | "over"].push(item);
+    if (g !== "hidden") {
+      groups[g as "fits" | "over"].push(item);
+      continue;
+    }
+    out.hiddenOverBudget++;
+    if (!cheapest || byRent(item, cheapest) < 0) cheapest = item;
   }
+
+  if (cheapest) out.cheapestHidden = { name: cheapest.name, rent: cheapest.rent! };
 
   const order: GroupKey[] = mode === "budget" ? ["fits", "over", "noData"] : ["all"];
   for (const key of order) {

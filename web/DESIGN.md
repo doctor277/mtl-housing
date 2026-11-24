@@ -54,11 +54,12 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
 - **Primary button:** ink, 48 px, full width on phones, content width from `sm`.
 - **Text links:** `#1d4ed8`, underlined, semibold; standalone ones have a 44 px hit area.
 - **Shortlist card:** a native `<details>` in a white card with a control edge. Summary: name
-  and borough on the left; minutes (semibold) and rent, tabular, on a shared right edge; the
-  reliability badge on its own line. Opening it shows the detail panel in place (no modal).
-- **Reliability badge:** words, never colour. "Estimate" is plain muted text;
-  "Wider-area estimate" has a solid outline; "Low reliability" and "Not enough data" a dashed one.
-- **Order toggle:** two links styled like Choice buttons (ink = current, `aria-current`), so it
+  and borough on the left; minutes (semibold) and rent, tabular, on a shared right edge; a
+  caveat badge, if any, on its own line. Opening it shows the detail panel in place (no modal).
+- **Reliability badge:** words, never colour, and only for real caveats: "Wider-area
+  estimate" has a solid outline; "Low reliability" and "Not enough data" a dashed one. The
+  normal case is said once above the list ("All rents are estimates.", ROADMAP decision 16).
+- **Sort toggle:** two links styled like Choice buttons (ink = current, `aria-current`), so it
   works without JavaScript.
 - **Show more:** a `<details>` per group after the first 5 cards; its control stays in place and
   reads "Show fewer" when open.

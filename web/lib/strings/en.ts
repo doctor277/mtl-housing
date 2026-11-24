@@ -7,6 +7,13 @@
 
 import type { MaxCommute, SearchField, SearchSize } from "../search";
 
+/** "more than 2 hours" for the routing limit in minutes (commute.json max_trip_min). */
+function overMax(maxMin: number): string {
+  if (maxMin % 60 !== 0) return `more than ${maxMin} min`;
+  const h = maxMin / 60;
+  return `more than ${h} ${h === 1 ? "hour" : "hours"}`;
+}
+
 /** "a, b or c": an English list joined with "or" (no serial comma). */
 function orList(items: string[]): string {
   return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} or ${items.at(-1)}`;
@@ -61,7 +68,9 @@ export const en = {
     maxCommute: (min: MaxCommute) => `${min} min max`,
     changeSearch: "Change search",
     update: "Update",
-    sort: { label: "Order", commute: "Fastest commute", rent: "Cheapest rent" },
+    sort: { label: "Sort by", commute: "Fastest commute", rent: "Cheapest rent" },
+    /** Above the list: the cards only badge real caveats (owner, M4.2). */
+    allEstimates: "All rents are estimates.",
     /** Group headings ("all": no budget, or rooms; read by screen readers only). Owner's words for "over" and "noData". */
     groups: {
       /** Screen-reader heading for the one list (no budget, or rooms). */
@@ -87,8 +96,13 @@ export const en = {
     noCommuteData: (campus: string) => `There is no commute data to ${campus} for these neighbourhoods.`,
     noneFits: (n: number, max: number, pct: number) =>
       n === 1
-        ? `The one neighbourhood within ${max} min costs more than ${pct}% over your budget.`
-        : `All ${n} neighbourhoods within ${max} min cost more than ${pct}% over your budget.`,
+        ? `The one neighbourhood within ${max} min is more than ${pct}% over your budget.`
+        : `The ${n} neighbourhoods within ${max} min are all more than ${pct}% over your budget.`,
+    cheapest: (name: string, rent: string) => `Cheapest: ${name}, ${rent}.`,
+    hiddenOverBudget: (n: number, pct: number) =>
+      n === 1
+        ? `1 more neighbourhood is more than ${pct}% over your budget.`
+        : `${n} more neighbourhoods are more than ${pct}% over your budget.`,
     tryBudget: (n: number) =>
       n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
     openMap: "See every neighbourhood on the map",
@@ -109,17 +123,21 @@ export const en = {
   },
   detail: {
     commuteHeading: "Commute",
-    median: (min: number, target: string, window: string) => `${min} min median, ${target}, ${window}.`,
-    range: (p10: string, p90: string) => `Most homes here (8 in 10): ${p10} to ${p90}.`,
-    building: (name: string, time: string, share: string) => `${name}: ${time}, fastest for ${share} of homes here.`,
-    buildingTime: (name: string, time: string) => `${name}: ${time}.`,
-    accessIncluded: (signed: string) => `Includes a ${signed} access adjustment (platform to entrance).`,
-    buildingAccess: (signed: string) => ` (incl. ${signed} access adjustment, platform to entrance)`,
-    lowSample: (n: number) => `Based on only ${n} sample points.`,
+    /** Owner's wording. The schedule date and the access adjustments are explained in How it
+     * works (M4.3), not here. */
+    median: (min: number, target: string, start: string, end: string) =>
+      `About ${min} min door to door, ${target}, on a typical weekday morning (leaving ${start}–${end}).`,
+    toClosestBuilding: (campus: string) => `to the closest ${campus} building`,
+    toPlace: (name: string) => `to ${name}`,
+    /** 10th to 90th percentile in whole minutes; null = over the routing limit. */
+    range: (lo: number, hi: number | null, maxMin: number) =>
+      `Depending on where you live here: ${hi === null ? `${lo} min to ${overMax(maxMin)}` : `${lo}–${hi} min`} for most homes.`,
+    /** "Roger-Gaudry: 27 min · Jean-Brillant: 28 min" (names as in commute.json). */
+    buildings: (parts: { name: string; time: string }[]) => parts.map((p) => `${p.name}: ${p.time}`).join(" · "),
+    overMax: (maxMin: number) => overMax(maxMin),
+    lowSample: (n: number) => `Few homes sampled here (${n}), so this is less certain.`,
     manyUnreachable: (pct: string, maxMin: number) =>
-      `${pct} of homes here are more than ${maxMin} min away by transit.`,
-    /** An access adjustment: "+1.9 min", "−2.4 min". */
-    signedMin: (adj: number) => `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`,
+      `${pct} of homes here are ${overMax(maxMin)} away by transit.`,
     commuteSource:
       "Travel times are derived from STM, REM and exo schedules (CC BY 4.0). Schedules don’t include delays or outages.",
     rentHeading: (size: string) => `Rent, ${size}`,

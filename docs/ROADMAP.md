@@ -75,3 +75,20 @@ Added by the owner (2026-11-23), when M4 started:
     grouped and sorted shortlist, detail panel; M4.3 map as the results' second view,
     example-search link ("UdeM, 3½, $1,500, 45 min"), How it works, data line, then
     `/design-review` once.
+
+Added by the owner (2026-11-24), reviewing M4.2:
+
+12. **Commute filter on the minutes shown:** a 45.4-min median shows as 45 and passes a
+    45-min max; 45.6 shows as 46 and doesn't (same rule as the budget's rounded rent).
+13. **No budget:** one list in commute order, no groups and no "cheapest" order. A
+    neighbourhood with no rent data keeps its "Not enough data" badge in its commute place
+    (decision 3's bottom group is for searches with a budget).
+14. **First 5 per group,** then "Show N more", for every group.
+15. **Over budget by more than 10%:** hidden, with a count line ("N more neighbourhoods are
+    more than 10% over your budget."). If nothing is left, name the cheapest one.
+16. **Reliability on cards:** one line above the list ("All rents are estimates."); badges
+    only for real caveats (wider-area estimate, low reliability, not enough data). Plain
+    "Estimate" is not repeated on every card.
+17. **Commute detail:** door-to-door time, the range for most homes and, for UdeM, each
+    building's time. The schedule date and the access adjustments are explained in How it
+    works (M4.3), not in the panel.
