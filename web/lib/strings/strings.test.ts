@@ -19,7 +19,7 @@ describe("strings", () => {
 
   it("takes the budget example and the commute buttons from the code, not typed text", () => {
     expect(strings.form.budget.hint(strings.format.dollars(BUDGET_EXAMPLE))).toBe(
-      "e.g. 1,400. Leave it empty to sort by commute only.",
+      "e.g. 1,500. Leave it empty to sort by commute only.",
     );
     expect(parseSearch({ campus: "a", size: "1br", budget: String(BUDGET_EXAMPLE), max: "45" }, ["a"]).ok).toBe(
       true,

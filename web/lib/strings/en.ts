@@ -183,7 +183,7 @@ export const en = {
     budget: {
       label: "Budget per month",
       optional: "optional",
-      /** `example`: BUDGET_EXAMPLE, already formatted ("1,400"). */
+      /** `example`: BUDGET_EXAMPLE, already formatted ("1,500"). */
       hint: (example: string) => `e.g. ${example}. Leave it empty to sort by commute only.`,
       prefix: "$",
     },
@@ -324,7 +324,6 @@ export const en = {
     howItWorks: "How it works",
     /** Until M5's sources page: points to How it works, "Data and credits". */
     sources: "Sources",
-    map: "Map of all neighbourhoods",
   },
   /** /how-it-works (M4.3). Numbers come from the data files; the full sources and limitations
    * page is M5. */
@@ -340,7 +339,7 @@ export const en = {
       range:
         "“For most homes” is the range from the 10th to the 90th percentile of the neighbourhood’s homes, weighted by the number of households.",
       walking: (kmh: number) =>
-        `Walking is counted at ${kmh} km/h, in line with the walking times Google Maps gives and a little slower on winter sidewalks.`,
+        `Walking is counted at ${kmh} km/h, in line with the walking times Google Maps gives.`,
       closest: (campus: string, buildings: string) =>
         `For ${campus}, each home’s time is to whichever of ${buildings} it reaches first. A class in another building can add a few minutes.`,
       adjustmentsLead:
@@ -382,8 +381,8 @@ export const en = {
   resultsMap: {
     colourBy: "Colour by",
     needsJavaScript: "The map needs JavaScript. The list shows the same neighbourhoods.",
-    hint: "Tap a neighbourhood for its commute and rent.",
-    commuteLegend: (campus: string) => `Median commute to ${campus}`,
+    hint: "Tap a neighbourhood for its commute and rent. The list has the same information.",
+    commuteLegend: (campus: string) => `Typical commute to ${campus}`,
     rentLegend: (size: string) => `Rent for a ${size}, compared with the Montréal asking rent`,
     inResults: "In your results: dark outline",
     pin: "Pin: the campus building the times are measured to",

@@ -95,10 +95,11 @@ Pages:
     reason in its popup). The list stays the default.
   - `open=<id>`: opens that card (the map popup's "Show details").
 - `/how-it-works`: where the commute times and rents come from, the shortlist rules, credits.
-- `/map`: every neighbourhood, linked from the footer (the older explorer: Commute / Rent,
-  campus and size pickers, legend). Basemap: OpenFreeMap (no API key).
+- `/map`: the older explorer of every neighbourhood (Commute / Rent, campus and size pickers,
+  legend). Not linked from the site since M4.3; M5 decides whether to restyle or delete it.
+  Basemap: OpenFreeMap (no API key).
 - Footer on the site's pages: the data line (schedule day, CMHC period, StatCan quarter) and
-  links to How it works, Sources and the full map.
+  links to How it works and Sources.
 
 They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
 the pipeline's `export` and `rent-export` steps and committed).

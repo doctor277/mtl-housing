@@ -152,6 +152,10 @@ export default function ResultsMap({
         </div>
       )}
       <div className="relative h-[60vh] min-h-80 overflow-hidden rounded-control border border-control bg-surface">
+        {/* Under the map: visible until the basemap paints over it (design review DR-2). */}
+        <p className="absolute inset-0 flex items-center justify-center text-sm text-ink-muted">
+          {strings.map.loadingMap}
+        </p>
         <QuartierMap mode={mode} size={size ?? "1br"} campus={campus} results={results} />
       </div>
       <noscript>

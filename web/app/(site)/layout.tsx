@@ -31,9 +31,6 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
             <Link href="/how-it-works#data-and-credits" className={footerLink}>
               {strings.footer.sources}
             </Link>
-            <Link href="/map" className={footerLink}>
-              {strings.footer.map}
-            </Link>
           </nav>
         </div>
       </footer>
