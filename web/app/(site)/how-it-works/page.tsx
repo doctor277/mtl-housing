@@ -8,6 +8,7 @@ import { loadCommute, loadRent } from "@/lib/data";
 import type { LabelKey } from "@/lib/rent";
 import { SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
+import { hitAreaLink } from "../linkStyles";
 import Section from "../Section";
 
 const t = strings.howItWorks;
@@ -88,8 +89,7 @@ export default async function HowItWorks() {
       {/* One line pointing to /sources, which has the credits (owner, M5 decision 13). */}
       <p className="mt-10">
         {t.sources.text}{" "}
-        {/* 44 px hit area from padding that negative margins cancel, so the line keeps its height. */}
-        <Link href="/sources" className="inline-block -my-[9px] py-[9px] font-semibold text-link underline">
+        <Link href="/sources" className={hitAreaLink}>
           {t.sources.link}
         </Link>
       </p>

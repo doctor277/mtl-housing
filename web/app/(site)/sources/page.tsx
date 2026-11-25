@@ -7,12 +7,10 @@ import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
 import { LICENCE_URLS, QUARTIERS_DOWNLOADED, SOURCES, type SourceId, VALIDATION, VALIDATION_FILE } from "@/lib/sources";
 import { strings } from "@/lib/strings";
+import { hitAreaLink } from "../linkStyles";
 import Section from "../Section";
 
 const t = strings.sources;
-/** A source's name: a standalone link with a 44 px hit area (web/DESIGN.md, "Text links"),
- * grown by padding that negative margins cancel, so one-line and two-line names space alike. */
-const link = "inline-block -my-[9px] py-[9px] font-semibold text-link underline";
 
 export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
 
@@ -152,7 +150,7 @@ export default async function SourcesPage() {
                 const item: { name: string; publisher: string; note?: string } = t.list.items[id];
                 return (
                   <li key={id}>
-                    <a href={s.url} className={link}>
+                    <a href={s.url} className={hitAreaLink}>
                       {item.name}
                     </a>
                     <span className="block text-sm text-ink-muted">
