@@ -129,6 +129,16 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
     }
   });
 
+  it("the CMHC credit the page shows is CMHC's required wording, word for word", () => {
+    // DATA_SOURCES.md: "Adapted from Canada Mortgage and Housing Corporation, [product], [date].
+    // This does not constitute an endorsement by CMHC." The page shows rent.json's text as is.
+    const credits: string[] = JSON.parse(repo("web/public/data/rent.json")).meta.sources;
+    const cmhc = credits.filter((c) => c.includes("Canada Mortgage and Housing Corporation"));
+    expect(cmhc).toEqual([
+      "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
+    ]);
+  });
+
   it("the schedule feeds the page dates are in commute.json", () => {
     const meta = JSON.parse(repo("web/public/data/commute.json")).meta;
     expect(meta.gtfs_feeds.map((f: { name: string }) => f.name)).toEqual(["stm", "rem", "exo_trains"]);
