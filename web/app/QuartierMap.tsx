@@ -316,7 +316,6 @@ export default function QuartierMap({
       map?.remove();
     };
     // Load once; mode and size changes are applied by the effect below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

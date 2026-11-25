@@ -69,6 +69,5 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
 - **Browser surfaces:** themed selection, caret, accent colour and focus ring; no browser tap
   tint. Tabular numerals only where numbers line up in columns (minutes and rents on cards).
 
-The results' map view (M4.3) is drawn in this system. The older explorer at `/map` keeps its
-M2.6/M3 styling and is no longer linked from the site; M5 decides whether to restyle or delete
-it (owner, after the M4 design review).
+The results' map view (M4.3) is drawn in this system. The older explorer at `/map` was deleted
+in M5.1 (owner, M5 decision 3).

@@ -92,12 +92,9 @@ Pages:
   budget / slightly over / not enough data), fastest commute or cheapest rent first; each card
   opens a detail panel (commute range, buildings, rent basis, sources). Rules: `web/lib/shortlist.ts`.
   - `view=map`: the same results on a map (commute or rent colours, the rest greyed with the
-    reason in its popup). The list stays the default.
+    reason in its popup). The list stays the default. Basemap: OpenFreeMap (no API key).
   - `open=<id>`: opens that card (the map popup's "Show details").
 - `/how-it-works`: where the commute times and rents come from, the shortlist rules, credits.
-- `/map`: the older explorer of every neighbourhood (Commute / Rent, campus and size pickers,
-  legend). Not linked from the site since M4.3; M5 decides whether to restyle or delete it.
-  Basemap: OpenFreeMap (no API key).
 - Footer on the site's pages: the data line (schedule day, CMHC period, StatCan quarter) and
   links to How it works and Sources.
 

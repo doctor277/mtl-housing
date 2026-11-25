@@ -52,11 +52,6 @@ export interface CommuteFile {
   results: Record<string, Record<string, CampusResult | undefined>>;
 }
 
-/** "44 min", "> 120 min" or "no data" (wording in lib/strings). */
-export function formatTime(block: TimeBlock, stat: TimeStat, maxTripMin: number): string {
-  return strings.commute.time(block, stat, maxTripMin);
-}
-
 /** Flat properties for the map layer: numbers only where they exist. */
 export function featureProps(result: CampusResult | undefined): Record<string, unknown> {
   if (!result) return { status: "no_data" };
@@ -90,16 +85,4 @@ export function departureWindow(meta: CommuteFile["meta"]): { start: string; end
   const start = h * 60 + m;
   const hhmm = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
   return { start: hhmm(start), end: hhmm(start + meta.departure_window.minutes) };
-}
-
-/** "leaving 7:30–8:30, Tue 2026-12-01", from commute.json meta (wording in lib/strings). */
-export function windowLabel(meta: CommuteFile["meta"]): string {
-  const { start, end } = departureWindow(meta);
-  return strings.commute.window(start, end, meta.analysis_date);
-}
-
-/** What the time is measured to: "to Roddick Gates", or "fastest UdeM building" when several
- * buildings count (the faster one per home). */
-export function commuteTarget(campusId: string, campus: CampusMeta): string {
-  return strings.commute.target(strings.commute.campusShort(campusId, campus.name), campus.destinations);
 }

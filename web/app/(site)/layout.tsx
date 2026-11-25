@@ -1,5 +1,5 @@
 // Shared frame of the site's pages (form, results, how it works): header, and a footer with
-// the honest data line (dates from the data files) and links. /map runs full screen without it.
+// the honest data line (dates from the data files) and links.
 import Link from "next/link";
 import { loadCommute, loadRent } from "@/lib/data";
 import { strings } from "@/lib/strings";
