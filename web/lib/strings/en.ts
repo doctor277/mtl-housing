@@ -142,7 +142,6 @@ export const en = {
     title: "[NAME]: where to live in Montréal without a car",
     description:
       "Pick your campus, apartment size, budget and longest commute, and see which Montréal neighbourhoods fit.",
-    mapTitle: "[NAME]: map of commutes and rents",
   },
   format: {
     dollars,

@@ -1,7 +1,8 @@
 // Results: the shortlist (M4.2) and its map view (M4.3). Rules in lib/shortlist.ts (owner's M4
-// decisions). Cards first; the map is a second view the user switches to (decision 9). Works
-// without JavaScript except the map itself: the view and sort toggles are links, "show more"
-// and the detail panels are native <details>.
+// decisions). Cards first; the map is a second view the user switches to (decision 9). The view
+// and sort toggles are links, "show more" and the detail panels are native <details>. The map
+// and "Copy link" need JavaScript. Note: the results stream in Suspense, so this page as a
+// whole also needs JavaScript to show them (reported to the owner in M5.1).
 import type { Metadata } from "next";
 import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
@@ -19,6 +20,7 @@ import {
   searchQuery,
 } from "@/lib/search";
 import { buildShortlist, type GroupKey, SLIGHTLY_OVER_PCT, type ShortlistItem, type SortKey } from "@/lib/shortlist";
+import { sharePreview, summaryLine } from "@/lib/share";
 import { strings } from "@/lib/strings";
 import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
@@ -27,17 +29,6 @@ import ScrollToCard from "./ScrollToCard";
 import ShareLink from "./ShareLink";
 
 const t = strings.results;
-
-/** "UdeM · 3½ · up to $1,500 a month · 45 min max": the page's summary line and the link
- * preview's title. */
-function summaryLine(s: Search, campusLabel: string): string {
-  return [
-    campusLabel,
-    strings.form.size.labels[s.size],
-    s.budget === null ? t.noBudget : t.budget(strings.format.dollars(s.budget)),
-    t.maxCommute(s.maxCommute),
-  ].join(" · ");
-}
 
 /** Link previews (M5.1, decision 4): text only, the search's own title and description. An
  * invalid search gets the page's plain title. */
@@ -50,14 +41,7 @@ export async function generateMetadata({ searchParams }: PageProps<"/results">):
   );
   if (!parsed.ok) return { title: `${t.title} · ${strings.siteName}` };
   const s = parsed.search;
-  const campusLabel = campuses.find((c) => c.key === s.campus)!.label;
-  const title = strings.share.title(summaryLine(s, campusLabel), strings.siteName);
-  const description = strings.share.description(
-    campusLabel,
-    strings.share.sizeInSentence[s.size],
-    s.maxCommute,
-    s.budget === null ? null : strings.format.dollars(s.budget),
-  );
+  const { title, description } = sharePreview(s, campuses.find((c) => c.key === s.campus)!.label);
   return { title, description, openGraph: { title, description, type: "website", siteName: strings.siteName } };
 }
 
