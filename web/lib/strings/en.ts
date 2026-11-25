@@ -469,7 +469,13 @@ export const en = {
           publisher: "Société de transport de Montréal",
           note: "The STM’s metro schedules are indicative. They are used only to compute trip times; no timetable is shown.",
         },
-        rem: { name: "REM schedules", publisher: "Réseau express métropolitain" },
+        rem: {
+          name: "REM schedules (GTFS file, download)",
+          publisher: "Réseau express métropolitain",
+          /** The publisher's site, in this language (owner, M5.2: the REM has no open-data page). */
+          publisherUrl: "https://rem.info/en",
+          note: "The REM publishes its schedules only as this file.",
+        },
         exo: { name: "exo schedules (commuter trains)", publisher: "exo" },
         osm: { name: "Streets and paths for walking", publisher: "OpenStreetMap contributors, via Geofabrik" },
         quartiers: { name: "Neighbourhood boundaries (quartiers de référence en habitation)", publisher: "Ville de Montréal" },

@@ -149,14 +149,22 @@ export default async function SourcesPage() {
             <ul role="list" className="mt-2 flex flex-col gap-4">
               {ids.map((id) => {
                 const s = SOURCES.find((x) => x.id === id)!;
-                const item: { name: string; publisher: string; note?: string } = t.list.items[id];
+                const item: { name: string; publisher: string; publisherUrl?: string; note?: string } =
+                  t.list.items[id];
                 return (
                   <li key={id}>
                     <a href={s.url} className={hitAreaLink}>
                       {item.name}
                     </a>
                     <span className="block text-sm text-ink-muted">
-                      {item.publisher}. {dates[id]} {t.list.licenceLabel}{" "}
+                      {item.publisherUrl ? (
+                        <a href={item.publisherUrl} className="text-link underline">
+                          {item.publisher}
+                        </a>
+                      ) : (
+                        item.publisher
+                      )}
+                      . {dates[id]} {t.list.licenceLabel}{" "}
                       <a href={LICENCE_URLS[s.licence]} className="text-link underline">
                         {t.list.licence[s.licence]}
                       </a>

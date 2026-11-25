@@ -117,6 +117,14 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
     for (const s of SOURCES) expect(cited, s.id).toContain(s.url);
   });
 
+  it("publisher links (the REM has no open-data page) are the ones DATA_SOURCES.md records", () => {
+    const md = repo("DATA_SOURCES.md");
+    const items: Record<string, { name: string; publisherUrl?: string }> = strings.sources.list.items;
+    const urls = Object.values(items).flatMap((i) => (i.publisherUrl ? [i.publisherUrl] : []));
+    expect(urls).toEqual(["https://rem.info/en"]);
+    for (const u of urls) expect(md).toContain(`(${u})`);
+  });
+
   it("every source's licence is the one its DATA_SOURCES.md row gives, linked as listed there", () => {
     const md = repo("DATA_SOURCES.md");
     const row = (n: number) => md.split("\n").find((l) => l.startsWith(`| ${n} |`))!;
