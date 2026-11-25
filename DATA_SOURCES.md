@@ -47,7 +47,9 @@ pipeline writes both languages into the data files (`export.py`, `rent_export.py
   une approbation de ce produit par Statistique Canada." ([licence, French](https://www.statcan.gc.ca/fr/reference/licence)).
   Table title as StatCan writes it in French ("Prix des loyers demandés et des loyers payés,
   selon le type d’unité locative et le nombre de chambres, estimations expérimentales") and its
-  quarter ("deuxième trimestre de 2026").
+  quarter ("deuxième trimestre de 2026"). Census product: "Fichier des attributs géographiques"
+  (StatCan's French catalogue, [92-151-G](https://www150.statcan.gc.ca/n1/fr/catalogue/92-151-G)),
+  "Recensement de 2021".
 - **CMHC:** "Adaptation de données de la Société canadienne d’hypothèques et de logement,
   [produit], [date]. La présente ne constitue en aucun cas un appui de la Société canadienne
   d’hypothèques et de logement envers ce produit." ([licence agreement, French](https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees)).

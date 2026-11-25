@@ -191,7 +191,9 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="udem",
             name="Université de Montréal (campus principal)",
-            # UdeM writes "campus de la montagne" (nouvelles.umontreal.ca, campus filter).
+            # UdeM's own spelling, lowercase "montagne": the campus filter of its news site,
+            # https://nouvelles.umontreal.ca/recherche ("Campus de la montagne"). Flagged to the
+            # owner, who wrote "Montagne" (M5.3a).
             name_fr="Université de Montréal (campus de la montagne)",
             destinations=(
                 Destination(

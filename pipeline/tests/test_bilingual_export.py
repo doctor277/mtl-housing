@@ -2,8 +2,8 @@
 
 The site's data files now carry each shown text as {"en": ..., "fr": ...}. These tests prove,
 on the committed files, that:
-- every number (and every key, null and boolean) is exactly what the last English-only export
-  wrote, and
+- every number (and every key, null, boolean and empty list or dict) is exactly what the last
+  English-only export wrote, and
 - every English text is unchanged too, except the two credit lines the owner asked to fix
   ("licensed under CC BY 4.0", M4.3/M6).
 
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 
 import pytest
 
@@ -37,11 +38,12 @@ def english(obj):
 
 
 def leaves(obj, path=""):
-    """(path, value) for every leaf, in file order."""
-    if isinstance(obj, dict):
+    """(path, value) for every leaf, in file order. An empty list or dict is a leaf too, so
+    dropping `"flags": []` or turning [] into {} changes the fingerprint."""
+    if isinstance(obj, dict) and obj:
         for k, v in obj.items():
             yield from leaves(v, f"{path}/{k}")
-    elif isinstance(obj, list):
+    elif isinstance(obj, list) and obj:
         for i, v in enumerate(obj):
             yield from leaves(v, f"{path}/{i}")
     else:
@@ -92,11 +94,11 @@ CREDIT_FIXES = {
 # credit fixes applied.
 PINNED = {
     "commute.json": (
-        "f4d4d9976ba5a0494ebc895c24d4cad39fb368a13ed2958e8a51db9f356a4f18",
+        "f29b31ff7d071174315e9014714fce8f72b98cad52291832d15b4daa17a36fb1",
         "2a9fe66bb85469a27cb35abb0af7ee06cbb1316e7239f81fa791a18084d895cf",
     ),
     "rent.json": (
-        "1990e1b5cc58b5885c240661bb1e711ac8364dab08cafd0d10e62f70b1f6e483",
+        "29db5be3a1a04c28cd81d3ed2ce92b7e573c67bfd2385052781f04cfe93c282a",
         "163413744d3633341609e6298f69916e1640714641f7036e2f56c5d3845c5848",
     ),
     "neighbourhoods.geojson": (
@@ -155,6 +157,34 @@ def test_reexport_keeps_every_english_text_but_the_two_credit_fixes(name):
         pytest.skip("data refreshed since M5.3a: the pinned pre-M5.3a fingerprints no longer apply")
     got = english_text_fingerprint(load(name))
     assert got == PINNED[name][1], f"{name}: an English text changed"
+
+
+BASE_COMMIT = "6b88ece"
+
+
+def main_file(name: str):
+    """The file as committed at BASE_COMMIT, or None without git history (CI checks out one
+    commit)."""
+    try:
+        out = subprocess.run(
+            ["git", "show", f"{BASE_COMMIT}:web/public/data/{name}"],
+            cwd=config.WEB_DATA_DIR,
+            capture_output=True,
+            check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return json.loads(out.decode("utf-8"))
+
+
+@pytest.mark.parametrize("name", FILES)
+def test_pins_are_the_fingerprints_of_the_last_english_only_export(name):
+    """Where the pins come from: recomputed from BASE_COMMIT's files (local runs only)."""
+    old = main_file(name)
+    if old is None:
+        pytest.skip(f"no git history for {BASE_COMMIT} here (CI checks out one commit)")
+    assert numbers_fingerprint(old) == PINNED[name][0]
+    assert english_text_fingerprint(old, CREDIT_FIXES) == PINNED[name][1]
 
 
 def test_the_credit_fixes_are_in_the_files():

@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 from shapely.geometry import MultiPolygon, Point, box
 
-from mtlhousing import aggregate, config, export
+from mtlhousing import aggregate, config, export, i18n
 
 INF = math.inf
 RG, JB = "udem_roger_gaudry", "udem_jean_brillant"
@@ -90,6 +90,23 @@ def test_meta_records_method_and_adjustments():
     assert dests[JB]["access_adjustment_min"] == config.ACCESS_ADJUSTMENT_MIN[JB]
     assert m["walk_speed_kmh"] == config.WALK_SPEED_KMH
     assert m["out_of_scope"][0]["area"] == "L'Île-Dorval"
+
+
+def test_meta_texts_are_bilingual():
+    # M5.3a: every text the site shows is {"en", "fr"} (owner's M5 decision 5).
+    m = _commute()["meta"]
+    udem = m["campuses"]["udem"]
+    assert udem["name"] == {
+        "en": "Université de Montréal (campus principal)",
+        "fr": config.CAMPUSES["udem"].name_fr,
+    }
+    names = {d["id"]: d["name"] for d in udem["destinations"]}
+    assert names[RG] == {"en": "Pavillon Roger-Gaudry", "fr": "pavillon Roger-Gaudry"}
+    assert all(i18n.is_text(o["reason"]) for o in m["out_of_scope"])
+    assert all(i18n.is_text(s) for s in m["sources"])
+    transit = m["sources"][1]
+    assert "licensed under CC BY 4.0. Travel times are derived" in transit["en"]
+    assert "sous licence CC BY 4.0" in transit["fr"]
 
 
 def test_available_campuses_needs_stats_and_routing_meta(tmp_path):

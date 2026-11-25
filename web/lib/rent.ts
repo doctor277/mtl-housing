@@ -5,7 +5,7 @@
 
 import type { Localized } from "./localized";
 
-export type BedroomType ="studio" | "1br" | "2br" | "3br_plus";
+export type BedroomType = "studio" | "1br" | "2br" | "3br_plus";
 export type LabelKey = "neighbourhood" | "zone" | "neighbourhood_low" | "zone_low" | "none";
 
 export interface CmhcAreaUsed {

@@ -324,7 +324,7 @@ def step_rent_export() -> None:
         print(f"  {unit:9s} {dict(sorted(c.items()))}")
     print("crosswalk notes:")
     for n in m["crosswalk_notes"]:
-        print(f"  [{n['kind']}] {n.get('quartier_name') or 'island'}: {n['text']}")
+        print(f"  [{n['kind']}] {n.get('quartier_name') or 'island'}: {n['text']['en']}")
 
 
 STEPS = {
