@@ -80,6 +80,9 @@ describe("strings", () => {
 
   it("writes the footer data line and How it works dates from the data", () => {
     expect(strings.format.longDate("2026-12-01")).toBe("Tuesday, December 1, 2026");
+    // /sources dates: a date, or a timestamp's date part (no shift near midnight UTC).
+    expect(strings.format.date("2026-11-20")).toBe("November 20, 2026");
+    expect(strings.format.date("2026-11-19T23:59:59Z")).toBe("November 19, 2026");
     expect(strings.footer.dataLine("Tuesday, December 1, 2026", "October 2025", "2026 Q2")).toBe(
       "Data: STM, REM and exo transit schedules for Tuesday, December 1, 2026; rents from CMHC (October 2025) and Statistics Canada’s experimental asking rents (2026 Q2). Estimates, not listings.",
     );

@@ -25,10 +25,12 @@ export interface RentMeta {
   rounding: { step: number; mode: string };
   shown_bedroom_types: BedroomType[];
   cmhc: { period: string };
-  statcan: { quarter: string };
+  statcan: { quarter: string; released: string };
   montreal: Record<BedroomType, { cmhc_average: number; statcan_asking: number }>;
   room: { estimate: number };
   grade_words: Record<string, string>;
+  /** Notes on matching quartiers to CMHC areas, shown only on /sources (methodology). */
+  crosswalk_notes: { kind: string; quartier_name?: string; text: string }[];
   /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
   sources: string[];
   [key: string]: unknown;

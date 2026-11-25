@@ -1,6 +1,6 @@
 # Methodology and limitations
 
-This file is filled in as each phase lands. It becomes the site's "Sources & limitations" page in Phase 4.
+This file is filled in as each phase lands. The site's "Sources and limitations" page (`/sources`, M5.2) summarises it for readers.
 
 ## Geography
 - Unit of analysis: the Ville de Montréal **quartiers de référence en habitation** (91 areas). The layer also covers the villes liées (Westmount, Mont-Royal, Côte-Saint-Luc, …), so the whole island is included.
@@ -172,10 +172,10 @@ Seven hand-picked routes plus two platform walks were routed with the published 
 - **These results are in-sample.** The walking speed was chosen from routes 1–5 and 7, and the adjustments from routes 6 and 6b, so the agreement is a fit, not a prediction. Before launch, 3–4 out-of-sample routes will be checked with the settings frozen, and the result reported whether it passes or not.
 
 ### McGill and Concordia (M3)
-Same settings, feeds and analysis date as UdeM; nothing was re-tuned. There are five transit routes per campus plus one platform walk each. The origins are reused from the UdeM list. The Google times are dated 2026-11-23. Details are in `VALIDATION.md`.
+Same settings, feeds and analysis date as UdeM; the walking speed was not re-tuned. One setting was added in M3: Concordia's +1.6 min access adjustment, calibrated on its own platform walk (below). There are five transit routes per campus plus one platform walk each. The origins are reused from the UdeM list. The Google times are dated 2026-11-23. Details are in `VALIDATION.md`.
 - **McGill: 4 of 5 transit routes pass.** Route 5 (Fairview-Pointe-Claire REM → McGill) fails: R5 40 min against Google 33. R5 takes the same REM trip. The gap is most likely the wait at the first stop, as R5's p10 of 35 min suggests: R5's median over the 7:30–8:30 window includes that wait, and Google's well-timed trip doesn't.
 - **Concordia: 5 of 5 transit routes pass.** The platform walks aren't counted as passes: each is the calibration, or is judged against its range (below).
-- **Concordia trips from the east.** R5's printed 7:45 itineraries get off at Peel and walk 9 min, instead of riding to Guy-Concordia. But R5's median for those routes is faster than every Peel option R5 lists, so the published numbers use a faster exit, most likely Guy-Concordia. This is explained in `VALIDATION.md`; the cause in R5's itinerary router is unknown.
+- **Concordia trips from the east.** R5's printed 7:45 itineraries get off at Peel and walk 9 min, instead of riding to Guy-Concordia. But for route 1, checked in full, R5's median is faster than every Peel option R5 lists, so the published numbers use a faster exit, most likely Guy-Concordia (routes 3 and 5 weren't compared option by option). This is explained in `VALIDATION.md`; the cause in R5's itinerary router is unknown.
 - **Mean R5 − Google over the transit routes:** +0.4 min for both campuses.
 - **Access adjustments.** Google's walks start at the station's street entrance and go outdoors, so they are a lower bound. Each is judged against Google **plus 1–2 min** from platform to street.
   - **McGill: none.** R5's platform walk (5.43 min) falls inside the 5–6 min range.
@@ -197,7 +197,7 @@ Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Mon
 - **Old-stock areas likely look cheaper than new listings** (e.g. Plateau-Mont-Royal, Rosemont).
 - **New-build areas, with more recent leases, likely look pricier** (e.g. the West Island).
 
-This hasn't been measured yet, so how large the effect is in each area is unknown. Scaling to StatCan's asking rents fixes the citywide level, not this pattern. The site will say so on its sources & limitations page (M5). A possible correction, using CMHC rents of vacant units, is the optional M2.7 in `docs/ROADMAP.md`.
+This hasn't been measured yet, so how large the effect is in each area is unknown. Scaling to StatCan's asking rents fixes the citywide level, not this pattern. The site says so on its sources and limitations page (`/sources`, M5.2). A possible correction, using CMHC rents of vacant units, is the optional M2.7 in `docs/ROADMAP.md`.
 
 Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
 

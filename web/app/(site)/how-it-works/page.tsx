@@ -1,12 +1,15 @@
 // How it works (M4.3): where the commute times and rents come from, and how the shortlist is
-// made. Short on purpose; the full sources and limitations page is M5. Every number comes from
-// commute.json and rent.json; wording in lib/strings.
+// made. Short on purpose; sources, credits and limitations are on /sources (M5.2). Every number
+// comes from commute.json and rent.json; wording in lib/strings.
 import type { Metadata } from "next";
+import Link from "next/link";
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
 import type { LabelKey } from "@/lib/rent";
 import { SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
+import { hitAreaLink } from "../linkStyles";
+import Section from "../Section";
 
 const t = strings.howItWorks;
 
@@ -19,15 +22,6 @@ const CAVEATS: [LabelKey, keyof typeof t.rent.labels][] = [
 
 export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
 
-function Section({ heading, id, children }: { heading: string; id?: string; children: React.ReactNode }) {
-  return (
-    <section id={id} className="mt-10 scroll-mt-4">
-      <h2 className="text-lg font-semibold">{heading}</h2>
-      <div className="mt-3 flex flex-col gap-3">{children}</div>
-    </section>
-  );
-}
-
 export default async function HowItWorks() {
   const [commute, rent] = await Promise.all([loadCommute(), loadRent()]);
   const meta = commute.meta;
@@ -39,16 +33,6 @@ export default async function HowItWorks() {
     c.destinations.filter((d) => d.access_adjustment_min !== 0),
   );
   const r = rent.meta;
-  // The attribution texts the pipeline writes into the data files (DATA_SOURCES.md wording),
-  // once each: both files credit the Ville de Montréal and the census file. rent.json first:
-  // its Ville de Montréal line has the full "licensed under CC BY 4.0" wording.
-  const seen = new Set<string>();
-  const credits = [...r.sources, ...meta.sources].filter((s) => {
-    const key = s.replace("licensed under ", "");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
 
   return (
     <article className="max-w-prose leading-relaxed">
@@ -102,24 +86,13 @@ export default async function HowItWorks() {
         <p>{t.shortlist.rooms}</p>
       </Section>
 
-      {/* The footer's "Sources" link points here until M5's sources page. */}
-      <Section heading={t.data.heading} id="data-and-credits">
-        <p className="text-sm text-ink-muted">{strings.rent.dataLine(r)}</p>
-        <ul role="list" className="flex flex-col gap-2 text-sm text-ink-muted">
-          {credits.map((a) => (
-            <li key={a}>{a}</li>
-          ))}
-          <li>
-            <a
-              href="https://creativecommons.org/licenses/by/4.0/"
-              className="inline-flex min-h-11 items-center font-semibold text-link underline"
-            >
-              {t.data.licence}
-            </a>
-          </li>
-        </ul>
-        <p className="text-sm text-ink-muted">{t.data.more}</p>
-      </Section>
+      {/* One line pointing to /sources, which has the credits (owner, M5 decision 13). */}
+      <p className="mt-10">
+        {t.sources.text}{" "}
+        <Link href="/sources" className={hitAreaLink}>
+          {t.sources.link}
+        </Link>
+      </p>
     </article>
   );
 }

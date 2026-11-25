@@ -138,6 +138,8 @@ export const en = {
   lang: "en",
   /** Placeholder until the name is chosen (M6). */
   siteName: "[NAME]",
+  /** Placeholder until the owner fills in the contact address before launch (M5 decision 11). */
+  contactEmail: "[EMAIL]",
   meta: {
     title: "[NAME]: where to live in Montréal without a car",
     description:
@@ -150,6 +152,14 @@ export const en = {
     longDate: (iso: string) =>
       new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-CA", {
         weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      }),
+    /** "November 20, 2026" from "2026-11-20" or an ISO timestamp (date part only). */
+    date: (iso: string) =>
+      new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-CA", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -318,11 +328,11 @@ export const en = {
     /** The footer's links, for screen readers (not the main navigation). */
     navLabel: "About this site",
     howItWorks: "How it works",
-    /** Until M5's sources page: points to How it works, "Data and credits". */
+    /** Points to /sources (M5 decision 13). */
     sources: "Sources",
   },
-  /** /how-it-works (M4.3). Numbers come from the data files; the full sources and limitations
-   * page is M5. */
+  /** /how-it-works (M4.3). Numbers come from the data files; sources, credits and limitations
+   * are on /sources (M5.2). */
   howItWorks: {
     title: "How it works",
     lead: "Where the commute times and rents come from, and how the shortlist is made.",
@@ -365,12 +375,134 @@ export const en = {
       noBudget: "Without a budget, they are listed by commute.",
       rooms: "Rooms have one citywide figure, so they are listed by commute and the budget doesn’t filter them.",
     },
-    data: {
-      heading: "Data and credits",
-      // The attribution texts themselves come from the data files (meta.sources), in the
-      // wording DATA_SOURCES.md requires; they are not retyped here.
-      licence: "CC BY 4.0 licence",
-      more: "A full sources and limitations page is coming.",
+    /** One line pointing to /sources (owner, M5 decision 13). */
+    sources: {
+      text: "Every source with its licence and date, how the commute times were checked, and the known limits:",
+      link: "Sources and limitations",
+    },
+  },
+  /** /sources (M5.2, owner's M5 decisions 11–14). Numbers are passed in: from the data files,
+   * or from lib/sources.ts, which a test checks against the files it cites. */
+  sources: {
+    title: "Sources and limitations",
+    lead: "Where every number on this site comes from, how well it holds up, and what it can’t tell you.",
+    limits: {
+      heading: "Known limitations",
+      oldLeases: {
+        heading: "Rents in older areas may look low",
+        text: "CMHC’s average rents include long-time tenants, who usually pay less than someone signing a lease today. So neighbourhoods with many older buildings, such as the Plateau-Mont-Royal or Rosemont, likely look cheaper than their listings, and areas with more new buildings, such as the West Island, likely look pricier. Scaling to Statistics Canada’s current asking rents fixes the citywide level, not this pattern. How large the effect is in each neighbourhood hasn’t been measured yet.",
+      },
+      concordiaEast: {
+        heading: "Concordia: trips arriving from the east",
+        text: (walk: number) =>
+          `For trips that arrive on the green line from the east, the trip planner’s sample routes get off at Peel and walk ${walk} minutes, instead of riding one more stop to Guy-Concordia. For one of these trips, checked in full, the time shown here is faster than every sample route the planner lists, so the times most likely use Guy-Concordia. Why the two disagree isn’t known.`,
+      },
+      firstWait: {
+        heading: "Waiting for the first train or bus",
+        text: (ours: number, google: number, start: string, end: string) =>
+          `From the Fairview–Pointe-Claire REM station to McGill, the time here is ${ours} min and Google Maps gives ${google} min, for the same REM trip. The gap is most likely the wait for the train: the time here is the median over departures from ${start} to ${end}, so it includes a typical wait, while Google’s trip leaves at just the right moment. If you time your departure, a trip that starts with an infrequent train or bus can be shorter than shown.`,
+      },
+    },
+    validation: {
+      heading: "How the commute times were checked",
+      method: (day: string, rulePct: number, ruleMin: number) =>
+        `The trip times were compared with Google Maps, “arrive by 8:30” on ${day}, on test trips to each campus. A trip passes when the two differ by at most ${ruleMin} minutes or ${rulePct}%, whichever is larger.`,
+      campus: (campus: string, pass: number, total: number) => `${campus}: ${pass} of ${total} comparisons pass.`,
+      /** UdeM's count has one trip compared with both buildings. */
+      udemBuildings: "One UdeM trip is compared with both of its buildings, so it counts twice.",
+      udemRoute4: (first: number, likeForLike: number, ours: number) =>
+        `The UdeM comparison that fails, from Hochelaga: Google’s first suggestion is a different, slower trip (${first} min). Against Google’s ${likeForLike}-minute trip by the green line and the REM, the time here (${ours} min) passes.`,
+      udemRoute3: (first: number, fastest: number, ours: number) =>
+        `The reverse happens from Sault-au-Récollet: the time here (${ours} min) passes against Google’s first suggestion (${first} min) but not against the fastest trip Google lists (${fastest} min), a well-timed bus connection.`,
+      mcgillRoute5: "The McGill comparison that fails is the one under “Waiting for the first train or bus” above.",
+      inSample:
+        "The walking speed was tuned on the UdeM trips, so the UdeM results show a fit, not an independent test. Each building’s walk correction was set on its own walk from the metro platform (UdeM’s two buildings and Concordia’s). The McGill and Concordia trips start from the same places as the UdeM ones and were checked afterwards with the walking speed unchanged. Before launch, a few new trips will be checked with the settings frozen, and the result published whether they pass or not.",
+      cite: (file: string, udemDate: string, othersDate: string) =>
+        `Google Maps times collected on ${udemDate} (UdeM) and ${othersDate} (McGill, Concordia). Full results: ${file}, in the project’s code.`,
+    },
+    commute: {
+      heading: "Commute times: limits",
+      oneMorning: (start: string, end: string, day: string) =>
+        `One weekday morning: trips leaving between ${start} and ${end} on ${day}. Evenings, weekends and later schedules can differ.`,
+      delays: "Schedules, not real service: delays, detours and outages aren’t included.",
+      flatWalking: (kmh: number) =>
+        `Walking is counted at ${kmh} km/h on flat ground: hills and stairs aren’t modelled. The fixed corrections at some campus buildings, listed in How it works, cover the walk from the metro platform to the door, including the climb to UdeM’s Roger-Gaudry.`,
+      transfers: "A transfer is timed as a walk between the two stops. Long station corridors can take longer.",
+      buildings:
+        "Each campus is one or two buildings. A class in another building can change the trip by 5 to 10 minutes. McGill’s Macdonald campus and Concordia’s Loyola campus aren’t covered.",
+      census:
+        "Homes are placed at the 2021 census’s small-area points (dissemination areas) and weighted by their 2021 households, so areas built up since then, mostly downtown, count a little less than they should.",
+      maxTrip: (max: number) =>
+        `Trips are searched up to ${max} minutes. A home with no trip within that limit counts as ${overMax(max)}.`,
+      outOfScopeLead: "Left out of the commute times:",
+    },
+    rent: {
+      heading: "Rents: limits",
+      method: (cmhcPeriod: string, statcanQuarter: string) =>
+        `Rents are estimates, not listings: where rents are higher or lower comes from CMHC (${cmhcPeriod}), and how high they are now from Statistics Canada’s Montréal asking rent (${statcanQuarter}). This assumes the ${cmhcPeriod} pattern still holds.`,
+      experimental: "Statistics Canada’s asking rents are experimental estimates.",
+      coverage:
+        "CMHC covers purpose-built rental buildings with at least 3 units: not condos rented out by their owners, and not rooms.",
+      rooms: (amount: string, quarter: string) =>
+        `Rooms have one Montréal-wide figure, ${amount} a month (Statistics Canada, ${quarter}), so they can’t be compared by neighbourhood.`,
+      crosswalkLead:
+        "CMHC’s areas don’t follow the city’s neighbourhoods, so each neighbourhood is matched to CMHC’s areas through census tracts. Notes on that match:",
+      /** A note about one neighbourhood: "Baie-D'Urfé: Linked to …" (text from rent.json). */
+      crosswalkNote: (neighbourhood: string | undefined, text: string) => (neighbourhood ? `${neighbourhood}: ${text}` : text),
+    },
+    list: {
+      heading: "Sources",
+      lead: "All the data is free and open. No listing sites are used.",
+      commuteHeading: "Commute times",
+      rentHeading: "Rents",
+      licence: {
+        ccBy4: "CC BY 4.0",
+        odbl: "ODbL 1.0",
+        statcanOpen: "Statistics Canada Open Licence",
+        cmhcData: "CMHC Licence Agreement for the Use of Data",
+      },
+      /** "Licence: CC BY 4.0" (the licence name is the link). */
+      licenceLabel: "Licence:",
+      items: {
+        stm: {
+          name: "STM schedules (bus and metro)",
+          publisher: "Société de transport de Montréal",
+          note: "The STM’s metro schedules are indicative. They are used only to compute trip times; no timetable is shown.",
+        },
+        rem: {
+          name: "REM schedules (GTFS file, download)",
+          publisher: "Réseau express métropolitain",
+          /** The publisher's site, in this language (owner, M5.2: the REM has no open-data page). */
+          publisherUrl: "https://rem.info/en",
+          note: "The REM publishes its schedules only as this file.",
+        },
+        exo: { name: "exo schedules (commuter trains)", publisher: "exo" },
+        osm: { name: "Streets and paths for walking", publisher: "OpenStreetMap contributors, via Geofabrik" },
+        quartiers: { name: "Neighbourhood boundaries (quartiers de référence en habitation)", publisher: "Ville de Montréal" },
+        census: {
+          name: "Where people live: 2021 Census Geographic Attribute File (92-151-X)",
+          publisher: "Statistics Canada",
+        },
+        cmhc: { name: "Rental Market Survey: average rents and rental-unit counts by area", publisher: "CMHC" },
+        statcanRent: {
+          name: "Asking rents, table 46-10-0092-01 (experimental estimates)",
+          publisher: "Statistics Canada",
+        },
+      },
+      dates: {
+        feed: (start: string, end: string) => `Schedules valid ${start} to ${end}.`,
+        osm: (date: string) => `Data as of ${date}.`,
+        downloaded: (date: string) => `Downloaded ${date}.`,
+        census: "2021 Census.",
+        cmhc: (period: string) => `${period} survey.`,
+        statcanRent: (quarter: string, released: string) => `${quarter}, released ${released}.`,
+      },
+      creditsLead: "Credits, as the publishers ask:",
+    },
+    about: {
+      heading: "About",
+      notAffiliated: "Not affiliated with UdeM, McGill, Concordia, STM, REM, exo, CMHC or Statistics Canada.",
+      contact: (email: string) => `Questions or corrections: ${email}`,
     },
   },
   /** The results' map view (M4.3): the same neighbourhoods as the list, on the map. */
