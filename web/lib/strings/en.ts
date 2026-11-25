@@ -193,6 +193,10 @@ export const en = {
     noBudget: "no budget",
     maxCommute: (min: MaxCommute) => `${min} min max`,
     changeSearch: "Change search",
+    /** Shareable link (M5.1): copies the clean link of this search. */
+    copyLink: "Copy link",
+    linkCopied: "Link copied",
+    copyFailed: "Couldn’t copy. Copy the address from your browser instead.",
     update: "Update",
     sort: { label: "Sort by", commute: "Fastest commute", rent: "Cheapest rent" },
     view: { label: "View", list: "List", map: "Map" },
@@ -288,6 +292,14 @@ export const en = {
   commute: {
     campusShort: (id: string, fullName: string) => CAMPUS_SHORT[id] ?? fullName,
     classLabels: commuteClassLabels,
+  },
+  /** Link previews of a search (M5.1): text only, no image. */
+  share: {
+    /** "UdeM · 3½ · up to $1,500 a month · 45 min max" plus the site name. */
+    title: (summary: string, site: string) => `${summary} · ${site}`,
+    description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
+      `Montréal neighbourhoods within ${maxCommute} min of ${campus} by public transit, for a ${sizeInSentence}${budget ? ` up to $${budget} a month` : ""}, with estimated rents.`,
+    sizeInSentence: { room: "room", studio: "studio", "1br": "3½", "2br": "4½" } satisfies Record<SearchSize, string>,
   },
   /** First screen: the example search (owner's example, M4). */
   example: {

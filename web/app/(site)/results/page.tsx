@@ -24,10 +24,42 @@ import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
 import ResultsMap, { type MapItem } from "./ResultsMap";
 import ScrollToCard from "./ScrollToCard";
+import ShareLink from "./ShareLink";
 
 const t = strings.results;
 
-export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
+/** "UdeM · 3½ · up to $1,500 a month · 45 min max": the page's summary line and the link
+ * preview's title. */
+function summaryLine(s: Search, campusLabel: string): string {
+  return [
+    campusLabel,
+    strings.form.size.labels[s.size],
+    s.budget === null ? t.noBudget : t.budget(strings.format.dollars(s.budget)),
+    t.maxCommute(s.maxCommute),
+  ].join(" · ");
+}
+
+/** Link previews (M5.1, decision 4): text only, the search's own title and description. An
+ * invalid search gets the page's plain title. */
+export async function generateMetadata({ searchParams }: PageProps<"/results">): Promise<Metadata> {
+  const [commute, params] = await Promise.all([loadCommute(), searchParams]);
+  const campuses = campusOptions(commute);
+  const parsed = parseSearch(
+    params,
+    campuses.map((c) => c.key),
+  );
+  if (!parsed.ok) return { title: `${t.title} · ${strings.siteName}` };
+  const s = parsed.search;
+  const campusLabel = campuses.find((c) => c.key === s.campus)!.label;
+  const title = strings.share.title(summaryLine(s, campusLabel), strings.siteName);
+  const description = strings.share.description(
+    campusLabel,
+    strings.share.sizeInSentence[s.size],
+    s.maxCommute,
+    s.budget === null ? null : strings.format.dollars(s.budget),
+  );
+  return { title, description, openGraph: { title, description, type: "website", siteName: strings.siteName } };
+}
 
 /** Cards shown per group before "Show N more". */
 const FIRST = 5;
@@ -178,12 +210,6 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
   const list = buildShortlist(hoods, commute, rent, s, sort);
   const campusLabel = campuses.find((c) => c.key === s.campus)!.label;
   const sizeLabel = strings.form.size.labels[s.size];
-  const summary = [
-    campusLabel,
-    sizeLabel,
-    s.budget === null ? t.noBudget : t.budget(strings.format.dollars(s.budget)),
-    t.maxCommute(s.maxCommute),
-  ];
   const ctx: CardContext = {
     campus: s.campus,
     campusMeta: commute.meta.campuses[s.campus],
@@ -210,7 +236,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
   return (
     <>
       <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.title}</h1>
-      <p className="mt-2 text-ink-muted">{summary.join(" · ")}</p>
+      <p className="mt-2 text-ink-muted">{summaryLine(s, campusLabel)}</p>
 
       <details className="mt-3">
         <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
@@ -225,6 +251,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           className="mt-4 mb-4 border-b border-line pb-8"
         />
       </details>
+      {/* The clean link of this search (no empty budget, no open card; view and sort kept). */}
+      <ShareLink path={`/results?${searchQuery(s, sort, view)}`} />
 
       {list.roomEstimate !== null && (
         <div className="mt-6 flex flex-col gap-1">

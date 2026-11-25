@@ -82,6 +82,17 @@ describe("searchQuery", () => {
     expect(searchQuery(search, "rent", "map")).toBe("campus=a&size=1br&max=45&sort=rent&view=map");
   });
 
+  it("makes the clean shareable link: no empty budget, no open card, view and sort kept (M5 decision 4)", () => {
+    const messy = { campus: "a", size: "1br", budget: "", max: "45", sort: "rent", view: "map", open: "Z" };
+    const parsed = parseSearch(messy, CAMPUSES);
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+    const clean = searchQuery(parsed.search, parseSort(messy), parseView(messy));
+    expect(clean).toBe("campus=a&size=1br&max=45&sort=rent&view=map");
+    expect(clean).not.toContain("open");
+    expect(clean).not.toContain("budget");
+  });
+
   it("leaves the budget out when there is none", () => {
     expect(searchQuery({ campus: "b", size: "room", budget: null, maxCommute: 60 })).toBe(
       "campus=b&size=room&max=60",

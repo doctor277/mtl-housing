@@ -12,6 +12,13 @@ const publicSans = Public_Sans({
 export const metadata: Metadata = {
   title: strings.meta.title,
   description: strings.meta.description,
+  // Link previews: text only, no image (M5 decision 4).
+  openGraph: {
+    title: strings.meta.title,
+    description: strings.meta.description,
+    type: "website",
+    siteName: strings.siteName,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
