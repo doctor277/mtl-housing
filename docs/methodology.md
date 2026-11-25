@@ -1,6 +1,6 @@
 # Methodology and limitations
 
-This file is filled in as each phase lands. It becomes the site's "Sources & limitations" page in Phase 4.
+This file is filled in as each phase lands. The site's "Sources and limitations" page (`/sources`, M5.2) summarises it for readers.
 
 ## Geography
 - Unit of analysis: the Ville de Montréal **quartiers de référence en habitation** (91 areas). The layer also covers the villes liées (Westmount, Mont-Royal, Côte-Saint-Luc, …), so the whole island is included.
@@ -197,7 +197,7 @@ Estimate = (CMHC neighbourhood average ÷ CMHC Montréal average) × StatCan Mon
 - **Old-stock areas likely look cheaper than new listings** (e.g. Plateau-Mont-Royal, Rosemont).
 - **New-build areas, with more recent leases, likely look pricier** (e.g. the West Island).
 
-This hasn't been measured yet, so how large the effect is in each area is unknown. Scaling to StatCan's asking rents fixes the citywide level, not this pattern. The site will say so on its sources & limitations page (M5). A possible correction, using CMHC rents of vacant units, is the optional M2.7 in `docs/ROADMAP.md`.
+This hasn't been measured yet, so how large the effect is in each area is unknown. Scaling to StatCan's asking rents fixes the citywide level, not this pattern. The site says so on its sources and limitations page (`/sources`, M5.2). A possible correction, using CMHC rents of vacant units, is the optional M2.7 in `docs/ROADMAP.md`.
 
 Montréal CMA average asking rent, 2026 Q2: studio $1,250, 1 bedroom (3½) $1,480, 2 bedrooms (4½) $1,820, 3+ bedrooms $2,260.
 

@@ -97,9 +97,13 @@ Pages:
   - "Copy link" copies the clean link of the search (no empty `budget=`, no `open=`; `view` and
     `sort` kept), and the address bar shows the same. Link previews are text only: the
     search's own title and description.
-- `/how-it-works`: where the commute times and rents come from, the shortlist rules, credits.
+- `/how-it-works`: where the commute times and rents come from, and the shortlist rules.
+- `/sources`: sources and limitations. The known limitations, how the commute times were
+  checked against Google Maps, the commute and rent limits, every source with its link, licence
+  and date, the credits, and an About block. Its typed facts (`web/lib/sources.ts`) are tested
+  against `pipeline/validation/`, `DATA_SOURCES.md` and `data/manifest.csv`.
 - Footer on the site's pages: the data line (schedule day, CMHC period, StatCan quarter) and
-  links to How it works and Sources.
+  links to How it works and Sources (`/sources`).
 
 They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
 the pipeline's `export` and `rent-export` steps and committed).

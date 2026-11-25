@@ -28,7 +28,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
             <Link href="/how-it-works" className={footerLink}>
               {strings.footer.howItWorks}
             </Link>
-            <Link href="/how-it-works#data-and-credits" className={footerLink}>
+            <Link href="/sources" className={footerLink}>
               {strings.footer.sources}
             </Link>
           </nav>

@@ -21,7 +21,7 @@ const META: RentMeta = {
   rounding: { step: 25, mode: "half_up" },
   shown_bedroom_types: ["studio", "1br", "2br"],
   cmhc: { period: "October 2025" },
-  statcan: { quarter: "2026 Q2" },
+  statcan: { quarter: "2026 Q2", released: "2026-01-01" },
   montreal: {
     studio: { cmhc_average: 900, statcan_asking: 1000 },
     "1br": { cmhc_average: 900, statcan_asking: 1200 },
@@ -30,6 +30,7 @@ const META: RentMeta = {
   },
   room: { estimate: 500 },
   grade_words: { a: "excellent", b: "very good", c: "good", d: "use with caution" },
+  crosswalk_notes: [{ kind: "folded", text: "Note Z" }],
   sources: ["Source Z"],
 };
 

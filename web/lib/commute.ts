@@ -44,6 +44,12 @@ export interface CommuteFile {
     departure_window: { start: string; minutes: number };
     max_trip_min: number;
     walk_speed_kmh: number;
+    /** The schedule feeds routed on, with their service periods (ISO dates). */
+    gtfs_feeds: { name: string; version: string | null; start: string; end: string }[];
+    /** OpenStreetMap data date (ISO timestamp). */
+    osm_date: string;
+    /** Areas left out of the commute statistics, with the pipeline's reason. */
+    out_of_scope: { area: string; reason: string }[];
     /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
     sources: string[];
     campuses: Record<string, CampusMeta>;
