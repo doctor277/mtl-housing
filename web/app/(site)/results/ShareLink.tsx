@@ -36,6 +36,8 @@ export default function ShareLink({ path }: { path: string }) {
   if (!ready) return null;
 
   const copy = async () => {
+    // Clear first, so a second press changes the live region again and is announced again.
+    setStatus("idle");
     try {
       await navigator.clipboard.writeText(`${window.location.origin}${path}`);
       setStatus("copied");
