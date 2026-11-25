@@ -5,9 +5,7 @@ import {
   type CommuteFile,
   campusFeatureProps,
   campusOptions,
-  commuteTarget,
   departureWindow,
-  windowLabel,
 } from "@/lib/commute";
 
 // Clearly fake fixtures (CLAUDE.md): campuses A/B, buildings X/Y.
@@ -37,19 +35,12 @@ const result = (median: number | null, overMax: boolean): CampusResult => ({
   by_destination: {},
 });
 
-describe("campus picker and texts", () => {
-  it("names what the time is measured to", () => {
-    expect(commuteTarget("b", ONE)).toBe("to Building X");
-    expect(commuteTarget("udem", TWO)).toBe("fastest UdeM building");
-    expect(commuteTarget("a", TWO)).toBe("fastest Campus A building");
-  });
-
-  it("describes the departure window from the file's meta", () => {
+describe("campus picker and departure window", () => {
+  it("reads the departure window from the file's meta", () => {
     const meta = {
       analysis_date: "2026-12-01",
       departure_window: { start: "07:30", minutes: 60 },
     } as unknown as CommuteFile["meta"];
-    expect(windowLabel(meta)).toBe("leaving 7:30–8:30, Tue 2026-12-01");
     expect(departureWindow(meta)).toEqual({ start: "7:30", end: "8:30" });
     const late = { ...meta, departure_window: { start: "08:45", minutes: 30 } };
     expect(departureWindow(late as CommuteFile["meta"])).toEqual({ start: "8:45", end: "9:15" });

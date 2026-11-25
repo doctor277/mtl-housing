@@ -1,7 +1,8 @@
 // Results: the shortlist (M4.2) and its map view (M4.3). Rules in lib/shortlist.ts (owner's M4
-// decisions). Cards first; the map is a second view the user switches to (decision 9). Works
-// without JavaScript except the map itself: the view and sort toggles are links, "show more"
-// and the detail panels are native <details>.
+// decisions). Cards first; the map is a second view the user switches to (decision 9). The view
+// and sort toggles are links, "show more" and the detail panels are native <details>. The map
+// and "Copy link" need JavaScript. Note: the results stream in Suspense, so this page as a
+// whole also needs JavaScript to show them (reported to the owner in M5.1).
 import type { Metadata } from "next";
 import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
@@ -19,15 +20,30 @@ import {
   searchQuery,
 } from "@/lib/search";
 import { buildShortlist, type GroupKey, SLIGHTLY_OVER_PCT, type ShortlistItem, type SortKey } from "@/lib/shortlist";
+import { sharePreview, summaryLine } from "@/lib/share";
 import { strings } from "@/lib/strings";
 import SearchForm from "../SearchForm";
 import HoodCard, { type CardContext } from "./HoodCard";
 import ResultsMap, { type MapItem } from "./ResultsMap";
 import ScrollToCard from "./ScrollToCard";
+import ShareLink from "./ShareLink";
 
 const t = strings.results;
 
-export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
+/** Link previews (M5.1, decision 4): text only, the search's own title and description. An
+ * invalid search gets the page's plain title. */
+export async function generateMetadata({ searchParams }: PageProps<"/results">): Promise<Metadata> {
+  const [commute, params] = await Promise.all([loadCommute(), searchParams]);
+  const campuses = campusOptions(commute);
+  const parsed = parseSearch(
+    params,
+    campuses.map((c) => c.key),
+  );
+  if (!parsed.ok) return { title: `${t.title} · ${strings.siteName}` };
+  const s = parsed.search;
+  const { title, description } = sharePreview(s, campuses.find((c) => c.key === s.campus)!.label);
+  return { title, description, openGraph: { title, description, type: "website", siteName: strings.siteName } };
+}
 
 /** Cards shown per group before "Show N more". */
 const FIRST = 5;
@@ -43,9 +59,18 @@ function invalidMessage(field: SearchField): string {
 // searchParams is request data: it renders inside Suspense (Cache Components).
 export default function Results({ searchParams }: PageProps<"/results">) {
   return (
-    <Suspense fallback={<p className="text-ink-muted">{t.loading}</p>}>
-      <ResultsBody searchParams={searchParams} />
-    </Suspense>
+    <>
+      {/* Outside the streamed part, so it shows when JavaScript is off (owner, M5.1). */}
+      <noscript>
+        <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.title}</h1>
+        <p className="mt-4 font-semibold">{t.needsJavaScript}</p>
+        {/* "Loading…" would never end without JavaScript. */}
+        <style>{".results-loading{display:none}"}</style>
+      </noscript>
+      <Suspense fallback={<p className="results-loading text-ink-muted">{t.loading}</p>}>
+        <ResultsBody searchParams={searchParams} />
+      </Suspense>
+    </>
   );
 }
 
@@ -178,12 +203,6 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
   const list = buildShortlist(hoods, commute, rent, s, sort);
   const campusLabel = campuses.find((c) => c.key === s.campus)!.label;
   const sizeLabel = strings.form.size.labels[s.size];
-  const summary = [
-    campusLabel,
-    sizeLabel,
-    s.budget === null ? t.noBudget : t.budget(strings.format.dollars(s.budget)),
-    t.maxCommute(s.maxCommute),
-  ];
   const ctx: CardContext = {
     campus: s.campus,
     campusMeta: commute.meta.campuses[s.campus],
@@ -210,7 +229,7 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
   return (
     <>
       <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.title}</h1>
-      <p className="mt-2 text-ink-muted">{summary.join(" · ")}</p>
+      <p className="mt-2 text-ink-muted">{summaryLine(s, campusLabel)}</p>
 
       <details className="mt-3">
         <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
@@ -225,6 +244,8 @@ async function ResultsBody({ searchParams }: Pick<PageProps<"/results">, "search
           className="mt-4 mb-4 border-b border-line pb-8"
         />
       </details>
+      {/* The clean link of this search (no empty budget, no open card; view and sort kept). */}
+      <ShareLink path={`/results?${searchQuery(s, sort, view)}`} />
 
       {list.roomEstimate !== null && (
         <div className="mt-6 flex flex-col gap-1">

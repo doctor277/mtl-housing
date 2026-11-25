@@ -87,6 +87,17 @@ describe("strings", () => {
     expect(strings.example.label("UdeM", "3½", 1500, 45)).toBe("UdeM, 3½, $1,500, 45 min");
   });
 
+  it("writes a search's link preview from its own values", () => {
+    expect(strings.share.title("UdeM", "3½", "1,500", 45, "[NAME]")).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]");
+    expect(strings.share.title("McGill", "Room", null, 30, "[NAME]")).toBe("McGill · Room · 30 min · [NAME]");
+    expect(strings.share.description("UdeM", strings.share.sizeInSentence["1br"], 45, "1,500")).toBe(
+      "Montréal neighbourhoods within 45 min of UdeM by public transit, for a 3½ up to $1,500 a month, with estimated rents.",
+    );
+    expect(strings.share.description("McGill", strings.share.sizeInSentence.room, 30, null)).toBe(
+      "Montréal neighbourhoods within 30 min of McGill by public transit, for a room, with estimated rents.",
+    );
+  });
+
   it("keeps the owner's example search valid", () => {
     expect(EXAMPLE_SEARCH).toEqual({ campus: "udem", size: "1br", budget: 1500, maxCommute: 45 });
     const params = Object.fromEntries(new URLSearchParams(searchQuery(EXAMPLE_SEARCH)));

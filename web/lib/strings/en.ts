@@ -3,7 +3,6 @@
 // as text: they come from the data files or the code and are passed in. Number formats
 // ("1,475", "≈ $1,475") are language-specific, so they live here too.
 
-import type { TimeBlock, TimeStat } from "../commute";
 import type { BedroomType, LabelKey, RentEntry, RentMeta } from "../rent";
 import { isLowReliability } from "../rent";
 import type { MaxCommute, SearchField, SearchSize } from "../search";
@@ -129,13 +128,6 @@ function rentClassPct(binPct: number[]): string[] {
 
 // --- commute lines ------------------------------------------------------------------------
 
-/** "44 min", "> 120 min" or "no data". */
-function commuteTime(block: TimeBlock, stat: TimeStat, maxTripMin: number): string {
-  const v = block[stat];
-  if (v !== null) return `${Math.round(v)} min`;
-  return block.over_max.includes(stat) ? `> ${maxTripMin} min` : "no data";
-}
-
 /** Commute classes from their upper bounds in minutes: "≤ 20 min", "21–30", …, "91–120". */
 function commuteClassLabels(uppers: number[], maxTripMin: number): string[] {
   const all = [...uppers, maxTripMin];
@@ -150,7 +142,6 @@ export const en = {
     title: "[NAME]: where to live in Montréal without a car",
     description:
       "Pick your campus, apartment size, budget and longest commute, and see which Montréal neighbourhoods fit.",
-    mapTitle: "[NAME]: map of commutes and rents",
   },
   format: {
     dollars,
@@ -197,10 +188,16 @@ export const en = {
   results: {
     title: "Neighbourhoods",
     loading: "Loading…",
+    /** Shown only without JavaScript: the results stream in and need it (owner, M5.1). */
+    needsJavaScript: "The results need JavaScript. Turn it on in your browser to see the neighbourhoods.",
     budget: (amount: string) => `up to $${amount} a month`,
     noBudget: "no budget",
     maxCommute: (min: MaxCommute) => `${min} min max`,
     changeSearch: "Change search",
+    /** Shareable link (M5.1): copies the clean link of this search. */
+    copyLink: "Copy link",
+    linkCopied: "Link copied",
+    copyFailed: "Couldn’t copy. Copy the address from your browser instead.",
     update: "Update",
     sort: { label: "Sort by", commute: "Fastest commute", rent: "Cheapest rent" },
     view: { label: "View", list: "List", map: "Map" },
@@ -295,18 +292,17 @@ export const en = {
   /** Commute wording shared by the map, the cards and the form. */
   commute: {
     campusShort: (id: string, fullName: string) => CAMPUS_SHORT[id] ?? fullName,
-    time: commuteTime,
-    /** "leaving 7:30–8:30, Tue 2026-12-01". */
-    window: (start: string, end: string, isoDate: string) => {
-      // Noon UTC avoids a time-zone shift to the previous day.
-      const day = new Date(`${isoDate}T12:00:00Z`).toLocaleDateString("en-CA", { weekday: "short", timeZone: "UTC" });
-      return `leaving ${start}–${end}, ${day} ${isoDate}`;
-    },
-    /** What the time is measured to: "to Roddick Gates" for one destination, "fastest UdeM
-     * building" when several buildings count (the faster one per home). */
-    target: (campusShort: string, destinations: { name: string }[]) =>
-      destinations.length === 1 ? `to ${destinations[0].name}` : `fastest ${campusShort} building`,
     classLabels: commuteClassLabels,
+  },
+  /** Link previews of a search (M5.1): text only, no image. */
+  share: {
+    /** Owner's short form, so the site name survives ~60-character truncation:
+     * "UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]" (no budget part without a budget). */
+    title: (campus: string, size: string, budget: string | null, maxCommute: number, site: string) =>
+      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`, site].join(" · "),
+    description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
+      `Montréal neighbourhoods within ${maxCommute} min of ${campus} by public transit, for a ${sizeInSentence}${budget ? ` up to $${budget} a month` : ""}, with estimated rents.`,
+    sizeInSentence: { room: "room", studio: "studio", "1br": "3½", "2br": "4½" } satisfies Record<SearchSize, string>,
   },
   /** First screen: the example search (owner's example, M4). */
   example: {
@@ -380,7 +376,6 @@ export const en = {
   /** The results' map view (M4.3): the same neighbourhoods as the list, on the map. */
   resultsMap: {
     colourBy: "Colour by",
-    needsJavaScript: "The map needs JavaScript. The list shows the same neighbourhoods.",
     hint: "Tap a neighbourhood for its commute and rent. The list has the same information.",
     commuteLegend: (campus: string) => `Typical commute to ${campus}`,
     rentLegend: (size: string) => `Rent for a ${size}, compared with the Montréal asking rent`,
@@ -399,49 +394,23 @@ export const en = {
     },
     noResidents: "No residents (park)",
   },
-  /** The map: /map (all neighbourhoods) and the results' map view. */
+  /** The results' map view (shared map component and legend). */
   map: {
-    group: "Map",
     modes: { commute: "Commute", rent: "Rent" },
-    campus: "Campus",
-    size: "Size",
-    hideLegend: "Hide legend",
-    showLegend: "Show legend",
-    loadingCommutes: "Loading commutes…",
-    loadingRents: "Loading rents…",
     loadingMap: "Loading the map…",
-    commuteTitle: (campusName: string) => `Median transit commute to ${campusName}`,
-    overMaxClass: (max: number) => `> ${max} min`,
-    noData: "no data",
-    noResidents: "no residents (park)",
-    rentTitle: (size: string) => `Estimated rent, ${size}`,
-    /** A published StatCan figure, shown as is (no "≈"). */
-    rentBasis: (level: number) => `compared with the Montréal asking rent ($${dollars(level)}, Statistics Canada)`,
     rentClass: (pct: string, range: string) => `${pct}: ${range}`,
     lowReliability: "low reliability (CMHC: “use with caution”)",
     notEnoughData: "not enough data",
-    clickHint: "Click a neighbourhood for details.",
     attribution: (withRent: boolean) =>
       `Quartiers: Ville de Montréal (CC BY 4.0). Schedules: STM, REM, exo (CC BY 4.0). ${withRent ? "Rents: CMHC, Statistics Canada. " : ""}Map data © OpenStreetMap contributors.`,
     error: (message: string) => `The map couldn’t load: ${message}`,
     marker: (campusName: string, destination: string) => `${campusName}: ${destination}`,
     popup: {
-      /** Followed by the time in bold. */
-      medianPrefix: (campusName: string, target: string) => `${campusName}, ${target}, median: `,
-      range: (p10: string, p90: string) => `p10–p90: ${p10} – ${p90}`,
-      access: (signed: string) => `includes a ${signed} access adjustment (platform to entrance)`,
-      building: (name: string, time: string, signed: string | null, share: string) =>
-        `${name}: ${time}${signed ? ` (incl. ${signed} access adjustment)` : ""}, fastest for ${share} of homes`,
+      /** An access adjustment, "+1.9 min" (How it works). */
       signedMin: (adj: number) => `${adj > 0 ? "+" : "−"}${Math.abs(adj)} min`,
-      sample: (n: number, unreachable: number) => `${n} sample points, ${unreachable} unreachable`,
-      flags: (flags: string[]) => `flags: ${flags.length ? flags.join(", ") : "none"}`,
-      noRent: (size: string) => `${size}: not enough data`,
-      rent: (size: string, perMonth: string | null, badge: string) =>
-        `${size}: ${perMonth ? `${perMonth} a month · ` : ""}${badge}`,
       noResidents: (mode: "commute" | "rent") =>
         `No residents, so no ${mode === "rent" ? "rent estimate" : "commute time"} is shown.`,
       partOf: (parent: string) => `In the city’s data this area is part of the ${parent} quartier.`,
-      noCommuteData: "no data",
     },
   },
 };
