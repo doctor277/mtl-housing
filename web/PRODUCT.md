@@ -61,5 +61,6 @@ No testimonials, user counts or press: none may be invented.
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA (owner's default for M4). Usable on a phone with one thumb; works without
-JavaScript for the search form.
+WCAG 2.2 AA (owner's default for M4). Usable on a phone with one thumb. The search form
+submits without JavaScript, but the results page needs it: the results stream in, and
+without JavaScript it says so (M5.1).

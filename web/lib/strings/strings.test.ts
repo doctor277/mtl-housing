@@ -88,9 +88,8 @@ describe("strings", () => {
   });
 
   it("writes a search's link preview from its own values", () => {
-    expect(strings.share.title("UdeM · 3½ · up to $1,500 a month · 45 min max", "[NAME]")).toBe(
-      "UdeM · 3½ · up to $1,500 a month · 45 min max · [NAME]",
-    );
+    expect(strings.share.title("UdeM", "3½", "1,500", 45, "[NAME]")).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]");
+    expect(strings.share.title("McGill", "Room", null, 30, "[NAME]")).toBe("McGill · Room · 30 min · [NAME]");
     expect(strings.share.description("UdeM", strings.share.sizeInSentence["1br"], 45, "1,500")).toBe(
       "Montréal neighbourhoods within 45 min of UdeM by public transit, for a 3½ up to $1,500 a month, with estimated rents.",
     );

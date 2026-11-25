@@ -1,4 +1,5 @@
-// The first screen's search form: a GET form to /results (works without JavaScript; next/form
+// The first screen's search form: a GET form to /results (it submits without JavaScript,
+// though the results page needs it; next/form
 // adds client-side navigation). Choices are native radio buttons drawn as buttons. On the first
 // screen nothing is preselected; on the results page it starts from the current search.
 import Form from "next/form";

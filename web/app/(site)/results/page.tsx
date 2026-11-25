@@ -59,9 +59,17 @@ function invalidMessage(field: SearchField): string {
 // searchParams is request data: it renders inside Suspense (Cache Components).
 export default function Results({ searchParams }: PageProps<"/results">) {
   return (
-    <Suspense fallback={<p className="text-ink-muted">{t.loading}</p>}>
-      <ResultsBody searchParams={searchParams} />
-    </Suspense>
+    <>
+      {/* Outside the streamed part, so it shows when JavaScript is off (owner, M5.1). */}
+      <noscript>
+        <p className="mb-4 font-semibold">{t.needsJavaScript}</p>
+        {/* "Loading…" would never end without JavaScript. */}
+        <style>{".results-loading{display:none}"}</style>
+      </noscript>
+      <Suspense fallback={<p className="results-loading text-ink-muted">{t.loading}</p>}>
+        <ResultsBody searchParams={searchParams} />
+      </Suspense>
+    </>
   );
 }
 

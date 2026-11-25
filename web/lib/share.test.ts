@@ -21,12 +21,20 @@ describe("sharing a search", () => {
 
   it("builds the link preview from the parsed search (size in a sentence, budget kept)", () => {
     expect(sharePreview(parsed({ campus: "a", size: "2br", budget: "1800", max: "30" }), "Campus A")).toEqual({
-      title: "Campus A · 4½ · up to $1,800 a month · 30 min max · [NAME]",
+      title: "Campus A · 4½ · ≤ $1,800/mo · 30 min · [NAME]",
       description:
         "Montréal neighbourhoods within 30 min of Campus A by public transit, for a 4½ up to $1,800 a month, with estimated rents.",
     });
-    expect(sharePreview(parsed({ campus: "a", size: "studio", max: "60" }), "Campus A").description).toBe(
+    const noBudget = sharePreview(parsed({ campus: "a", size: "studio", max: "60" }), "Campus A");
+    expect(noBudget.title).toBe("Campus A · Studio · 60 min · [NAME]");
+    expect(noBudget.description).toBe(
       "Montréal neighbourhoods within 60 min of Campus A by public transit, for a studio, with estimated rents.",
     );
+  });
+
+  it("keeps the site name within the first 60 characters (owner, M5.1)", () => {
+    // The longest real case: the longest campus label, 4½, a four-digit budget, 60 min.
+    const { title } = sharePreview(parsed({ campus: "a", size: "2br", budget: "9999", max: "60" }), "Concordia SGW");
+    expect(title.indexOf("[NAME]") + "[NAME]".length).toBeLessThanOrEqual(60);
   });
 });

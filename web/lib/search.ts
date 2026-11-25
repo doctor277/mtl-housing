@@ -1,4 +1,5 @@
-// The search the first screen submits (a plain GET form, so it works without JavaScript):
+// The search the first screen submits (a plain GET form, which submits without JavaScript;
+// the results page itself needs it):
 // /results?campus=<id>&size=<size>&budget=<dollars>&max=<minutes>. Budget is optional.
 // Wording lives in lib/strings; this file only checks values.
 

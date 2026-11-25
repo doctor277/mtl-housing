@@ -49,7 +49,8 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
   = white with control edge, selected = ink fill, white semibold text; pressed = the hover
   colour (touch has no hover). On the first screen nothing is preselected: every choice is
   the user's ("Change search" on the results starts from the current search). Works with
-  keyboard (arrow keys), screen readers and without JavaScript.
+  keyboard (arrow keys) and screen readers; the first screen's form submits without
+  JavaScript (see "JavaScript" below).
 - **Budget field:** labelled number input with a `$` prefix, any whole dollar (owner, M4.3).
 - **Map popups (M4.3):** drawn in the system, not MapLibre's defaults: Public Sans 14 px,
   ink on white, 1 px control edge, 8 px radius, no shadow, a drawn close icon with a 44 px
@@ -62,12 +63,16 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
 - **Reliability badge:** words, never colour, and only for real caveats: "Wider-area
   estimate" has a solid outline; "Low reliability" and "Not enough data" a dashed one. The
   normal case is said once above the list ("All rents are estimates.", ROADMAP decision 16).
-- **Sort toggle:** two links styled like Choice buttons (ink = current, `aria-current`), so it
-  works without JavaScript.
+- **Sort toggle:** two links styled like Choice buttons (ink = current, `aria-current`).
 - **Show more:** a `<details>` per group after the first 5 cards; its control stays in place and
   reads "Show fewer" when open.
 - **Browser surfaces:** themed selection, caret, accent colour and focus ring; no browser tap
   tint. Tabular numerals only where numbers line up in columns (minutes and rents on cards).
+
+**JavaScript.** The first screen's form submits without it. The results page needs it: the
+results stream in after the page loads, so without JavaScript the page shows only a
+`<noscript>` line saying so (M5.1). Earlier notes here and in the M4 PRs said the results
+worked without JavaScript; that was wrong.
 
 The results' map view (M4.3) is drawn in this system. The older explorer at `/map` was deleted
 in M5.1 (owner, M5 decision 3).

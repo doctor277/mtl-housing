@@ -188,6 +188,8 @@ export const en = {
   results: {
     title: "Neighbourhoods",
     loading: "Loading…",
+    /** Shown only without JavaScript: the results stream in and need it (owner, M5.1). */
+    needsJavaScript: "The results need JavaScript. Turn it on in your browser to see the neighbourhoods.",
     budget: (amount: string) => `up to $${amount} a month`,
     noBudget: "no budget",
     maxCommute: (min: MaxCommute) => `${min} min max`,
@@ -294,8 +296,10 @@ export const en = {
   },
   /** Link previews of a search (M5.1): text only, no image. */
   share: {
-    /** "UdeM · 3½ · up to $1,500 a month · 45 min max" plus the site name. */
-    title: (summary: string, site: string) => `${summary} · ${site}`,
+    /** Owner's short form, so the site name survives ~60-character truncation:
+     * "UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]" (no budget part without a budget). */
+    title: (campus: string, size: string, budget: string | null, maxCommute: number, site: string) =>
+      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`, site].join(" · "),
     description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
       `Montréal neighbourhoods within ${maxCommute} min of ${campus} by public transit, for a ${sizeInSentence}${budget ? ` up to $${budget} a month` : ""}, with estimated rents.`,
     sizeInSentence: { room: "room", studio: "studio", "1br": "3½", "2br": "4½" } satisfies Record<SearchSize, string>,

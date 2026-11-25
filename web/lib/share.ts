@@ -19,13 +19,9 @@ export function summaryLine(s: Search, campusLabel: string): string {
 
 /** Link preview of a search: text only (no image). */
 export function sharePreview(s: Search, campusLabel: string): { title: string; description: string } {
+  const budget = s.budget === null ? null : strings.format.dollars(s.budget);
   return {
-    title: strings.share.title(summaryLine(s, campusLabel), strings.siteName),
-    description: strings.share.description(
-      campusLabel,
-      strings.share.sizeInSentence[s.size],
-      s.maxCommute,
-      s.budget === null ? null : strings.format.dollars(s.budget),
-    ),
+    title: strings.share.title(campusLabel, strings.form.size.labels[s.size], budget, s.maxCommute, strings.siteName),
+    description: strings.share.description(campusLabel, strings.share.sizeInSentence[s.size], s.maxCommute, budget),
   };
 }

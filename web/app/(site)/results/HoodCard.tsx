@@ -1,6 +1,7 @@
 // One shortlist card (name, commute, rent, reliability badge). Tapping it opens the detail
 // panel in place: commute (median, range, buildings, flags, source) and rent (estimate,
-// CMHC basis, source, data dates). A native <details>, so it needs no JavaScript.
+// CMHC basis, source, data dates). A native <details>: opening it needs no script of its own
+// (the results page as a whole needs JavaScript, see web/DESIGN.md).
 import { type CampusMeta, type CampusResult, type CommuteFile, departureWindow, type TimeBlock } from "@/lib/commute";
 import { isLowReliability, type RentEntry, type RentMeta } from "@/lib/rent";
 import type { ShortlistItem } from "@/lib/shortlist";
