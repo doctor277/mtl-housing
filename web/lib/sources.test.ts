@@ -140,7 +140,9 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
   it("the CMHC credit the page shows is CMHC's required wording, word for word", () => {
     // DATA_SOURCES.md: "Adapted from Canada Mortgage and Housing Corporation, [product], [date].
     // This does not constitute an endorsement by CMHC." The page shows rent.json's text as is.
-    const credits: string[] = JSON.parse(repo("web/public/data/rent.json")).meta.sources;
+    const credits: string[] = JSON.parse(repo("web/public/data/rent.json")).meta.sources.map(
+      (c: { en: string }) => c.en,
+    );
     const cmhc = credits.filter((c) => c.includes("Canada Mortgage and Housing Corporation"));
     expect(cmhc).toEqual([
       "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",

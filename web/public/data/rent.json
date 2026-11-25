@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-23T00:01:32",
+  "generated_at": "2026-11-25T18:06:36",
   "currency": "CAD",
   "per": "month",
   "rounding": {
@@ -67,10 +67,22 @@
    "none": "not enough data: estimate is null"
   },
   "grade_words": {
-   "a": "excellent",
-   "b": "very good",
-   "c": "good",
-   "d": "use with caution"
+   "a": {
+    "en": "excellent",
+    "fr": "excellent"
+   },
+   "b": {
+    "en": "very good",
+    "fr": "très bon"
+   },
+   "c": {
+    "en": "good",
+    "fr": "bon"
+   },
+   "d": {
+    "en": "use with caution",
+    "fr": "utiliser avec prudence"
+   }
   },
   "null_meaning": "estimate is null when label is 'none': not enough data.",
   "crosswalk_notes": [
@@ -80,7 +92,10 @@
     "kind": "unconfirmed_link",
     "cmhc_area": "Sainte-Anne-de-Bellevue/Baie-d'Urfé",
     "confidence": "high",
-    "text": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link: none of its census tracts has CMHC rental units."
+    "text": {
+     "en": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link: none of its census tracts has CMHC rental units.",
+     "fr": "Associé au secteur de la SCHL Sainte-Anne-de-Bellevue/Baie-d'Urfé par son nom. Les nombres de logements de la SCHL ne permettent pas de confirmer ce lien : aucun de ses secteurs de recensement ne compte de logements locatifs de la SCHL."
+    }
    },
    {
     "quartier_id": "58",
@@ -91,7 +106,10 @@
     "counted_with": [
      "Saint-Laurent"
     ],
-    "text": "0.6% of its rental units are in CMHC area Senneville/Roxboro-Pierrefonds; they are counted with Saint-Laurent instead."
+    "text": {
+     "en": "0.6% of its rental units are in CMHC area Senneville/Roxboro-Pierrefonds; they are counted with Saint-Laurent instead.",
+     "fr": "0,6 % de ses logements locatifs sont dans le secteur de la SCHL Senneville/Roxboro-Pierrefonds; ils sont plutôt comptés avec Saint-Laurent."
+    }
    },
    {
     "quartier_id": "63",
@@ -102,26 +120,47 @@
     "counted_with": [
      "Saint-Léonard"
     ],
-    "text": "1.8% of its rental units are in CMHC area Mercier; they are counted with Saint-Léonard instead."
+    "text": {
+     "en": "1.8% of its rental units are in CMHC area Mercier; they are counted with Saint-Léonard instead.",
+     "fr": "1,8 % de ses logements locatifs sont dans le secteur de la SCHL Mercier; ils sont plutôt comptés avec Saint-Léonard."
+    }
    },
    {
     "quartier_id": null,
     "kind": "homes_without_units",
     "share": 0.017,
-    "text": "1.7% of the island's homes are in census tracts with no CMHC rental units (CMHC lists no such tract); they don't affect any estimate."
+    "text": {
+     "en": "1.7% of the island's homes are in census tracts with no CMHC rental units (CMHC lists no such tract); they don't affect any estimate.",
+     "fr": "1,7 % des logements de l’île sont dans des secteurs de recensement sans logements locatifs de la SCHL (la SCHL n’en répertorie aucun); ils n’influent sur aucune estimation."
+    }
    },
    {
     "quartier_id": null,
     "kind": "unallocated_units",
     "share": 0.00019,
-    "text": "89 CMHC rental units (0.02%) are in census tracts with no home in the 2021 census, so no neighbourhood gets them."
+    "text": {
+     "en": "89 CMHC rental units (0.02%) are in census tracts with no home in the 2021 census, so no neighbourhood gets them.",
+     "fr": "89 logements locatifs de la SCHL (0,02 %) sont dans des secteurs de recensement sans aucun logement au Recensement de 2021; aucun quartier ne les reçoit."
+    }
    }
   ],
   "sources": [
-   "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
-   "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product.",
-   "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product.",
-   "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0."
+   {
+    "en": "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
+    "fr": "Adaptation de données de la Société canadienne d’hypothèques et de logement, Enquête sur les logements locatifs, octobre 2025. La présente ne constitue en aucun cas un appui de la Société canadienne d’hypothèques et de logement envers ce produit."
+   },
+   {
+    "en": "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product.",
+    "fr": "Adapté de Statistique Canada, Tableau 46-10-0092-01 Prix des loyers demandés et des loyers payés, selon le type d’unité locative et le nombre de chambres, estimations expérimentales, deuxième trimestre de 2026. Cela ne constitue pas une approbation de ce produit par Statistique Canada."
+   },
+   {
+    "en": "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product.",
+    "fr": "Adapté de Statistique Canada, Fichier des attributs géographiques, Recensement de 2021 (92-151-X). Cela ne constitue pas une approbation de ce produit par Statistique Canada."
+   },
+   {
+    "en": "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "fr": "Avec les données Quartiers de référence en habitation tirées du site web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0."
+   }
   ]
  },
  "results": {

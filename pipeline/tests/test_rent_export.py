@@ -143,23 +143,30 @@ def test_meta_carries_sources_grade_words_and_crosswalk_notes():
     assert m["rounding"] == {"step": 25, "mode": "half_up"}
     assert m["shown_bedroom_types"] == ["studio", "1br", "2br"]
     assert m["grade_words"] == {
-        "a": "excellent",
-        "b": "very good",
-        "c": "good",
-        "d": "use with caution",
+        "a": {"en": "excellent", "fr": "excellent"},
+        "b": {"en": "very good", "fr": "très bon"},
+        "c": {"en": "good", "fr": "bon"},
+        "d": {"en": "use with caution", "fr": "utiliser avec prudence"},
     }
     assert m["statcan"]["quarter"] == "2026 Q2" and m["statcan"]["experimental"] is True
     assert m["montreal"]["1br"] == {"cmhc_average": 1000.0, "statcan_asking": 1500.0}
-    assert any("Canada Mortgage and Housing Corporation" in s for s in m["sources"])
+    assert any("Canada Mortgage and Housing Corporation" in s["en"] for s in m["sources"])
+    assert any("Société canadienne d’hypothèques et de logement" in s["fr"] for s in m["sources"])
     notes = {(n["kind"], n["quartier_id"]): n for n in m["crosswalk_notes"]}
     link = notes[("unconfirmed_link", "03")]
     assert link["cmhc_area"] == "N3" and "detail" not in link  # no internal CSV note
-    assert link["text"].endswith("none of its census tracts has CMHC rental units.")
+    assert link["text"]["en"].endswith("none of its census tracts has CMHC rental units.")
+    assert link["text"]["fr"].startswith("Associé au secteur de la SCHL N3 par son nom.")
     folded = notes[("folded", "02")]
     assert folded["share"] == 0.012 and folded["counted_with"] == ["N1", "N2"]
-    assert "counted with N1 and N2 instead" in folded["text"]
+    assert "counted with N1 and N2 instead" in folded["text"]["en"]
+    # Québec format: decimal comma, non-breaking space before %, "et" in lists.
+    assert folded["text"]["fr"].startswith("1,2 % de ses logements locatifs")
+    assert "plutôt comptés avec N1 et N2." in folded["text"]["fr"]
     assert ("homes_without_units", None) in notes and ("unallocated_units", None) in notes
-    assert "Ville de Montréal open data portal, licensed under CC BY 4.0." in m["sources"][-1]
+    ville = m["sources"][-1]
+    assert "Ville de Montréal open data portal, licensed under CC BY 4.0." in ville["en"]
+    assert "données ouvertes de la Ville de Montréal, sous licence CC BY 4.0." in ville["fr"]
 
 
 @pytest.mark.parametrize("grade, key", [("a", "zone"), ("d", "zone_low")])

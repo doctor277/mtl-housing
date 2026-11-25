@@ -36,6 +36,28 @@ The site's `/sources` page links each licence to these pages (checked 2026-11-25
 - **CMHC:** "Adapted from Canada Mortgage and Housing Corporation, [product], [date]. This does not constitute an endorsement by CMHC." **No CMHC logo.**
 - **STM, REM, exo (CC BY 4.0):** "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules." Name each publisher, link the licence, and say the data was transformed.
 
+**In French** (M5.3a, owner's M5 decision 6: each from the publisher's own French page). The
+pipeline writes both languages into the data files (`export.py`, `rent_export.py`):
+- **OpenStreetMap:** "© Contributeurs OpenStreetMap (ODbL)", OSM's own French map credit
+  (openstreetmap-website, `config/locales/fr.yml`, `openstreetmap_contributors`).
+- **Ville de Montréal:** "Avec les données Quartiers de référence en habitation tirées du site
+  web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0.", the city's
+  suggested credit for digital products ([licence page](https://donnees.montreal.ca/licence-d-utilisation)).
+- **Statistics Canada:** "Adapté de Statistique Canada, [produit], [date]. Cela ne constitue pas
+  une approbation de ce produit par Statistique Canada." ([licence, French](https://www.statcan.gc.ca/fr/reference/licence)).
+  Table title as StatCan writes it in French ("Prix des loyers demandés et des loyers payés,
+  selon le type d’unité locative et le nombre de chambres, estimations expérimentales") and its
+  quarter ("deuxième trimestre de 2026").
+- **CMHC:** "Adaptation de données de la Société canadienne d’hypothèques et de logement,
+  [produit], [date]. La présente ne constitue en aucun cas un appui de la Société canadienne
+  d’hypothèques et de logement envers ce produit." ([licence agreement, French](https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees)).
+  Survey: "Enquête sur les logements locatifs". Grade words from CMHC's French legend
+  ("A – Excellent, B – Très bon, C – Bon, D – Passable (utiliser avec prudence)",
+  [RMS methodology, French](https://www03.cmhc-schl.gc.ca/hmip-pimh/fr/TableMapChart/RmsMethodology)).
+- **STM, REM, exo:** "Horaires du transport collectif : Société de transport de Montréal, Réseau
+  express métropolitain et exo, sous licence CC BY 4.0. Les temps de trajet sont calculés à
+  partir de ces horaires." (our sentence, translated).
+
 ## STM metro schedule condition: how we comply
 
 The STM licence states that its **metro schedules are indicative**. They are meant for estimating trip durations and **may not be used to build a metro timetable application**.

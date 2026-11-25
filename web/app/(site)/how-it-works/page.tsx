@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
+import { inLang } from "@/lib/localized";
 import type { LabelKey } from "@/lib/rent";
 import { SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
@@ -46,7 +47,10 @@ export default async function HowItWorks() {
         <p>{t.commute.walking(meta.walk_speed_kmh)}</p>
         {multi.map((c) => (
           <p key={c.key}>
-            {t.commute.closest(c.label, strings.format.andList(meta.campuses[c.key].destinations.map((d) => d.name)))}
+            {t.commute.closest(
+              c.label,
+              strings.format.andList(meta.campuses[c.key].destinations.map((d) => inLang(d.name, strings.lang))),
+            )}
           </p>
         ))}
         {adjustments.length > 0 && (
@@ -55,7 +59,10 @@ export default async function HowItWorks() {
             <ul role="list" className="list-disc pl-5">
               {adjustments.map((d) => (
                 <li key={d.id} className="tabular-nums">
-                  {t.commute.adjustment(d.name, strings.map.popup.signedMin(d.access_adjustment_min))}
+                  {t.commute.adjustment(
+                    inLang(d.name, strings.lang),
+                    strings.map.popup.signedMin(d.access_adjustment_min),
+                  )}
                 </li>
               ))}
             </ul>

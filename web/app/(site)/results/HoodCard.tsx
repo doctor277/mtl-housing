@@ -3,6 +3,7 @@
 // CMHC basis, source, data dates). A native <details>: opening it needs no script of its own
 // (the results page as a whole needs JavaScript, see web/DESIGN.md).
 import { type CampusMeta, type CampusResult, type CommuteFile, departureWindow, type TimeBlock } from "@/lib/commute";
+import { inLang } from "@/lib/localized";
 import { isLowReliability, type RentEntry, type RentMeta } from "@/lib/rent";
 import type { ShortlistItem } from "@/lib/shortlist";
 import { strings } from "@/lib/strings";
@@ -35,14 +36,15 @@ function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext;
   const max = ctx.commuteMeta.max_trip_min;
   const dests = ctx.campusMeta.destinations;
   const { start, end } = departureWindow(ctx.commuteMeta);
-  const target = dests.length > 1 ? t.toClosestBuilding(ctx.campusLabel) : t.toPlace(dests[0].name);
+  const target =
+    dests.length > 1 ? t.toClosestBuilding(ctx.campusLabel) : t.toPlace(inLang(dests[0].name, strings.lang));
   // p10 ≤ median ≤ the max commute, so p10 is always a number here.
   const lines: string[] = [t.median(minutes, target, start, end), t.range(Math.round(r.p10!), wholeMinutes(r.p90), max)];
   if (dests.length > 1) {
     const parts = dests.flatMap((d) => {
       const b = r.by_destination[d.id];
       const time = b ? buildingTime(b, max) : null;
-      return time ? [{ name: d.name, time }] : [];
+      return time ? [{ name: inLang(d.name, strings.lang), time }] : [];
     });
     if (parts.length) lines.push(t.buildings(parts));
   }

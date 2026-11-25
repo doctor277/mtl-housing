@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-23T13:50:06",
+  "generated_at": "2026-11-25T18:05:47",
   "analysis_date": "2026-12-01",
   "departure_window": {
    "start": "07:30",
@@ -42,24 +42,45 @@
   "out_of_scope": [
    {
     "area": "L'Île-Dorval",
-    "reason": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics."
+    "reason": {
+     "en": "L'Île-Dorval: island municipality with no bridge and only a seasonal ferry; not reachable by public transit, so excluded from Dorval's commute statistics.",
+     "fr": "L’Île-Dorval : municipalité insulaire sans pont, reliée seulement par un traversier saisonnier; inaccessible en transport collectif, elle est donc exclue des temps de trajet de Dorval."
+    }
    }
   ],
   "sources": [
-   "© OpenStreetMap contributors (ODbL)",
-   "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, CC BY 4.0. Travel times are derived from these schedules.",
-   "Contains data from the Ville de Montréal open data portal, CC BY 4.0.",
-   "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product."
+   {
+    "en": "© OpenStreetMap contributors (ODbL)",
+    "fr": "© Contributeurs OpenStreetMap (ODbL)"
+   },
+   {
+    "en": "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules.",
+    "fr": "Horaires du transport collectif : Société de transport de Montréal, Réseau express métropolitain et exo, sous licence CC BY 4.0. Les temps de trajet sont calculés à partir de ces horaires."
+   },
+   {
+    "en": "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "fr": "Avec les données Quartiers de référence en habitation tirées du site web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0."
+   },
+   {
+    "en": "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). This does not constitute an endorsement by Statistics Canada of this product.",
+    "fr": "Adapté de Statistique Canada, Fichier des attributs géographiques, Recensement de 2021 (92-151-X). Cela ne constitue pas une approbation de ce produit par Statistique Canada."
+   }
   ],
   "campuses": {
    "udem": {
-    "name": "Université de Montréal (campus principal)",
+    "name": {
+     "en": "Université de Montréal (campus principal)",
+     "fr": "Université de Montréal (campus de la montagne)"
+    },
     "rule": "fastest_destination",
     "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
     "destinations": [
      {
       "id": "udem_roger_gaudry",
-      "name": "Pavillon Roger-Gaudry",
+      "name": {
+       "en": "Pavillon Roger-Gaudry",
+       "fr": "pavillon Roger-Gaudry"
+      },
       "lat": 45.5027705,
       "lon": -73.6150484,
       "osm_ref": "node/2573744215",
@@ -67,7 +88,10 @@
      },
      {
       "id": "udem_jean_brillant",
-      "name": "Pavillon Jean-Brillant",
+      "name": {
+       "en": "Pavillon Jean-Brillant",
+       "fr": "pavillon Jean-Brillant"
+      },
       "lat": 45.4986715,
       "lon": -73.6181739,
       "osm_ref": "node/6783857247",
@@ -111,13 +135,19 @@
     ]
    },
    "mcgill": {
-    "name": "McGill University (downtown campus)",
+    "name": {
+     "en": "McGill University (downtown campus)",
+     "fr": "Université McGill (campus du centre-ville)"
+    },
     "rule": "fastest_destination",
     "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
     "destinations": [
      {
       "id": "mcgill_roddick_gates",
-      "name": "Roddick Gates",
+      "name": {
+       "en": "Roddick Gates",
+       "fr": "portail Roddick"
+      },
       "lat": 45.503849,
       "lon": -73.574925,
       "osm_ref": "way/143798969",
@@ -151,13 +181,19 @@
     ]
    },
    "concordia_sgw": {
-    "name": "Concordia University (Sir George Williams campus)",
+    "name": {
+     "en": "Concordia University (Sir George Williams campus)",
+     "fr": "Université Concordia (campus Sir-George-Williams)"
+    },
     "rule": "fastest_destination",
     "rule_note": "Per home, the campus time is the fastest of the campus buildings below (optimistic: assumes you go to whichever building is quickest for you). Each building's own time is in by_destination.",
     "destinations": [
      {
       "id": "concordia_sgw_hall",
-      "name": "Henry F. Hall Building",
+      "name": {
+       "en": "Henry F. Hall Building",
+       "fr": "pavillon Henry-F.-Hall"
+      },
       "lat": 45.4970373,
       "lon": -73.5786245,
       "osm_ref": "node/4035248248",

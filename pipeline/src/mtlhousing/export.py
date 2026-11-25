@@ -26,7 +26,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import MultiPolygon, Point
 
-from mtlhousing import aggregate, config
+from mtlhousing import aggregate, config, i18n
 
 METHOD_VERSION = "1.0"
 SIMPLIFY_TOLERANCE_M = 5.0
@@ -95,7 +95,7 @@ def campus_result(stats: pd.DataFrame, destination_ids: list[str]) -> dict:
 def campus_meta(campus_id: str, routing_meta: dict) -> dict:
     campus = config.CAMPUSES[campus_id]
     return {
-        "name": campus.name,
+        "name": i18n.text(campus.name, campus.name_fr),
         "rule": "fastest_destination",
         "rule_note": (
             "Per home, the campus time is the fastest of the campus buildings below "
@@ -105,7 +105,7 @@ def campus_meta(campus_id: str, routing_meta: dict) -> dict:
         "destinations": [
             {
                 "id": d.id,
-                "name": d.name,
+                "name": i18n.text(d.name, d.name_fr),
                 "lat": d.lat,
                 "lon": d.lon,
                 "osm_ref": d.osm_ref,
@@ -118,6 +118,44 @@ def campus_meta(campus_id: str, routing_meta: dict) -> dict:
         "relocated_origins": routing_meta.get("relocated_origins", []),
         "excluded_out_of_scope": routing_meta.get("excluded_out_of_scope", []),
     }
+
+
+# Credits in both languages (DATA_SOURCES.md, "Attribution text to show on the site"). French
+# from each publisher's French page (owner's M5 decision 6):
+# - OpenStreetMap: "Contributeurs OpenStreetMap", OSM's own French map credit
+#   (openstreetmap-website, config/locales/fr.yml, openstreetmap_contributors).
+# - Ville de Montréal: its suggested credit for digital products ("Avec les données ... tirées
+#   du site web des données ouvertes de la Ville de Montréal"),
+#   donnees.montreal.ca/licence-d-utilisation.
+# - Statistics Canada: "Adapté de Statistique Canada, nom du produit, date de référence. Cela ne
+#   constitue pas une approbation de ce produit par Statistique Canada.",
+#   statcan.gc.ca/fr/reference/licence; product title "Fichier des attributs géographiques",
+#   StatCan's French catalogue (92-151-G).
+OSM_CREDIT = i18n.text(
+    "© OpenStreetMap contributors (ODbL)", "© Contributeurs OpenStreetMap (ODbL)"
+)
+TRANSIT_CREDIT = i18n.text(
+    "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, "
+    "licensed under CC BY 4.0. Travel times are derived from these schedules.",
+    "Horaires du transport collectif : Société de transport de Montréal, Réseau express "
+    "métropolitain et exo, sous licence CC BY 4.0. Les temps de trajet sont calculés à partir "
+    "de ces horaires.",
+)
+VILLE_CREDIT = i18n.text(
+    "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "Avec les données Quartiers de référence en habitation tirées du site web des données "
+    "ouvertes de la Ville de Montréal, sous licence CC BY 4.0.",
+)
+CENSUS_CREDIT = i18n.text(
+    "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). "
+    "This does not constitute an endorsement by Statistics Canada of this product.",
+    "Adapté de Statistique Canada, Fichier des attributs géographiques, Recensement de 2021 "
+    "(92-151-X). Cela ne constitue pas une approbation de ce produit par Statistique Canada.",
+)
+
+
+def commute_sources() -> list[dict[str, str]]:
+    return [OSM_CREDIT, TRANSIT_CREDIT, VILLE_CREDIT, CENSUS_CREDIT]
 
 
 def build_commute(
@@ -152,16 +190,11 @@ def build_commute(
         "gtfs_feeds": any_meta["gtfs_feeds"],
         "osm_date": any_meta["osm_timestamp"],
         "router": f"r5py {any_meta['r5py_version']}",
-        "out_of_scope": [{"area": k, "reason": v} for k, v in config.OUT_OF_SCOPE_CSDS.items()],
-        "sources": [
-            "© OpenStreetMap contributors (ODbL)",
-            "Transit schedules: Société de transport de Montréal, Réseau express "
-            "métropolitain and exo, CC BY 4.0. Travel times are derived from these schedules.",
-            "Contains data from the Ville de Montréal open data portal, CC BY 4.0.",
-            "Adapted from Statistics Canada, 2021 Census Geographic Attribute File "
-            "(92-151-X). This does not constitute an endorsement by Statistics Canada "
-            "of this product.",
+        "out_of_scope": [
+            {"area": k, "reason": i18n.text(v, config.OUT_OF_SCOPE_CSDS_FR[k])}
+            for k, v in config.OUT_OF_SCOPE_CSDS.items()
         ],
+        "sources": commute_sources(),
         "campuses": {c: campus_meta(c, m) for c, m in routing_meta_by_campus.items()},
     }
     results: dict[str, dict] = {qid: {} for qid in quartier_ids}

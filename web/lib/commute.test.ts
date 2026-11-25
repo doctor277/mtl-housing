@@ -9,16 +9,17 @@ import {
 } from "@/lib/commute";
 
 // Clearly fake fixtures (CLAUDE.md): campuses A/B, buildings X/Y.
+const both = (name: string) => ({ en: name, fr: `${name} (fr)` });
 const dest = (id: string, name: string) => ({
   id,
-  name,
+  name: both(name),
   lat: 0,
   lon: 0,
   access_adjustment_min: 0,
 });
-const ONE: CampusMeta = { name: "Campus B", destinations: [dest("b_x", "Building X")] };
+const ONE: CampusMeta = { name: both("Campus B"), destinations: [dest("b_x", "Building X")] };
 const TWO: CampusMeta = {
-  name: "Campus A",
+  name: both("Campus A"),
   destinations: [dest("a_x", "Building X"), dest("a_y", "Building Y")],
 };
 

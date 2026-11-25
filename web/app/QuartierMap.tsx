@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ExpressionSpecification, Map as MlMap, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { type CommuteFile, campusFeatureProps } from "@/lib/commute";
+import { inLang } from "@/lib/localized";
 import {
   BIN_UPPER_MIN,
   COMMUTE_COLOURS,
@@ -265,7 +266,9 @@ export default function QuartierMap({
             // smaller, so UdeM's two buildings stay two pins at phone zoom.
             new maplibregl.Marker({ color: CAMPUS_MARKER_COLOUR, scale: 0.7 })
               .setLngLat([d.lon, d.lat])
-              .setPopup(new maplibregl.Popup().setText(t.marker(meta.name, d.name)))
+              .setPopup(
+                new maplibregl.Popup().setText(t.marker(inLang(meta.name, strings.lang), inLang(d.name, strings.lang))),
+              )
               .addTo(map);
           }
         }
