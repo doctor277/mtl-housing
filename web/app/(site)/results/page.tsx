@@ -62,7 +62,8 @@ export default function Results({ searchParams }: PageProps<"/results">) {
     <>
       {/* Outside the streamed part, so it shows when JavaScript is off (owner, M5.1). */}
       <noscript>
-        <p className="mb-4 font-semibold">{t.needsJavaScript}</p>
+        <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.title}</h1>
+        <p className="mt-4 font-semibold">{t.needsJavaScript}</p>
         {/* "Loading…" would never end without JavaScript. */}
         <style>{".results-loading{display:none}"}</style>
       </noscript>

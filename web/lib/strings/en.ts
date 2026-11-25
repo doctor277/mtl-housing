@@ -376,7 +376,6 @@ export const en = {
   /** The results' map view (M4.3): the same neighbourhoods as the list, on the map. */
   resultsMap: {
     colourBy: "Colour by",
-    needsJavaScript: "The map needs JavaScript. The list shows the same neighbourhoods.",
     hint: "Tap a neighbourhood for its commute and rent. The list has the same information.",
     commuteLegend: (campus: string) => `Typical commute to ${campus}`,
     rentLegend: (size: string) => `Rent for a ${size}, compared with the Montréal asking rent`,

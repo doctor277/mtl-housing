@@ -158,9 +158,6 @@ export default function ResultsMap({
         </p>
         <QuartierMap mode={mode} size={size ?? "1br"} campus={campus} results={results} />
       </div>
-      <noscript>
-        <p className="mt-3">{t.needsJavaScript}</p>
-      </noscript>
       <p className="mt-3 text-sm text-ink-muted">{t.hint}</p>
 
       <div className="mt-4 text-sm">

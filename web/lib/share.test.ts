@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseSearch } from "./search";
 import { sharePreview, summaryLine } from "./share";
+import { strings } from "./strings";
 
 // Clearly fake fixture (CLAUDE.md): campus "a", shown as "Campus A".
 const parsed = (params: Record<string, string>) => {
@@ -33,8 +34,14 @@ describe("sharing a search", () => {
   });
 
   it("keeps the site name within the first 60 characters (owner, M5.1)", () => {
-    // The longest real case: the longest campus label, 4½, a four-digit budget, 60 min.
-    const { title } = sharePreview(parsed({ campus: "a", size: "2br", budget: "9999", max: "60" }), "Concordia SGW");
-    expect(title.indexOf("[NAME]") + "[NAME]".length).toBeLessThanOrEqual(60);
+    // The longest usual case: the longest campus label, the longest size label ("Studio"), a
+    // four-digit budget, 60 min. Measured with the real site name, so it still guards once
+    // "[NAME]" is replaced (a name of about 12 characters or more would fail it).
+    const longestCampus = ["udem", "mcgill", "concordia_sgw"]
+      .map((id) => strings.commute.campusShort(id, id))
+      .reduce((a, b) => (b.length > a.length ? b : a));
+    const { title } = sharePreview(parsed({ campus: "a", size: "studio", budget: "9999", max: "60" }), longestCampus);
+    expect(title.endsWith(strings.siteName)).toBe(true);
+    expect(title.length).toBeLessThanOrEqual(60);
   });
 });
