@@ -331,8 +331,8 @@ export const en = {
     /** Points to /sources (M5 decision 13). */
     sources: "Sources",
   },
-  /** /how-it-works (M4.3). Numbers come from the data files; the full sources and limitations
-   * page is M5. */
+  /** /how-it-works (M4.3). Numbers come from the data files; sources, credits and limitations
+   * are on /sources (M5.2). */
   howItWorks: {
     title: "How it works",
     lead: "Where the commute times and rents come from, and how the shortlist is made.",
@@ -395,7 +395,7 @@ export const en = {
       concordiaEast: {
         heading: "Concordia: trips arriving from the east",
         text: (walk: number) =>
-          `For trips that arrive on the green line from the east, the trip planner’s sample routes get off at Peel and walk ${walk} minutes, instead of riding one more stop to Guy-Concordia. The times shown here are faster than any of those sample routes, so they most likely use Guy-Concordia. Why the two disagree isn’t known.`,
+          `For trips that arrive on the green line from the east, the trip planner’s sample routes get off at Peel and walk ${walk} minutes, instead of riding one more stop to Guy-Concordia. For one of these trips, checked in full, the time shown here is faster than every sample route the planner lists, so the times most likely use Guy-Concordia. Why the two disagree isn’t known.`,
       },
       firstWait: {
         heading: "Waiting for the first train or bus",
@@ -407,12 +407,16 @@ export const en = {
       heading: "How the commute times were checked",
       method: (day: string, rulePct: number, ruleMin: number) =>
         `The trip times were compared with Google Maps, “arrive by 8:30” on ${day}, on test trips to each campus. A trip passes when the two differ by at most ${ruleMin} minutes or ${rulePct}%, whichever is larger.`,
-      campus: (campus: string, pass: number, total: number) => `${campus}: ${pass} of ${total} trips pass.`,
+      campus: (campus: string, pass: number, total: number) => `${campus}: ${pass} of ${total} comparisons pass.`,
+      /** UdeM's count has one trip compared with both buildings. */
+      udemBuildings: "One UdeM trip is compared with both of its buildings, so it counts twice.",
       udemRoute4: (first: number, likeForLike: number, ours: number) =>
-        `The UdeM trip that fails, from Hochelaga: Google’s first suggestion is a different, slower trip (${first} min). Against Google’s ${likeForLike}-minute trip by the green line and the REM, the time here (${ours} min) passes.`,
-      mcgillRoute5: "The McGill trip that fails is the one under “Waiting for the first train or bus” above.",
+        `The UdeM comparison that fails, from Hochelaga: Google’s first suggestion is a different, slower trip (${first} min). Against Google’s ${likeForLike}-minute trip by the green line and the REM, the time here (${ours} min) passes.`,
+      udemRoute3: (first: number, fastest: number, ours: number) =>
+        `The reverse happens from Sault-au-Récollet: the time here (${ours} min) passes against Google’s first suggestion (${first} min) but not against the fastest trip Google lists (${fastest} min), a well-timed bus connection.`,
+      mcgillRoute5: "The McGill comparison that fails is the one under “Waiting for the first train or bus” above.",
       inSample:
-        "The walking speed and the walk corrections at the campus buildings were tuned on the UdeM trips, so the UdeM results show a fit, not an independent test. The McGill and Concordia trips were checked afterwards with the same settings, nothing re-tuned. Before launch, a few new trips will be checked with the settings frozen, and the result published whether they pass or not.",
+        "The walking speed was tuned on the UdeM trips, so the UdeM results show a fit, not an independent test. Each building’s walk correction was set on its own walk from the metro platform (UdeM’s two buildings and Concordia’s). The McGill and Concordia trips start from the same places as the UdeM ones and were checked afterwards with the walking speed unchanged. Before launch, a few new trips will be checked with the settings frozen, and the result published whether they pass or not.",
       cite: (file: string, udemDate: string, othersDate: string) =>
         `Google Maps times collected on ${udemDate} (UdeM) and ${othersDate} (McGill, Concordia). Full results: ${file}, in the project’s code.`,
     },
@@ -422,12 +426,12 @@ export const en = {
         `One weekday morning: trips leaving between ${start} and ${end} on ${day}. Evenings, weekends and later schedules can differ.`,
       delays: "Schedules, not real service: delays, detours and outages aren’t included.",
       flatWalking: (kmh: number) =>
-        `Walking is counted at ${kmh} km/h on flat ground. Hills and stairs aren’t modelled, except for the fixed corrections at the campus buildings listed in How it works.`,
+        `Walking is counted at ${kmh} km/h on flat ground: hills and stairs aren’t modelled. The fixed corrections at some campus buildings, listed in How it works, cover the walk from the metro platform to the door, including the climb to UdeM’s Roger-Gaudry.`,
       transfers: "A transfer is timed as a walk between the two stops. Long station corridors can take longer.",
       buildings:
-        "Each campus is one or two buildings. A class elsewhere on campus can add a few minutes. McGill’s Macdonald campus and Concordia’s Loyola campus aren’t covered.",
+        "Each campus is one or two buildings. A class in another building can change the trip by 5 to 10 minutes. McGill’s Macdonald campus and Concordia’s Loyola campus aren’t covered.",
       census:
-        "Homes are placed at the 2021 census’s neighbourhood points and weighted by their 2021 households, so areas built up since then, mostly downtown, count a little less than they should.",
+        "Homes are placed at the 2021 census’s small-area points (dissemination areas) and weighted by their 2021 households, so areas built up since then, mostly downtown, count a little less than they should.",
       maxTrip: (max: number) =>
         `Trips are searched up to ${max} minutes. A home with no trip within that limit counts as ${overMax(max)}.`,
       outOfScopeLead: "Left out of the commute times:",
@@ -473,7 +477,7 @@ export const en = {
           name: "Where people live: 2021 Census Geographic Attribute File (92-151-X)",
           publisher: "Statistics Canada",
         },
-        cmhc: { name: "Rental Market Survey, average rents by area", publisher: "CMHC" },
+        cmhc: { name: "Rental Market Survey: average rents and rental-unit counts by area", publisher: "CMHC" },
         statcanRent: {
           name: "Asking rents, table 46-10-0092-01 (experimental estimates)",
           publisher: "Statistics Canada",

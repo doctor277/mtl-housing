@@ -92,13 +92,15 @@ export default async function SourcesPage() {
       </Section>
 
       <Section heading={t.validation.heading} id="validation">
-        <p>{t.validation.method(day, v.rule.pct, v.rule.minMinutes)}</p>
+        <p>{t.validation.method(strings.format.longDate(v.googleDate), v.rule.pct, v.rule.minMinutes)}</p>
         <Bullets
           items={(Object.keys(v.passed) as (keyof typeof v.passed)[]).map((c) =>
             t.validation.campus(campusLabel[c] ?? c, v.passed[c].pass, v.passed[c].total),
           )}
         />
+        <p>{t.validation.udemBuildings}</p>
         <p>{t.validation.udemRoute4(v.udemRoute4.googleFirst, v.udemRoute4.googleLikeForLike, v.udemRoute4.ours)}</p>
+        <p>{t.validation.udemRoute3(v.udemRoute3.googleFirst, v.udemRoute3.googleFastest, v.udemRoute3.ours)}</p>
         <p>{t.validation.mcgillRoute5}</p>
         <p>{t.validation.inSample}</p>
         <p className="text-sm text-ink-muted">

@@ -12,9 +12,21 @@ Raw files live in `data/raw/` (gitignored). Their exact versions are pinned in [
 | 5 | exo GTFS, trains | exo, [données ouvertes](https://exo.quebec/fr/a-propos/donnees-ouvertes) | Commuter rail (5 lines) | 1 | CC BY 4.0 | downloaded |
 | 6 | OpenStreetMap, Québec extract (`.osm.pbf`) | Geofabrik, download.geofabrik.de | Walking network for r5py | 1 | ODbL 1.0 | downloaded |
 | 7 | 2021 Census Geographic Attribute File (92-151-X) | Statistics Canada | Dissemination-block representative points + dwelling counts → residential sample points; each DA's census tract (crosswalk check) | 1, 2 | Statistics Canada Open Licence | downloaded |
-| 8 | Rental Market Survey, average rent by bedroom type, October 2025, Row / Apartment, Montréal CMA, **Neighbourhood** level (110) + **Zone** level (39, fallback) | CMHC [Housing Market Information Portal](https://www03.cmhc-schl.gc.ca/hmip-pimh/en) (CSV export) | Relative rent level per area (ratio to the CMA average) | 2 | CMHC terms (see attribution) | downloaded |
+| 8 | Rental Market Survey, average rent by bedroom type, October 2025, Row / Apartment, Montréal CMA, **Neighbourhood** level (110) + **Zone** level (39, fallback) | CMHC [Housing Market Information Portal](https://www03.cmhc-schl.gc.ca/hmip-pimh/en) (CSV export) | Relative rent level per area (ratio to the CMA average) | 2 | CMHC Licence Agreement for the Use of Data | downloaded |
 | 9 | Table 46-10-0092-01, Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), quarterly | Statistics Canada, [table page](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=4610009201) | Citywide asking rent, Montréal CMA | 2 | Statistics Canada Open Licence | downloaded |
-| 10 | Rental Market Survey, rental universe (number of units) by bedroom type, October 2025, Row / Apartment, Montréal CMA, by **Zone**, **Neighbourhood** and **Census Tract** (Primary Rental Market, table 2.2.11) | CMHC [Housing Market Information Portal](https://www03.cmhc-schl.gc.ca/hmip-pimh/en) (CSV export) | Checking the crosswalk quartier → CMHC neighbourhood → zone; splitting quartiers between neighbourhoods by rental units. Not shown on the site | 2 | CMHC terms (see attribution) | downloaded |
+| 10 | Rental Market Survey, rental universe (number of units) by bedroom type, October 2025, Row / Apartment, Montréal CMA, by **Zone**, **Neighbourhood** and **Census Tract** (Primary Rental Market, table 2.2.11) | CMHC [Housing Market Information Portal](https://www03.cmhc-schl.gc.ca/hmip-pimh/en) (CSV export) | Checking the crosswalk quartier → CMHC neighbourhood → zone; splitting quartiers between neighbourhoods by rental units. Shown on the site only in the crosswalk notes on `/sources` (shares of rental units) | 2 | CMHC Licence Agreement for the Use of Data | downloaded |
+
+## Licences
+
+The site's `/sources` page links each licence to these pages (checked 2026-11-25; the test
+`web/lib/sources.test.ts` checks the site uses these names and links):
+
+| Licence | Link |
+|---|---|
+| CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ |
+| ODbL 1.0 | https://www.openstreetmap.org/copyright (OpenStreetMap's own licence page, as OSM asks) |
+| Statistics Canada Open Licence | https://www.statcan.gc.ca/en/reference/licence |
+| CMHC Licence Agreement for the Use of Data | https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data (the HMIP export is governed by it) |
 
 ## Attribution text to show on the site
 

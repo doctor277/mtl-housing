@@ -1,7 +1,8 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { QUARTIERS_DOWNLOADED, SOURCES, VALIDATION, VALIDATION_FILE } from "./sources";
+import { LICENCE_URLS, QUARTIERS_DOWNLOADED, type SourceId, SOURCES, VALIDATION, VALIDATION_FILE } from "./sources";
+import { strings } from "./strings";
 
 // The /sources page's typed facts, checked against the files they cite (owner, M5 decision 12:
 // validation numbers are dated facts citing VALIDATION.md).
@@ -64,10 +65,29 @@ describe("/sources: validation facts match pipeline/validation", () => {
 
   it("UdeM route 4: Google's first trip, its like-for-like trip, and our time as shown", () => {
     const r = transit("udem").find((x) => x.route === "4")!;
+    expect(r.quartier).toBe("Hochelaga");
+    expect(r.verdict).toBe("fail");
     expect(Number(r.google_min)).toBe(VALIDATION.udemRoute4.googleFirst);
     expect(Number(r.google_alt_min)).toBe(VALIDATION.udemRoute4.googleLikeForLike);
     expect(r.alt_verdict).toBe("pass");
     expect(Math.round(Number(r.r5_median_min))).toBe(VALIDATION.udemRoute4.ours);
+  });
+
+  it("UdeM route 3: passes Google's first trip, fails its fastest", () => {
+    const r = transit("udem").find((x) => x.route === "3")!;
+    expect(r.quartier).toBe("Sault-au-Récollet");
+    expect(r.verdict).toBe("pass");
+    expect(r.alt_verdict).toBe("fail");
+    expect(Number(r.google_min)).toBe(VALIDATION.udemRoute3.googleFirst);
+    expect(Number(r.google_alt_min)).toBe(VALIDATION.udemRoute3.googleFastest);
+    expect(Math.round(Number(r.r5_median_min))).toBe(VALIDATION.udemRoute3.ours);
+  });
+
+  it("route 3 and 4 are the only alternative-trip comparisons, and one UdeM trip counts twice", () => {
+    expect(transit("udem").filter((r) => r.alt_verdict !== "").map((r) => r.route)).toEqual(["3", "4"]);
+    const routes = transit("udem").map((r) => r.route);
+    expect(routes.length - new Set(routes).size).toBe(1);
+    for (const c of ["mcgill", "concordia_sgw"]) expect(transit(c).every((r) => r.alt_verdict === "")).toBe(true);
   });
 
   it("McGill route 5: the one McGill failure", () => {
@@ -87,6 +107,7 @@ describe("/sources: validation facts match pipeline/validation", () => {
     const md = repo(VALIDATION_FILE);
     expect(md).toContain(`collected the Google numbers on ${VALIDATION.googleCollected.udem}`);
     expect(md).toContain(`Collected on ${VALIDATION.googleCollected.others}`);
+    expect(md).toContain(`"Arrive by 8:30", Tuesday ${VALIDATION.googleDate}`);
   });
 });
 
@@ -94,6 +115,23 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
   it("every source link is the one DATA_SOURCES.md or data/manifest.csv records", () => {
     const cited = repo("DATA_SOURCES.md") + repo("data/manifest.csv");
     for (const s of SOURCES) expect(cited, s.id).toContain(s.url);
+  });
+
+  it("every source's licence is the one its DATA_SOURCES.md row gives, linked as listed there", () => {
+    const md = repo("DATA_SOURCES.md");
+    const row = (n: number) => md.split("\n").find((l) => l.startsWith(`| ${n} |`))!;
+    // The DATA_SOURCES.md table row each source comes from.
+    const ROW: Record<SourceId, number> = { quartiers: 1, stm: 3, rem: 4, exo: 5, osm: 6, census: 7, cmhc: 8, statcanRent: 9 };
+    for (const s of SOURCES) {
+      const name = strings.sources.list.licence[s.licence];
+      expect(row(ROW[s.id]), s.id).toContain(name);
+      expect(md, s.licence).toContain(`| ${name} | ${LICENCE_URLS[s.licence]}`);
+    }
+  });
+
+  it("the schedule feeds the page dates are in commute.json", () => {
+    const meta = JSON.parse(repo("web/public/data/commute.json")).meta;
+    expect(meta.gtfs_feeds.map((f: { name: string }) => f.name)).toEqual(["stm", "rem", "exo_trains"]);
   });
 
   it("the Ville de Montréal download date is the manifest's", () => {
