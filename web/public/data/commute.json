@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-25T18:05:47",
+  "generated_at": "2026-11-25T18:59:16",
   "analysis_date": "2026-12-01",
   "departure_window": {
    "start": "07:30",
@@ -51,14 +51,14 @@
   "sources": [
    {
     "en": "© OpenStreetMap contributors (ODbL)",
-    "fr": "© Contributeurs OpenStreetMap (ODbL)"
+    "fr": "© les contributeurs d’OpenStreetMap (ODbL)"
    },
    {
     "en": "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules.",
     "fr": "Horaires du transport collectif : Société de transport de Montréal, Réseau express métropolitain et exo, sous licence CC BY 4.0. Les temps de trajet sont calculés à partir de ces horaires."
    },
    {
-    "en": "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "en": "With data from Quartiers de référence en habitation taken from the Ville de Montréal open data website, licensed under CC BY 4.0.",
     "fr": "Avec les données Quartiers de référence en habitation tirées du site web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0."
    },
    {

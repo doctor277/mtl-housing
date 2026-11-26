@@ -156,7 +156,7 @@ def test_meta_carries_sources_grade_words_and_crosswalk_notes():
     link = notes[("unconfirmed_link", "03")]
     assert link["cmhc_area"] == "N3" and "detail" not in link  # no internal CSV note
     assert link["text"]["en"].endswith("none of its census tracts has CMHC rental units.")
-    assert link["text"]["fr"].startswith("Associé au secteur de la SCHL N3 par son nom.")
+    assert link["text"]["fr"].startswith("Rattaché au secteur de la SCHL N3 d’après son nom.")
     folded = notes[("folded", "02")]
     assert folded["share"] == 0.012 and folded["counted_with"] == ["N1", "N2"]
     assert "counted with N1 and N2 instead" in folded["text"]["en"]
@@ -165,7 +165,10 @@ def test_meta_carries_sources_grade_words_and_crosswalk_notes():
     assert "plutôt comptés avec N1 et N2." in folded["text"]["fr"]
     assert ("homes_without_units", None) in notes and ("unallocated_units", None) in notes
     ville = m["sources"][-1]
-    assert "Ville de Montréal open data portal, licensed under CC BY 4.0." in ville["en"]
+    assert ville["en"].startswith("With data from Quartiers de référence en habitation taken")
+    assert "Ville de Montréal open data website, licensed under CC BY 4.0." in ville["en"]
+    cmhc = m["sources"][0]["en"]
+    assert cmhc.endswith("endorsement by Canada Mortgage and Housing Corporation of this product.")
     assert "données ouvertes de la Ville de Montréal, sous licence CC BY 4.0." in ville["fr"]
 
 

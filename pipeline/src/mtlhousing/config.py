@@ -191,9 +191,10 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="udem",
             name="Université de Montréal (campus principal)",
-            # UdeM's own spelling, lowercase "montagne": the campus filter of its news site,
-            # https://nouvelles.umontreal.ca/recherche ("Campus de la montagne"). Flagged to the
-            # owner, who wrote "Montagne" (M5.3a).
+            # UdeM's own spelling, lowercase "montagne" (owner, M5.3a: follow UdeM; lowercase
+            # if inconsistent): https://nouvelles.umontreal.ca/recherche (campus filter,
+            # "Campus de la montagne"); "Visite guidée du campus de la montagne",
+            # https://vieetudiante.umontreal.ca/activites/visite-guidee-du-campus-de-la-montagne/16151.
             name_fr="Université de Montréal (campus de la montagne)",
             destinations=(
                 Destination(

@@ -4,8 +4,8 @@ The site's data files now carry each shown text as {"en": ..., "fr": ...}. These
 on the committed files, that:
 - every number (and every key, null, boolean and empty list or dict) is exactly what the last
   English-only export wrote, and
-- every English text is unchanged too, except the two credit lines the owner asked to fix
-  ("licensed under CC BY 4.0", M4.3/M6).
+- every English text is unchanged too, except the credit lines the owner asked to change
+  (CREDIT_FIXES: transit and Ville de Montréal wording, CMHC's licence notice).
 
 The pre-M5.3a values are pinned as SHA-256 fingerprints, computed from the files on main at
 6b88ece. CI checks out one commit only, so the old files can't be read from git there.
@@ -80,14 +80,26 @@ def load(name: str):
     return json.loads((config.WEB_DATA_DIR / name).read_text(encoding="utf-8"))
 
 
-# The two English credit lines the owner asked to fix, old -> new (DATA_SOURCES.md wording).
+# The English credit lines the owner asked to change, old -> new (M5.3a): the transit line
+# ("licensed under CC BY 4.0"), the Ville de Montréal line (the city's suggested credit, with the
+# dataset name; it was in two versions) and CMHC's (its licence notice, word for word).
+VILLE_NEW = (
+    "With data from Quartiers de référence en habitation taken from the Ville de Montréal open "
+    "data website, licensed under CC BY 4.0."
+)
 CREDIT_FIXES = {
     "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, "
     "CC BY 4.0. Travel times are derived from these schedules.": "Transit schedules: Société de "
     "transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. "
     "Travel times are derived from these schedules.",
-    "Contains data from the Ville de Montréal open data portal, CC BY 4.0.": "Contains data from "
-    "the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "Contains data from the Ville de Montréal open data portal, CC BY 4.0.": VILLE_NEW,
+    (
+        "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0."
+    ): VILLE_NEW,
+    "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. "
+    "This does not constitute an endorsement by CMHC.": "Adapted from Canada Mortgage and Housing "
+    "Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by "
+    "Canada Mortgage and Housing Corporation of this product.",
 }
 
 # Fingerprints of the last English-only export (main at 6b88ece), English texts with the two
@@ -95,11 +107,11 @@ CREDIT_FIXES = {
 PINNED = {
     "commute.json": (
         "f29b31ff7d071174315e9014714fce8f72b98cad52291832d15b4daa17a36fb1",
-        "2a9fe66bb85469a27cb35abb0af7ee06cbb1316e7239f81fa791a18084d895cf",
+        "4f8ba7b5391f5c2012bfb1c2ee1ddc23dd68a86647edf9e6843a6a7c573962c6",
     ),
     "rent.json": (
         "29db5be3a1a04c28cd81d3ed2ce92b7e573c67bfd2385052781f04cfe93c282a",
-        "163413744d3633341609e6298f69916e1640714641f7036e2f56c5d3845c5848",
+        "9461646c2305d688116d055d760dbf6cbb7585af94ad757ffb8f447c7a6a527a",
     ),
     "neighbourhoods.geojson": (
         "cd3986cd80b54ebac330b7c756b8b4eaf9f758bfef63ee510d398e40f86cc4e3",

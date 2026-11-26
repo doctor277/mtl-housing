@@ -1,7 +1,7 @@
 {
  "meta": {
   "method_version": "1.0",
-  "generated_at": "2026-11-25T18:06:36",
+  "generated_at": "2026-11-25T18:59:35",
   "currency": "CAD",
   "per": "month",
   "rounding": {
@@ -94,7 +94,7 @@
     "confidence": "high",
     "text": {
      "en": "Linked to CMHC area Sainte-Anne-de-Bellevue/Baie-d'Urfé by name. CMHC's unit counts can't confirm this link: none of its census tracts has CMHC rental units.",
-     "fr": "Associé au secteur de la SCHL Sainte-Anne-de-Bellevue/Baie-d'Urfé par son nom. Les nombres de logements de la SCHL ne permettent pas de confirmer ce lien : aucun de ses secteurs de recensement ne compte de logements locatifs de la SCHL."
+     "fr": "Rattaché au secteur de la SCHL Sainte-Anne-de-Bellevue/Baie-d'Urfé d’après son nom. Les nombres de logements de la SCHL ne permettent pas de confirmer ce lien : aucun de ses secteurs de recensement ne compte de logements locatifs de la SCHL."
     }
    },
    {
@@ -140,13 +140,13 @@
     "share": 0.00019,
     "text": {
      "en": "89 CMHC rental units (0.02%) are in census tracts with no home in the 2021 census, so no neighbourhood gets them.",
-     "fr": "89 logements locatifs de la SCHL (0,02 %) sont dans des secteurs de recensement sans aucun logement au Recensement de 2021; aucun quartier ne les reçoit."
+     "fr": "89 logements locatifs de la SCHL (0,02 %) sont dans des secteurs de recensement sans aucun logement au Recensement de 2021; ils ne sont attribués à aucun quartier."
     }
    }
   ],
   "sources": [
    {
-    "en": "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC.",
+    "en": "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by Canada Mortgage and Housing Corporation of this product.",
     "fr": "Adaptation de données de la Société canadienne d’hypothèques et de logement, Enquête sur les logements locatifs, octobre 2025. La présente ne constitue en aucun cas un appui de la Société canadienne d’hypothèques et de logement envers ce produit."
    },
    {
@@ -158,7 +158,7 @@
     "fr": "Adapté de Statistique Canada, Fichier des attributs géographiques, Recensement de 2021 (92-151-X). Cela ne constitue pas une approbation de ce produit par Statistique Canada."
    },
    {
-    "en": "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "en": "With data from Quartiers de référence en habitation taken from the Ville de Montréal open data website, licensed under CC BY 4.0.",
     "fr": "Avec les données Quartiers de référence en habitation tirées du site web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0."
    }
   ]

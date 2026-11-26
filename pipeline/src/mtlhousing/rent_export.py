@@ -108,7 +108,7 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
             "can't confirm this link"
         )
         fr = (
-            f"Associé au secteur de la SCHL {r.cmhc_neighbourhood} par son nom. Les nombres "
+            f"Rattaché au secteur de la SCHL {r.cmhc_neighbourhood} d’après son nom. Les nombres "
             "de logements de la SCHL ne permettent pas de confirmer ce lien"
         )
         if r.quartier_id not in checked:
@@ -178,8 +178,8 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
                 "in the 2021 census, so no neighbourhood gets them.",
                 f"{i18n.number_fr(units)} logements locatifs de la SCHL "
                 f"({i18n.pct_fr(report['unallocated_share'], 2)}) sont dans des secteurs de "
-                "recensement sans aucun logement au Recensement de 2021; aucun quartier ne "
-                "les reçoit.",
+                "recensement sans aucun logement au Recensement de 2021; ils ne sont attribués "
+                "à aucun quartier.",
             ),
         }
     )
@@ -187,8 +187,9 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
 
 
 def sources(statcan_quarter: str) -> list[dict[str, str]]:
-    """Credits in both languages. French, from the publishers' French pages (owner's M5
-    decision 6):
+    """Credits in both languages. English CMHC: the licence's English notice, word for word
+    ("... This does not constitute an endorsement by Canada Mortgage and Housing Corporation
+    of this product."). French, from the publishers' French pages (owner's M5 decision 6):
     - CMHC: "Adaptation de données de la Société canadienne d’hypothèques et de logement, nom
       du Produit ou de l’Information, date de référence. La présente ne constitue en aucun cas
       un appui de la Société canadienne d’hypothèques et de logement envers ce produit."
@@ -198,8 +199,10 @@ def sources(statcan_quarter: str) -> list[dict[str, str]]:
     The census and Ville de Montréal lines are the commute export's (export.py)."""
     return [
         i18n.text(
+            # CMHC's licence notice, word for word (owner, M5.3a).
             f"Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, "
-            f"{config.CMHC_RMS_PERIOD}. This does not constitute an endorsement by CMHC.",
+            f"{config.CMHC_RMS_PERIOD}. This does not constitute an endorsement by Canada "
+            "Mortgage and Housing Corporation of this product.",
             "Adaptation de données de la Société canadienne d’hypothèques et de logement, "
             f"Enquête sur les logements locatifs, {i18n.period_fr(config.CMHC_RMS_PERIOD)}. "
             "La présente ne constitue en aucun cas un appui de la Société canadienne "

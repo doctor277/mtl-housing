@@ -122,17 +122,18 @@ def campus_meta(campus_id: str, routing_meta: dict) -> dict:
 
 # Credits in both languages (DATA_SOURCES.md, "Attribution text to show on the site"). French
 # from each publisher's French page (owner's M5 decision 6):
-# - OpenStreetMap: "Contributeurs OpenStreetMap", OSM's own French map credit
-#   (openstreetmap-website, config/locales/fr.yml, openstreetmap_contributors).
+# - OpenStreetMap: "© les contributeurs d’OpenStreetMap" (owner, M5.3a; OSM's French pages give
+#   no fixed French credit line).
 # - Ville de Montréal: its suggested credit for digital products ("Avec les données ... tirées
 #   du site web des données ouvertes de la Ville de Montréal"),
-#   donnees.montreal.ca/licence-d-utilisation.
+#   donnees.montreal.ca/licence-d-utilisation. The city publishes it in French only; the
+#   English is a faithful translation naming the same dataset (owner, M5.3a).
 # - Statistics Canada: "Adapté de Statistique Canada, nom du produit, date de référence. Cela ne
 #   constitue pas une approbation de ce produit par Statistique Canada.",
 #   statcan.gc.ca/fr/reference/licence; product title "Fichier des attributs géographiques",
 #   StatCan's French catalogue (92-151-G).
 OSM_CREDIT = i18n.text(
-    "© OpenStreetMap contributors (ODbL)", "© Contributeurs OpenStreetMap (ODbL)"
+    "© OpenStreetMap contributors (ODbL)", "© les contributeurs d’OpenStreetMap (ODbL)"
 )
 TRANSIT_CREDIT = i18n.text(
     "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, "
@@ -142,7 +143,8 @@ TRANSIT_CREDIT = i18n.text(
     "de ces horaires.",
 )
 VILLE_CREDIT = i18n.text(
-    "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+    "With data from Quartiers de référence en habitation taken from the Ville de Montréal open "
+    "data website, licensed under CC BY 4.0.",
     "Avec les données Quartiers de référence en habitation tirées du site web des données "
     "ouvertes de la Ville de Montréal, sous licence CC BY 4.0.",
 )

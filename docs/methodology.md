@@ -323,6 +323,6 @@ The unrounded Montréal figures in `meta.montreal` (CMHC average, StatCan asking
 **Attribution** (in `meta.sources`, shown on the sources page). Since M5.3a each line is
 `{"en": ..., "fr": ...}`; the English is as listed here, the French is in DATA_SOURCES.md. The
 crosswalk notes' `text` and the grade words are bilingual the same way.
-- "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by CMHC."
+- "Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, October 2025. This does not constitute an endorsement by Canada Mortgage and Housing Corporation of this product." (CMHC's licence notice, word for word; M5.3a)
 - "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent prices, by rental unit type and number of bedrooms (experimental estimates), 2026 Q2. This does not constitute an endorsement by Statistics Canada of this product."
 - Statistics Canada 2021 Census Geographic Attribute File and Ville de Montréal open data, as for the commute.
