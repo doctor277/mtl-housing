@@ -214,6 +214,7 @@ async function ResultsBody({ lang, searchParams }: { lang: Lang; searchParams: P
   // Cheapest first only with a budget and something to sort (decisions 1, 8).
   const sortable = list.mode === "budget" && list.groups.some((g) => g.key !== "noData");
   const longest = MAX_COMMUTE_MIN[MAX_COMMUTE_MIN.length - 1];
+  const hasRents = list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null));
   const headings: Record<GroupKey, string> = t.groups;
   const hints: Partial<Record<GroupKey, string>> = {
     over: t.groupHint.over(SLIGHTLY_OVER_PCT),
@@ -245,39 +246,43 @@ async function ResultsBody({ lang, searchParams }: { lang: Lang; searchParams: P
       <h1 className="text-2xl leading-tight font-semibold tracking-tight">{t.title}</h1>
       <p className="mt-2 text-ink-muted">{summaryLine(search, campusLabel, s)}</p>
 
-      <details className="mt-3">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
-          {t.changeSearch}
-        </summary>
-        <SearchForm
-          lang={lang}
-          campuses={campuses.map((c) => ({ value: c.key, label: c.label }))}
-          departure={departureWindow(commute.meta, s)}
-          initial={search}
-          sort={sort}
-          submitLabel={t.update}
-          className="mt-4 mb-4 border-b border-line pb-8"
-        />
-      </details>
-      {/* The clean link of this search (no empty budget, no open card; view and sort kept). */}
-      <ShareLink lang={lang} path={`${resultsPath}?${searchQuery(search, sort, view)}`} />
+      {/* "Change search" and "Copy link" on one row, so the answer starts higher (design review
+          DR5-1); the opened form takes the whole width and "Copy link" follows it. */}
+      <div className="mt-2 flex flex-wrap items-start gap-x-6">
+        <details className="open:w-full">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center font-semibold text-link underline [&::-webkit-details-marker]:hidden">
+            {t.changeSearch}
+          </summary>
+          <SearchForm
+            lang={lang}
+            campuses={campuses.map((c) => ({ value: c.key, label: c.label }))}
+            departure={departureWindow(commute.meta, s)}
+            initial={search}
+            sort={sort}
+            submitLabel={t.update}
+            className="mt-4 mb-4 border-b border-line pb-8"
+          />
+        </details>
+        {/* The clean link of this search (no empty budget, no open card; view and sort kept). */}
+        <ShareLink lang={lang} path={`${resultsPath}?${searchQuery(search, sort, view)}`} />
+      </div>
 
       {list.roomEstimate !== null && (
-        <div className="mt-6 flex flex-col gap-1">
+        <div className="mt-4 flex flex-col gap-1">
           <p className="font-semibold">{t.roomNote(s.format.rent(list.roomEstimate))}</p>
           {list.roomWarning && <p>{t.roomWarning(s.format.rent(list.roomEstimate))}</p>}
         </div>
       )}
 
-      <div className="mt-6 flex flex-col gap-3">
+      {/* Stacked on phones; side by side from sm (DR5-1). Labels stay above (Impeccable). */}
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:gap-8">
         {viewToggle}
         {view === "list" && sortable && sortToggle}
       </div>
 
-      {/* Both views: the map's popups don't badge plain estimates either (decision 16). */}
-      {list.mode !== "room" && list.groups.some((g) => g.items.some((i) => i.rent !== null)) && (
-        <p className="mt-6 text-sm text-ink-muted">{t.allEstimates}</p>
-      )}
+      {/* The map's popups don't badge plain estimates either (decision 16); in the map view this
+          line sits under the legend instead (DR5-3). */}
+      {view === "list" && hasRents && <p className="mt-4 text-sm text-ink-muted">{t.allEstimates}</p>}
 
       {view === "list" &&
         list.groups.map((g) => (
@@ -313,6 +318,7 @@ async function ResultsBody({ lang, searchParams }: { lang: Lang; searchParams: P
           excluded={list.excluded}
           detailsBase={`${resultsPath}?${searchQuery(search, sort)}`}
           rentDataLine={search.size === "room" ? null : s.rent.dataLine(rent.meta)}
+          estimatesNote={hasRents ? t.allEstimates : null}
         />
       )}
 

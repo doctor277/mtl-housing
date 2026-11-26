@@ -66,7 +66,13 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
 - **Sort toggle:** two links styled like Choice buttons (ink = current, `aria-current`).
   View, sort and the map's colour toggle all put their label on its own line above the
   buttons, so longer French labels never split a group and the buttons line up (Impeccable,
-  M5.3b).
+  M5.3b). View and sort stack on phones and sit side by side from `sm`; "Change search" and
+  "Copy link" share one row (design review DR5-1, owner, M5.3b), so the first card stays in
+  the first phone viewport. Don't add controls or space above the first card.
+- **Reduced motion:** under `prefers-reduced-motion: reduce`, no transitions or animations
+  (DR5-4).
+- **Short hints:** items joined with " · ", each kept on one line (non-breaking spaces), so
+  a line breaks only between items (the size hint, DR5-5).
 - **Language switch (M5.3b):** one plain text link at the right of the header, naming the
   other language in that language ("English" / "Français"), `lang` and `hreflang` set, 44 px.
   Not a flag, pill or toggle control (Impeccable).

@@ -23,7 +23,7 @@ export function sharePreview(
 ): { title: string; description: string } {
   const budget = s.budget === null ? null : t.format.dollars(s.budget);
   return {
-    title: t.share.title(campusLabel, t.form.size.labels[s.size], budget, s.maxCommute, t.siteName),
+    title: t.share.title(campusLabel, t.form.size.labels[s.size], budget, s.maxCommute),
     description: t.share.description(campusLabel, t.share.sizeInSentence[s.size], s.maxCommute, budget),
   };
 }

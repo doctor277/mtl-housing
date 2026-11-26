@@ -25,6 +25,11 @@ function overMax(maxMin: number): string {
   return `more than ${h} ${h === 1 ? "hour" : "hours"}`;
 }
 
+/** Short items joined with " · ", each kept on one line: lines break only between items,
+ * never inside "1½–2½" (design review, M5.3b). */
+const keepItems = (items: string[]) =>
+  items.map((i) => i.replaceAll(" ", " ").replaceAll("–", "–⁠")).join(" · ");
+
 /** "a, b or c": an English list joined with "or" (no serial comma). */
 function orList(items: string[]): string {
   return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} or ${items.at(-1)}`;
@@ -194,7 +199,8 @@ export const en = {
     campus: { legend: "Campus" },
     size: {
       legend: "Size",
-      hint: "Room: one room in a shared apartment. Studio: 1½–2½. 3½: one bedroom. 4½: two bedrooms.",
+      /** Owner's short form (design review DR5-5, M5.3b). */
+      hint: keepItems(["Room: in a shared apartment", "Studio: 1½–2½", "3½: 1 bedroom", "4½: 2 bedrooms"]),
       labels: SIZE_LABELS,
     },
     budget: {
@@ -324,10 +330,10 @@ export const en = {
   },
   /** Link previews of a search (M5.1): text only, no image. */
   share: {
-    /** Owner's short form, so the site name survives ~60-character truncation:
-     * "UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]" (no budget part without a budget). */
-    title: (campus: string, size: string, budget: string | null, maxCommute: number, site: string) =>
-      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`, site].join(" · "),
+    /** Owner's short form, "UdeM · 3½ · ≤ $1,500/mo · 45 min" (no budget part without a
+     * budget). No site name: the preview shows it from og:site_name (owner, M5.3b). */
+    title: (campus: string, size: string, budget: string | null, maxCommute: number) =>
+      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`].join(" · "),
     description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
       `Montréal neighbourhoods within ${maxCommute} min of ${campus} by public transit, for a ${sizeInSentence}${budget ? ` up to $${budget} a month` : ""}, with estimated rents.`,
     sizeInSentence: { room: "room", studio: "studio", "1br": "3½", "2br": "4½" } satisfies Record<SearchSize, string>,

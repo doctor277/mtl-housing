@@ -108,7 +108,7 @@ describe("French strings", () => {
       cmhc_areas: [{ type: label.startsWith("zone") ? "zone" : "area", name: "N1", share: 1, grade }],
     });
     expect(fr.rent.detailLine(one("neighbourhood", "b"), meta)).toBe(
-      `D’après le loyer moyen de la SCHL dans le secteur N1 (octobre 2025, fiabilité jugée «${NB}très bon${NB}» par la SCHL).`,
+      `D’après le loyer moyen de la SCHL dans le secteur N1 (octobre 2025, cote de fiabilité «${NB}très bon${NB}» de la SCHL).`,
     );
     expect(fr.rent.detailLine(one("neighbourhood_low", "d"), meta)).toContain(
       `que la SCHL qualifie de «${NB}utiliser avec prudence${NB}».`,
@@ -121,7 +121,7 @@ describe("French strings", () => {
       cmhc_areas: [{ type: "area", name: "N1", share: 0.866, grade: "b" }],
     };
     expect(fr.rent.extraLines(split, meta)).toEqual([
-      `Couvre 86${NB}% des logements locatifs de ce quartier (N1${NB}: 86,6${NB}%); la SCHL n’a pas de donnée fiable pour le reste.`,
+      `Couvre 86${NB}% des logements locatifs de ce quartier (N1${NB}: 86,6${NB}%); la SCHL n’a pas de données fiables pour le reste.`,
     ]);
   });
 });

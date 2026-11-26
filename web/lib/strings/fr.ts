@@ -67,6 +67,11 @@ const CAMPUS_SHORT: Record<string, string> = {
  * "McGill" and "Concordia" without an article. */
 const inText = (campus: string) => (campus === "UdeM" ? "l’UdeM" : campus);
 
+/** Short items joined with " · ", each kept on one line: lines break only between items,
+ * never inside "1½–2½" (design review, M5.3b). */
+const keepItems = (items: string[]) =>
+  items.map((i) => i.replaceAll(" ", NB).replaceAll("–", "–⁠")).join(" · ");
+
 /** A capital at the start of a line: building names are lowercase in running text ("pavillon
  * Roger-Gaudry", owner, M5.3) but open a line with a capital. */
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -152,9 +157,9 @@ function detailLine(e: RentEntry, meta: RentMeta): string {
     const word = words[areas[0].grade].fr;
     switch (e.label) {
       case "neighbourhood":
-        return `D’après le loyer moyen de la SCHL dans le secteur ${name} (${when}, fiabilité jugée ${quote(word)} par la SCHL).`;
+        return `D’après le loyer moyen de la SCHL dans le secteur ${name} (${when}, cote de fiabilité ${quote(word)} de la SCHL).`;
       case "zone":
-        return `La SCHL n’a pas de donnée fiable pour ce secteur; on utilise donc la zone plus large ${name} (fiabilité jugée ${quote(word)} par la SCHL).`;
+        return `La SCHL n’a pas de données fiables pour ce secteur; on utilise donc la zone plus large ${name} (cote de fiabilité ${quote(word)} de la SCHL).`;
       case "neighbourhood_low":
         return `D’après le loyer moyen de la SCHL dans le secteur ${name}, que la SCHL qualifie de ${CAUTION}.`;
       case "zone_low":
@@ -177,7 +182,7 @@ function extraLines(e: RentEntry, meta: RentMeta): string[] {
   const partial = e.coverage_pct !== null;
   const kind = areas[0]?.type === "zone" ? "des zones de la SCHL" : "des secteurs de la SCHL";
   if (areas.length > 1) {
-    const rated = (g: string) => `fiabilité ${quote(words[g].fr)}`;
+    const rated = (g: string) => `cote de fiabilité ${quote(words[g].fr)}`;
     const parts = areas.map(
       (a) => `${a.name} (${partial ? oneDecimalPct(a.share) : wholePct(a.share)}, ${rated(a.grade)})`,
     );
@@ -186,7 +191,7 @@ function extraLines(e: RentEntry, meta: RentMeta): string[] {
   if (partial) {
     const shares = areas.length === 1 ? ` (${areas[0].name}${NB}: ${oneDecimalPct(areas[0].share)})` : "";
     lines.push(
-      `Couvre ${pct(e.coverage_pct!)} des logements locatifs de ce quartier${shares}; la SCHL n’a pas de donnée fiable pour le reste.`,
+      `Couvre ${pct(e.coverage_pct!)} des logements locatifs de ce quartier${shares}; la SCHL n’a pas de données fiables pour le reste.`,
     );
   }
   return lines;
@@ -256,7 +261,13 @@ export const fr: Strings = {
     campus: { legend: "Campus" },
     size: {
       legend: "Taille",
-      hint: `Chambre${NB}: une chambre dans un appartement partagé. Studio${NB}: 1½–2½. 3½${NB}: une chambre à coucher. 4½${NB}: deux chambres à coucher.`,
+      /** Owner's short form (design review DR5-5, M5.3b). */
+      hint: keepItems([
+        `Chambre${NB}: dans un appartement partagé`,
+        `Studio${NB}: 1½–2½`,
+        `3½${NB}: 1 chambre`,
+        `4½${NB}: 2 chambres`,
+      ]),
       labels: SIZE_LABELS,
     },
     budget: {
@@ -344,13 +355,13 @@ export const fr: Strings = {
     toClosestBuilding: (campus: string) => `jusqu’au pavillon ${de(inText(campus))} le plus proche`,
     toPlace: (name: string) => `jusqu’au ${name}`,
     range: (lo: number, hi: number | null, maxMin: number) =>
-      `Selon l’endroit où vous habitez ici${NB}: ${hi === null ? `de ${lo} min à ${overMax(maxMin)}` : lo === hi ? `${lo} min` : `de ${lo} à ${hi} min`} pour la plupart des logements.`,
+      `Selon l’endroit dans le quartier${NB}:${hi === null ? `de ${lo} min à ${overMax(maxMin)}` : lo === hi ? `${lo} min` : `de ${lo} à ${hi} min`} pour la plupart des logements.`,
     buildings: (parts: { name: string; time: string }[]) =>
       cap(parts.map((p) => `${p.name}${NB}: ${p.time}`).join(" · ")),
     overMax: (maxMin: number) => overMax(maxMin),
     lowSample: (n: number) => `Peu de logements échantillonnés ici (${n}), donc c’est moins certain.`,
     manyUnreachable: (p: number, maxMin: number) =>
-      `${pct(p)} des logements d’ici sont à ${overMax(maxMin)} en transport collectif.`,
+      `${pct(p)} des logements de ce quartier sont à ${overMax(maxMin)} en transport collectif.`,
     commuteSource:
       "Les temps de trajet sont calculés à partir des horaires de la STM, du REM et d’exo (CC BY 4.0). Les horaires ne tiennent pas compte des retards ni des pannes.",
     rentHeading: (size: string) => `Loyer, ${size}`,
@@ -360,7 +371,7 @@ export const fr: Strings = {
     detailLine,
     extraLines,
     sourceLine:
-      "Estimation fondée sur les loyers moyens, ajustée aux loyers demandés actuels à Montréal. Ce n’est pas une annonce, et elle peut être basse dans les secteurs où beaucoup de locataires sont là depuis longtemps.",
+      "Estimation fondée sur les loyers moyens, ajustée aux loyers demandés actuels à Montréal. Ce n’est pas une annonce, et elle peut être sous-estimée là où beaucoup de locataires habitent depuis longtemps.",
     dataLine: (meta: RentMeta) =>
       `Données${NB}: SCHL (${period(meta.cmhc.period)}) et loyers demandés expérimentaux de Statistique Canada (${quarter(meta.statcan.quarter)}).`,
     roomLine: (meta: RentMeta) =>
@@ -374,9 +385,9 @@ export const fr: Strings = {
     classLabels: commuteClassLabels,
   },
   share: {
-    /** "UdeM · 3½ · ≤ 1 500 $/mois · 45 min · [NAME]". */
-    title: (campus: string, size: string, budget: string | null, maxCommute: number, site: string) =>
-      [campus, size, ...(budget ? [`≤${NB}${budget}${NB}$/mois`] : []), `${maxCommute} min`, site].join(" · "),
+    /** "UdeM · 3½ · ≤ 1 500 $/mois · 45 min" (the site name comes from og:site_name). */
+    title: (campus: string, size: string, budget: string | null, maxCommute: number) =>
+      [campus, size, ...(budget ? [`≤${NB}${budget}${NB}$/mois`] : []), `${maxCommute} min`].join(" · "),
     description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
       `Les quartiers de Montréal à moins de ${maxCommute} min ${de(inText(campus))} en transport collectif, pour ${sizeInSentence}${budget ? ` jusqu’à ${budget}${NB}$ par mois` : ""}, avec des loyers estimés.`,
     sizeInSentence: {

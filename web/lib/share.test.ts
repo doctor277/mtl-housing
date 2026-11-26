@@ -24,12 +24,12 @@ describe("sharing a search", () => {
     expect(
       sharePreview(parsed({ campus: "a", size: "2br", budget: "1800", max: "30" }), "Campus A", strings),
     ).toEqual({
-      title: "Campus A · 4½ · ≤ $1,800/mo · 30 min · [NAME]",
+      title: "Campus A · 4½ · ≤ $1,800/mo · 30 min",
       description:
         "Montréal neighbourhoods within 30 min of Campus A by public transit, for a 4½ up to $1,800 a month, with estimated rents.",
     });
     const noBudget = sharePreview(parsed({ campus: "a", size: "studio", max: "60" }), "Campus A", strings);
-    expect(noBudget.title).toBe("Campus A · Studio · 60 min · [NAME]");
+    expect(noBudget.title).toBe("Campus A · Studio · 60 min");
     expect(noBudget.description).toBe(
       "Montréal neighbourhoods within 60 min of Campus A by public transit, for a studio, with estimated rents.",
     );
@@ -41,7 +41,7 @@ describe("sharing a search", () => {
       `Campus A · 3½ · jusqu’à 1${NB}500${NB}$ par mois · 45${NB}min${NB}max.`,
     );
     const p = sharePreview(parsed({ campus: "a", size: "room", budget: "1500", max: "30" }), "Campus A", fr);
-    expect(p.title).toBe(`Campus A · Chambre · ≤${NB}1${NB}500${NB}$/mois · 30 min · [NAME]`);
+    expect(p.title).toBe(`Campus A · Chambre · ≤${NB}1${NB}500${NB}$/mois · 30 min`);
     expect(p.description).toBe(
       `Les quartiers de Montréal à moins de 30 min de Campus A en transport collectif, pour une chambre jusqu’à 1${NB}500${NB}$ par mois, avec des loyers estimés.`,
     );
@@ -54,11 +54,10 @@ describe("sharing a search", () => {
   it.each([
     ["en", strings],
     ["fr", fr],
-  ] as const)("keeps the site name within the first 60 characters (owner, M5.1): %s", (_, t) => {
-    // The longest usual case: the longest campus label, the longest size label, a four-digit
-    // budget, 60 min. Measured with the real site name, so it still guards once "[NAME]" is
-    // replaced. French is the tighter one: "Concordia SGW · Chambre · ≤ 9 999 $/mois · 60 min ·"
-    // leaves room for a name of 8 characters at most (English: about 12). ROADMAP M6.
+  ] as const)("leaves the site name to og:site_name and fits a preview's ~60 characters: %s", (_, t) => {
+    // Owner, M5.3b: no site name in the title (the preview shows og:site_name), so its length
+    // no longer limits the name. The longest usual title: the longest campus label, the longest
+    // size label, a four-digit budget, 60 min.
     const longestCampus = ["udem", "mcgill", "concordia_sgw"]
       .map((id) => t.commute.campusShort(id, id))
       .reduce((a, b) => (b.length > a.length ? b : a));
@@ -66,7 +65,7 @@ describe("sharing a search", () => {
       t.form.size.labels[b].length > t.form.size.labels[a].length ? b : a,
     );
     const { title } = sharePreview(parsed({ campus: "a", size, budget: "9999", max: "60" }), longestCampus, t);
-    expect(title.endsWith(t.siteName)).toBe(true);
+    expect(title).not.toContain(t.siteName);
     expect(title.length).toBeLessThanOrEqual(60);
   });
 });

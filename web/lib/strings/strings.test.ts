@@ -91,8 +91,8 @@ describe("strings", () => {
   });
 
   it("writes a search's link preview from its own values", () => {
-    expect(strings.share.title("UdeM", "3½", "1,500", 45, "[NAME]")).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]");
-    expect(strings.share.title("McGill", "Room", null, 30, "[NAME]")).toBe("McGill · Room · 30 min · [NAME]");
+    expect(strings.share.title("UdeM", "3½", "1,500", 45)).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min");
+    expect(strings.share.title("McGill", "Room", null, 30)).toBe("McGill · Room · 30 min");
     expect(strings.share.description("UdeM", strings.share.sizeInSentence["1br"], 45, "1,500")).toBe(
       "Montréal neighbourhoods within 45 min of UdeM by public transit, for a 3½ up to $1,500 a month, with estimated rents.",
     );
@@ -112,7 +112,10 @@ describe("strings", () => {
     expect(strings.home.intro(91)).toBe(
       "Compare transit commute times and typical rents across 91 Montréal neighbourhoods.",
     );
-    expect(strings.form.size.hint).toContain("Studio: 1½–2½.");
+    // Owner's short form; lines break only between items (non-breaking spaces inside each).
+    const hint = strings.form.size.hint.replaceAll(" ", " ").replaceAll("⁠", "");
+    expect(hint).toBe("Room: in a shared apartment · Studio: 1½–2½ · 3½: 1 bedroom · 4½: 2 bedrooms");
+    expect(strings.form.size.hint.split(" · ").every((item) => !item.includes(" "))).toBe(true);
     expect(strings.home.submit).toBe("Show me neighbourhoods");
   });
 });

@@ -66,6 +66,7 @@ export default function ResultsMap({
   excluded,
   detailsBase,
   rentDataLine,
+  estimatesNote,
 }: {
   lang: Lang;
   campus: string;
@@ -83,6 +84,8 @@ export default function ResultsMap({
   detailsBase: string;
   /** The rent data dates ("Data: CMHC (…) and Statistics Canada's experimental …"), rent mode. */
   rentDataLine: string | null;
+  /** "All rents are estimates.", under the legend (design review DR5-3); null for rooms. */
+  estimatesNote: string | null;
 }) {
   const strings = getStrings(lang);
   const t = strings.resultsMap;
@@ -212,6 +215,7 @@ export default function ResultsMap({
             label={t.noResidents}
           />
         </ul>
+        {estimatesNote && <p className="mt-3 text-sm text-ink-muted">{estimatesNote}</p>}
         {mode === "rent" && size && rentDataLine && <p className="mt-3 text-xs text-ink-muted">{rentDataLine}</p>}
         <p className="mt-3 text-xs text-ink-muted">{strings.map.attribution(mode === "rent")}</p>
       </div>
