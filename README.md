@@ -1,10 +1,13 @@
-# [NAME]
+# Montréal Without a Car (working title)
 
 **Find where to live in Montréal without a car:** a bilingual web app that ranks Montréal
 neighbourhoods for students by transit commute to their campus and by estimated rent, built
 entirely from open data.
 
 **Status: launching January 2027.**
+
+Built with Claude Code as a coding assistant; I set the rules, made the decisions, and reviewed
+and merged every PR.
 
 ![Map view: typical transit commute to Université de Montréal from each neighbourhood, for a 3½ up to $1,500 a month and at most 45 minutes](docs/screenshots/readme/map-commute-udem.webp)
 
