@@ -57,7 +57,8 @@ describe("sharing a search", () => {
   ] as const)("keeps the site name within the first 60 characters (owner, M5.1): %s", (_, t) => {
     // The longest usual case: the longest campus label, the longest size label, a four-digit
     // budget, 60 min. Measured with the real site name, so it still guards once "[NAME]" is
-    // replaced.
+    // replaced. French is the tighter one: "Concordia SGW · Chambre · ≤ 9 999 $/mois · 60 min ·"
+    // leaves room for a name of 8 characters at most (English: about 12). ROADMAP M6.
     const longestCampus = ["udem", "mcgill", "concordia_sgw"]
       .map((id) => t.commute.campusShort(id, id))
       .reduce((a, b) => (b.length > a.length ? b : a));

@@ -8,7 +8,7 @@ import type { Lang } from "./localized";
 
 export type LicenceKey = "ccBy4" | "odbl" | "statcanOpen" | "cmhcData";
 
-/** The licences' own pages in each language (English checked 2026-11-25, French 2026-11-26). */
+/** The licences' own pages in each language (checked 2026-11-25). */
 export const LICENCE_URLS: Record<Lang, Record<LicenceKey, string>> = {
   en: {
     ccBy4: "https://creativecommons.org/licenses/by/4.0/",

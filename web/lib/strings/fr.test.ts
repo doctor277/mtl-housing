@@ -14,9 +14,19 @@ function shape(obj: unknown, path = ""): string[] {
   return [path];
 }
 
-/** Every string French shows, from plain strings and functions called with sample values. */
+/** Every string French shows: plain strings, and the functions' output with every argument a
+ * number (7). Functions that need an object (rent lines, lists) can't run that way and are
+ * skipped here; the rent and list tests below cover them. */
 function allText(obj: unknown): string[] {
   if (typeof obj === "string") return [obj];
+  if (typeof obj === "function") {
+    try {
+      const out = obj(...Array.from({ length: obj.length }, () => 7));
+      return typeof out === "string" ? [out] : Array.isArray(out) ? out.filter((x) => typeof x === "string") : [];
+    } catch {
+      return [];
+    }
+  }
   if (obj && typeof obj === "object") return Object.values(obj).flatMap(allText);
   return [];
 }
@@ -73,8 +83,10 @@ describe("French strings", () => {
     expect(fr.detail.toClosestBuilding("UdeM")).toBe("jusqu’au pavillon de l’UdeM le plus proche");
   });
 
-  it("never put a plain space before a colon (Québec: non-breaking)", () => {
+  it("never put a plain space before a colon or % (Québec: non-breaking)", () => {
     const sample = allText(fr);
+    // Most French text comes from functions: make sure they were rendered, not skipped.
+    expect(sample.length).toBeGreaterThan(200);
     expect(sample.filter((s) => / :/.test(s))).toEqual([]);
     expect(sample.filter((s) => / %/.test(s))).toEqual([]);
   });

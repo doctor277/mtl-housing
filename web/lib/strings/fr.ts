@@ -560,7 +560,7 @@ export const fr: Strings = {
     about: {
       heading: "À propos",
       notAffiliated:
-        "Ce site n’est affilié ni à l’UdeM, ni à McGill, ni à Concordia, ni à la STM, au REM, à exo, à la SCHL ou à Statistique Canada.",
+        "Ce site n’est affilié ni à l’UdeM, ni à McGill, ni à Concordia, ni à la STM, ni au REM, ni à exo, ni à la SCHL, ni à Statistique Canada.",
       contact: (email: string) => `Questions ou corrections${NB}: ${email}`,
     },
   },

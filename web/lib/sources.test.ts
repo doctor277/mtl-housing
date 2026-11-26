@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { LICENCE_URLS, QUARTIERS_DOWNLOADED, type SourceId, SOURCES, VALIDATION, VALIDATION_FILE } from "./sources";
-import { en as strings } from "./strings";
+import { fr, en as strings } from "./strings";
 
 // The /sources page's typed facts, checked against the files they cite (owner, M5 decision 12:
 // validation numbers are dated facts citing VALIDATION.md).
@@ -121,11 +121,14 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
     }
   });
 
-  it("publisher links (the REM has no open-data page) are the ones DATA_SOURCES.md records", () => {
+  it.each([
+    ["en", strings, "https://rem.info/en"],
+    ["fr", fr, "https://rem.info/fr"],
+  ] as const)("publisher links (the REM has no open-data page) are the ones DATA_SOURCES.md records: %s", (_, t, rem) => {
     const md = repo("DATA_SOURCES.md");
-    const items: Record<string, { name: string; publisherUrl?: string }> = strings.sources.list.items;
+    const items: Record<string, { name: string; publisherUrl?: string }> = t.sources.list.items;
     const urls = Object.values(items).flatMap((i) => (i.publisherUrl ? [i.publisherUrl] : []));
-    expect(urls).toEqual(["https://rem.info/en"]);
+    expect(urls).toEqual([rem]);
     for (const u of urls) expect(md).toContain(`(${u})`);
   });
 
@@ -137,7 +140,11 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
     for (const s of SOURCES) {
       const name = strings.sources.list.licence[s.licence];
       expect(row(ROW[s.id]), s.id).toContain(name);
-      expect(md, s.licence).toContain(`| ${name} | ${LICENCE_URLS.en[s.licence]} | ${LICENCE_URLS.fr[s.licence]}`);
+      // English name, both links, and the French name the French page shows (M5.3b).
+      const frName = fr.sources.list.licence[s.licence];
+      expect(md, s.licence).toContain(
+        `| ${name} | ${LICENCE_URLS.en[s.licence]} | ${LICENCE_URLS.fr[s.licence]} | ${frName} |`,
+      );
     }
   });
 

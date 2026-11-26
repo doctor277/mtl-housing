@@ -19,15 +19,15 @@ Raw files live in `data/raw/` (gitignored). Their exact versions are pinned in [
 ## Licences
 
 The site's sources page links each licence to these pages, the French page from the French site
-(English checked 2026-11-25, French 2026-11-26; the test `web/lib/sources.test.ts` checks the
-site uses these names and links):
+(checked 2026-11-25; the test `web/lib/sources.test.ts` checks the site uses these names and
+links in both languages):
 
-| Licence | Link | French page | Note |
-|---|---|---|---|
-| CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | https://creativecommons.org/licenses/by/4.0/deed.fr | |
-| ODbL 1.0 | https://www.openstreetmap.org/copyright | https://www.openstreetmap.org/copyright/fr | OpenStreetMap's own licence page, as OSM asks |
-| Statistics Canada Open Licence | https://www.statcan.gc.ca/en/reference/licence | https://www.statcan.gc.ca/fr/reference/licence | |
-| CMHC Licence Agreement for the Use of Data | https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data | https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees | The HMIP export is governed by it |
+| Licence | Link | French page | French name | Note |
+|---|---|---|---|---|
+| CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | https://creativecommons.org/licenses/by/4.0/deed.fr | CC BY 4.0 | |
+| ODbL 1.0 | https://www.openstreetmap.org/copyright | https://www.openstreetmap.org/copyright/fr | ODbL 1.0 | OpenStreetMap's own licence page, as OSM asks |
+| Statistics Canada Open Licence | https://www.statcan.gc.ca/en/reference/licence | https://www.statcan.gc.ca/fr/reference/licence | Licence ouverte de Statistique Canada | |
+| CMHC Licence Agreement for the Use of Data | https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data | https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees | Entente de licence avec la SCHL pour l’utilisation de données | The HMIP export is governed by it |
 
 French pages of the sources, linked from the French site (M5.3b): StatCan table
 https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=4610009201, census attribute file
