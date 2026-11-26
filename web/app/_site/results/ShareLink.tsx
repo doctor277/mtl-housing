@@ -5,13 +5,13 @@
 // the address bar, so copying from the browser shares it too. The button needs JavaScript, so it
 // only appears once the page runs it.
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { strings } from "@/lib/strings";
-
-const t = strings.results;
+import type { Lang } from "@/lib/localized";
+import { getStrings } from "@/lib/strings";
 
 const noSubscription = () => () => {};
 
-export default function ShareLink({ path }: { path: string }) {
+export default function ShareLink({ path, lang }: { path: string; lang: Lang }) {
+  const t = getStrings(lang).results;
   // False while rendering on the server (and without JavaScript), true once the page runs.
   const ready = useSyncExternalStore(
     noSubscription,

@@ -11,7 +11,7 @@ import {
   type RentMeta,
   rentFeatureProps,
 } from "@/lib/rent";
-import { strings } from "@/lib/strings";
+import { en as strings } from "@/lib/strings";
 
 // The rent wording lives in lib/strings (M4.3); these tests pin it.
 const { detailLine, extraLines, dataLine, roomLine, classRanges } = strings.rent;

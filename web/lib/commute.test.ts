@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { en, fr } from "@/lib/strings";
 import {
   type CampusMeta,
   type CampusResult,
@@ -42,14 +43,16 @@ describe("campus picker and departure window", () => {
       analysis_date: "2026-12-01",
       departure_window: { start: "07:30", minutes: 60 },
     } as unknown as CommuteFile["meta"];
-    expect(departureWindow(meta)).toEqual({ start: "7:30", end: "8:30" });
+    expect(departureWindow(meta, en)).toEqual({ start: "7:30", end: "8:30" });
+    // French clock (M5.3b): "7 h 30", with non-breaking spaces.
+    expect(departureWindow(meta, fr)).toEqual({ start: "7 h 30", end: "8 h 30" });
     const late = { ...meta, departure_window: { start: "08:45", minutes: 30 } };
-    expect(departureWindow(late as CommuteFile["meta"])).toEqual({ start: "8:45", end: "9:15" });
+    expect(departureWindow(late as CommuteFile["meta"], en)).toEqual({ start: "8:45", end: "9:15" });
   });
 
   it("lists the campuses present in commute.json, in file order", () => {
     const commute = { meta: { campuses: { udem: TWO, b: ONE } } } as unknown as CommuteFile;
-    expect(campusOptions(commute)).toEqual([
+    expect(campusOptions(commute, en)).toEqual([
       { key: "udem", label: "UdeM" },
       { key: "b", label: "Campus B" },
     ]);

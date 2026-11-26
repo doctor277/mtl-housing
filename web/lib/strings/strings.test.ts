@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BUDGET_EXAMPLE, EXAMPLE_SEARCH, MAX_COMMUTE_MIN, parseSearch, SEARCH_SIZES, searchQuery } from "../search";
-import { strings } from ".";
+import { en as strings } from ".";
 
 describe("strings", () => {
   it("labels every size and every max-commute button", () => {
@@ -38,7 +38,7 @@ describe("strings", () => {
   });
 
   it("takes limits and percentages as numbers, never typed", () => {
-    expect(strings.detail.manyUnreachable("15%", 120)).toBe("15% of homes here are more than 2 hours away by transit.");
+    expect(strings.detail.manyUnreachable(15, 120)).toBe("15% of homes here are more than 2 hours away by transit.");
     expect(strings.detail.overMax(90)).toBe("more than 90 min");
     expect(strings.detail.overMax(60)).toBe("more than 1 hour");
     expect(strings.results.groupHint.over(10)).toBe("Up to 10% over your budget.");
@@ -91,8 +91,8 @@ describe("strings", () => {
   });
 
   it("writes a search's link preview from its own values", () => {
-    expect(strings.share.title("UdeM", "3½", "1,500", 45, "[NAME]")).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]");
-    expect(strings.share.title("McGill", "Room", null, 30, "[NAME]")).toBe("McGill · Room · 30 min · [NAME]");
+    expect(strings.share.title("UdeM", "3½", "1,500", 45)).toBe("UdeM · 3½ · ≤ $1,500/mo · 45 min");
+    expect(strings.share.title("McGill", "Room", null, 30)).toBe("McGill · Room · 30 min");
     expect(strings.share.description("UdeM", strings.share.sizeInSentence["1br"], 45, "1,500")).toBe(
       "Montréal neighbourhoods within 45 min of UdeM by public transit, for a 3½ up to $1,500 a month, with estimated rents.",
     );
@@ -112,7 +112,10 @@ describe("strings", () => {
     expect(strings.home.intro(91)).toBe(
       "Compare transit commute times and typical rents across 91 Montréal neighbourhoods.",
     );
-    expect(strings.form.size.hint).toContain("Studio: 1½–2½.");
+    // Owner's short form; lines break only between items (non-breaking spaces inside each).
+    const hint = strings.form.size.hint.replaceAll(" ", " ").replaceAll("⁠", "");
+    expect(hint).toBe("Room: in a shared apartment · Studio: 1½–2½ · 3½: 1 bedroom · 4½: 2 bedrooms");
+    expect(strings.form.size.hint.split(" · ").every((item) => !item.includes(" "))).toBe(true);
     expect(strings.home.submit).toBe("Show me neighbourhoods");
   });
 });

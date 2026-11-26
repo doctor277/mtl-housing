@@ -4,15 +4,26 @@
 // DATA_SOURCES.md (links and licences) and data/manifest.csv for the sources,
 // pipeline/validation/ for the numbers.
 
+import type { Lang } from "./localized";
+
 export type LicenceKey = "ccBy4" | "odbl" | "statcanOpen" | "cmhcData";
 
-/** The licences' own pages (checked 2026-11-25). */
-export const LICENCE_URLS: Record<LicenceKey, string> = {
-  ccBy4: "https://creativecommons.org/licenses/by/4.0/",
-  odbl: "https://www.openstreetmap.org/copyright",
-  statcanOpen: "https://www.statcan.gc.ca/en/reference/licence",
-  cmhcData:
-    "https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data",
+/** The licences' own pages in each language (checked 2026-11-25). */
+export const LICENCE_URLS: Record<Lang, Record<LicenceKey, string>> = {
+  en: {
+    ccBy4: "https://creativecommons.org/licenses/by/4.0/",
+    odbl: "https://www.openstreetmap.org/copyright",
+    statcanOpen: "https://www.statcan.gc.ca/en/reference/licence",
+    cmhcData:
+      "https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data",
+  },
+  fr: {
+    ccBy4: "https://creativecommons.org/licenses/by/4.0/deed.fr",
+    odbl: "https://www.openstreetmap.org/copyright/fr",
+    statcanOpen: "https://www.statcan.gc.ca/fr/reference/licence",
+    cmhcData:
+      "https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees",
+  },
 };
 
 export type SourceId = "stm" | "rem" | "exo" | "osm" | "quartiers" | "census" | "cmhc" | "statcanRent";
@@ -21,8 +32,13 @@ export interface Source {
   id: SourceId;
   /** The publisher's page for the data, as in DATA_SOURCES.md. */
   url: string;
+  /** Its French version, where the publisher has one and `url` isn't already French (M5.3b). */
+  urlFr?: string;
   licence: LicenceKey;
 }
+
+/** The source's page in the reader's language, when there is one. */
+export const sourceUrl = (s: Source, lang: Lang) => (lang === "fr" && s.urlFr ? s.urlFr : s.url);
 
 /** In the order the page lists them: commute first, then rent. Dates come from the data files,
  * except the Ville de Montréal download date below. */
@@ -35,10 +51,21 @@ export const SOURCES: Source[] = [
   {
     id: "census",
     url: "https://www12.statcan.gc.ca/census-recensement/2021/geo/aip-pia/attribute-attribs/index2021-eng.cfm",
+    urlFr: "https://www12.statcan.gc.ca/census-recensement/2021/geo/aip-pia/attribute-attribs/index2021-fra.cfm",
     licence: "statcanOpen",
   },
-  { id: "cmhc", url: "https://www03.cmhc-schl.gc.ca/hmip-pimh/en", licence: "cmhcData" },
-  { id: "statcanRent", url: "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=4610009201", licence: "statcanOpen" },
+  {
+    id: "cmhc",
+    url: "https://www03.cmhc-schl.gc.ca/hmip-pimh/en",
+    urlFr: "https://www03.cmhc-schl.gc.ca/hmip-pimh/fr",
+    licence: "cmhcData",
+  },
+  {
+    id: "statcanRent",
+    url: "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=4610009201",
+    urlFr: "https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=4610009201",
+    licence: "statcanOpen",
+  },
 ];
 
 /** The Ville de Montréal quartiers have no date of their own in the data files: this is the

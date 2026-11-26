@@ -64,6 +64,24 @@ evening; then reading a shortlist. Light only: daytime use, and the map's data c
   estimate" has a solid outline; "Low reliability" and "Not enough data" a dashed one. The
   normal case is said once above the list ("All rents are estimates.", ROADMAP decision 16).
 - **Sort toggle:** two links styled like Choice buttons (ink = current, `aria-current`).
+  View, sort and the map's colour toggle all put their label on its own line above the
+  buttons, so longer French labels never split a group and the buttons line up (Impeccable,
+  M5.3b). View and sort stack on phones and sit side by side from `sm`; "Change search" and
+  "Copy link" share one row (design review DR5-1, owner, M5.3b), so the first card stays in
+  the first phone viewport. Don't add controls or space above the first card.
+- **Reduced motion:** under `prefers-reduced-motion: reduce`, no transitions or animations
+  (DR5-4).
+- **Short hints:** items joined with " · ", each kept on one line (non-breaking spaces), so
+  a line breaks only between items (the size hint, DR5-5).
+- **Language switch (M5.3b):** one plain text link at the right of the header, naming the
+  other language in that language ("English" / "Français"), `lang` and `hreflang` set, 44 px.
+  Not a flag, pill or toggle control (Impeccable).
+- **Budget field:** the `$` sits where the language puts it: before the number in English,
+  after it in French ("1 500 $").
+- **404 page (M5.3b):** stands alone (two root layouts, no shared frame): French first, a
+  divider, English below, each linking to its own search.
+- **Map labels:** French pages show the basemap's French place names (`name:fr`, else the
+  local name); English pages keep the style's own labels.
 - **Show more:** a `<details>` per group after the first 5 cards; its control stays in place and
   reads "Show fewer" when open.
 - **Browser surfaces:** themed selection, caret, accent colour and focus ring; no browser tap

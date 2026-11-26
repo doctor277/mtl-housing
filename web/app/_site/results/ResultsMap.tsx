@@ -7,11 +7,10 @@
 import { useMemo, useState } from "react";
 import { BIN_UPPER_MIN, COMMUTE_COLOURS, NO_RESIDENTS_COLOUR, NOT_IN_RESULTS_COLOUR } from "@/lib/legend";
 import { BIN_PCT, binEdges, type LabelKey, RENT_COLOURS, RENT_FILL_OPACITY, RENT_NO_DATA_COLOUR, type ShownSize } from "@/lib/rent";
+import type { Lang } from "@/lib/localized";
 import { type ExcludedReason, type GroupKey, SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
-import { strings } from "@/lib/strings";
+import { getStrings } from "@/lib/strings";
 import QuartierMap, { CAMPUS_MARKER_COLOUR, escapeHtml, type Mode } from "../../QuartierMap";
-
-const t = strings.resultsMap;
 
 export interface MapItem {
   id: string;
@@ -55,6 +54,7 @@ function LegendRow({ swatch, label, wide = false }: { swatch: React.ReactNode; l
 }
 
 export default function ResultsMap({
+  lang,
   campus,
   campusLabel,
   size,
@@ -66,7 +66,9 @@ export default function ResultsMap({
   excluded,
   detailsBase,
   rentDataLine,
+  estimatesNote,
 }: {
+  lang: Lang;
   campus: string;
   campusLabel: string;
   /** null for rooms: one citywide figure, so the map colours by commute only. */
@@ -82,7 +84,11 @@ export default function ResultsMap({
   detailsBase: string;
   /** The rent data dates ("Data: CMHC (…) and Statistics Canada's experimental …"), rent mode. */
   rentDataLine: string | null;
+  /** "All rents are estimates.", under the legend (design review DR5-3); null for rooms. */
+  estimatesNote: string | null;
 }) {
+  const strings = getStrings(lang);
+  const t = strings.resultsMap;
   const [mode, setMode] = useState<Mode>("commute");
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
 
@@ -120,7 +126,7 @@ export default function ResultsMap({
         return lines.join("<br>");
       },
     }),
-    [items, byId, excluded, maxCommute, campusLabel, detailsBase],
+    [items, byId, excluded, maxCommute, campusLabel, detailsBase, strings, t],
   );
 
   // Commute classes up to the search's max commute (every result is within it).
@@ -145,10 +151,13 @@ export default function ResultsMap({
   return (
     <section aria-label={strings.results.view.map} className="mt-6">
       {size && (
-        <div role="group" aria-label={t.colourBy} className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="mr-1 text-sm text-ink-muted">{t.colourBy}</span>
-          {modeButton("commute", strings.map.modes.commute)}
-          {modeButton("rent", strings.map.modes.rent)}
+        // Label above the buttons, like the view and sort toggles (Impeccable, M5.3b).
+        <div role="group" aria-label={t.colourBy} className="mb-3">
+          <p className="text-sm text-ink-muted">{t.colourBy}</p>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {modeButton("commute", strings.map.modes.commute)}
+            {modeButton("rent", strings.map.modes.rent)}
+          </div>
         </div>
       )}
       <div className="relative h-[60vh] min-h-80 overflow-hidden rounded-control border border-control bg-surface">
@@ -156,7 +165,7 @@ export default function ResultsMap({
         <p className="absolute inset-0 flex items-center justify-center text-sm text-ink-muted">
           {strings.map.loadingMap}
         </p>
-        <QuartierMap mode={mode} size={size ?? "1br"} campus={campus} results={results} />
+        <QuartierMap lang={lang} mode={mode} size={size ?? "1br"} campus={campus} results={results} />
       </div>
       <p className="mt-3 text-sm text-ink-muted">{t.hint}</p>
 
@@ -206,6 +215,7 @@ export default function ResultsMap({
             label={t.noResidents}
           />
         </ul>
+        {estimatesNote && <p className="mt-3 text-sm text-ink-muted">{estimatesNote}</p>}
         {mode === "rent" && size && rentDataLine && <p className="mt-3 text-xs text-ink-muted">{rentDataLine}</p>}
         <p className="mt-3 text-xs text-ink-muted">{strings.map.attribution(mode === "rent")}</p>
       </div>

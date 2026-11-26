@@ -26,7 +26,10 @@ import {
   rentFeatureProps,
   type ShownSize,
 } from "@/lib/rent";
-import { strings } from "@/lib/strings";
+import type { Lang } from "@/lib/localized";
+import { getStrings, type Strings } from "@/lib/strings";
+
+type MapStrings = Strings["map"];
 
 export type Mode = "commute" | "rent";
 
@@ -34,7 +37,6 @@ const BASEMAP = "https://tiles.openfreemap.org/styles/positron";
 /** Campus building pins: ink (the site's --color-ink), shared with the results legend. */
 export const CAMPUS_MARKER_COLOUR = "#0f172a";
 const HATCH = "low-reliability-hatch";
-const t = strings.map;
 
 export function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -55,7 +57,7 @@ export interface ResultsLayer {
   popupHtml: (id: string) => string;
 }
 
-function noResidentsPopup(props: QuartierProps, mode: Mode, names: Map<string, string>): string {
+function noResidentsPopup(props: QuartierProps, mode: Mode, names: Map<string, string>, t: MapStrings): string {
   const parent = names.get(props.part_of ?? "") ?? props.part_of ?? "?";
   return `${escapeHtml(t.popup.noResidents(mode))}<br>${escapeHtml(t.popup.partOf(parent))}`;
 }
@@ -138,26 +140,30 @@ function bounds(features: { geometry: { coordinates: unknown } }[]): [number, nu
 }
 
 export default function QuartierMap({
+  lang,
   mode,
   size,
   campus,
   results,
 }: {
+  /** The page's language (M5.3b): popups, pins and errors in it. */
+  lang: Lang;
   mode: Mode;
   size: ShownSize;
   campus: string;
   results: ResultsLayer;
 }) {
+  const t = getStrings(lang).map;
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MlMap | null>(null);
   const popupRef = useRef<Popup | null>(null); // closed when the mode, size or campus changes
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // The click handler is registered once; it reads the current choice from here.
-  const view = useRef({ mode, size, campus, results });
+  const view = useRef({ mode, size, campus, results, lang });
   useEffect(() => {
-    view.current = { mode, size, campus, results };
-  }, [mode, size, campus, results]);
+    view.current = { mode, size, campus, results, lang };
+  }, [mode, size, campus, results, lang]);
 
   useEffect(() => {
     let map: MlMap | undefined;
@@ -204,6 +210,18 @@ export default function QuartierMap({
 
       map.on("load", () => {
         if (!map) return;
+        // Place names in the page's language (Impeccable, M5.3b): the basemap labels English
+        // first (name_en); French pages use the French name, else the local one, which in
+        // Montréal is the official French name ("Île des Sœurs", not "Nuns' Island").
+        if (view.current.lang === "fr") {
+          for (const layer of map.getStyle().layers ?? []) {
+            if (layer.type !== "symbol") continue;
+            const field = map.getLayoutProperty(layer.id, "text-field");
+            if (JSON.stringify(field ?? null).includes('"name_en"')) {
+              map.setLayoutProperty(layer.id, "text-field", ["coalesce", ["get", "name:fr"], ["get", "name"]]);
+            }
+          }
+        }
         // Results view: show every result. Fitted here, once the map knows its own size.
         if (fit) {
           map.resize();
@@ -260,6 +278,8 @@ export default function QuartierMap({
 
         // Only the searched campus is marked.
         const meta = commute.meta.campuses[c];
+        const vl = view.current.lang;
+        const vt = getStrings(vl).map;
         if (meta) {
           for (const d of meta.destinations) {
             // Ink, not MapLibre's teal (blue is for links and the rent map's cheaper classes);
@@ -267,7 +287,7 @@ export default function QuartierMap({
             new maplibregl.Marker({ color: CAMPUS_MARKER_COLOUR, scale: 0.7 })
               .setLngLat([d.lon, d.lat])
               .setPopup(
-                new maplibregl.Popup().setText(t.marker(inLang(meta.name, strings.lang), inLang(d.name, strings.lang))),
+                new maplibregl.Popup().setText(vt.marker(inLang(meta.name, vl), inLang(d.name, vl))),
               )
               .addTo(map);
           }
@@ -278,11 +298,13 @@ export default function QuartierMap({
             const f = e.features?.[0];
             if (!f || !map) return;
             const props = f.properties as QuartierProps;
-            const { mode: cm, results: rs } = view.current;
+            const { mode: cm, results: rs, lang: cl } = view.current;
             // The borough only when it differs from the name, as on the cards.
             const borough = props.borough !== props.name ? ` (${escapeHtml(props.borough)})` : "";
             const head = `<b>${escapeHtml(props.name)}</b>${borough}<br>`;
-            const body = props.no_residents ? noResidentsPopup(props, cm, names) : rs.popupHtml(props.id);
+            const body = props.no_residents
+              ? noResidentsPopup(props, cm, names, getStrings(cl).map)
+              : rs.popupHtml(props.id);
             // Never wider than the map minus a margin, and panned into view if it opens past
             // an edge (the map frame clips anything outside it).
             const popup = new maplibregl.Popup({ maxWidth: "min(320px, calc(100% - 32px))" })
@@ -296,7 +318,9 @@ export default function QuartierMap({
               const m = 8;
               const dx = box.left < frame.left + m ? box.left - frame.left - m : box.right > frame.right - m ? box.right - frame.right + m : 0;
               const dy = box.top < frame.top + m ? box.top - frame.top - m : 0;
-              if (dx || dy) map.panBy([dx, dy], { duration: 200 });
+              // No animation when the reader asks for reduced motion (DR5-4, M5.3b).
+              const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              if (dx || dy) map.panBy([dx, dy], { duration: still ? 0 : 200 });
             }
           });
           map.on("mouseenter", layer, () => {

@@ -1,13 +1,14 @@
-// The first screen's search form: a GET form to /results (it submits without JavaScript,
-// though the results page needs it; next/form
-// adds client-side navigation). Choices are native radio buttons drawn as buttons. On the first
-// screen nothing is preselected; on the results page it starts from the current search.
+// The first screen's search form: a GET form to the results page in the same language
+// (/resultats or /en/results; it submits without JavaScript, though the results page needs
+// it; next/form adds client-side navigation). Choices are native radio buttons drawn as
+// buttons. On the first screen nothing is preselected; on the results page it starts from the
+// current search.
 import Form from "next/form";
+import type { Lang } from "@/lib/localized";
+import { PATHS } from "@/lib/routes";
 import { BUDGET_EXAMPLE, MAX_COMMUTE_MIN, SEARCH_SIZES, type Search } from "@/lib/search";
 import type { SortKey } from "@/lib/shortlist";
-import { strings } from "@/lib/strings";
-
-const t = strings.form;
+import { getStrings } from "@/lib/strings";
 
 interface Option {
   value: string;
@@ -61,13 +62,15 @@ function Choice({
 }
 
 export default function SearchForm({
+  lang,
   campuses,
   departure,
   initial,
   sort = "commute",
-  submitLabel = strings.home.submit,
+  submitLabel,
   className = "mt-8",
 }: {
+  lang: Lang;
   campuses: Option[];
   departure: { start: string; end: string };
   initial?: Search;
@@ -76,8 +79,10 @@ export default function SearchForm({
   submitLabel?: string;
   className?: string;
 }) {
+  const s = getStrings(lang);
+  const t = s.form;
   return (
-    <Form action="/results" className={`flex flex-col gap-8 ${className}`}>
+    <Form action={PATHS[lang].results} className={`flex flex-col gap-8 ${className}`}>
       {sort !== "commute" && <input type="hidden" name="sort" value={sort} />}
       <Choice
         name="campus"
@@ -99,12 +104,15 @@ export default function SearchForm({
           {t.budget.label} <span className="font-normal text-ink-muted">({t.budget.optional})</span>
         </label>
         <p id="budget-hint" className="mt-1 text-sm text-ink-muted">
-          {t.budget.hint(strings.format.dollars(BUDGET_EXAMPLE))}
+          {t.budget.hint(s.format.dollars(BUDGET_EXAMPLE))}
         </p>
+        {/* "$1,500" in English, "1 500 $" in French: the sign goes where the language puts it. */}
         <div className="mt-3 flex h-12 w-44 items-center rounded-control border border-control bg-surface focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus">
-          <span aria-hidden="true" className="pl-3 text-ink-muted">
-            {t.budget.prefix}
-          </span>
+          {t.budget.currencyFirst && (
+            <span aria-hidden="true" className="pl-3 text-ink-muted">
+              {t.budget.currency}
+            </span>
+          )}
           <input
             id="budget"
             name="budget"
@@ -116,6 +124,11 @@ export default function SearchForm({
             aria-describedby="budget-hint"
             className="h-full w-full min-w-0 bg-transparent px-2 outline-none"
           />
+          {!t.budget.currencyFirst && (
+            <span aria-hidden="true" className="pr-3 text-ink-muted">
+              {t.budget.currency}
+            </span>
+          )}
         </div>
       </div>
       <Choice
@@ -130,7 +143,7 @@ export default function SearchForm({
         type="submit"
         className="h-12 cursor-pointer rounded-control bg-ink px-6 font-semibold text-white transition-colors duration-150 ease-out hover:bg-ink-hover active:bg-ink-hover sm:self-start"
       >
-        {submitLabel}
+        {submitLabel ?? s.home.submit}
       </button>
     </Form>
   );

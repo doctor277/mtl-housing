@@ -52,6 +52,18 @@ a {
   outline-offset: 2px;
 }
 
+/* Reduced motion (design review DR5-4, M5.3b): no transitions or animations (the card
+   chevron's turn, colour fades); states still change, at once. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Map popups drawn in the system, not MapLibre's defaults (Impeccable, M4.3): Public Sans,
    ink on white, a control edge instead of a shadow, and a drawn close icon with a 44 px target. */
 /* Two classes: MapLibre's own stylesheet loads after this one, and its map container sets a

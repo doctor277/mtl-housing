@@ -277,7 +277,7 @@ StatCan gives a citywide average asking rent for a room ($720, 2026 Q2). CMHC ha
 
 **Words.** The city's quartiers are "neighbourhoods" on the site. CMHC's areas are always "CMHC area" and "CMHC zone", so the two are never confused. CMHC's grade is shown in words, never as a letter: a "excellent", b "very good", c "good", d "use with caution".
 
-**Labels.** `rent.json` carries a key; the site holds the text. English is below; French comes in M5.
+**Labels.** `rent.json` carries a key; the site holds the text. English is below; the French is in `web/lib/strings/fr.ts` (M5.3b).
 
 | Key | Badge (map popup, detail panel; shortlist cards only for caveats) | Detail panel line |
 |---|---|---|

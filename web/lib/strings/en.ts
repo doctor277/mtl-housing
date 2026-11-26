@@ -25,6 +25,11 @@ function overMax(maxMin: number): string {
   return `more than ${h} ${h === 1 ? "hour" : "hours"}`;
 }
 
+/** Short items joined with " · ", each kept on one line: lines break only between items,
+ * never inside "1½–2½" (design review, M5.3b). */
+const keepItems = (items: string[]) =>
+  items.map((i) => i.replaceAll(" ", " ").replaceAll("–", "–⁠")).join(" · ");
+
 /** "a, b or c": an English list joined with "or" (no serial comma). */
 function orList(items: string[]): string {
   return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} or ${items.at(-1)}`;
@@ -145,10 +150,25 @@ export const en = {
     title: "[NAME]: where to live in Montréal without a car",
     description:
       "Pick your campus, apartment size, budget and longest commute, and see which Montréal neighbourhoods fit.",
+    /** Link previews' locale (og:locale) and the page's language (<html lang>). */
+    locale: "en_CA",
+    htmlLang: "en-CA",
   },
+  /** The page for an address that doesn't exist (one page, both languages; M5.3b). */
+  notFound: {
+    title: "Page not found",
+    text: "This address doesn’t match any page on the site.",
+    home: "Back to the search",
+  },
+  /** The header link to the other language (M5 decision 7): its name in its own language. */
+  languageSwitch: { label: "Français", lang: "fr" as Lang },
   format: {
     dollars,
     rent: rentAbout,
+    /** A colon between a bold term and its text: ": " (French: non-breaking space before). */
+    colon: ": ",
+    /** "7:30" from minutes after midnight (commute.json departure window). */
+    clock: (minutes: number) => `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`,
     /** "Tuesday, December 1, 2026" from "2026-12-01" (noon UTC avoids a day shift). */
     longDate: (iso: string) =>
       new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-CA", {
@@ -179,7 +199,8 @@ export const en = {
     campus: { legend: "Campus" },
     size: {
       legend: "Size",
-      hint: "Room: one room in a shared apartment. Studio: 1½–2½. 3½: one bedroom. 4½: two bedrooms.",
+      /** Owner's short form (design review DR5-5, M5.3b). */
+      hint: keepItems(["Room: in a shared apartment", "Studio: 1½–2½", "3½: 1 bedroom", "4½: 2 bedrooms"]),
       labels: SIZE_LABELS,
     },
     budget: {
@@ -187,7 +208,9 @@ export const en = {
       optional: "optional",
       /** `example`: BUDGET_EXAMPLE, already formatted ("1,500"). */
       hint: (example: string) => `e.g. ${example}. Leave it empty to sort by commute only.`,
-      prefix: "$",
+      /** The dollar sign beside the field: before the number in English, after it in French. */
+      currency: "$",
+      currencyFirst: true,
     },
     maxCommute: {
       legend: "Max commute",
@@ -246,7 +269,7 @@ export const en = {
       n === 1
         ? `1 more neighbourhood is more than ${pct}% over your budget.`
         : `${n} more neighbourhoods are more than ${pct}% over your budget.`,
-    tryBudget: (n: number) =>
+    tryBudget: (n: number): string =>
       n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
     invalidTitle: "This search can’t be used",
     invalid: {
@@ -277,8 +300,8 @@ export const en = {
     buildings: (parts: { name: string; time: string }[]) => parts.map((p) => `${p.name}: ${p.time}`).join(" · "),
     overMax: (maxMin: number) => overMax(maxMin),
     lowSample: (n: number) => `Few homes sampled here (${n}), so this is less certain.`,
-    manyUnreachable: (pct: string, maxMin: number) =>
-      `${pct} of homes here are ${overMax(maxMin)} away by transit.`,
+    manyUnreachable: (pct: number, maxMin: number) =>
+      `${pct}% of homes here are ${overMax(maxMin)} away by transit.`,
     commuteSource:
       "Travel times are derived from STM, REM and exo schedules (CC BY 4.0). Schedules don’t include delays or outages.",
     rentHeading: (size: string) => `Rent, ${size}`,
@@ -307,10 +330,10 @@ export const en = {
   },
   /** Link previews of a search (M5.1): text only, no image. */
   share: {
-    /** Owner's short form, so the site name survives ~60-character truncation:
-     * "UdeM · 3½ · ≤ $1,500/mo · 45 min · [NAME]" (no budget part without a budget). */
-    title: (campus: string, size: string, budget: string | null, maxCommute: number, site: string) =>
-      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`, site].join(" · "),
+    /** Owner's short form, "UdeM · 3½ · ≤ $1,500/mo · 45 min" (no budget part without a
+     * budget). No site name: the preview shows it from og:site_name (owner, M5.3b). */
+    title: (campus: string, size: string, budget: string | null, maxCommute: number) =>
+      [campus, size, ...(budget ? [`≤ $${budget}/mo`] : []), `${maxCommute} min`].join(" · "),
     description: (campus: string, sizeInSentence: string, maxCommute: number, budget: string | null) =>
       `Montréal neighbourhoods within ${maxCommute} min of ${campus} by public transit, for a ${sizeInSentence}${budget ? ` up to $${budget} a month` : ""}, with estimated rents.`,
     sizeInSentence: { room: "room", studio: "studio", "1br": "3½", "2br": "4½" } satisfies Record<SearchSize, string>,
@@ -548,4 +571,5 @@ export const en = {
   },
 };
 
+/** The shape every language's strings follow; fr.ts is checked against it. */
 export type Strings = typeof en;
