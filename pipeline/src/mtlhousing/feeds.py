@@ -179,27 +179,37 @@ def refresh(
     manifest_path: Path = config.MANIFEST_CSV,
 ) -> list[str]:
     """Download, check, then archive and swap all three feeds; update the manifest.
-    Returns one line per feed. Nothing is replaced unless every feed downloaded and
-    passed its checks."""
+    Returns one line per feed. Nothing is replaced unless every feed downloaded, passed its
+    checks and still runs today, and every current file could be read for its archive name
+    (version plus hash, so a re-issued version never overwrites an archived file)."""
     incoming = gtfs_dir / ".incoming"
     new: dict[str, FeedFile] = {}
+    archives: dict[str, Path | None] = {}
+    # Everything that can fail happens here, before any file moves.
     for name, url in config.GTFS_URLS.items():
         path = incoming / f"{name}.zip"
         get(url, path)
-        new[name] = inspect(path, name)  # raises: nothing below runs
+        feed = new[name] = inspect(path, name)
+        if feed.end < today:
+            raise ValueError(f"{name}: the published feed ended on {feed.end}")
+        current = gtfs_dir / config.GTFS_FEEDS[name].name
+        if not current.exists() or sha256(current) == feed.sha256:
+            archives[name] = None
+            continue
+        old = inspect(current, name)
+        label = f"{old.version}-{old.sha256[:12]}" if old.version else old.sha256[:12]
+        archives[name] = gtfs_dir / "archive" / f"{name}-{label}.zip"
 
     lines = []
     changed = []
     for name, feed in new.items():
         current = gtfs_dir / config.GTFS_FEEDS[name].name
-        if current.exists() and sha256(current) == feed.sha256:
+        archive = archives[name]
+        if current.exists() and archive is None:
             (incoming / f"{name}.zip").unlink()
             lines.append(f"{name}: unchanged ({feed.notes()})")
             continue
-        if current.exists():
-            old = inspect(current, name)
-            label = old.version or old.sha256[:12]
-            archive = gtfs_dir / "archive" / f"{name}-{label}.zip"
+        if archive is not None:
             archive.parent.mkdir(parents=True, exist_ok=True)
             current.replace(archive)
             lines.append(

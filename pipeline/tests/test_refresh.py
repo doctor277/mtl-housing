@@ -62,7 +62,7 @@ def files(tmp_path):
     return analysis, commute_json, geo, tmp_path / "out"
 
 
-def run(day, files, step, download=False):
+def run(day, files, step, download=False, mismatched=()):
     analysis, commute_json, geo, out = files
     return refresh.run(
         day,
@@ -73,7 +73,33 @@ def run(day, files, step, download=False):
         geojson=geo,
         out_dir=out,
         feeds_loader=lambda: [],
+        local_feeds_check=lambda: list(mismatched),
     )
+
+
+def test_report_counts_an_exact_threshold_move():
+    # M5.5 pr-reviewer: 0.25 - 0.20 is 4.99999… points in floating point.
+    before = {"A": {"udem": r(20.0, 0.20)}}
+    after = {"A": {"udem": r(25.0, 0.25)}}
+    text = refresh.change_report(commute("d1", before), commute("d2", after), NAMES)
+    assert "- Quartier A: 20.0 → 25.0 (+5.0)" in text
+    assert "Quartier A: 20% → 25%" in text
+
+
+def test_a_failing_validate_does_not_stop_the_refresh(files):
+    def step(args):
+        if args[0] == "validate":
+            raise refresh.subprocess.CalledProcessError(1, args)
+
+    report = run(date(2026, 12, 1), files, step)
+    assert report.exists()
+
+
+def test_without_download_the_local_feeds_must_match_the_manifest(files):
+    calls = []
+    with pytest.raises(SystemExit, match="don't match data/manifest.csv: rem"):
+        run(date(2026, 12, 1), files, calls.append, mismatched=["rem"])
+    assert calls == []
 
 
 def test_refresh_runs_every_step_in_order_and_writes_the_report(files):

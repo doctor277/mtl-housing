@@ -43,6 +43,7 @@ def _stats(qid, fastest, rg, jb, flags=()):
 ROUTING_META = {
     "n_origins": 2,
     "computed_at": "2026-11-20T01:56:11",
+    "departure": f"{config.ANALYSIS_DATE.isoformat()}T07:30:00",
     "percentile": 50,
     "speed_walking_kmh": config.WALK_SPEED_KMH,
     "transport_modes": ["TRANSIT", "WALK"],
@@ -78,6 +79,20 @@ def test_build_commute_shape_and_values():
     assert far["p90"] is None and far["over_max"] == ["p90"]
     assert far["flags"] == ["many_unreachable"]
     assert far["by_destination"][JB]["over_max"] == ["p90"]
+
+
+@pytest.mark.parametrize(
+    "other, message",
+    [
+        ({"departure": "2027-01-13T07:30:00"}, "z: routed on 2027-01-13"),
+        ({"gtfs_feeds": [{"name": "stm", "version": "y"}]}, "z: other GTFS feeds"),
+    ],
+)
+def test_export_refuses_campuses_routed_on_another_day_or_feeds(other, message):
+    # M5.5 pr-reviewer: a refresh stopped partway must not publish mixed dates under one label.
+    with pytest.raises(SystemExit, match=message):
+        export.check_same_routing({"udem": ROUTING_META, "z": {**ROUTING_META, **other}})
+    export.check_same_routing({"udem": ROUTING_META, "z": dict(ROUTING_META)})  # agrees: fine
 
 
 def test_meta_records_method_and_adjustments():

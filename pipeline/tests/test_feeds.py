@@ -130,7 +130,8 @@ def test_refresh_swaps_archives_and_updates_the_manifest(tmp_path):
     assert all("new file (feed_version NEW" in line for line in lines)
     for name, path in config.GTFS_FEEDS.items():
         assert feeds.inspect(gtfs / path.name, name).version == "NEW"
-        assert feeds.inspect(gtfs / "archive" / f"{name}-OLD.zip", name).version == "OLD"
+        (archived,) = (gtfs / "archive").glob(f"{name}-OLD-*.zip")  # version + hash
+        assert feeds.inspect(archived, name).version == "OLD"
     rows = {r["file"]: r for r in feeds.read_manifest(manifest)}
     stm = rows["data/raw/gtfs/stm.zip"]
     assert stm["downloaded_on"] == "2026-11-26"
@@ -164,6 +165,53 @@ def test_refresh_replaces_nothing_when_one_feed_is_bad(tmp_path):
         assert feeds.inspect(gtfs / path.name, name).version == "OLD"
     assert not (gtfs / "archive").exists()
     assert manifest.read_bytes() == before
+
+
+def _three_old_feeds(tmp_path):
+    gtfs = tmp_path / "gtfs"
+    gtfs.mkdir()
+    for path in config.GTFS_FEEDS.values():
+        fake_feed(gtfs / path.name, version="OLD")
+    manifest = tmp_path / "manifest.csv"
+    feeds.write_manifest(manifest_rows(), manifest)
+    return gtfs, manifest, manifest.read_bytes()
+
+
+def test_refresh_replaces_nothing_when_a_current_file_is_unreadable(tmp_path):
+    # M5.5 pr-reviewer: stm must not be swapped before rem's current file turns out bad.
+    gtfs, manifest, before = _three_old_feeds(tmp_path)
+    fake_feed(gtfs / "rem.zip", version="OLD", skip=("stops.txt",))
+    with pytest.raises(ValueError, match="rem: missing stops.txt"):
+        feeds.refresh(
+            date(2026, 11, 26), gtfs, fake_get(dict.fromkeys(config.GTFS_URLS, "NEW")), manifest
+        )
+    assert feeds.inspect(gtfs / "stm.zip", "stm").version == "OLD"
+    assert not (gtfs / "archive").exists()
+    assert manifest.read_bytes() == before
+
+
+def test_refresh_refuses_a_feed_that_has_already_ended(tmp_path):
+    gtfs, manifest, before = _three_old_feeds(tmp_path)
+    get = fake_get(dict.fromkeys(config.GTFS_URLS, "NEW"), end="20261120")
+    with pytest.raises(ValueError, match="ended on 2026-11-20"):
+        feeds.refresh(date(2026, 11, 26), gtfs, get, manifest)
+    assert feeds.inspect(gtfs / "stm.zip", "stm").version == "OLD"
+    assert manifest.read_bytes() == before
+
+
+def test_a_reissued_version_does_not_overwrite_its_archive(tmp_path):
+    gtfs, manifest, _ = _three_old_feeds(tmp_path)
+
+    def publish(trips):  # version "V" every time, different bytes
+        def get(url, dest):
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            fake_feed(dest, version="V", trips=trips)
+
+        return get
+
+    for trips in (5, 6, 7):
+        feeds.refresh(date(2026, 11, 26), gtfs, publish(trips), manifest)
+    assert len(list((gtfs / "archive").glob("stm-V-*.zip"))) == 2
 
 
 def test_refresh_leaves_an_unchanged_feed_alone(tmp_path):

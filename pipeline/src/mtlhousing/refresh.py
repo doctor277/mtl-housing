@@ -1,14 +1,16 @@
 """One command for the full commute rebuild (M5.5, `refresh --date YYYY-MM-DD`).
 
-    refresh-feeds          download and check the schedules (skipped with --no-download)
+    refresh-feeds          download and check the schedules (with --no-download: the local feeds
+                           must match data/manifest.csv instead)
     gtfs-check (in here)   the date must be a Tuesday or Wednesday with normal service in
                            every feed; otherwise stop, with pipeline/analysis.json untouched
     analysis.json          the new date is written
     travel-times, aggregate   for every campus (heavy: about an hour for the three campuses)
     export                 web/public/data/commute.json and neighbourhoods.geojson
-    validate --out         reference only, to data/interim/refresh/ (the committed results in
-                           pipeline/validation/ stay: their Google times are for their own day)
     change report          data/interim/refresh/report-<date>.md, for the PR
+    validate --out         reference only, to data/interim/refresh/ (the committed results in
+                           pipeline/validation/ stay: their Google times are for their own day);
+                           runs last, and a failure there doesn't stop the refresh
 
 Each step runs as its own `python -m mtlhousing …` process: every step reads the new date
 from analysis.json, and each routing run gets a fresh JVM. Any failing step stops the run.
@@ -98,14 +100,18 @@ def change_report(old: dict, new: dict, names: dict[str, str]) -> str:
             if not (o and n):
                 continue
             if o["median"] is not None and n["median"] is not None:
-                d = n["median"] - o["median"]
+                d = round(n["median"] - o["median"], 6)  # no 4.999… from float subtraction
                 deltas.append(d)
                 if abs(d) >= MOVE_MIN:
                     moved.append((d, name, o["median"], n["median"]))
             elif o["median"] != n["median"]:
                 moved.append((0.0, name, o["median"], n["median"]))
             ou, nu = o.get("unreachable_share"), n.get("unreachable_share")
-            if ou is not None and nu is not None and abs(nu - ou) * 100 >= UNREACHABLE_PTS:
+            if (
+                ou is not None
+                and nu is not None
+                and round(abs(nu - ou) * 100, 6) >= UNREACHABLE_PTS
+            ):
                 unreach.append(f"{name}: {ou:.0%} → {nu:.0%}")
         med = _median_of(deltas)
         lines += [
@@ -154,10 +160,19 @@ def run(
     geojson: Path = config.WEB_DATA_DIR / "neighbourhoods.geojson",
     out_dir: Path = REFRESH_DIR,
     feeds_loader: Callable[[], list[gtfs_check.Feed]] | None = None,
+    local_feeds_check: Callable[[], list[str]] | None = None,
 ) -> Path:
-    """The whole rebuild; returns the change report's path. Stops at the first failure."""
+    """The whole rebuild; returns the change report's path. Stops at the first failure, except
+    in validate, which is a reference, not a gate: it runs last, after the report is written,
+    and a failure there is printed."""
     if download:
         step(["refresh-feeds"])
+    else:
+        mismatched = (local_feeds_check or _local_feeds_mismatch)()
+        if mismatched:
+            raise SystemExit(
+                "the feeds in data/raw/gtfs don't match data/manifest.csv: " + ", ".join(mismatched)
+            )
     feeds = (feeds_loader or _load_feeds)()
     problems = date_problems(day, feeds)
     if problems:
@@ -169,16 +184,32 @@ def run(
         step(["aggregate", "--campus", campus])
     step(["export"])
     out_dir.mkdir(parents=True, exist_ok=True)
-    for campus in config.CAMPUSES:
-        out = out_dir / f"validate_{campus}_{day}.csv"
-        step(["validate", "--campus", campus, "--out", str(out)])
     new = json.loads(commute_json.read_text(encoding="utf-8"))
     report = out_dir / f"report-{day}.md"
     report.write_text(
         change_report(old, new, quartier_names(geojson)), encoding="utf-8", newline="\n"
     )
+    print(f"\nChange report: {report}", flush=True)
+    for campus in config.CAMPUSES:
+        out = out_dir / f"validate_{campus}_{day}.csv"
+        try:
+            step(["validate", "--campus", campus, "--out", str(out)])
+        except (subprocess.CalledProcessError, OSError) as e:
+            print(f"validate {campus} failed ({e}); reference only, the refresh stands.")
     return report
 
 
 def _load_feeds() -> list[gtfs_check.Feed]:
     return [gtfs_check.load_feed(p, n) for n, p in config.GTFS_FEEDS.items()]
+
+
+def _local_feeds_mismatch() -> list[str]:
+    """Feeds in data/raw/gtfs that are missing or differ from their manifest row."""
+    from mtlhousing import feeds
+
+    rows = {r["file"]: r["sha256"] for r in feeds.read_manifest()}
+    return [
+        name
+        for name, path in config.GTFS_FEEDS.items()
+        if not path.exists() or feeds.sha256(path) != rows.get(feeds.manifest_key(name))
+    ]

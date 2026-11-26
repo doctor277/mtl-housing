@@ -82,9 +82,12 @@ python -m mtlhousing refresh-feeds           :: download + check all three; arch
 python -m mtlhousing refresh --date 2027-01-13   :: example date: checks it in every feed, writes pipeline/analysis.json, routes all campuses, export, validate (reference) + change report
 ```
 
-`refresh` runs `refresh-feeds` first unless you pass `--no-download`. Routing takes about an
-hour for the three campuses (M3: McGill 1,252 s, Concordia 1,104 s). The change report goes to
-`data/interim/refresh/report-<date>.md`; paste it in the PR. Any failing step stops the run.
+`refresh` runs `refresh-feeds` first; with `--no-download` it uses the feeds already in
+`data/raw/gtfs`, which must match `data/manifest.csv`. Routing takes about an hour for the
+three campuses (M3: McGill 1,252 s, Concordia 1,104 s). The change report goes to
+`data/interim/refresh/report-<date>.md`; paste it in the PR. Any failing step stops the run,
+except validate (a reference, run last). `export` refuses campuses routed on different dates or
+feeds, so a run that stopped partway can't be published by accident.
 
 ### Web
 
