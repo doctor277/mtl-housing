@@ -1,5 +1,7 @@
 # --- Data (downloaded or derived; never committed) ---
 data/raw/
+# Previous GTFS feeds kept by `refresh-feeds` (M5.5); data/manifest.csv records versions.
+data/raw/gtfs/archive/
 data/interim/
 *.pbf
 *.zip

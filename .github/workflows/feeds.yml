@@ -1,0 +1,66 @@
+name: GTFS feeds
+
+# Weekly check (M5.5): has the STM, REM or exo published a new schedule file, or does one end
+# within 30 days? Runs only `refresh-feeds --check` (downloads to a temp dir, no routing, no
+# commit). If something needs attention it opens an Issue, or updates the one already open.
+# The refresh itself stays a local command (`refresh-feeds`, then `refresh --date …`).
+# A failed download fails the job, so GitHub's failed-run e-mail is the alert for that.
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Mondays 12:00 UTC (08:00 in Montréal in summer, 07:00 in winter)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: feeds
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash -el {0} # login shell so the micromamba env is active
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: pipeline/environment.yml
+          cache-environment: true
+
+      - name: Install pipeline package
+        run: pip install -e pipeline --no-deps
+
+      - name: Check the feeds
+        working-directory: pipeline
+        run: python -m mtlhousing refresh-feeds --check --report "$RUNNER_TEMP/feeds.md"
+
+      - name: Open or update the Issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "GTFS feeds need a refresh"
+        run: |
+          if [ ! -s "$RUNNER_TEMP/feeds.md" ]; then
+            echo "Nothing to report."
+            exit 0
+          fi
+          {
+            cat "$RUNNER_TEMP/feeds.md"
+            echo
+            echo "Checked on $(date -u +%Y-%m-%d) by the weekly \`GTFS feeds\` workflow ([run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}))."
+          } > "$RUNNER_TEMP/body.md"
+          open=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
+            --jq "map(select(.title == \"$TITLE\")) | .[0].number // empty")
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --body-file "$RUNNER_TEMP/body.md"
+            echo "Updated issue #$open."
+          else
+            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
+          fi

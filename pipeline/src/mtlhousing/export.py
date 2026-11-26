@@ -160,12 +160,35 @@ def commute_sources() -> list[dict[str, str]]:
     return [OSM_CREDIT, TRANSIT_CREDIT, VILLE_CREDIT, CENSUS_CREDIT]
 
 
+def check_same_routing(routing_meta_by_campus: dict[str, dict]) -> None:
+    """commute.json has one analysis date and one feed list for every campus, so every campus
+    must have been routed on config.ANALYSIS_DATE with the same feeds. Since M5.5, a `refresh`
+    that stops partway leaves some campuses on the old date; export refuses that."""
+    day = config.ANALYSIS_DATE.isoformat()
+    feeds = next(iter(routing_meta_by_campus.values()))["gtfs_feeds"]
+    bad = [
+        f"{c}: routed on {m['departure'][:10]}"
+        for c, m in routing_meta_by_campus.items()
+        if m["departure"][:10] != day
+    ] + [
+        f"{c}: other GTFS feeds"
+        for c, m in routing_meta_by_campus.items()
+        if m["gtfs_feeds"] != feeds
+    ]
+    if bad:
+        raise SystemExit(
+            f"Campuses don't share the analysis date {day} and feeds; re-run travel-times "
+            "and aggregate for: " + "; ".join(bad)
+        )
+
+
 def build_commute(
     stats_by_campus: dict[str, pd.DataFrame],
     routing_meta_by_campus: dict[str, dict],
     quartier_ids: list[str],
 ) -> dict:
     """Assemble commute.json. Every quartier id gets an entry (possibly empty)."""
+    check_same_routing(routing_meta_by_campus)
     any_meta = next(iter(routing_meta_by_campus.values()))
     hh, mm = config.DEPARTURE_START_HHMM
     meta = {

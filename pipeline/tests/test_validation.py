@@ -109,3 +109,14 @@ def test_describe_itinerary_names_lines_and_stops():
         validation.describe_itinerary(legs, names)
         == "walk 9 ; metro 2 Laurier -> Jean-Talon (wait 1)"
     )
+
+
+def test_results_go_to_the_committed_csv_or_to_the_given_path(tmp_path, monkeypatch):
+    # M5.5 pr-reviewer: `validate` crashed when the results were written (both cases).
+    monkeypatch.setattr(validation, "VALIDATION_DIR", tmp_path / "validation")
+    df = pd.DataFrame({"route": ["1"], "verdict": ["pass"]})  # fake row
+    assert validation.write_results(df, "z") == tmp_path / "validation" / "z_results.csv"
+    other = tmp_path / "refresh" / "validate_z.csv"
+    assert validation.write_results(df, "z", other) == other
+    for path in (tmp_path / "validation" / "z_results.csv", other):
+        assert path.read_bytes() == b"route,verdict\n1,pass\n"

@@ -73,9 +73,11 @@ real = pytest.mark.skipif(
 )
 
 
-def test_analysis_date_is_tuesday_or_wednesday_before_stm_change():
+def test_analysis_date_is_a_tuesday_or_wednesday_read_from_analysis_json():
+    # The date moves with each refresh (M5.5), so it isn't pinned here; whether the feeds
+    # run normally that day is the next test (and refresh checks it before writing).
     assert config.ANALYSIS_DATE.weekday() in (1, 2)
-    assert config.ANALYSIS_DATE < date(2027, 1, 5)  # next STM schedule change
+    assert config.ANALYSIS_DATE == config.read_analysis_date()
     assert config.analysis_departure().date() == config.ANALYSIS_DATE
 
 

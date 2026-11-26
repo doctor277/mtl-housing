@@ -6,6 +6,7 @@ that decides them (1.1 and 1.5), so nothing here is a placeholder guess.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -79,6 +80,14 @@ GTFS_FEEDS = {
     "rem": GTFS_DIR / "rem.zip",
     "exo_trains": GTFS_DIR / "exo_trains.zip",
 }
+# Where `refresh-feeds` downloads them (M5.5; DATA_SOURCES.md). Checked 2026-11-25: the STM's
+# fixed address serves the same file as the current link on its open-data page.
+GTFS_URLS = {
+    "stm": "https://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip",
+    "rem": "https://gtfs.gpmmom.ca/gtfs/gtfs.zip",
+    "exo_trains": "https://exo.quebec/uploads/ressources-telechargeables/a-propos/donnees-ouvertes/trains/google_transit.zip",
+}
+MANIFEST_CSV = DATA_DIR / "manifest.csv"
 OSM_CLIPPED_PBF = INTERIM_DIR / "montreal.osm.pbf"
 OSM_CLIPPED_META = INTERIM_DIR / "montreal.osm.json"  # source hash, bbox, OSM timestamp
 
@@ -320,10 +329,20 @@ def check_routing_speed(routing_meta: dict, campus_id: str) -> None:
 # cannot reach the campus within MAX_TRIP_MIN.
 UNREACHABLE_FLAG_SHARE = 0.10
 
-# Analysis date (step 1.5, `python -m mtlhousing gtfs-check`): a Tuesday with normal
-# weekday service in all three feeds (STM 26N to 2027-01-03, REM to 2026-12-31, exo to
-# 2027-01-03), during the fall class term, before the STM change of 2027-01-05.
-ANALYSIS_DATE = date(2026, 12, 1)
+# Analysis date (step 1.5, `python -m mtlhousing gtfs-check`): a Tuesday or Wednesday with
+# normal weekday service in all three feeds, during a class term. It lives in
+# pipeline/analysis.json (M5.5) so `python -m mtlhousing refresh --date …` can move it
+# without a code change; refresh writes it only after gtfs-check accepts the date.
+# 2026-12-01: STM 26N to 2027-01-03, REM to 2026-12-31, exo to 2027-01-03, fall term, before
+# the STM change of 2027-01-05.
+ANALYSIS_JSON = REPO_ROOT / "pipeline" / "analysis.json"
+
+
+def read_analysis_date(path: Path = ANALYSIS_JSON) -> date:
+    return date.fromisoformat(json.loads(path.read_text(encoding="utf-8"))["analysis_date"])
+
+
+ANALYSIS_DATE = read_analysis_date()
 
 
 def analysis_departure() -> datetime:

@@ -145,12 +145,51 @@ def step_export() -> None:
         print(f"{campus}: {n}/{len(results)} quartiers with results; stats over max: {over}")
 
 
-def step_validate(campus: str) -> None:
+def step_refresh_feeds(check: bool = False, report: str | None = None) -> None:
+    """Download the GTFS feeds (or, with --check, only report what changed)."""
+    import tempfile
+    from datetime import date
+    from pathlib import Path
+
+    from mtlhousing import feeds
+
+    today = date.today()
+    if check:
+        with tempfile.TemporaryDirectory() as tmp:
+            findings = feeds.check(today, Path(tmp))
+        text = (
+            "The GTFS feeds need a refresh (`python -m mtlhousing refresh-feeds`, then "
+            "`refresh --date …`):\n\n" + "\n".join(f"- {f}" for f in findings) + "\n"
+            if findings
+            else ""
+        )
+        print(text or "All three feeds match data/manifest.csv and run past the next 30 days.")
+        if report:
+            Path(report).write_text(text, encoding="utf-8")
+        return
+    for line in feeds.refresh(today):
+        print(line)
+
+
+def step_refresh(day: str | None, no_download: bool = False) -> None:
+    from datetime import date
+
+    from mtlhousing import refresh
+
+    if not day:
+        raise SystemExit("refresh needs --date YYYY-MM-DD (a Tuesday or Wednesday)")
+    report = refresh.run(date.fromisoformat(day), download=not no_download)
+    print(f"\nRefresh done. Change report: {report}")
+
+
+def step_validate(campus: str, out: str | None = None) -> None:
+    from pathlib import Path
+
     import pandas as pd
 
     from mtlhousing import validation
 
-    res = validation.run(campus)
+    res = validation.run(campus, Path(out) if out else None)
     cols = [
         "route",
         "destination_id",
@@ -166,7 +205,7 @@ def step_validate(campus: str) -> None:
     with pd.option_context("display.width", 200):
         print(res[cols].to_string(index=False))
     n_pass = (res["verdict"] == "pass").sum()
-    print(f"\n{n_pass}/{len(res)} pass -> {validation.results_csv(campus)}")
+    print(f"\n{n_pass}/{len(res)} pass -> {out or validation.results_csv(campus)}")
 
 
 def step_access_check(campus: str) -> None:
@@ -343,6 +382,8 @@ STEPS = {
     "crosswalk-check": step_crosswalk_check,
     "rent": step_rent,
     "rent-export": step_rent_export,
+    "refresh-feeds": step_refresh_feeds,
+    "refresh": step_refresh,
 }
 
 
@@ -360,11 +401,34 @@ def main() -> None:
         action="store_true",
         help="travel-times: reuse saved results, only re-route origins that reached nothing",
     )
+    parser.add_argument(
+        "--out", help="validate: write the results here instead of pipeline/validation/"
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="refresh-feeds: only report new or expiring feeds; download nothing into data/raw",
+    )
+    parser.add_argument(
+        "--report", help="refresh-feeds --check: also write the findings to this file"
+    )
+    parser.add_argument("--date", help="refresh: the new analysis date, YYYY-MM-DD")
+    parser.add_argument(
+        "--no-download",
+        action="store_true",
+        help="refresh: use the feeds already in data/raw/gtfs (skip refresh-feeds)",
+    )
     args = parser.parse_args()
     if args.step == "travel-times":
         STEPS[args.step](args.campus, args.repair_only)
-    elif args.step in ("aggregate", "validate", "access-check"):
+    elif args.step == "validate":
+        STEPS[args.step](args.campus, args.out)
+    elif args.step in ("aggregate", "access-check"):
         STEPS[args.step](args.campus)
+    elif args.step == "refresh-feeds":
+        STEPS[args.step](args.check, args.report)
+    elif args.step == "refresh":
+        STEPS[args.step](args.date, args.no_download)
     else:
         STEPS[args.step]()
 
