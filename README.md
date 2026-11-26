@@ -35,10 +35,11 @@ See [DATA_SOURCES.md](DATA_SOURCES.md) and [docs/methodology.md](docs/methodolog
   citywide asking rent, through a hand-built crosswalk from the city's neighbourhoods to CMHC's
   areas that is checked against CMHC's unit counts.
 - **Website:** Next.js 16 (App Router, pages prerendered), React 19, TypeScript, Tailwind CSS 4
-  and MapLibre GL. French at `/`, English at `/en`. No backend: everything is precomputed JSON.
+  and MapLibre GL. French at `/`, English at `/en`. Page shells are prerendered and the results
+  are rendered on the server from precomputed JSON: no database, routing server or accounts.
 - **Tests and CI:** pytest (including tests that start the JVM, run locally), Vitest and ruff.
-  GitHub Actions runs lint, tests and the production build on every pull request. Pinned-output
-  tests fail if a code change moves a published number while the inputs stay the same.
+  GitHub Actions runs lint, tests and the production build on every pull request. When the
+  export became bilingual, a fingerprint test proved that no published number changed.
 
 ## How the commute times were validated
 
@@ -46,14 +47,15 @@ R5's times were compared with Google Maps on hand-picked trips (Tuesday 2026-12-
 by 8:30). A trip passes if R5's median is within 5 minutes or 15% of Google's, whichever is
 larger.
 
-- **UdeM: 8 of 9 pass.** The walking speed (4.0 km/h) and two building-access adjustments
-  were tuned on these same routes, so this is an in-sample result. The one failure is
-  Google's choice of a slower first trip; against the like-for-like trip it passes.
-- **McGill: 4 of 5, Concordia: 5 of 5**, with the walking speed frozen. The mean difference
-  is +0.4 min for both. The McGill failure (+7 min on a REM trip) is explained in the report,
-  not tuned away.
-- **Before launch:** 3–4 new routes, collected before running R5, are checked with every
-  setting frozen, and failures are reported as they are.
+- **UdeM: 6 of 7 transit trips pass** (plus the two platform walks the building-access
+  adjustments were calibrated on). The walking speed (4.0 km/h) and those adjustments were
+  tuned on these same routes, so this is an in-sample result. The one failure is Google's
+  choice of a slower first trip; against the like-for-like trip it passes.
+- **McGill: 4 of 5, Concordia: 5 of 5 transit trips**, with the walking speed frozen. The mean
+  difference is +0.4 min for both. The McGill failure (+7 min on a REM trip) is explained in
+  the report, not tuned away.
+- **Still to do before launch:** 3–4 new routes, collected before running R5, will be checked
+  with every setting frozen, and failures will be reported as they are.
 
 Full method and results: [pipeline/validation/VALIDATION.md](pipeline/validation/VALIDATION.md).
 
@@ -62,7 +64,8 @@ Full method and results: [pipeline/validation/VALIDATION.md](pipeline/validation
 The **code** is under the [MIT licence](LICENSE).
 
 The **data** keeps its own licences: the MIT licence does not cover it. That includes the
-files the pipeline publishes in `web/public/data/`, which are derived from:
+files the pipeline publishes in `web/public/data/` and the committed tables in
+`pipeline/crosswalk/` and `pipeline/validation/`, which are derived from:
 
 | Data | Publisher | Licence |
 |---|---|---|
@@ -77,8 +80,8 @@ files the pipeline publishes in `web/public/data/`, which are derived from:
 The site's basemap is served by OpenFreeMap (© OpenMapTiles, data © OpenStreetMap
 contributors), and its font is Public Sans (SIL Open Font License 1.1). The `/qa` and
 `/design-review` skills in `.claude/skills/` are adapted from gstack (MIT, © 2026 Garry Tan;
-see `.claude/skills/LICENSE-gstack.txt`). Versions, links and the exact credits are in
-[DATA_SOURCES.md](DATA_SOURCES.md).
+see `.claude/skills/LICENSE-gstack.txt`). The data sources' versions, links and exact credits
+are in [DATA_SOURCES.md](DATA_SOURCES.md).
 
 ---
 
