@@ -5,7 +5,7 @@
     gtfs-check (in here)   the date must be a Tuesday or Wednesday with normal service in
                            every feed; otherwise stop, with pipeline/analysis.json untouched
     analysis.json          the new date is written
-    travel-times, aggregate   for every campus (heavy: about an hour for the three campuses)
+    travel-times, aggregate   for every campus (heavy: about 50 min for the three campuses)
     export                 web/public/data/commute.json and neighbourhoods.geojson
     change report          data/interim/refresh/report-<date>.md, for the PR
     validate --out         reference only, to data/interim/refresh/ (the committed results in

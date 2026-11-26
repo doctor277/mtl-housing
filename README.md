@@ -83,8 +83,9 @@ python -m mtlhousing refresh --date 2027-01-13   :: example date: checks it in e
 ```
 
 `refresh` runs `refresh-feeds` first; with `--no-download` it uses the feeds already in
-`data/raw/gtfs`, which must match `data/manifest.csv`. Routing takes about an hour for the
-three campuses (M3: McGill 1,252 s, Concordia 1,104 s). The change report goes to
+`data/raw/gtfs`, which must match `data/manifest.csv`. Routing takes about 50 minutes for
+the three campuses with other apps closed (M5.5 proof run, 2026-11-26: UdeM 1,222 s, McGill
+894 s, Concordia 904 s). The change report goes to
 `data/interim/refresh/report-<date>.md`; paste it in the PR. Any failing step stops the run,
 except validate (a reference, run last). `export` refuses campuses routed on different dates or
 feeds, so a run that stopped partway can't be published by accident.
