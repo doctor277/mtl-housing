@@ -149,6 +149,12 @@ export const en = {
     locale: "en_CA",
     htmlLang: "en-CA",
   },
+  /** The page for an address that doesn't exist (one page, both languages; M5.3b). */
+  notFound: {
+    title: "Page not found",
+    text: "This address doesn’t match any page on the site.",
+    home: "Back to the search",
+  },
   /** The header link to the other language (M5 decision 7): its name in its own language. */
   languageSwitch: { label: "Français", lang: "fr" as Lang },
   format: {

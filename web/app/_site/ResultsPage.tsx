@@ -85,12 +85,15 @@ export default function ResultsPage({ lang, searchParams }: { lang: Lang; search
   );
 }
 
-/** Two or more links drawn like the form's choices; the current one is ink. */
+/** Two or more links drawn like the form's choices; the current one is ink. The label sits on
+ * its own line above them, so longer French labels never push a choice onto a row of its own,
+ * and the buttons of every toggle line up (Impeccable, M5.3b). */
 function LinkToggle({ label, options }: { label: string; options: { href: string; text: string; current: boolean }[] }) {
   return (
-    <nav aria-label={label} className="flex flex-wrap items-center gap-2">
-      <span className="mr-1 text-sm text-ink-muted">{label}</span>
-      {options.map((o) => (
+    <nav aria-label={label}>
+      <p className="text-sm text-ink-muted">{label}</p>
+      <div className="mt-1 flex flex-wrap gap-2">
+        {options.map((o) => (
         <Link
           key={o.href}
           href={o.href}
@@ -100,10 +103,11 @@ function LinkToggle({ label, options }: { label: string; options: { href: string
           className={`flex min-h-11 items-center rounded-control border px-3 no-underline transition-colors duration-150 ease-out ${
             o.current ? "border-ink bg-ink font-semibold text-white" : "border-control bg-surface hover:bg-hover active:bg-hover"
           }`}
-        >
-          {o.text}
-        </Link>
-      ))}
+          >
+            {o.text}
+          </Link>
+        ))}
+      </div>
     </nav>
   );
 }

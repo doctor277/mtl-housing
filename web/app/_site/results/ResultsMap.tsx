@@ -148,10 +148,13 @@ export default function ResultsMap({
   return (
     <section aria-label={strings.results.view.map} className="mt-6">
       {size && (
-        <div role="group" aria-label={t.colourBy} className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="mr-1 text-sm text-ink-muted">{t.colourBy}</span>
-          {modeButton("commute", strings.map.modes.commute)}
-          {modeButton("rent", strings.map.modes.rent)}
+        // Label above the buttons, like the view and sort toggles (Impeccable, M5.3b).
+        <div role="group" aria-label={t.colourBy} className="mb-3">
+          <p className="text-sm text-ink-muted">{t.colourBy}</p>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {modeButton("commute", strings.map.modes.commute)}
+            {modeButton("rent", strings.map.modes.rent)}
+          </div>
         </div>
       )}
       <div className="relative h-[60vh] min-h-80 overflow-hidden rounded-control border border-control bg-surface">

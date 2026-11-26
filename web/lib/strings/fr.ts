@@ -225,6 +225,11 @@ export const fr: Strings = {
     locale: "fr_CA",
     htmlLang: "fr-CA",
   },
+  notFound: {
+    title: "Page introuvable",
+    text: "Cette adresse ne correspond à aucune page du site.",
+    home: "Retour à la recherche",
+  },
   languageSwitch: { label: "English", lang: "en" },
   format: {
     dollars,
@@ -275,7 +280,8 @@ export const fr: Strings = {
       "Les résultats ont besoin de JavaScript. Activez-le dans votre navigateur pour voir les quartiers.",
     budget: (amount: string) => `jusqu’à ${amount}${NB}$ par mois`,
     noBudget: "sans budget",
-    maxCommute: (min: MaxCommute) => `${min} min max.`,
+    /** Non-breaking spaces: "max." never ends up alone on a line (Impeccable, M5.3b). */
+    maxCommute: (min: MaxCommute) => `${min}${NB}min${NB}max.`,
     changeSearch: "Modifier la recherche",
     copyLink: "Copier le lien",
     linkCopied: "Lien copié",

@@ -38,7 +38,7 @@ describe("sharing a search", () => {
   it("writes French with Québec formats (M5.3b)", () => {
     const NB = " ";
     expect(summaryLine(parsed({ campus: "a", size: "1br", budget: "1500", max: "45" }), "Campus A", fr)).toBe(
-      `Campus A · 3½ · jusqu’à 1${NB}500${NB}$ par mois · 45 min max.`,
+      `Campus A · 3½ · jusqu’à 1${NB}500${NB}$ par mois · 45${NB}min${NB}max.`,
     );
     const p = sharePreview(parsed({ campus: "a", size: "room", budget: "1500", max: "30" }), "Campus A", fr);
     expect(p.title).toBe(`Campus A · Chambre · ≤${NB}1${NB}500${NB}$/mois · 30 min · [NAME]`);

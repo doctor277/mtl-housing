@@ -210,6 +210,18 @@ export default function QuartierMap({
 
       map.on("load", () => {
         if (!map) return;
+        // Place names in the page's language (Impeccable, M5.3b): the basemap labels English
+        // first (name_en); French pages use the French name, else the local one, which in
+        // Montréal is the official French name ("Île des Sœurs", not "Nuns' Island").
+        if (view.current.lang === "fr") {
+          for (const layer of map.getStyle().layers ?? []) {
+            if (layer.type !== "symbol") continue;
+            const field = map.getLayoutProperty(layer.id, "text-field");
+            if (JSON.stringify(field ?? null).includes('"name_en"')) {
+              map.setLayoutProperty(layer.id, "text-field", ["coalesce", ["get", "name:fr"], ["get", "name"]]);
+            }
+          }
+        }
         // Results view: show every result. Fitted here, once the map knows its own size.
         if (fit) {
           map.resize();
