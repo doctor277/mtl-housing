@@ -164,10 +164,11 @@ def check(
             findings.append(
                 f"{name}: a new file is published ({feed.notes()}); the pipeline uses {used}."
             )
-        days = (feed.end - today).days
-        if days <= EXPIRY_WARN_DAYS:
+        # Worded without today's date, so the weekly Issue sees the same line as a repeat.
+        if (feed.end - today).days <= EXPIRY_WARN_DAYS:
             findings.append(
-                f"{name}: the published feed ends on {feed.end} ({days} days from {today})."
+                f"{name}: the published feed ends on {feed.end}, "
+                f"{EXPIRY_WARN_DAYS} days or less after a check."
             )
     return findings
 
