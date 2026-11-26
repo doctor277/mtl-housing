@@ -145,10 +145,19 @@ export const en = {
     title: "[NAME]: where to live in Montréal without a car",
     description:
       "Pick your campus, apartment size, budget and longest commute, and see which Montréal neighbourhoods fit.",
+    /** Link previews' locale (og:locale) and the page's language (<html lang>). */
+    locale: "en_CA",
+    htmlLang: "en-CA",
   },
+  /** The header link to the other language (M5 decision 7): its name in its own language. */
+  languageSwitch: { label: "Français", lang: "fr" as Lang },
   format: {
     dollars,
     rent: rentAbout,
+    /** A colon between a bold term and its text: ": " (French: non-breaking space before). */
+    colon: ": ",
+    /** "7:30" from minutes after midnight (commute.json departure window). */
+    clock: (minutes: number) => `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`,
     /** "Tuesday, December 1, 2026" from "2026-12-01" (noon UTC avoids a day shift). */
     longDate: (iso: string) =>
       new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-CA", {
@@ -187,7 +196,9 @@ export const en = {
       optional: "optional",
       /** `example`: BUDGET_EXAMPLE, already formatted ("1,500"). */
       hint: (example: string) => `e.g. ${example}. Leave it empty to sort by commute only.`,
-      prefix: "$",
+      /** The dollar sign beside the field: before the number in English, after it in French. */
+      currency: "$",
+      currencyFirst: true,
     },
     maxCommute: {
       legend: "Max commute",
@@ -246,7 +257,7 @@ export const en = {
       n === 1
         ? `1 more neighbourhood is more than ${pct}% over your budget.`
         : `${n} more neighbourhoods are more than ${pct}% over your budget.`,
-    tryBudget: (n: number) =>
+    tryBudget: (n: number): string =>
       n === 1 ? "Try a higher budget, or leave it empty to see it." : "Try a higher budget, or leave it empty to see them all.",
     invalidTitle: "This search can’t be used",
     invalid: {
@@ -277,8 +288,8 @@ export const en = {
     buildings: (parts: { name: string; time: string }[]) => parts.map((p) => `${p.name}: ${p.time}`).join(" · "),
     overMax: (maxMin: number) => overMax(maxMin),
     lowSample: (n: number) => `Few homes sampled here (${n}), so this is less certain.`,
-    manyUnreachable: (pct: string, maxMin: number) =>
-      `${pct} of homes here are ${overMax(maxMin)} away by transit.`,
+    manyUnreachable: (pct: number, maxMin: number) =>
+      `${pct}% of homes here are ${overMax(maxMin)} away by transit.`,
     commuteSource:
       "Travel times are derived from STM, REM and exo schedules (CC BY 4.0). Schedules don’t include delays or outages.",
     rentHeading: (size: string) => `Rent, ${size}`,
@@ -548,4 +559,5 @@ export const en = {
   },
 };
 
+/** The shape every language's strings follow; fr.ts is checked against it. */
 export type Strings = typeof en;

@@ -1,16 +1,17 @@
 // One shortlist card (name, commute, rent, reliability badge). Tapping it opens the detail
 // panel in place: commute (median, range, buildings, flags, source) and rent (estimate,
 // CMHC basis, source, data dates). A native <details>: opening it needs no script of its own
-// (the results page as a whole needs JavaScript, see web/DESIGN.md).
+// (the results page as a whole needs JavaScript, see web/DESIGN.md). Wording in the page's
+// language (ctx.s, M5.3b).
 import { type CampusMeta, type CampusResult, type CommuteFile, departureWindow, type TimeBlock } from "@/lib/commute";
 import { inLang } from "@/lib/localized";
 import { isLowReliability, type RentEntry, type RentMeta } from "@/lib/rent";
 import type { ShortlistItem } from "@/lib/shortlist";
-import { strings } from "@/lib/strings";
-
-const t = strings.detail;
+import type { Strings } from "@/lib/strings";
 
 export interface CardContext {
+  /** The page's strings (its language). */
+  s: Strings;
   campus: string;
   /** Short campus name, "UdeM". */
   campusLabel: string;
@@ -27,30 +28,31 @@ function wholeMinutes(v: number | null): number | null {
 }
 
 /** A building's median as shown: "27 min" or "more than 2 hours"; null = no data. */
-function buildingTime(b: TimeBlock, maxMin: number): string | null {
-  if (b.median !== null) return strings.card.minutes(Math.round(b.median));
-  return b.over_max.includes("median") ? t.overMax(maxMin) : null;
+function buildingTime(b: TimeBlock, maxMin: number, s: Strings): string | null {
+  if (b.median !== null) return s.card.minutes(Math.round(b.median));
+  return b.over_max.includes("median") ? s.detail.overMax(maxMin) : null;
 }
 
 function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext; minutes: number }) {
+  const { s } = ctx;
+  const t = s.detail;
   const max = ctx.commuteMeta.max_trip_min;
   const dests = ctx.campusMeta.destinations;
-  const { start, end } = departureWindow(ctx.commuteMeta);
-  const target =
-    dests.length > 1 ? t.toClosestBuilding(ctx.campusLabel) : t.toPlace(inLang(dests[0].name, strings.lang));
+  const { start, end } = departureWindow(ctx.commuteMeta, s);
+  const target = dests.length > 1 ? t.toClosestBuilding(ctx.campusLabel) : t.toPlace(inLang(dests[0].name, s.lang));
   // p10 ≤ median ≤ the max commute, so p10 is always a number here.
   const lines: string[] = [t.median(minutes, target, start, end), t.range(Math.round(r.p10!), wholeMinutes(r.p90), max)];
   if (dests.length > 1) {
     const parts = dests.flatMap((d) => {
       const b = r.by_destination[d.id];
-      const time = b ? buildingTime(b, max) : null;
-      return time ? [{ name: inLang(d.name, strings.lang), time }] : [];
+      const time = b ? buildingTime(b, max, s) : null;
+      return time ? [{ name: inLang(d.name, s.lang), time }] : [];
     });
     if (parts.length) lines.push(t.buildings(parts));
   }
   if (r.flags.includes("low_sample")) lines.push(t.lowSample(r.n_points));
   if (r.flags.includes("many_unreachable") && r.unreachable_share !== null) {
-    lines.push(t.manyUnreachable(`${Math.round(r.unreachable_share * 100)}%`, max));
+    lines.push(t.manyUnreachable(Math.round(r.unreachable_share * 100), max));
   }
   return (
     <section>
@@ -66,12 +68,13 @@ function CommuteDetail({ r, ctx, minutes }: { r: CampusResult; ctx: CardContext;
 }
 
 function RentDetail({ e, ctx }: { e: RentEntry | null; ctx: CardContext }) {
-  const heading = <h3 className="font-semibold">{t.rentHeading(ctx.sizeLabel)}</h3>;
+  const { s } = ctx;
+  const heading = <h3 className="font-semibold">{s.detail.rentHeading(ctx.sizeLabel)}</h3>;
   if (ctx.room) {
     return (
       <section>
         {heading}
-        <p className="mt-1">{strings.rent.roomLine(ctx.rentMeta)}</p>
+        <p className="mt-1">{s.rent.roomLine(ctx.rentMeta)}</p>
       </section>
     );
   }
@@ -81,25 +84,25 @@ function RentDetail({ e, ctx }: { e: RentEntry | null; ctx: CardContext }) {
       {heading}
       <p className="mt-1">
         {entry.estimate !== null && (
-          <span className="font-semibold tabular-nums">{strings.card.perMonth(strings.format.rent(entry.estimate))} · </span>
+          <span className="font-semibold tabular-nums">{s.card.perMonth(s.format.rent(entry.estimate))} · </span>
         )}
-        {strings.rent.badges[entry.label]}
+        {s.rent.badges[entry.label]}
       </p>
-      <p className="mt-1">{strings.rent.detailLine(entry, ctx.rentMeta)}</p>
-      {strings.rent.extraLines(entry, ctx.rentMeta).map((l) => (
+      <p className="mt-1">{s.rent.detailLine(entry, ctx.rentMeta)}</p>
+      {s.rent.extraLines(entry, ctx.rentMeta).map((l) => (
         <p key={l} className="mt-1">
           {l}
         </p>
       ))}
-      {entry.estimate !== null && <p className="mt-2 text-ink-muted">{strings.rent.sourceLine}</p>}
-      <p className="mt-1 text-ink-muted">{strings.rent.dataLine(ctx.rentMeta)}</p>
+      {entry.estimate !== null && <p className="mt-2 text-ink-muted">{s.rent.sourceLine}</p>}
+      <p className="mt-1 text-ink-muted">{s.rent.dataLine(ctx.rentMeta)}</p>
     </section>
   );
 }
 
 /** Only real caveats get a badge on the card; "Estimate" is said once above the list
  * (owner, M4.2). An outline, never colour: solid for a wider area, dashed for weaker data. */
-function Badge({ label }: { label: RentEntry["label"] }) {
+function Badge({ label, s }: { label: RentEntry["label"]; s: Strings }) {
   const dashed = isLowReliability(label) || label === "none";
   return (
     <span
@@ -107,7 +110,7 @@ function Badge({ label }: { label: RentEntry["label"] }) {
         dashed ? "border-dashed" : ""
       }`}
     >
-      {strings.rent.badges[label]}
+      {s.rent.badges[label]}
     </span>
   );
 }
@@ -126,6 +129,7 @@ export default function HoodCard({
   /** Open on load: the card a map popup's "Show details" pointed to. */
   open?: boolean;
 }) {
+  const { s } = ctx;
   return (
     <li id={`hood-${item.id}`} className="scroll-mt-4">
       <details className="group rounded-control border border-control bg-surface" open={open}>
@@ -133,7 +137,7 @@ export default function HoodCard({
             so a wide badge never squeezes the names. */}
         <summary className="grid min-h-12 cursor-pointer list-none grid-cols-[1fr_auto_auto] items-baseline gap-x-3 gap-y-1 rounded-control p-4 transition-colors duration-150 ease-out hover:bg-hover active:bg-hover [&::-webkit-details-marker]:hidden">
           <span className="min-w-0 leading-snug font-semibold">{item.name}</span>
-          <span className="text-right font-semibold tabular-nums">{strings.card.minutes(item.minutes)}</span>
+          <span className="text-right font-semibold tabular-nums">{s.card.minutes(item.minutes)}</span>
           <svg
             aria-hidden="true"
             viewBox="0 0 20 20"
@@ -142,12 +146,10 @@ export default function HoodCard({
             <path d="M5 7.5 10 12.5 15 7.5" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span className="min-w-0 text-sm text-ink-muted">{item.borough !== item.name ? item.borough : ""}</span>
-          <span className="text-right tabular-nums">
-            {!ctx.room && item.rent !== null ? strings.format.rent(item.rent) : ""}
-          </span>
+          <span className="text-right tabular-nums">{!ctx.room && item.rent !== null ? s.format.rent(item.rent) : ""}</span>
           {!ctx.room && item.label && item.label !== "neighbourhood" && (
             <span className="col-span-2 justify-self-end">
-              <Badge label={item.label} />
+              <Badge label={item.label} s={s} />
             </span>
           )}
         </summary>

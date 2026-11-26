@@ -1,34 +1,33 @@
 // How it works (M4.3): where the commute times and rents come from, and how the shortlist is
-// made. Short on purpose; sources, credits and limitations are on /sources (M5.2). Every number
-// comes from commute.json and rent.json; wording in lib/strings.
-import type { Metadata } from "next";
+// made. Short on purpose; sources, credits and limitations are on the sources page (M5.2).
+// Every number comes from commute.json and rent.json; wording in lib/strings, in each language
+// (M5.3b).
 import Link from "next/link";
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
-import { inLang } from "@/lib/localized";
+import { inLang, type Lang } from "@/lib/localized";
 import type { LabelKey } from "@/lib/rent";
+import { PATHS } from "@/lib/routes";
 import { SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
-import { strings } from "@/lib/strings";
-import { hitAreaLink } from "../linkStyles";
-import Section from "../Section";
-
-const t = strings.howItWorks;
+import { getStrings } from "@/lib/strings";
+import { hitAreaLink } from "./linkStyles";
+import Section from "./Section";
 
 /** The caveat labels explained, in order (the plain "Estimate" needs no explanation). */
-const CAVEATS: [LabelKey, keyof typeof t.rent.labels][] = [
+const CAVEATS: [LabelKey, "zone" | "low" | "none"][] = [
   ["zone", "zone"],
   ["neighbourhood_low", "low"],
   ["none", "none"],
 ];
 
-export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
-
-export default async function HowItWorks() {
+export default async function HowItWorksPage({ lang }: { lang: Lang }) {
+  const s = getStrings(lang);
+  const t = s.howItWorks;
   const [commute, rent] = await Promise.all([loadCommute(), loadRent()]);
   const meta = commute.meta;
-  const { start, end } = departureWindow(meta);
-  const day = strings.format.longDate(meta.analysis_date);
-  const campuses = campusOptions(commute);
+  const { start, end } = departureWindow(meta, s);
+  const day = s.format.longDate(meta.analysis_date);
+  const campuses = campusOptions(commute, s);
   const multi = campuses.filter((c) => meta.campuses[c.key].destinations.length > 1);
   const adjustments = Object.values(meta.campuses).flatMap((c) =>
     c.destinations.filter((d) => d.access_adjustment_min !== 0),
@@ -49,7 +48,7 @@ export default async function HowItWorks() {
           <p key={c.key}>
             {t.commute.closest(
               c.label,
-              strings.format.andList(meta.campuses[c.key].destinations.map((d) => inLang(d.name, strings.lang))),
+              s.format.andList(meta.campuses[c.key].destinations.map((d) => inLang(d.name, lang))),
             )}
           </p>
         ))}
@@ -59,10 +58,7 @@ export default async function HowItWorks() {
             <ul role="list" className="list-disc pl-5">
               {adjustments.map((d) => (
                 <li key={d.id} className="tabular-nums">
-                  {t.commute.adjustment(
-                    inLang(d.name, strings.lang),
-                    strings.map.popup.signedMin(d.access_adjustment_min),
-                  )}
+                  {t.commute.adjustment(inLang(d.name, lang), s.map.popup.signedMin(d.access_adjustment_min))}
                 </li>
               ))}
             </ul>
@@ -79,11 +75,13 @@ export default async function HowItWorks() {
         <ul role="list" className="list-disc pl-5">
           {CAVEATS.map(([label, key]) => (
             <li key={label}>
-              <span className="font-semibold">{strings.rent.badges[label]}</span>: {t.rent.labels[key]}
+              <span className="font-semibold">{s.rent.badges[label]}</span>
+              {s.format.colon}
+              {t.rent.labels[key]}
             </li>
           ))}
         </ul>
-        <p>{strings.rent.roomLine(r)}</p>
+        <p>{s.rent.roomLine(r)}</p>
       </Section>
 
       <Section heading={t.shortlist.heading}>
@@ -93,10 +91,10 @@ export default async function HowItWorks() {
         <p>{t.shortlist.rooms}</p>
       </Section>
 
-      {/* One line pointing to /sources, which has the credits (owner, M5 decision 13). */}
+      {/* One line pointing to the sources page, which has the credits (owner, M5 decision 13). */}
       <p className="mt-10">
         {t.sources.text}{" "}
-        <Link href="/sources" className={hitAreaLink}>
+        <Link href={PATHS[lang].sources} className={hitAreaLink}>
           {t.sources.link}
         </Link>
       </p>

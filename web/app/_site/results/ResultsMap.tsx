@@ -7,11 +7,10 @@
 import { useMemo, useState } from "react";
 import { BIN_UPPER_MIN, COMMUTE_COLOURS, NO_RESIDENTS_COLOUR, NOT_IN_RESULTS_COLOUR } from "@/lib/legend";
 import { BIN_PCT, binEdges, type LabelKey, RENT_COLOURS, RENT_FILL_OPACITY, RENT_NO_DATA_COLOUR, type ShownSize } from "@/lib/rent";
+import type { Lang } from "@/lib/localized";
 import { type ExcludedReason, type GroupKey, SLIGHTLY_OVER_PCT } from "@/lib/shortlist";
-import { strings } from "@/lib/strings";
+import { getStrings } from "@/lib/strings";
 import QuartierMap, { CAMPUS_MARKER_COLOUR, escapeHtml, type Mode } from "../../QuartierMap";
-
-const t = strings.resultsMap;
 
 export interface MapItem {
   id: string;
@@ -55,6 +54,7 @@ function LegendRow({ swatch, label, wide = false }: { swatch: React.ReactNode; l
 }
 
 export default function ResultsMap({
+  lang,
   campus,
   campusLabel,
   size,
@@ -67,6 +67,7 @@ export default function ResultsMap({
   detailsBase,
   rentDataLine,
 }: {
+  lang: Lang;
   campus: string;
   campusLabel: string;
   /** null for rooms: one citywide figure, so the map colours by commute only. */
@@ -83,6 +84,8 @@ export default function ResultsMap({
   /** The rent data dates ("Data: CMHC (…) and Statistics Canada's experimental …"), rent mode. */
   rentDataLine: string | null;
 }) {
+  const strings = getStrings(lang);
+  const t = strings.resultsMap;
   const [mode, setMode] = useState<Mode>("commute");
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
 
@@ -120,7 +123,7 @@ export default function ResultsMap({
         return lines.join("<br>");
       },
     }),
-    [items, byId, excluded, maxCommute, campusLabel, detailsBase],
+    [items, byId, excluded, maxCommute, campusLabel, detailsBase, strings, t],
   );
 
   // Commute classes up to the search's max commute (every result is within it).
@@ -156,7 +159,7 @@ export default function ResultsMap({
         <p className="absolute inset-0 flex items-center justify-center text-sm text-ink-muted">
           {strings.map.loadingMap}
         </p>
-        <QuartierMap mode={mode} size={size ?? "1br"} campus={campus} results={results} />
+        <QuartierMap lang={lang} mode={mode} size={size ?? "1br"} campus={campus} results={results} />
       </div>
       <p className="mt-3 text-sm text-ink-muted">{t.hint}</p>
 

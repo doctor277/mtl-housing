@@ -1,19 +1,23 @@
 // Sources and limitations (M5.2, owner's M5 decisions 11–14): the three required limitations,
 // the validation summary, the commute and rent limits, every source with its link, licence and
 // date, the credits, and the About block. Numbers come from commute.json and rent.json, or from
-// lib/sources.ts (checked by its test against the files it cites); wording in lib/strings.
-import type { Metadata } from "next";
+// lib/sources.ts (checked by its test against the files it cites); wording in lib/strings, in
+// each language (M5.3b), with the publishers' French pages linked from the French page.
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
-import { inLang } from "@/lib/localized";
-import { LICENCE_URLS, QUARTIERS_DOWNLOADED, SOURCES, type SourceId, VALIDATION, VALIDATION_FILE } from "@/lib/sources";
-import { strings } from "@/lib/strings";
-import { hitAreaLink } from "../linkStyles";
-import Section from "../Section";
-
-const t = strings.sources;
-
-export const metadata: Metadata = { title: `${t.title} · ${strings.siteName}` };
+import { inLang, type Lang } from "@/lib/localized";
+import {
+  LICENCE_URLS,
+  QUARTIERS_DOWNLOADED,
+  SOURCES,
+  type SourceId,
+  sourceUrl,
+  VALIDATION,
+  VALIDATION_FILE,
+} from "@/lib/sources";
+import { getStrings } from "@/lib/strings";
+import { hitAreaLink } from "./linkStyles";
+import Section from "./Section";
 
 function Limitation({ heading, children }: { heading: string; children: React.ReactNode }) {
   return (
@@ -34,14 +38,16 @@ function Bullets({ items }: { items: string[] }) {
   );
 }
 
-export default async function SourcesPage() {
+export default async function SourcesPage({ lang }: { lang: Lang }) {
+  const s = getStrings(lang);
+  const t = s.sources;
   const [commute, rent] = await Promise.all([loadCommute(), loadRent()]);
   const meta = commute.meta;
   const r = rent.meta;
-  const { start, end } = departureWindow(meta);
-  const day = strings.format.longDate(meta.analysis_date);
-  const date = strings.format.date;
-  const campusLabel = Object.fromEntries(campusOptions(commute).map((c) => [c.key, c.label]));
+  const { start, end } = departureWindow(meta, s);
+  const day = s.format.longDate(meta.analysis_date);
+  const date = s.format.date;
+  const campusLabel = Object.fromEntries(campusOptions(commute, s).map((c) => [c.key, c.label]));
   const feed = (name: string) => meta.gtfs_feeds.find((f) => f.name === name);
 
   // Each source's date, from the data files (the Ville de Montréal's from the manifest).
@@ -67,7 +73,7 @@ export default async function SourcesPage() {
 
   // The attribution texts the pipeline writes into the data files (DATA_SOURCES.md wording),
   // once each: both files carry the same Ville de Montréal and census lines (M5.3a).
-  const credits = [...new Set([...r.sources, ...meta.sources].map((s) => inLang(s, strings.lang)))];
+  const credits = [...new Set([...r.sources, ...meta.sources].map((c) => inLang(c, lang)))];
 
   const v = VALIDATION;
   return (
@@ -86,7 +92,7 @@ export default async function SourcesPage() {
       </Section>
 
       <Section heading={t.validation.heading} id="validation">
-        <p>{t.validation.method(strings.format.longDate(v.googleDate), v.rule.pct, v.rule.minMinutes)}</p>
+        <p>{t.validation.method(s.format.longDate(v.googleDate), v.rule.pct, v.rule.minMinutes)}</p>
         <Bullets
           items={(Object.keys(v.passed) as (keyof typeof v.passed)[]).map((c) =>
             t.validation.campus(campusLabel[c] ?? c, v.passed[c].pass, v.passed[c].total),
@@ -117,7 +123,7 @@ export default async function SourcesPage() {
         {meta.out_of_scope.length > 0 && (
           <>
             <p>{t.commute.outOfScopeLead}</p>
-            <Bullets items={meta.out_of_scope.map((o) => inLang(o.reason, strings.lang))} />
+            <Bullets items={meta.out_of_scope.map((o) => inLang(o.reason, lang))} />
           </>
         )}
       </Section>
@@ -128,13 +134,11 @@ export default async function SourcesPage() {
             t.rent.method(r.cmhc.period, r.statcan.quarter),
             t.rent.experimental,
             t.rent.coverage,
-            t.rent.rooms(strings.format.rent(r.room.estimate), r.statcan.quarter),
+            t.rent.rooms(s.format.rent(r.room.estimate), r.statcan.quarter),
           ]}
         />
         <p>{t.rent.crosswalkLead}</p>
-        <Bullets
-          items={r.crosswalk_notes.map((n) => t.rent.crosswalkNote(n.quartier_name, inLang(n.text, strings.lang)))}
-        />
+        <Bullets items={r.crosswalk_notes.map((n) => t.rent.crosswalkNote(n.quartier_name, inLang(n.text, lang)))} />
       </Section>
 
       <Section heading={t.list.heading} id="sources">
@@ -144,12 +148,12 @@ export default async function SourcesPage() {
             <h3 className="font-semibold">{heading}</h3>
             <ul role="list" className="mt-2 flex flex-col gap-4">
               {ids.map((id) => {
-                const s = SOURCES.find((x) => x.id === id)!;
+                const src = SOURCES.find((x) => x.id === id)!;
                 const item: { name: string; publisher: string; publisherUrl?: string; note?: string } =
                   t.list.items[id];
                 return (
                   <li key={id}>
-                    <a href={s.url} className={hitAreaLink}>
+                    <a href={sourceUrl(src, lang)} className={hitAreaLink}>
                       {item.name}
                     </a>
                     <span className="block text-sm text-ink-muted">
@@ -161,8 +165,8 @@ export default async function SourcesPage() {
                         item.publisher
                       )}
                       . {dates[id]} {t.list.licenceLabel}{" "}
-                      <a href={LICENCE_URLS[s.licence]} className="text-link underline">
-                        {t.list.licence[s.licence]}
+                      <a href={LICENCE_URLS[lang][src.licence]} className="text-link underline">
+                        {t.list.licence[src.licence]}
                       </a>
                       .
                     </span>
@@ -183,7 +187,7 @@ export default async function SourcesPage() {
 
       <Section heading={t.about.heading} id="about">
         <p>{t.about.notAffiliated}</p>
-        <p>{t.about.contact(strings.contactEmail)}</p>
+        <p>{t.about.contact(s.contactEmail)}</p>
       </Section>
     </article>
   );

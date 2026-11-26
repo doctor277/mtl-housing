@@ -84,11 +84,23 @@ npm run dev        :: http://localhost:3000
 npm test           :: Vitest: rent classes, commute texts, search parsing, UI strings (web/lib/**/*.test.ts)
 ```
 
-Pages:
+Pages, in French (the default) and English (M5.3b, owner's M5 decision 7). Each language has
+its own paths, listed in `web/lib/routes.ts`; the header's "English" / "Français" link opens the
+same page in the other language, keeping the search. There is no automatic redirect.
 
-- `/`: the search form (campus, size, optional budget, max commute) and an example search.
-  All UI text is in `web/lib/strings/`; the design system is described in `web/DESIGN.md`.
-- `/results`: the shortlist. Neighbourhoods within the max commute, grouped by budget (within
+| Page | French | English |
+|---|---|---|
+| Search | `/` | `/en` |
+| Results | `/resultats` | `/en/results` |
+| How it works | `/comment-ca-marche` | `/en/how-it-works` |
+| Sources and limitations | `/sources` | `/en/sources` |
+
+The shared page code is in `web/app/_site/`; `web/app/(fr)` and `web/app/(en)` are the two root
+layouts and their thin route files. All UI text is in `web/lib/strings/` (`en.ts`, `fr.ts`, same
+shape, Québec formats in French); the design system is described in `web/DESIGN.md`.
+
+- Search: the search form (campus, size, optional budget, max commute) and an example search.
+- Results: the shortlist. Neighbourhoods within the max commute, grouped by budget (within
   budget / slightly over / not enough data), fastest commute or cheapest rent first; each card
   opens a detail panel (commute range, buildings, rent basis, sources). Rules: `web/lib/shortlist.ts`.
   - `view=map`: the same results on a map (commute or rent colours, the rest greyed with the
@@ -97,13 +109,13 @@ Pages:
   - "Copy link" copies the clean link of the search (no empty `budget=`, no `open=`; `view` and
     `sort` kept), and the address bar shows the same. Link previews are text only: the
     search's own title and description.
-- `/how-it-works`: where the commute times and rents come from, and the shortlist rules.
-- `/sources`: sources and limitations. The known limitations, how the commute times were
+- How it works: where the commute times and rents come from, and the shortlist rules.
+- Sources and limitations: The known limitations, how the commute times were
   checked against Google Maps, the commute and rent limits, every source with its link, licence
   and date, the credits, and an About block. Its typed facts (`web/lib/sources.ts`) are tested
   against `pipeline/validation/`, `DATA_SOURCES.md` and `data/manifest.csv`.
 - Footer on the site's pages: the data line (schedule day, CMHC period, StatCan quarter) and
-  links to How it works and Sources (`/sources`).
+  links to How it works and Sources.
 
 They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
 the pipeline's `export` and `rent-export` steps and committed). Text the site shows from these

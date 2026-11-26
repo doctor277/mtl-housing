@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { LICENCE_URLS, QUARTIERS_DOWNLOADED, type SourceId, SOURCES, VALIDATION, VALIDATION_FILE } from "./sources";
-import { strings } from "./strings";
+import { en as strings } from "./strings";
 
 // The /sources page's typed facts, checked against the files they cite (owner, M5 decision 12:
 // validation numbers are dated facts citing VALIDATION.md).
@@ -114,7 +114,11 @@ describe("/sources: validation facts match pipeline/validation", () => {
 describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
   it("every source link is the one DATA_SOURCES.md or data/manifest.csv records", () => {
     const cited = repo("DATA_SOURCES.md") + repo("data/manifest.csv");
-    for (const s of SOURCES) expect(cited, s.id).toContain(s.url);
+    for (const s of SOURCES) {
+      expect(cited, s.id).toContain(s.url);
+      // French pages (M5.3b) are listed in DATA_SOURCES.md too.
+      if (s.urlFr) expect(cited, `${s.id} (fr)`).toContain(s.urlFr);
+    }
   });
 
   it("publisher links (the REM has no open-data page) are the ones DATA_SOURCES.md records", () => {
@@ -133,7 +137,7 @@ describe("/sources: sources match DATA_SOURCES.md and the manifest", () => {
     for (const s of SOURCES) {
       const name = strings.sources.list.licence[s.licence];
       expect(row(ROW[s.id]), s.id).toContain(name);
-      expect(md, s.licence).toContain(`| ${name} | ${LICENCE_URLS[s.licence]}`);
+      expect(md, s.licence).toContain(`| ${name} | ${LICENCE_URLS.en[s.licence]} | ${LICENCE_URLS.fr[s.licence]}`);
     }
   });
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BUDGET_EXAMPLE, EXAMPLE_SEARCH, MAX_COMMUTE_MIN, parseSearch, SEARCH_SIZES, searchQuery } from "../search";
-import { strings } from ".";
+import { en as strings } from ".";
 
 describe("strings", () => {
   it("labels every size and every max-commute button", () => {
@@ -38,7 +38,7 @@ describe("strings", () => {
   });
 
   it("takes limits and percentages as numbers, never typed", () => {
-    expect(strings.detail.manyUnreachable("15%", 120)).toBe("15% of homes here are more than 2 hours away by transit.");
+    expect(strings.detail.manyUnreachable(15, 120)).toBe("15% of homes here are more than 2 hours away by transit.");
     expect(strings.detail.overMax(90)).toBe("more than 90 min");
     expect(strings.detail.overMax(60)).toBe("more than 1 hour");
     expect(strings.results.groupHint.over(10)).toBe("Up to 10% over your budget.");

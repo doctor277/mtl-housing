@@ -1,5 +1,5 @@
 import { inLang, type Localized } from "./localized";
-import { strings } from "./strings";
+import type { Strings } from "./strings";
 
 // Types for web/public/data/commute.json (written by pipeline/src/mtlhousing/export.py)
 // and the join used by the map. A null time listed in `over_max` means "more than
@@ -79,17 +79,17 @@ export function campusFeatureProps(
 }
 
 /** Campuses present in commute.json, in file order, with short labels ("UdeM"). */
-export function campusOptions(commute: CommuteFile): { key: string; label: string }[] {
+export function campusOptions(commute: CommuteFile, s: Strings): { key: string; label: string }[] {
   return Object.entries(commute.meta.campuses).map(([key, c]) => ({
     key,
-    label: strings.commute.campusShort(key, inLang(c.name, strings.lang)),
+    label: s.commute.campusShort(key, inLang(c.name, s.lang)),
   }));
 }
 
-/** Start and end of the departure window, "7:30" and "8:30", from commute.json meta. */
-export function departureWindow(meta: CommuteFile["meta"]): { start: string; end: string } {
+/** Start and end of the departure window from commute.json meta, in the language's clock
+ * format: "7:30" and "8:30", or "7 h 30" and "8 h 30". */
+export function departureWindow(meta: CommuteFile["meta"], s: Strings): { start: string; end: string } {
   const [h, m] = meta.departure_window.start.split(":").map(Number);
   const start = h * 60 + m;
-  const hhmm = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
-  return { start: hhmm(start), end: hhmm(start + meta.departure_window.minutes) };
+  return { start: s.format.clock(start), end: s.format.clock(start + meta.departure_window.minutes) };
 }
