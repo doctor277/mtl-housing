@@ -104,7 +104,9 @@ def test_check_reports_new_files_and_coming_ends(tmp_path):
     get = fake_get({"stm": "V9", "rem": "V9", "exo_trains": "V9"}, end="20261215")
     found = feeds.check(date(2026, 11, 26), tmp_path, get, manifest_rows())
     assert sum("a new file is published" in f for f in found) == 3
-    assert sum("ends on 2026-12-15 (19 days" in f for f in found) == 3
+    assert sum("ends on 2026-12-15, 30 days or less after a check." in f for f in found) == 3
+    # The same feed checked a week later gives the same line (the Issue skips repeats).
+    assert feeds.check(date(2026, 12, 3), tmp_path, get, manifest_rows()) == found
     assert "the pipeline uses feed_version V0; valid 20260101-20261231" in found[0]
 
 

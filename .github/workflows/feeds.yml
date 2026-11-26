@@ -2,7 +2,8 @@ name: GTFS feeds
 
 # Weekly check (M5.5): has the STM, REM or exo published a new schedule file, or does one end
 # within 30 days? Runs only `refresh-feeds --check` (downloads to a temp dir, no routing, no
-# commit). If something needs attention it opens an Issue, or updates the one already open.
+# commit). If something needs attention it opens an Issue; while that Issue is open, a new
+# finding is added as a comment and a finding it already lists is skipped (no duplicates).
 # The refresh itself stays a local command (`refresh-feeds`, then `refresh --date …`).
 # A failed download fails the job, so GitHub's failed-run e-mail is the alert for that.
 
@@ -42,25 +43,10 @@ jobs:
         working-directory: pipeline
         run: python -m mtlhousing refresh-feeds --check --report "$RUNNER_TEMP/feeds.md"
 
-      - name: Open or update the Issue
+      # One open Issue at most: a new finding becomes a comment on it, a repeat is skipped.
+      - name: Open the Issue, or comment on the open one
         env:
           GH_TOKEN: ${{ github.token }}
-          TITLE: "GTFS feeds need a refresh"
-        run: |
-          if [ ! -s "$RUNNER_TEMP/feeds.md" ]; then
-            echo "Nothing to report."
-            exit 0
-          fi
-          {
-            cat "$RUNNER_TEMP/feeds.md"
-            echo
-            echo "Checked on $(date -u +%Y-%m-%d) by the weekly \`GTFS feeds\` workflow ([run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}))."
-          } > "$RUNNER_TEMP/body.md"
-          open=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
-            --jq "map(select(.title == \"$TITLE\")) | .[0].number // empty")
-          if [ -n "$open" ]; then
-            gh issue edit "$open" --body-file "$RUNNER_TEMP/body.md"
-            echo "Updated issue #$open."
-          else
-            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
-          fi
+        run: >-
+          bash .github/scripts/feeds_issue.sh "$RUNNER_TEMP/feeds.md"
+          "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
