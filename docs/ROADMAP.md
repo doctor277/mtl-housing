@@ -30,8 +30,10 @@ Goal (owner): make the January STM/REM refresh in M6 one command instead of a ma
    never reuses old data silently. `--check` only reports whether a feed changed or ends
    within 30 days.
 2. **Weekly GitHub Actions workflow** (`.github/workflows/feeds.yml`, owner). Runs only
-   `refresh-feeds --check` (no routing) and opens an Issue, or updates the open one, when a
-   feed changed or ends within 30 days. No automatic PR (owner).
+   `refresh-feeds --check` (no routing) and opens an Issue when a feed changed or ends within
+   30 days. While that Issue is open, a new finding is added as a comment and a repeat is
+   skipped, so there are no duplicate Issues (`.github/scripts/feeds_issue.sh`). Permissions:
+   `contents: read`, `issues: write` only. No automatic PR (owner).
 3. **One `refresh --date YYYY-MM-DD` command.** Checks the date in every feed (gtfs-check)
    before writing it to `pipeline/analysis.json`, then runs travel-times and aggregate for
    every campus, export, and validate (reference only: the Google times are for their own
