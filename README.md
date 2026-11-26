@@ -1,6 +1,17 @@
 # [NAME]
 
-A Montréal "where should I live?" tool for students and renters without a car.
+**Find where to live in Montréal without a car:** a bilingual web app that ranks Montréal
+neighbourhoods for students by transit commute to their campus and by estimated rent, built
+entirely from open data.
+
+**Status: launching January 2027.**
+
+![Map view: typical transit commute to Université de Montréal from each neighbourhood, for a 3½ up to $1,500 a month and at most 45 minutes](docs/screenshots/readme/map-commute-udem.webp)
+
+*Map view for UdeM, a 3½ (one bedroom) up to $1,500 a month and at most 45 minutes: the
+darker the green, the shorter the typical commute.*
+
+## What it does
 
 Pick your campus (UdeM, McGill, Concordia SGW), size (room / studio / 3½ / 4½), an optional
 budget and a maximum transit commute. The site shows:
@@ -12,6 +23,66 @@ budget and a maximum transit commute. The site shows:
 **Data honesty is rule #1.** Every number shows where it comes from, when, and how reliable it is.
 When the data is too thin, the site says "not enough data" instead of guessing.
 See [DATA_SOURCES.md](DATA_SOURCES.md) and [docs/methodology.md](docs/methodology.md).
+
+## Tech
+
+- **Routing pipeline (Python 3.12):** [r5py](https://r5py.readthedocs.io/) on Conveyal's R5
+  engine routes about 3,200 residential sample points (one per census dissemination area,
+  weighted by occupied dwellings) to each campus building, over OpenStreetMap streets and the
+  STM, REM and exo GTFS schedules. It departs every minute from 7:30 to 8:30 and keeps the
+  median per neighbourhood, so waiting for the bus counts. geopandas handles the geography.
+- **Rent estimates:** CMHC Rental Market Survey ratios per area, scaled to Statistics Canada's
+  citywide asking rent, through a hand-built crosswalk from the city's neighbourhoods to CMHC's
+  areas that is checked against CMHC's unit counts.
+- **Website:** Next.js 16 (App Router, pages prerendered), React 19, TypeScript, Tailwind CSS 4
+  and MapLibre GL. French at `/`, English at `/en`. No backend: everything is precomputed JSON.
+- **Tests and CI:** pytest (including tests that start the JVM, run locally), Vitest and ruff.
+  GitHub Actions runs lint, tests and the production build on every pull request. Pinned-output
+  tests fail if a code change moves a published number while the inputs stay the same.
+
+## How the commute times were validated
+
+R5's times were compared with Google Maps on hand-picked trips (Tuesday 2026-12-01, arrive
+by 8:30). A trip passes if R5's median is within 5 minutes or 15% of Google's, whichever is
+larger.
+
+- **UdeM: 8 of 9 pass.** The walking speed (4.0 km/h) and two building-access adjustments
+  were tuned on these same routes, so this is an in-sample result. The one failure is
+  Google's choice of a slower first trip; against the like-for-like trip it passes.
+- **McGill: 4 of 5, Concordia: 5 of 5**, with the walking speed frozen. The mean difference
+  is +0.4 min for both. The McGill failure (+7 min on a REM trip) is explained in the report,
+  not tuned away.
+- **Before launch:** 3–4 new routes, collected before running R5, are checked with every
+  setting frozen, and failures are reported as they are.
+
+Full method and results: [pipeline/validation/VALIDATION.md](pipeline/validation/VALIDATION.md).
+
+## Licence
+
+The **code** is under the [MIT licence](LICENSE).
+
+The **data** keeps its own licences: the MIT licence does not cover it. That includes the
+files the pipeline publishes in `web/public/data/`, which are derived from:
+
+| Data | Publisher | Licence |
+|---|---|---|
+| Neighbourhood boundaries and dwelling counts | Ville de Montréal | CC BY 4.0 |
+| Bus and metro schedules (GTFS) | STM | CC BY 4.0, plus the STM's condition that metro schedules are indicative and may not be used for a metro timetable app ([how we comply](DATA_SOURCES.md#stm-metro-schedule-condition-how-we-comply)) |
+| REM schedules (GTFS) | Réseau express métropolitain | CC BY 4.0 |
+| Commuter train schedules (GTFS) | exo | CC BY 4.0 |
+| Street network | © OpenStreetMap contributors (Geofabrik extract) | ODbL 1.0 |
+| Census geography; citywide asking rent | Statistics Canada | Statistics Canada Open Licence |
+| Average rents and rental units by area | CMHC | CMHC Licence Agreement for the Use of Data |
+
+The site's basemap is served by OpenFreeMap (© OpenMapTiles, data © OpenStreetMap
+contributors), and its font is Public Sans (SIL Open Font License 1.1). The `/qa` and
+`/design-review` skills in `.claude/skills/` are adapted from gstack (MIT, © 2026 Garry Tan;
+see `.claude/skills/LICENSE-gstack.txt`). Versions, links and the exact credits are in
+[DATA_SOURCES.md](DATA_SOURCES.md).
+
+---
+
+# Developer docs
 
 ## How it works
 
