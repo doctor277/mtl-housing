@@ -1,0 +1,4 @@
+{
+  "analysis_date": "2026-12-01",
+  "note": "The weekday the commute times are routed on (config.ANALYSIS_DATE). Written by `python -m mtlhousing refresh --date YYYY-MM-DD` after gtfs-check accepts the date; edit only through that command."
+}

@@ -47,7 +47,7 @@ A quartier's commute is not measured from its centre. It is measured from many p
 
 ### Transit schedules and analysis date
 - Feeds: STM `20261029135439_26N` (bus + metro), REM `20260520`, and exo trains (5 lines). Versions and hashes are in `data/manifest.csv`.
-- **Analysis date: Tuesday 2026-12-01**, during the fall class term and before the STM schedule change of 2027-01-05.
+- **Analysis date: Tuesday 2026-12-01**, during the fall class term and before the STM schedule change of 2027-01-05. It is stored in `pipeline/analysis.json` (M5.5), which every step reads. `python -m mtlhousing refresh --date YYYY-MM-DD` changes it, and only after the check below accepts the new date in every feed.
 - `python -m mtlhousing gtfs-check` checks that the date falls inside every feed's service period and has a **typical** number of trips for that weekday, at least 95% of the median. That day has 19,141 STM trips, 443 REM and 103 exo. The same check flags the REM holiday schedule on Dec 29–30 (323 trips), so a holiday can't be picked by accident.
 - Validating against Google Maps: any regular Tue/Wed between 2026-11-24 and 2026-12-16 runs the same schedule in all three feeds, so the manual checks can use whichever of those dates is still upcoming.
 

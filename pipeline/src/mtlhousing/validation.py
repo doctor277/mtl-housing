@@ -265,7 +265,10 @@ def quartier_of(points: gpd.GeoDataFrame) -> pd.Series:
 # --- run --------------------------------------------------------------------------------
 
 
-def run(campus_id: str) -> pd.DataFrame:
+def run(campus_id: str, out: Path | None = None) -> pd.DataFrame:
+    """Route the campus's validation trips and compare with Google. Writes the committed
+    results CSV, or `out` instead: `refresh` (M5.5) writes a reference copy to data/interim,
+    because the Google times are for the dated validation day, not a refreshed one."""
     from mtlhousing import travel_times
     from mtlhousing.r5py_setup import import_r5py
 
@@ -336,5 +339,7 @@ def run(campus_id: str) -> pd.DataFrame:
         "alt_verdict", "other_buildings", "r5_route_0745",
     ]  # fmt: skip
     result = pd.DataFrame(rows).reindex(columns=columns)
-    result.to_csv(results_csv(campus_id), index=False, lineterminator="\n")
+    target = out or results_csv(campus_id)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    result.to_csv(target, index=False, lineterminator="\n")
     return result

@@ -60,7 +60,7 @@ Pipeline steps (run in order, from the repo root, inside the env). Each step cac
 python -m mtlhousing boundaries      :: quartiers -> data/interim/quartiers.parquet
 python -m mtlhousing sample-points   :: StatCan DAs -> residential sample points (first run ~10 s)
 python -m mtlhousing osm-clip        :: Québec PBF -> Montréal PBF (~45 s, skipped if unchanged)
-python -m mtlhousing gtfs-check      :: feed periods + validates config.ANALYSIS_DATE (exit 1 if not OK)
+python -m mtlhousing gtfs-check      :: feed periods + validates the analysis date in pipeline/analysis.json (exit 1 if not OK)
 python -m mtlhousing tunnel-check    :: walk-only check: UdeM metro -> Roger-Gaudry through the tunnel
 python -m mtlhousing travel-times --campus udem   :: r5py, ~25 min; JVM capped at 6 GB
 python -m mtlhousing travel-times --campus udem --repair-only   :: re-route only homes that reached nothing
@@ -72,6 +72,19 @@ python -m mtlhousing crosswalk-check  :: quartier -> CMHC neighbourhood -> zone,
 python -m mtlhousing rent             :: rent estimate per quartier and bedroom type -> data/interim/rent_by_quartier.csv
 python -m mtlhousing rent-export      :: re-checks the crosswalk, rounds to $25 -> web/public/data/rent.json (committed)
 ```
+
+Refreshing the schedules (M5.5). The weekly `GTFS feeds` workflow opens an Issue when a feed
+has a new file or ends within 30 days. Then, at home with other apps closed:
+
+```bat
+python -m mtlhousing refresh-feeds --check   :: what changed; downloads nothing into data/raw
+python -m mtlhousing refresh-feeds           :: download + check all three; archive the old ones (data/raw/gtfs/archive/) and update data/manifest.csv
+python -m mtlhousing refresh --date 2027-01-13   :: example date: checks it in every feed, writes pipeline/analysis.json, routes all campuses, export, validate (reference) + change report
+```
+
+`refresh` runs `refresh-feeds` first unless you pass `--no-download`. Routing takes about an
+hour for the three campuses (M3: McGill 1,252 s, Concordia 1,104 s). The change report goes to
+`data/interim/refresh/report-<date>.md`; paste it in the PR. Any failing step stops the run.
 
 ### Web
 

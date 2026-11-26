@@ -15,21 +15,33 @@ them: heavy local runs, approvals, deploys.
 | **M4** Real site | Form (campus, apartment size, budget, max commute), ranked shortlist, detail panel; mobile-first. Before starting, review garrytan/gstack's /design-review and /qa skills; copy useful parts into .claude/, don't install the whole toolkit. Impeccable wins over gstack: take from gstack only what Impeccable doesn't do (likely browser QA). First screen: one-line explanation ('Find where to live in Montréal without a car') + the search form (campus, size, budget, max commute) + 'Show me neighbourhoods' button, no sign-up. Results: ranked shortlist cards first (name, commute, rent, reliability badge), map second. An 'example search' link. Short 'How it works' + honest data line + link to sources. The map is the results view, not the homepage. Decisions: see "M4 decisions" below. | |
 | **M5** Languages, sources, sharing | French/English, sources & limitations page (must include: the old-lease bias, i.e. CMHC averages include long-time tenants, so old-stock areas look cheaper and new-build areas pricier than new listings; R5 itinerary vs matrix mismatch for Concordia east trips (Peel exit); McGill route 5: R5 counts waiting time, Google doesn't), shareable URL holding the search settings; decide whether to restyle `/map` (the old explorer, no longer linked since M4.3) or delete it | |
 | **M5.5** Auto-refresh | See below | |
-| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5; settings frozen; failures reported, not tuned); refresh before launch (GTFS, and check for a newer StatCan quarter); the transit credit wording in `commute.json` ("licensed under CC BY 4.0") is fixed (M5.3a bilingual export, M5 decision 5); deploy to Vercel; after deploy, send one results link in WhatsApp, Messenger, iMessage, Discord and Telegram and check the preview. **Needs owner:** the site's name (the site has no name yet; every "[NAME]" placeholder must be replaced before launch; link previews show it from og:site_name, not in the title, so its length is free, owner M5.3b); the contact email on `/sources` (the "[EMAIL]" placeholder); whether to make the repo public at launch (if yes, `/sources` links `pipeline/validation/VALIDATION.md`); the site's domain, so the pages' language alternates (hreflang) and canonical links become absolute (`metadataBase`, M5.3b); OK to deploy | |
+| **M6** Launch | Out-of-sample validation (3–4 new Google routes, collected *before* running R5; settings frozen; failures reported, not tuned); refresh before launch (GTFS: `refresh-feeds`, then `refresh --date` with a winter-term Tuesday or Wednesday after the STM change of 2027-01-05, about an hour of routing; and check for a newer StatCan quarter); the transit credit wording in `commute.json` ("licensed under CC BY 4.0") is fixed (M5.3a bilingual export, M5 decision 5); deploy to Vercel; after deploy, send one results link in WhatsApp, Messenger, iMessage, Discord and Telegram and check the preview. **Needs owner:** the site's name (the site has no name yet; every "[NAME]" placeholder must be replaced before launch; link previews show it from og:site_name, not in the title, so its length is free, owner M5.3b); the contact email on `/sources` (the "[EMAIL]" placeholder); whether to make the repo public at launch (if yes, `/sources` links `pipeline/validation/VALIDATION.md`); the site's domain, so the pages' language alternates (hreflang) and canonical links become absolute (`metadataBase`, M5.3b); OK to deploy | |
 
 ## M5.5 Auto-refresh
 
-1. **`refresh-feeds` step.** Downloads the STM, REM and exo GTFS from their fixed URLs (check
-   the current official URLs first), validates them, and updates `data/manifest.csv`. If a
-   download fails or a file looks wrong, it stops and reports. It never reuses old data
-   silently.
-2. **Weekly GitHub Actions workflow.** Light, no routing. Checks whether any feed changed or
-   expires within 30 days, and opens an Issue if so.
-3. **One `refresh` command.** Runs the full rebuild end to end (new analysis date,
-   travel-times, aggregate, export, validate) and opens a PR summarising how the commute
-   numbers changed.
+Goal (owner): make the January STM/REM refresh in M6 one command instead of a manual afternoon.
 
-Heavy routing stays a local run the owner triggers at home; CI never routes.
+1. **`refresh-feeds` step.** Downloads the STM, REM and exo GTFS from their fixed URLs
+   (`config.GTFS_URLS`; the STM's fixed URL was checked against its open-data page on
+   2026-11-25), checks each file (a zip, the files routing needs, version and service
+   period), and only if all three pass archives the previous files to
+   `data/raw/gtfs/archive/` (gitignored; the manifest records versions), puts the new ones in
+   place and updates `data/manifest.csv`. Any failure stops before anything is replaced. It
+   never reuses old data silently. `--check` only reports whether a feed changed or ends
+   within 30 days.
+2. **Weekly GitHub Actions workflow** (`.github/workflows/feeds.yml`, owner). Runs only
+   `refresh-feeds --check` (no routing) and opens an Issue, or updates the open one, when a
+   feed changed or ends within 30 days. No automatic PR (owner).
+3. **One `refresh --date YYYY-MM-DD` command.** Checks the date in every feed (gtfs-check)
+   before writing it to `pipeline/analysis.json`, then runs travel-times and aggregate for
+   every campus, export, and validate (reference only: the Google times are for their own
+   day, so the copy goes to `data/interim/refresh/`), and writes a change report (per campus,
+   how the medians moved; neighbourhoods that moved 5 min or more; unreachable shares that
+   moved 5 points or more) to paste in the PR. `--no-download` uses the feeds already in
+   `data/raw/gtfs`. Rents are out of scope (a newer StatCan quarter stays a manual check in M6).
+
+Heavy routing stays a local run the owner triggers at home; CI never routes. The analysis
+date for January is chosen in M6.
 
 ## M4 decisions
 
