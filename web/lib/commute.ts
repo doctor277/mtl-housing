@@ -1,3 +1,4 @@
+import { inLang, type Localized } from "./localized";
 import { strings } from "./strings";
 
 // Types for web/public/data/commute.json (written by pipeline/src/mtlhousing/export.py)
@@ -28,10 +29,10 @@ export interface CampusResult extends TimeBlock {
 }
 
 export interface CampusMeta {
-  name: string;
+  name: Localized;
   destinations: {
     id: string;
-    name: string;
+    name: Localized;
     lat: number;
     lon: number;
     access_adjustment_min: number;
@@ -49,9 +50,9 @@ export interface CommuteFile {
     /** OpenStreetMap data date (ISO timestamp). */
     osm_date: string;
     /** Areas left out of the commute statistics, with the pipeline's reason. */
-    out_of_scope: { area: string; reason: string }[];
-    /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
-    sources: string[];
+    out_of_scope: { area: string; reason: Localized }[];
+    /** Attribution texts written by the pipeline (DATA_SOURCES.md wording), both languages. */
+    sources: Localized[];
     campuses: Record<string, CampusMeta>;
     [key: string]: unknown;
   };
@@ -81,7 +82,7 @@ export function campusFeatureProps(
 export function campusOptions(commute: CommuteFile): { key: string; label: string }[] {
   return Object.entries(commute.meta.campuses).map(([key, c]) => ({
     key,
-    label: strings.commute.campusShort(key, c.name),
+    label: strings.commute.campusShort(key, inLang(c.name, strings.lang)),
   }));
 }
 

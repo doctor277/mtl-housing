@@ -31,10 +31,34 @@ The site's `/sources` page links each licence to these pages (checked 2026-11-25
 ## Attribution text to show on the site
 
 - **OpenStreetMap:** "© OpenStreetMap contributors" (ODbL). Must appear on the map and on the sources page.
-- **Ville de Montréal:** "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0."
+- **Ville de Montréal:** "With data from Quartiers de référence en habitation taken from the Ville de Montréal open data website, licensed under CC BY 4.0." (the city's suggested credit for digital products, translated: the city publishes it in French only; owner, M5.3a).
 - **Statistics Canada:** "Adapted from Statistics Canada, [product], [date]. This does not constitute an endorsement by Statistics Canada of this product."
-- **CMHC:** "Adapted from Canada Mortgage and Housing Corporation, [product], [date]. This does not constitute an endorsement by CMHC." **No CMHC logo.**
+- **CMHC:** "Adapted from Canada Mortgage and Housing Corporation, [product], [date]. This does not constitute an endorsement by Canada Mortgage and Housing Corporation of this product." (the licence's notice, word for word; [licence agreement](https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-data/cmhc-licence-agreement-use-of-data)). **No CMHC logo.**
 - **STM, REM, exo (CC BY 4.0):** "Transit schedules: Société de transport de Montréal, Réseau express métropolitain and exo, licensed under CC BY 4.0. Travel times are derived from these schedules." Name each publisher, link the licence, and say the data was transformed.
+
+**In French** (M5.3a, owner's M5 decision 6: each from the publisher's own French page). The
+pipeline writes both languages into the data files (`export.py`, `rent_export.py`):
+- **OpenStreetMap:** "© les contributeurs d’OpenStreetMap (ODbL)" (owner, M5.3a; OSM's French
+  pages give no fixed French credit line).
+- **Ville de Montréal:** "Avec les données Quartiers de référence en habitation tirées du site
+  web des données ouvertes de la Ville de Montréal, sous licence CC BY 4.0.", the city's
+  suggested credit for digital products ([licence page](https://donnees.montreal.ca/licence-d-utilisation)).
+- **Statistics Canada:** "Adapté de Statistique Canada, [produit], [date]. Cela ne constitue pas
+  une approbation de ce produit par Statistique Canada." ([licence, French](https://www.statcan.gc.ca/fr/reference/licence)).
+  Table title as StatCan writes it in French ("Prix des loyers demandés et des loyers payés,
+  selon le type d’unité locative et le nombre de chambres, estimations expérimentales") and its
+  quarter ("deuxième trimestre de 2026"). Census product: "Fichier des attributs géographiques"
+  (StatCan's French catalogue, [92-151-G](https://www150.statcan.gc.ca/n1/fr/catalogue/92-151-G)),
+  "Recensement de 2021".
+- **CMHC:** "Adaptation de données de la Société canadienne d’hypothèques et de logement,
+  [produit], [date]. La présente ne constitue en aucun cas un appui de la Société canadienne
+  d’hypothèques et de logement envers ce produit." ([licence agreement, French](https://www.cmhc-schl.gc.ca/professionnels/marche-du-logement-donnees-et-recherche/donnees-sur-le-logement/entente-de-licence-avec-la-schl-pour-lutilisation-de-donnees)).
+  Survey: "Enquête sur les logements locatifs". Grade words from CMHC's French legend
+  ("A – Excellent, B – Très bon, C – Bon, D – Passable (utiliser avec prudence)",
+  [RMS methodology, French](https://www03.cmhc-schl.gc.ca/hmip-pimh/fr/TableMapChart/RmsMethodology)).
+- **STM, REM, exo:** "Horaires du transport collectif : Société de transport de Montréal, Réseau
+  express métropolitain et exo, sous licence CC BY 4.0. Les temps de trajet sont calculés à
+  partir de ces horaires." (our sentence, translated).
 
 ## STM metro schedule condition: how we comply
 

@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import { campusOptions, departureWindow } from "@/lib/commute";
 import { loadCommute, loadRent } from "@/lib/data";
+import { inLang } from "@/lib/localized";
 import { LICENCE_URLS, QUARTIERS_DOWNLOADED, SOURCES, type SourceId, VALIDATION, VALIDATION_FILE } from "@/lib/sources";
 import { strings } from "@/lib/strings";
 import { hitAreaLink } from "../linkStyles";
@@ -65,15 +66,8 @@ export default async function SourcesPage() {
   ];
 
   // The attribution texts the pipeline writes into the data files (DATA_SOURCES.md wording),
-  // once each: both files credit the Ville de Montréal and the census file. rent.json first:
-  // its Ville de Montréal line has the full "licensed under CC BY 4.0" wording.
-  const seen = new Set<string>();
-  const credits = [...r.sources, ...meta.sources].filter((s) => {
-    const key = s.replace("licensed under ", "");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  // once each: both files carry the same Ville de Montréal and census lines (M5.3a).
+  const credits = [...new Set([...r.sources, ...meta.sources].map((s) => inLang(s, strings.lang)))];
 
   const v = VALIDATION;
   return (
@@ -123,7 +117,7 @@ export default async function SourcesPage() {
         {meta.out_of_scope.length > 0 && (
           <>
             <p>{t.commute.outOfScopeLead}</p>
-            <Bullets items={meta.out_of_scope.map((o) => o.reason)} />
+            <Bullets items={meta.out_of_scope.map((o) => inLang(o.reason, strings.lang))} />
           </>
         )}
       </Section>
@@ -138,7 +132,9 @@ export default async function SourcesPage() {
           ]}
         />
         <p>{t.rent.crosswalkLead}</p>
-        <Bullets items={r.crosswalk_notes.map((n) => t.rent.crosswalkNote(n.quartier_name, n.text))} />
+        <Bullets
+          items={r.crosswalk_notes.map((n) => t.rent.crosswalkNote(n.quartier_name, inLang(n.text, strings.lang)))}
+        />
       </Section>
 
       <Section heading={t.list.heading} id="sources">

@@ -109,6 +109,15 @@ OUT_OF_SCOPE_CSDS = {
         "not reachable by public transit, so excluded from Dorval's commute statistics."
     ),
 }
+# The same reasons in French, for the site (M5.3a). The English text above stays the key the
+# sample points carry (scope_note).
+OUT_OF_SCOPE_CSDS_FR = {
+    "L'Île-Dorval": (
+        "L’Île-Dorval : municipalité insulaire sans pont, reliée seulement par un "
+        "traversier saisonnier; inaccessible en transport collectif, elle est donc exclue "
+        "des temps de trajet de Dorval."
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -159,6 +168,9 @@ BBOX = (-74.10, 45.35, -73.35, 45.80)
 class Destination:
     id: str  # unique across all campuses, prefixed with the campus id
     name: str
+    # French name as the university writes it, generic word lowercase in running text
+    # ("pavillon", "portail"; owner, M5.3).
+    name_fr: str
     lat: float
     lon: float
     osm_ref: str  # where the point comes from, for traceability
@@ -169,6 +181,7 @@ class Destination:
 class Campus:
     id: str
     name: str
+    name_fr: str  # the university's own French name and campus name (M5.3a)
     destinations: tuple[Destination, ...]
 
 
@@ -178,10 +191,16 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="udem",
             name="Université de Montréal (campus principal)",
+            # UdeM's own spelling, lowercase "montagne" (owner, M5.3a: follow UdeM; lowercase
+            # if inconsistent): https://nouvelles.umontreal.ca/recherche (campus filter,
+            # "Campus de la montagne"); "Visite guidée du campus de la montagne",
+            # https://vieetudiante.umontreal.ca/activites/visite-guidee-du-campus-de-la-montagne/16151.
+            name_fr="Université de Montréal (campus de la montagne)",
             destinations=(
                 Destination(
                     id="udem_roger_gaudry",
                     name="Pavillon Roger-Gaudry",
+                    name_fr="pavillon Roger-Gaudry",
                     lat=45.5027705,
                     lon=-73.6150484,
                     osm_ref="node/2573744215",
@@ -191,6 +210,7 @@ CAMPUSES: dict[str, Campus] = {
                 Destination(
                     id="udem_jean_brillant",
                     name="Pavillon Jean-Brillant",
+                    name_fr="pavillon Jean-Brillant",
                     lat=45.4986715,
                     lon=-73.6181739,
                     osm_ref="node/6783857247",
@@ -202,10 +222,14 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="mcgill",
             name="McGill University (downtown campus)",
+            # mcgill.ca/gradapplicants/fr/experience-etudiante/campus; "portail Roddick":
+            # mcgill.ca/openhouse/fr/accessibilite-et-installations-adaptees.
+            name_fr="Université McGill (campus du centre-ville)",
             destinations=(
                 Destination(
                     id="mcgill_roddick_gates",
                     name="Roddick Gates",
+                    name_fr="portail Roddick",
                     lat=45.503849,
                     lon=-73.574925,
                     osm_ref="way/143798969",
@@ -216,10 +240,13 @@ CAMPUSES: dict[str, Campus] = {
         Campus(
             id="concordia_sgw",
             name="Concordia University (Sir George Williams campus)",
+            # concordia.ca/fr/plans/pavillons/h.html
+            name_fr="Université Concordia (campus Sir-George-Williams)",
             destinations=(
                 Destination(
                     id="concordia_sgw_hall",
                     name="Henry F. Hall Building",
+                    name_fr="pavillon Henry-F.-Hall",
                     lat=45.4970373,
                     lon=-73.5786245,
                     osm_ref="node/4035248248",

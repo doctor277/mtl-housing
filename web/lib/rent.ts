@@ -3,6 +3,8 @@
 // lines) is in lib/strings. Every rent in rent.json is already rounded to $25; null = not
 // enough data.
 
+import type { Localized } from "./localized";
+
 export type BedroomType = "studio" | "1br" | "2br" | "3br_plus";
 export type LabelKey = "neighbourhood" | "zone" | "neighbourhood_low" | "zone_low" | "none";
 
@@ -28,11 +30,12 @@ export interface RentMeta {
   statcan: { quarter: string; released: string };
   montreal: Record<BedroomType, { cmhc_average: number; statcan_asking: number }>;
   room: { estimate: number };
-  grade_words: Record<string, string>;
+  /** CMHC's grade words, both languages (CMHC's own French legend). */
+  grade_words: Record<string, Localized>;
   /** Notes on matching quartiers to CMHC areas, shown only on /sources (methodology). */
-  crosswalk_notes: { kind: string; quartier_name?: string; text: string }[];
-  /** Attribution texts written by the pipeline (DATA_SOURCES.md wording). */
-  sources: string[];
+  crosswalk_notes: { kind: string; quartier_name?: string; text: Localized }[];
+  /** Attribution texts written by the pipeline (DATA_SOURCES.md wording), both languages. */
+  sources: Localized[];
   [key: string]: unknown;
 }
 

@@ -106,7 +106,10 @@ Pages:
   links to How it works and Sources (`/sources`).
 
 They read `web/public/data/neighbourhoods.geojson`, `commute.json` and `rent.json` (written by
-the pipeline's `export` and `rent-export` steps and committed).
+the pipeline's `export` and `rent-export` steps and committed). Text the site shows from these
+files (campus and building names, credits, CMHC's grade words, the crosswalk notes) is written
+in both languages as `{"en": ..., "fr": ...}` (M5.3a); `pipeline/tests/test_bilingual_export.py`
+checks the bilingual re-export changed no number.
 
 ## Status
 

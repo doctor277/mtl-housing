@@ -29,9 +29,14 @@ const META: RentMeta = {
     "3br_plus": { cmhc_average: 900, statcan_asking: 2000 },
   },
   room: { estimate: 500 },
-  grade_words: { a: "excellent", b: "very good", c: "good", d: "use with caution" },
-  crosswalk_notes: [{ kind: "folded", text: "Note Z" }],
-  sources: ["Source Z"],
+  grade_words: {
+    a: { en: "excellent", fr: "excellent" },
+    b: { en: "very good", fr: "très bon" },
+    c: { en: "good", fr: "bon" },
+    d: { en: "use with caution", fr: "utiliser avec prudence" },
+  },
+  crosswalk_notes: [{ kind: "folded", text: { en: "Note Z", fr: "Note Z (fr)" } }],
+  sources: [{ en: "Source Z", fr: "Source Z (fr)" }],
 };
 
 const entry = (e: Partial<RentEntry>): RentEntry => ({

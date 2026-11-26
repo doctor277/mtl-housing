@@ -3,6 +3,7 @@
 // as text: they come from the data files or the code and are passed in. Number formats
 // ("1,475", "≈ $1,475") are language-specific, so they live here too.
 
+import type { Lang } from "../localized";
 import type { BedroomType, LabelKey, RentEntry, RentMeta } from "../rent";
 import { isLowReliability } from "../rent";
 import type { MaxCommute, SearchField, SearchSize } from "../search";
@@ -68,7 +69,7 @@ function detailLine(e: RentEntry, meta: RentMeta): string {
   const zone = areas[0]?.type === "zone";
   if (areas.length === 1) {
     const name = areas[0].name;
-    const word = words[areas[0].grade];
+    const word = words[areas[0].grade].en;
     switch (e.label) {
       case "neighbourhood":
         return `Based on CMHC’s average rent in CMHC area ${name} (${period}, rated ${word} by CMHC).`;
@@ -96,7 +97,7 @@ function extraLines(e: RentEntry, meta: RentMeta): string[] {
   const partial = e.coverage_pct !== null;
   const kind = areas[0]?.type === "zone" ? "CMHC zones" : "CMHC areas";
   if (areas.length > 1) {
-    const rated = (g: string) => (g === "d" ? `rated “${words[g]}”` : `rated ${words[g]}`);
+    const rated = (g: string) => (g === "d" ? `rated “${words[g].en}”` : `rated ${words[g].en}`);
     const parts = areas.map(
       (a) => `${a.name} (${partial ? oneDecimalPct(a.share) : wholePct(a.share)}, ${rated(a.grade)})`,
     );
@@ -135,7 +136,7 @@ function commuteClassLabels(uppers: number[], maxTripMin: number): string[] {
 }
 
 export const en = {
-  lang: "en",
+  lang: "en" as Lang,
   /** Placeholder until the name is chosen (M6). */
   siteName: "[NAME]",
   /** Placeholder until the owner fills in the contact address before launch (M5 decision 11). */

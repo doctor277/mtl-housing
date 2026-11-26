@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mtlhousing import config, rent
+from mtlhousing import config, export, i18n, rent
 
 RENT_JSON = config.WEB_DATA_DIR / "rent.json"
 METHOD_VERSION = "1.0"
@@ -42,8 +42,16 @@ LABEL_MEANINGS = {
     "zone_low": "wider CMHC zone value, rated 'use with caution' by CMHC (grade d)",
     NONE_KEY: "not enough data: estimate is null",
 }
-# CMHC's reliability legend. The site uses the words, never the letter.
-GRADE_WORDS = {"a": "excellent", "b": "very good", "c": "good", "d": "use with caution"}
+# CMHC's reliability legend. The site uses the words, never the letter. French: CMHC's own
+# legend, "A – Excellent, B – Très bon, C – Bon, D – Passable (utiliser avec prudence)"
+# (www03.cmhc-schl.gc.ca/hmip-pimh/fr/TableMapChart/RmsMethodology); grade d keeps the
+# caution words, as the English "use with caution" does.
+GRADE_WORDS = {
+    "a": i18n.text("excellent", "excellent"),
+    "b": i18n.text("very good", "très bon"),
+    "c": i18n.text("good", "bon"),
+    "d": i18n.text("use with caution", "utiliser avec prudence"),
+}
 BEDROOM_NAMES = {
     "studio": "studio (1½–2½)",
     "1br": "1 bedroom (3½)",
@@ -95,12 +103,20 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
     # Quartiers whose census tracts hold no CMHC rental units: why the counts can't help.
     checked = set(report["quartiers"].dropna(subset=["n_tracts"])["quartier_id"])
     for r in quartier_map[quartier_map["confidence"] != "verified"].itertuples():
-        text = (
+        en = (
             f"Linked to CMHC area {r.cmhc_neighbourhood} by name. CMHC's unit counts "
             "can't confirm this link"
         )
+        fr = (
+            f"Rattaché au secteur de la SCHL {r.cmhc_neighbourhood} d’après son nom. Les nombres "
+            "de logements de la SCHL ne permettent pas de confirmer ce lien"
+        )
         if r.quartier_id not in checked:
-            text += ": none of its census tracts has CMHC rental units"
+            en += ": none of its census tracts has CMHC rental units"
+            fr += (
+                f"{i18n.NBSP}: aucun de ses secteurs de recensement ne compte de logements "
+                "locatifs de la SCHL"
+            )
         notes.append(
             {
                 "quartier_id": r.quartier_id,
@@ -108,7 +124,7 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
                 "kind": "unconfirmed_link",
                 "cmhc_area": r.cmhc_neighbourhood,
                 "confidence": r.confidence,
-                "text": text + ".",
+                "text": i18n.text(en + ".", fr + "."),
             }
         )
     names = quartier_map.drop_duplicates("quartier_id").set_index("quartier_id")
@@ -125,9 +141,12 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
                 "cmhc_area": r.cmhc_neighbourhood,
                 "share": round(float(r.raw_share), SHARE_DECIMALS),
                 "counted_with": parts,
-                "text": (
+                "text": i18n.text(
                     f"{r.raw_share:.1%} of its rental units are in CMHC area "
-                    f"{r.cmhc_neighbourhood}; they are counted with {into} instead."
+                    f"{r.cmhc_neighbourhood}; they are counted with {into} instead.",
+                    f"{i18n.pct_fr(r.raw_share, 1)} de ses logements locatifs sont dans le "
+                    f"secteur de la SCHL {r.cmhc_neighbourhood}; ils sont plutôt comptés avec "
+                    f"{i18n.and_list_fr(parts)}.",
                 ),
             }
         )
@@ -136,41 +155,71 @@ def crosswalk_notes(quartier_map: pd.DataFrame, report: dict) -> list[dict]:
             "quartier_id": None,
             "kind": "homes_without_units",
             "share": round(report["homes_without_units_share"], SHARE_DECIMALS),
-            "text": (
+            "text": i18n.text(
                 f"{report['homes_without_units_share']:.1%} of the island's homes are in "
                 "census tracts with no CMHC rental units (CMHC lists no such tract); they "
-                "don't affect any estimate."
+                "don't affect any estimate.",
+                f"{i18n.pct_fr(report['homes_without_units_share'], 1)} des logements de l’île "
+                "sont dans des secteurs de recensement sans logements locatifs de la SCHL (la "
+                "SCHL n’en répertorie aucun); ils n’influent sur aucune estimation.",
             ),
         }
     )
     un = report["unallocated"]
+    units = int(un["units"].sum())
     notes.append(
         {
             "quartier_id": None,
             "kind": "unallocated_units",
             "share": round(report["unallocated_share"], 5),
-            "text": (
-                f"{int(un['units'].sum())} CMHC rental units "
+            "text": i18n.text(
+                f"{units} CMHC rental units "
                 f"({report['unallocated_share']:.2%}) are in census tracts with no home "
-                "in the 2021 census, so no neighbourhood gets them."
+                "in the 2021 census, so no neighbourhood gets them.",
+                f"{i18n.number_fr(units)} logements locatifs de la SCHL "
+                f"({i18n.pct_fr(report['unallocated_share'], 2)}) sont dans des secteurs de "
+                "recensement sans aucun logement au Recensement de 2021; ils ne sont attribués "
+                "à aucun quartier.",
             ),
         }
     )
     return notes
 
 
-def sources(statcan_quarter: str) -> list[str]:
+def sources(statcan_quarter: str) -> list[dict[str, str]]:
+    """Credits in both languages. English CMHC: the licence's English notice, word for word
+    ("... This does not constitute an endorsement by Canada Mortgage and Housing Corporation
+    of this product."). French, from the publishers' French pages (owner's M5 decision 6):
+    - CMHC: "Adaptation de données de la Société canadienne d’hypothèques et de logement, nom
+      du Produit ou de l’Information, date de référence. La présente ne constitue en aucun cas
+      un appui de la Société canadienne d’hypothèques et de logement envers ce produit."
+      (CMHC licence agreement, French page); survey name "Enquête sur les logements locatifs".
+    - Statistics Canada: its Open Licence French notice, with the table's French title and
+      quarter as StatCan writes them (table 46-10-0092-01, French page).
+    The census and Ville de Montréal lines are the commute export's (export.py)."""
     return [
-        f"Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, "
-        f"{config.CMHC_RMS_PERIOD}. This does not constitute an endorsement by CMHC.",
-        "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent "
-        "prices, by rental unit type and number of bedrooms (experimental estimates), "
-        f"{statcan_quarter}. This does not constitute an endorsement by Statistics Canada "
-        "of this product.",
-        "Adapted from Statistics Canada, 2021 Census Geographic Attribute File (92-151-X). "
-        "This does not constitute an endorsement by Statistics Canada of this product.",
-        # Exact wording from DATA_SOURCES.md, "Attribution text to show on the site".
-        "Contains data from the Ville de Montréal open data portal, licensed under CC BY 4.0.",
+        i18n.text(
+            # CMHC's licence notice, word for word (owner, M5.3a).
+            f"Adapted from Canada Mortgage and Housing Corporation, Rental Market Survey, "
+            f"{config.CMHC_RMS_PERIOD}. This does not constitute an endorsement by Canada "
+            "Mortgage and Housing Corporation of this product.",
+            "Adaptation de données de la Société canadienne d’hypothèques et de logement, "
+            f"Enquête sur les logements locatifs, {i18n.period_fr(config.CMHC_RMS_PERIOD)}. "
+            "La présente ne constitue en aucun cas un appui de la Société canadienne "
+            "d’hypothèques et de logement envers ce produit.",
+        ),
+        i18n.text(
+            "Adapted from Statistics Canada, Table 46-10-0092-01 Asking rent and paid rent "
+            "prices, by rental unit type and number of bedrooms (experimental estimates), "
+            f"{statcan_quarter}. This does not constitute an endorsement by Statistics Canada "
+            "of this product.",
+            "Adapté de Statistique Canada, Tableau 46-10-0092-01 Prix des loyers demandés et "
+            "des loyers payés, selon le type d’unité locative et le nombre de chambres, "
+            f"estimations expérimentales, {i18n.quarter_fr(statcan_quarter)}. Cela ne constitue "
+            "pas une approbation de ce produit par Statistique Canada.",
+        ),
+        export.CENSUS_CREDIT,
+        export.VILLE_CREDIT,
     ]
 
 
@@ -248,7 +297,6 @@ def run(path: Path = RENT_JSON) -> tuple[dict, str]:
         cmhc_rent,
         cmhc_universe,
         crosswalk,
-        export,
         sample_points,
         statcan_rent,
     )
