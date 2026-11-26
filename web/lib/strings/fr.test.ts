@@ -77,6 +77,23 @@ describe("French strings", () => {
     expect(fr.detail.toPlace("portail Roddick")).toBe("jusqu’au portail Roddick");
   });
 
+  it("use the owner's short size hint, breaking only between items (M5.3b)", () => {
+    const hint = fr.form.size.hint;
+    expect(hint.replaceAll(NB, " ").replaceAll("⁠", "")).toBe(
+      "Chambre : dans un appartement partagé · Studio : 1½–2½ · 3½ : 1 chambre · 4½ : 2 chambres",
+    );
+    expect(hint.split(" · ").every((item) => !item.includes(" "))).toBe(true);
+  });
+
+  it("use the owner's wording for the commute range and unreachable homes (M5.3b)", () => {
+    expect(fr.detail.range(5, 19, 120)).toBe(
+      `Selon l’endroit dans le quartier${NB}: de 5 à 19 min pour la plupart des logements.`,
+    );
+    expect(fr.detail.manyUnreachable(15, 120)).toBe(
+      `15${NB}% des logements de ce quartier sont à plus de 2 heures en transport collectif.`,
+    );
+  });
+
   it("give UdeM its article and McGill none", () => {
     expect(fr.results.noneWithin(30, "UdeM")).toBe("Aucun quartier n’est à moins de 30 min de l’UdeM.");
     expect(fr.results.noneWithin(30, "McGill")).toBe("Aucun quartier n’est à moins de 30 min de McGill.");
@@ -88,6 +105,8 @@ describe("French strings", () => {
     // Most French text comes from functions: make sure they were rendered, not skipped.
     expect(sample.length).toBeGreaterThan(200);
     expect(sample.filter((s) => / :/.test(s))).toEqual([]);
+    // …and always a space after it (unless it ends the text).
+    expect(sample.filter((s) => / :[^\s]/.test(s))).toEqual([]);
     expect(sample.filter((s) => / %/.test(s))).toEqual([]);
   });
 

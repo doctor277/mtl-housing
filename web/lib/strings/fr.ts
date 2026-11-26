@@ -355,7 +355,7 @@ export const fr: Strings = {
     toClosestBuilding: (campus: string) => `jusqu’au pavillon ${de(inText(campus))} le plus proche`,
     toPlace: (name: string) => `jusqu’au ${name}`,
     range: (lo: number, hi: number | null, maxMin: number) =>
-      `Selon l’endroit dans le quartier${NB}:${hi === null ? `de ${lo} min à ${overMax(maxMin)}` : lo === hi ? `${lo} min` : `de ${lo} à ${hi} min`} pour la plupart des logements.`,
+      `Selon l’endroit dans le quartier${NB}: ${hi === null ? `de ${lo} min à ${overMax(maxMin)}` : lo === hi ? `${lo} min` : `de ${lo} à ${hi} min`} pour la plupart des logements.`,
     buildings: (parts: { name: string; time: string }[]) =>
       cap(parts.map((p) => `${p.name}${NB}: ${p.time}`).join(" · ")),
     overMax: (maxMin: number) => overMax(maxMin),

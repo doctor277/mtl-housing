@@ -318,7 +318,9 @@ export default function QuartierMap({
               const m = 8;
               const dx = box.left < frame.left + m ? box.left - frame.left - m : box.right > frame.right - m ? box.right - frame.right + m : 0;
               const dy = box.top < frame.top + m ? box.top - frame.top - m : 0;
-              if (dx || dy) map.panBy([dx, dy], { duration: 200 });
+              // No animation when the reader asks for reduced motion (DR5-4, M5.3b).
+              const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              if (dx || dy) map.panBy([dx, dy], { duration: still ? 0 : 200 });
             }
           });
           map.on("mouseenter", layer, () => {

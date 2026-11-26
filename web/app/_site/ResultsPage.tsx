@@ -49,7 +49,9 @@ export async function resultsMetadata(lang: Lang, searchParams: Params): Promise
   const query = searchQuery(search, parseSort(params), parseView(params));
   const { title, description } = sharePreview(search, campuses.find((c) => c.key === search.campus)!.label, s);
   return {
-    ...pageMetadata(lang, "results", title, query),
+    // The browser tab keeps the site name; the preview title doesn't (it shows og:site_name;
+    // owner, M5.3b).
+    ...pageMetadata(lang, "results", `${title} · ${s.siteName}`, query),
     description,
     openGraph: { title, description, type: "website", siteName: s.siteName, locale: s.meta.locale },
   };
